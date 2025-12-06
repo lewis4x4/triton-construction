@@ -1,0 +1,572 @@
+/* Renewal Modal Overlay */
+.renewal-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 16px;
+}
+
+.renewal-modal {
+  background: white;
+  border-radius: 16px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  z-index: 10;
+}
+
+.modal-close:hover {
+  background: #f1f5f9;
+  color: #1e293b;
+}
+
+/* Content */
+.renewal-content {
+  padding: 24px;
+}
+
+.renewal-content.submitting,
+.renewal-content.done {
+  text-align: center;
+  padding: 48px 24px;
+}
+
+/* Header */
+.renewal-header {
+  text-align: center;
+  margin-bottom: 24px;
+  padding: 24px;
+  background: linear-gradient(135deg, #dbeafe, #e0e7ff);
+  margin: -24px -24px 24px -24px;
+  border-radius: 16px 16px 0 0;
+}
+
+.renewal-header.urgent {
+  background: linear-gradient(135deg, #fef3c7, #fed7aa);
+}
+
+.renewal-header.expired {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+}
+
+.renewal-header .header-icon {
+  color: #2563eb;
+  margin-bottom: 12px;
+}
+
+.renewal-header.urgent .header-icon { color: #f59e0b; }
+.renewal-header.expired .header-icon { color: #dc2626; }
+
+.renewal-header h2 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  color: #1e293b;
+}
+
+.renewal-header p {
+  margin: 0;
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* Current Ticket Info */
+.current-ticket-info {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-row .label {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.info-row .value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-row .value.expired { color: #dc2626; }
+.info-row .value.urgent { color: #f59e0b; }
+
+.status-badge {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.status-badge.expired {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status-badge.urgent {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* Ticket Chain */
+.ticket-chain {
+  margin-bottom: 20px;
+}
+
+.ticket-chain h4 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #475569;
+}
+
+.chain-timeline {
+  padding-left: 20px;
+}
+
+.chain-item {
+  position: relative;
+  padding-left: 20px;
+  padding-bottom: 16px;
+}
+
+.chain-item.current {
+  background: #f8fafc;
+  margin-left: -20px;
+  padding-left: 40px;
+  border-radius: 8px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.chain-dot {
+  position: absolute;
+  left: -8px;
+  top: 4px;
+  width: 16px;
+  height: 16px;
+  background: #e2e8f0;
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px #e2e8f0;
+}
+
+.chain-item.current .chain-dot {
+  background: #2563eb;
+  box-shadow: 0 0 0 2px #2563eb;
+}
+
+.chain-line {
+  position: absolute;
+  left: -1px;
+  top: 20px;
+  bottom: 0;
+  width: 2px;
+  background: #e2e8f0;
+}
+
+.chain-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.chain-number {
+  font-weight: 600;
+  font-size: 13px;
+  color: #1e293b;
+}
+
+.chain-dates {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.chain-status {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.chain-status.active { background: #dcfce7; color: #166534; }
+.chain-status.renewed { background: #dbeafe; color: #1e40af; }
+.chain-status.expired { background: #fee2e2; color: #991b1b; }
+
+/* Warning */
+.renewal-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+  background: #fef3c7;
+  border: 1px solid #fcd34d;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.renewal-warning svg {
+  flex-shrink: 0;
+  color: #92400e;
+  margin-top: 2px;
+}
+
+.renewal-warning div {
+  font-size: 13px;
+  color: #78350f;
+  line-height: 1.5;
+}
+
+.renewal-warning strong {
+  font-weight: 600;
+}
+
+/* Form Header */
+.form-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.form-header .form-icon {
+  color: #2563eb;
+}
+
+.form-header h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #1e293b;
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group > label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 10px;
+}
+
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  resize: vertical;
+}
+
+.form-group textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.form-hint {
+  display: block;
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 8px;
+}
+
+/* Extension Options */
+.extension-options {
+  display: flex;
+  gap: 8px;
+}
+
+.extension-option {
+  flex: 1;
+  padding: 14px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.extension-option:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.extension-option.selected {
+  background: #dbeafe;
+  border-color: #2563eb;
+  color: #1e40af;
+}
+
+/* Checkbox Label */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-weight: normal !important;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #2563eb;
+}
+
+.checkbox-label span {
+  font-size: 14px;
+  color: #475569;
+}
+
+/* Error Message */
+.error-message {
+  padding: 12px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #991b1b;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+/* Actions */
+.renewal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.renewal-actions .btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+.btn-secondary:hover {
+  background: #e2e8f0;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover {
+  background: #1d4ed8;
+}
+
+/* Submitting State */
+.submitting h2 {
+  margin: 20px 0 8px 0;
+  color: #1e293b;
+}
+
+.submitting p {
+  margin: 0;
+  color: #64748b;
+}
+
+/* Done State */
+.done .success-icon {
+  color: #16a34a;
+  margin-bottom: 16px;
+}
+
+.done h2 {
+  margin: 0 0 20px 0;
+  color: #166534;
+}
+
+.new-ticket-info {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.new-ticket-info .label {
+  display: block;
+  font-size: 12px;
+  color: #166534;
+  margin-bottom: 8px;
+}
+
+.ticket-number-copy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.ticket-number-copy .number {
+  font-size: 28px;
+  font-weight: 700;
+  color: #166534;
+}
+
+.copy-btn {
+  width: 36px;
+  height: 36px;
+  background: white;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #166534;
+  transition: all 0.2s;
+}
+
+.copy-btn:hover {
+  background: #166534;
+  color: white;
+}
+
+.renewal-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.summary-item svg {
+  color: #16a34a;
+}
+
+/* Compact Renewal Button */
+.renewal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: white;
+  color: #2563eb;
+  border: 1px solid #2563eb;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.renewal-btn:hover {
+  background: #2563eb;
+  color: white;
+}
+
+.renewal-btn.urgent {
+  color: #f59e0b;
+  border-color: #f59e0b;
+}
+
+.renewal-btn.urgent:hover {
+  background: #f59e0b;
+  color: white;
+}
+
+.renewal-btn.expired {
+  color: #dc2626;
+  border-color: #dc2626;
+}
+
+.renewal-btn.expired:hover {
+  background: #dc2626;
+  color: white;
+}
+
+/* Spin Animation */
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 480px) {
+  .renewal-modal {
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  .extension-options {
+    flex-direction: column;
+  }
+
+  .renewal-actions {
+    flex-direction: column;
+  }
+}

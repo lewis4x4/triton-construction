@@ -1,0 +1,466 @@
+/* Polygon Drawing Tool Container */
+.polygon-drawing-tool {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 500px;
+  background: #f8fafc;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Toolbar */
+.drawing-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.tool-group {
+  display: flex;
+  gap: 4px;
+}
+
+.tool-divider {
+  width: 1px;
+  height: 24px;
+  background: #e2e8f0;
+  margin: 0 4px;
+}
+
+.tool-spacer {
+  flex: 1;
+}
+
+.tool-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tool-btn:hover {
+  background: #f1f5f9;
+  color: #1e293b;
+  border-color: #cbd5e1;
+}
+
+.tool-btn.active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: white;
+}
+
+.tool-btn.complete {
+  background: #dcfce7;
+  border-color: #86efac;
+  color: #16a34a;
+}
+
+.tool-btn.complete:hover {
+  background: #16a34a;
+  border-color: #16a34a;
+  color: white;
+}
+
+.tool-btn.cancel {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #dc2626;
+}
+
+.tool-btn.cancel:hover {
+  background: #dc2626;
+  border-color: #dc2626;
+  color: white;
+}
+
+.tool-btn.delete,
+.tool-btn.danger {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #dc2626;
+}
+
+.tool-btn.delete:hover,
+.tool-btn.danger:hover {
+  background: #dc2626;
+  border-color: #dc2626;
+  color: white;
+}
+
+/* Canvas Container */
+.canvas-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+}
+
+.canvas-container canvas {
+  display: block;
+}
+
+/* Drawing Instructions */
+.drawing-instructions {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Point Counter */
+.point-counter {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  padding: 6px 12px;
+  background: #2563eb;
+  color: white;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  z-index: 10;
+}
+
+/* Info Panel */
+.drawing-info-panel {
+  padding: 16px;
+  background: white;
+  border-top: 1px solid #e2e8f0;
+}
+
+.info-stats {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.stat-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+/* Polygon List */
+.polygon-list {
+  margin-bottom: 16px;
+}
+
+.polygon-list h4 {
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.polygon-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.polygon-item:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.polygon-item.selected {
+  background: #dbeafe;
+  border-color: #3b82f6;
+}
+
+.polygon-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.polygon-name {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.polygon-area {
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* Help Text */
+.help-text {
+  padding: 12px;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #0369a1;
+}
+
+.help-text p {
+  margin: 0 0 6px 0;
+  font-weight: 600;
+}
+
+.help-text ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.help-text li {
+  margin-bottom: 2px;
+}
+
+/* Draw Dig Area Button */
+.draw-dig-area-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: white;
+  border: 1px solid #2563eb;
+  border-radius: 8px;
+  color: #2563eb;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.draw-dig-area-btn:hover {
+  background: #2563eb;
+  color: white;
+}
+
+/* Modal Overlay */
+.polygon-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 24px;
+}
+
+.polygon-modal {
+  background: white;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 1000px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.polygon-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.polygon-modal-header h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 18px;
+  color: #1e293b;
+}
+
+.polygon-modal-header h2 svg {
+  color: #2563eb;
+}
+
+.polygon-modal-header .modal-close {
+  width: 36px;
+  height: 36px;
+  background: #f1f5f9;
+  border: none;
+  border-radius: 50%;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.polygon-modal-header .modal-close:hover {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.polygon-modal-content {
+  flex: 1;
+  overflow: hidden;
+  min-height: 500px;
+}
+
+.polygon-modal-content .polygon-drawing-tool {
+  height: 100%;
+  border-radius: 0;
+}
+
+.polygon-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 20px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.polygon-modal-footer .btn-secondary {
+  padding: 10px 20px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.polygon-modal-footer .btn-secondary:hover {
+  background: #e2e8f0;
+}
+
+.polygon-modal-footer .btn-primary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: #2563eb;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.polygon-modal-footer .btn-primary:hover {
+  background: #1d4ed8;
+}
+
+/* Keyboard Shortcuts Indicator */
+.keyboard-shortcuts {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.shortcut-key {
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border-radius: 4px;
+  font-size: 11px;
+  font-family: monospace;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .polygon-modal {
+    margin: 0;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  .drawing-toolbar {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .tool-spacer {
+    display: none;
+  }
+
+  .info-stats {
+    flex-wrap: wrap;
+  }
+
+  .polygon-modal-content {
+    min-height: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .drawing-toolbar {
+    padding: 8px;
+    gap: 4px;
+  }
+
+  .tool-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .tool-divider {
+    display: none;
+  }
+
+  .drawing-info-panel {
+    padding: 12px;
+  }
+
+  .polygon-modal-footer {
+    flex-direction: column;
+  }
+
+  .polygon-modal-footer button {
+    width: 100%;
+    justify-content: center;
+  }
+}

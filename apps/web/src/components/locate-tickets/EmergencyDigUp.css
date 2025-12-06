@@ -1,0 +1,735 @@
+/* Emergency Dig Up Modal */
+.emergency-digup-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 16px;
+}
+
+.emergency-digup-modal {
+  background: white;
+  border-radius: 16px;
+  max-width: 480px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.emergency-digup-modal.confirm,
+.emergency-digup-modal.details {
+  border-top: 8px solid #dc2626;
+}
+
+.emergency-digup-modal.sent {
+  border-top: 8px solid #16a34a;
+}
+
+.emergency-digup-modal.error {
+  border-top: 8px solid #dc2626;
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  z-index: 10;
+}
+
+.modal-close:hover {
+  background: #f1f5f9;
+  color: #1e293b;
+}
+
+/* Content */
+.emergency-digup-content {
+  padding: 24px;
+}
+
+.emergency-warning-box {
+  text-align: center;
+  padding: 24px;
+  background: linear-gradient(135deg, #fef2f2, #fee2e2);
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+.emergency-warning-box .warning-icon {
+  color: #dc2626;
+  margin-bottom: 16px;
+}
+
+.emergency-warning-box .warning-icon.pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.emergency-warning-box h2 {
+  margin: 0 0 8px 0;
+  color: #991b1b;
+  font-size: 24px;
+}
+
+.emergency-warning-box p {
+  margin: 0;
+  color: #7f1d1d;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.emergency-header-small {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.emergency-header-small .warning-icon {
+  color: #dc2626;
+}
+
+.emergency-header-small h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #1e293b;
+}
+
+/* Info Section */
+.emergency-info-section {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.emergency-info-section h3 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.emergency-info-section ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.emergency-info-section li {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.emergency-info-section li:last-child {
+  margin-bottom: 0;
+}
+
+/* Ticket Info */
+.emergency-ticket-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #f1f5f9;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.emergency-ticket-info .label {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.emergency-ticket-info .value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* Location Status */
+.emergency-location-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.emergency-location-status .locating {
+  color: #3b82f6;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.emergency-location-status .located {
+  color: #16a34a;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.emergency-location-status .location-error {
+  color: #dc2626;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.retry-link {
+  background: none;
+  border: none;
+  color: #2563eb;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 8px;
+}
+
+/* Utility Type Grid */
+.utility-type-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.utility-type-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.utility-type-btn:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.utility-type-btn.selected {
+  background: #fee2e2;
+  border-color: #dc2626;
+}
+
+.utility-icon {
+  font-size: 24px;
+}
+
+.utility-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: #475569;
+}
+
+/* Severity Options */
+.severity-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.severity-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.severity-option:hover {
+  background: #f1f5f9;
+}
+
+.severity-option.selected {
+  background: #fffbeb;
+  border-color: #f59e0b;
+}
+
+.severity-option input {
+  margin-top: 2px;
+}
+
+.severity-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.severity-label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.severity-label.severity-minor { color: #16a34a; }
+.severity-label.severity-moderate { color: #f59e0b; }
+.severity-label.severity-severe { color: #ea580c; }
+.severity-label.severity-critical { color: #dc2626; }
+
+.severity-desc {
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 8px;
+}
+
+.form-group label .required {
+  color: #dc2626;
+}
+
+.form-group textarea,
+.form-group input[type="tel"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.form-group textarea:focus,
+.form-group input[type="tel"]:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+/* Crew List */
+.crew-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.crew-tag {
+  padding: 4px 10px;
+  background: #e0e7ff;
+  color: #3730a3;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Error Message */
+.error-message {
+  padding: 12px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #991b1b;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+/* Actions */
+.emergency-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.emergency-actions .btn {
+  flex: 1;
+  padding: 14px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.emergency-actions .btn-secondary {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+.emergency-actions .btn-secondary:hover {
+  background: #e2e8f0;
+}
+
+.emergency-actions .btn-danger {
+  background: #dc2626;
+  color: white;
+  border: none;
+}
+
+.emergency-actions .btn-danger:hover {
+  background: #b91c1c;
+}
+
+.emergency-actions .btn-danger.btn-lg {
+  padding: 16px 24px;
+  font-size: 16px;
+}
+
+.emergency-actions .btn-primary {
+  background: #2563eb;
+  color: white;
+  border: none;
+}
+
+.emergency-actions .btn-primary:hover {
+  background: #1d4ed8;
+}
+
+/* Sending State */
+.emergency-sending {
+  text-align: center;
+  padding: 48px 24px;
+}
+
+.emergency-sending h2 {
+  margin: 24px 0 8px 0;
+  color: #1e293b;
+}
+
+.emergency-sending p {
+  color: #64748b;
+  margin: 0;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+  color: #dc2626;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Sent State */
+.emergency-sent {
+  text-align: center;
+}
+
+.emergency-sent .success-icon {
+  color: #16a34a;
+  margin-bottom: 16px;
+}
+
+.emergency-sent h2 {
+  margin: 0 0 8px 0;
+  color: #166534;
+}
+
+.incident-number {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 24px;
+}
+
+/* Draft Email Section */
+.draft-email-section {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.draft-email-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.draft-email-header svg {
+  color: #2563eb;
+}
+
+.draft-email-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e40af;
+}
+
+.draft-email-desc {
+  font-size: 13px;
+  color: #3b82f6;
+  margin: 0 0 12px 0;
+}
+
+.send-email-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 20px;
+  background: #2563eb;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: background 0.2s;
+  margin-bottom: 12px;
+}
+
+.send-email-btn:hover {
+  background: #1d4ed8;
+}
+
+.send-email-btn svg:last-child {
+  margin-left: auto;
+}
+
+.draft-email-preview {
+  background: white;
+  border: 1px solid #dbeafe;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 12px;
+}
+
+.draft-email-preview .email-field {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.draft-email-preview .email-field .label {
+  font-weight: 600;
+  color: #64748b;
+  min-width: 60px;
+}
+
+.draft-email-preview .email-field .value {
+  color: #1e293b;
+  word-break: break-all;
+}
+
+.email-body-preview {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.email-body-preview pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-size: 11px;
+  color: #64748b;
+  font-family: inherit;
+  line-height: 1.4;
+}
+
+.copy-email-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 8px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.copy-email-btn:hover {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.copy-email-btn svg {
+  color: #16a34a;
+}
+
+.next-steps {
+  text-align: left;
+  background: #fefce8;
+  border: 1px solid #fef08a;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.next-steps h3 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #854d0e;
+}
+
+.next-steps ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.next-steps li {
+  font-size: 14px;
+  color: #713f12;
+  margin-bottom: 6px;
+}
+
+.emergency-contact-info {
+  margin-bottom: 24px;
+}
+
+.emergency-contact-info h3 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #475569;
+}
+
+.emergency-phone-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  background: #dc2626;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.emergency-phone-btn:hover {
+  background: #b91c1c;
+}
+
+.hint {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 8px;
+}
+
+/* Error State */
+.emergency-error {
+  text-align: center;
+}
+
+.emergency-error .error-icon {
+  color: #dc2626;
+  margin-bottom: 16px;
+}
+
+.emergency-error h2 {
+  margin: 0 0 8px 0;
+  color: #991b1b;
+}
+
+.fallback-contact {
+  margin: 24px 0;
+  padding: 20px;
+  background: #fef2f2;
+  border-radius: 8px;
+}
+
+.fallback-contact p {
+  margin: 0 0 12px 0;
+  color: #991b1b;
+}
+
+/* Floating Action Button */
+.emergency-fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  box-shadow: 0 4px 20px rgba(220, 38, 38, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+  z-index: 1000;
+}
+
+.emergency-fab:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 24px rgba(220, 38, 38, 0.5);
+}
+
+.emergency-fab:active {
+  transform: scale(0.95);
+}
+
+.emergency-fab-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 480px) {
+  .emergency-digup-modal {
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  .utility-type-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .emergency-fab {
+    bottom: 16px;
+    right: 16px;
+    width: 64px;
+    height: 64px;
+  }
+}

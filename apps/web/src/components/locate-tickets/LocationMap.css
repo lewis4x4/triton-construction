@@ -1,0 +1,128 @@
+/* LocationMap.css - Styles for the location map component */
+
+.location-map-container {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-color, #e5e7eb);
+}
+
+.location-map {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.location-map-loading,
+.location-map-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: var(--bg-secondary, #f9fafb);
+  border: 1px dashed var(--border-color, #d1d5db);
+  border-radius: 8px;
+  color: var(--text-secondary, #6b7280);
+}
+
+.location-map-loading .spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.location-map-error {
+  background: var(--bg-warning, #fef3c7);
+  border-color: var(--border-warning, #f59e0b);
+}
+
+.map-error-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.btn-retry,
+.btn-external {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-retry {
+  background: var(--primary-color, #2563eb);
+  color: white;
+  border: none;
+}
+
+.btn-retry:hover {
+  background: var(--primary-hover, #1d4ed8);
+}
+
+.btn-external {
+  background: white;
+  color: var(--text-primary, #374151);
+  border: 1px solid var(--border-color, #d1d5db);
+}
+
+.btn-external:hover {
+  background: var(--bg-secondary, #f9fafb);
+  border-color: var(--border-hover, #9ca3af);
+}
+
+.map-actions {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  z-index: 10;
+}
+
+.btn-google-maps {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  background: white;
+  color: var(--text-primary, #374151);
+  border: 1px solid var(--border-color, #d1d5db);
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.15s ease;
+}
+
+.btn-google-maps:hover {
+  background: var(--bg-secondary, #f9fafb);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* Mapbox overrides */
+.mapboxgl-ctrl-attrib {
+  font-size: 10px !important;
+}
+
+.mapboxgl-popup-content {
+  padding: 12px !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.mapboxgl-popup-close-button {
+  font-size: 16px !important;
+  padding: 4px 8px !important;
+}

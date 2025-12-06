@@ -1,0 +1,18 @@
+{
+  "name": "triton-ai-platform",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Triton Construction AI Operations Platform",
+  "scripts": {
+    "dev": "pnpm --filter @triton/web dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r lint",
+    "clean": "pnpm -r clean && rm -rf node_modules"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@9.14.2"
+}

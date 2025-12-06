@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "types": ["vite/client"]
+  },
+  "include": ["src", "../../packages/*/src"],
+  "references": [
+    { "path": "./tsconfig.node.json" }
+  ]
+}
