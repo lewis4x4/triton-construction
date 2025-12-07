@@ -49,6 +49,13 @@ import { AIQueryPage } from './pages/ai/AIQueryPage';
 import { PredictiveAnalyticsDashboard } from './pages/analytics/PredictiveAnalyticsDashboard';
 // User Management
 import { UserManagement } from './pages/admin/UserManagement';
+// Assignment Validation Rules
+import { AssignmentRulesAdmin } from './pages/admin/AssignmentRulesAdmin';
+// Training Module
+import { TrainingDashboard } from './pages/training/TrainingDashboard';
+// Safety Module
+import { DailySafetyBriefForm } from './components/safety/DailySafetyBriefForm';
+import { StartMyDayScreen } from './components/safety/StartMyDayScreen';
 import './styles/index.css';
 
 function App() {
@@ -282,6 +289,36 @@ function App() {
             }
           />
 
+          {/* Training routes */}
+          <Route
+            path="/training"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <TrainingDashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Safety routes */}
+          <Route
+            path="/safety/start-my-day"
+            element={
+              <ProtectedRoute>
+                <StartMyDayScreen projectId="" projectName="Select Project" />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/safety/daily-brief"
+            element={
+              <ProtectedRoute>
+                <DailySafetyBriefForm projectId="" />
+              </ProtectedRoute>
+            }
+          />
+
           {/* Quality Control routes */}
           <Route
             path="/quality-control"
@@ -427,6 +464,16 @@ function App() {
               <AdminRoute>
                 <Layout>
                   <UserManagement />
+                </Layout>
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/validation-rules"
+            element={
+              <AdminRoute>
+                <Layout>
+                  <AssignmentRulesAdmin />
                 </Layout>
               </AdminRoute>
             }

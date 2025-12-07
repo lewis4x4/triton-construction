@@ -819,6 +819,127 @@ export type Database = {
           },
         ]
       }
+      assignment_validation_rules: {
+        Row: {
+          blocking_behavior: Database["public"]["Enums"]["validation_blocking_behavior"]
+          conditions: Json | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          effective_date: string
+          expiration_date: string | null
+          id: string
+          is_active: boolean
+          jurisdiction: string | null
+          min_crew_with_cert: number | null
+          organization_id: string | null
+          override_allowed: boolean
+          override_approver_roles: string[] | null
+          override_max_hours: number | null
+          override_requires_documentation: boolean | null
+          override_requires_photo: boolean | null
+          penalty_info: string | null
+          regulatory_reference: string | null
+          require_daily_brief: boolean | null
+          require_site_orientation: boolean | null
+          required_certification_codes: string[] | null
+          required_competent_person_types: string[] | null
+          required_equipment_operator_certs: string[] | null
+          risk_level: Database["public"]["Enums"]["validation_risk_level"]
+          rule_code: string
+          rule_name: string
+          updated_at: string
+          updated_by: string | null
+          work_type: string
+        }
+        Insert: {
+          blocking_behavior?: Database["public"]["Enums"]["validation_blocking_behavior"]
+          conditions?: Json | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          effective_date?: string
+          expiration_date?: string | null
+          id?: string
+          is_active?: boolean
+          jurisdiction?: string | null
+          min_crew_with_cert?: number | null
+          organization_id?: string | null
+          override_allowed?: boolean
+          override_approver_roles?: string[] | null
+          override_max_hours?: number | null
+          override_requires_documentation?: boolean | null
+          override_requires_photo?: boolean | null
+          penalty_info?: string | null
+          regulatory_reference?: string | null
+          require_daily_brief?: boolean | null
+          require_site_orientation?: boolean | null
+          required_certification_codes?: string[] | null
+          required_competent_person_types?: string[] | null
+          required_equipment_operator_certs?: string[] | null
+          risk_level?: Database["public"]["Enums"]["validation_risk_level"]
+          rule_code: string
+          rule_name: string
+          updated_at?: string
+          updated_by?: string | null
+          work_type: string
+        }
+        Update: {
+          blocking_behavior?: Database["public"]["Enums"]["validation_blocking_behavior"]
+          conditions?: Json | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          effective_date?: string
+          expiration_date?: string | null
+          id?: string
+          is_active?: boolean
+          jurisdiction?: string | null
+          min_crew_with_cert?: number | null
+          organization_id?: string | null
+          override_allowed?: boolean
+          override_approver_roles?: string[] | null
+          override_max_hours?: number | null
+          override_requires_documentation?: boolean | null
+          override_requires_photo?: boolean | null
+          penalty_info?: string | null
+          regulatory_reference?: string | null
+          require_daily_brief?: boolean | null
+          require_site_orientation?: boolean | null
+          required_certification_codes?: string[] | null
+          required_competent_person_types?: string[] | null
+          required_equipment_operator_certs?: string[] | null
+          risk_level?: Database["public"]["Enums"]["validation_risk_level"]
+          rule_code?: string
+          rule_name?: string
+          updated_at?: string
+          updated_by?: string | null
+          work_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assignment_validation_rules_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assignment_validation_rules_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assignment_validation_rules_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       audit_logs: {
         Row: {
           action: string
@@ -6247,6 +6368,71 @@ export type Database = {
           },
         ]
       }
+      certification_types: {
+        Row: {
+          category: string
+          code: string
+          color_code: string | null
+          created_at: string
+          default_validity_months: number | null
+          description: string | null
+          display_order: number | null
+          icon_name: string | null
+          id: string
+          is_active: boolean
+          name: string
+          organization_id: string | null
+          regulatory_reference: string | null
+          requires_renewal_training: boolean
+          requires_signature: boolean
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          code: string
+          color_code?: string | null
+          created_at?: string
+          default_validity_months?: number | null
+          description?: string | null
+          display_order?: number | null
+          icon_name?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          organization_id?: string | null
+          regulatory_reference?: string | null
+          requires_renewal_training?: boolean
+          requires_signature?: boolean
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          code?: string
+          color_code?: string | null
+          created_at?: string
+          default_validity_months?: number | null
+          description?: string | null
+          display_order?: number | null
+          icon_name?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          organization_id?: string | null
+          regulatory_reference?: string | null
+          requires_renewal_training?: boolean
+          requires_signature?: boolean
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "certification_types_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       certified_payroll_lines: {
         Row: {
           base_hourly_rate: number
@@ -7219,8 +7405,10 @@ export type Database = {
       compliance_overrides: {
         Row: {
           approved_by: string | null
+          approved_by_role: string | null
           created_at: string | null
           digital_signature: string
+          documentation: string | null
           entity_id: string
           entity_type: string
           expires_at: string
@@ -7230,18 +7418,23 @@ export type Database = {
           notification_sent_at: string | null
           organization_id: string
           override_type: string
+          photo_url: string | null
           project_id: string | null
           reason: string
           requested_by: string
           revoke_reason: string | null
           revoked_at: string | null
           revoked_by: string | null
+          risk_level: string | null
+          rule_id: string | null
           safety_director_notified: boolean | null
         }
         Insert: {
           approved_by?: string | null
+          approved_by_role?: string | null
           created_at?: string | null
           digital_signature: string
+          documentation?: string | null
           entity_id: string
           entity_type: string
           expires_at: string
@@ -7251,18 +7444,23 @@ export type Database = {
           notification_sent_at?: string | null
           organization_id: string
           override_type: string
+          photo_url?: string | null
           project_id?: string | null
           reason: string
           requested_by: string
           revoke_reason?: string | null
           revoked_at?: string | null
           revoked_by?: string | null
+          risk_level?: string | null
+          rule_id?: string | null
           safety_director_notified?: boolean | null
         }
         Update: {
           approved_by?: string | null
+          approved_by_role?: string | null
           created_at?: string | null
           digital_signature?: string
+          documentation?: string | null
           entity_id?: string
           entity_type?: string
           expires_at?: string
@@ -7272,12 +7470,15 @@ export type Database = {
           notification_sent_at?: string | null
           organization_id?: string
           override_type?: string
+          photo_url?: string | null
           project_id?: string | null
           reason?: string
           requested_by?: string
           revoke_reason?: string | null
           revoked_at?: string | null
           revoked_by?: string | null
+          risk_level?: string | null
+          rule_id?: string | null
           safety_director_notified?: boolean | null
         }
         Relationships: [
@@ -7329,6 +7530,20 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
             referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "compliance_overrides_rule_id_fkey"
+            columns: ["rule_id"]
+            isOneToOne: false
+            referencedRelation: "assignment_validation_rules"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "compliance_overrides_rule_id_fkey"
+            columns: ["rule_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_validation_rules"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -9037,6 +9252,158 @@ export type Database = {
           },
         ]
       }
+      daily_safety_briefs: {
+        Row: {
+          all_required_complete: boolean | null
+          attendee_count: number
+          attendee_employee_ids: string[]
+          attendee_sub_worker_ids: string[] | null
+          brief_date: string
+          checklist_responses: Json
+          completed_at: string | null
+          created_at: string
+          crew_assignment_id: string | null
+          duration_seconds: number | null
+          gps_accuracy_meters: number | null
+          gps_latitude: number | null
+          gps_longitude: number | null
+          id: string
+          organization_id: string
+          project_id: string
+          site_conditions: string | null
+          special_hazards: string | null
+          started_at: string | null
+          supervisor_id: string
+          temperature_f: number | null
+          updated_at: string
+          weather_conditions: string | null
+          work_planned: string | null
+        }
+        Insert: {
+          all_required_complete?: boolean | null
+          attendee_count?: number
+          attendee_employee_ids?: string[]
+          attendee_sub_worker_ids?: string[] | null
+          brief_date: string
+          checklist_responses?: Json
+          completed_at?: string | null
+          created_at?: string
+          crew_assignment_id?: string | null
+          duration_seconds?: number | null
+          gps_accuracy_meters?: number | null
+          gps_latitude?: number | null
+          gps_longitude?: number | null
+          id?: string
+          organization_id: string
+          project_id: string
+          site_conditions?: string | null
+          special_hazards?: string | null
+          started_at?: string | null
+          supervisor_id: string
+          temperature_f?: number | null
+          updated_at?: string
+          weather_conditions?: string | null
+          work_planned?: string | null
+        }
+        Update: {
+          all_required_complete?: boolean | null
+          attendee_count?: number
+          attendee_employee_ids?: string[]
+          attendee_sub_worker_ids?: string[] | null
+          brief_date?: string
+          checklist_responses?: Json
+          completed_at?: string | null
+          created_at?: string
+          crew_assignment_id?: string | null
+          duration_seconds?: number | null
+          gps_accuracy_meters?: number | null
+          gps_latitude?: number | null
+          gps_longitude?: number | null
+          id?: string
+          organization_id?: string
+          project_id?: string
+          site_conditions?: string | null
+          special_hazards?: string | null
+          started_at?: string | null
+          supervisor_id?: string
+          temperature_f?: number | null
+          updated_at?: string
+          weather_conditions?: string | null
+          work_planned?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "daily_safety_briefs_crew_assignment_id_fkey"
+            columns: ["crew_assignment_id"]
+            isOneToOne: false
+            referencedRelation: "crew_assignments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_safety_briefs_crew_assignment_id_fkey"
+            columns: ["crew_assignment_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_crew_schedule"
+            referencedColumns: ["assignment_id"]
+          },
+          {
+            foreignKeyName: "daily_safety_briefs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_safety_briefs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_safety_briefs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_safety_briefs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_safety_briefs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_safety_briefs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_safety_briefs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_safety_briefs_supervisor_id_fkey"
+            columns: ["supervisor_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dbe_participation: {
         Row: {
           actual_dbe_percent: number | null
@@ -9971,6 +10338,7 @@ export type Database = {
           certificate_number: string | null
           certification_name: string
           certification_type: string
+          certification_type_id: string | null
           created_at: string | null
           document_url: string | null
           employee_id: string
@@ -9979,8 +10347,11 @@ export type Database = {
           issue_date: string | null
           issuing_authority: string | null
           notes: string | null
+          source: string | null
           status: string | null
+          training_session_id: string | null
           updated_at: string | null
+          verification_status: string | null
           verified_at: string | null
           verified_by: string | null
         }
@@ -9988,6 +10359,7 @@ export type Database = {
           certificate_number?: string | null
           certification_name: string
           certification_type: string
+          certification_type_id?: string | null
           created_at?: string | null
           document_url?: string | null
           employee_id: string
@@ -9996,8 +10368,11 @@ export type Database = {
           issue_date?: string | null
           issuing_authority?: string | null
           notes?: string | null
+          source?: string | null
           status?: string | null
+          training_session_id?: string | null
           updated_at?: string | null
+          verification_status?: string | null
           verified_at?: string | null
           verified_by?: string | null
         }
@@ -10005,6 +10380,7 @@ export type Database = {
           certificate_number?: string | null
           certification_name?: string
           certification_type?: string
+          certification_type_id?: string | null
           created_at?: string | null
           document_url?: string | null
           employee_id?: string
@@ -10013,17 +10389,41 @@ export type Database = {
           issue_date?: string | null
           issuing_authority?: string | null
           notes?: string | null
+          source?: string | null
           status?: string | null
+          training_session_id?: string | null
           updated_at?: string | null
+          verification_status?: string | null
           verified_at?: string | null
           verified_by?: string | null
         }
         Relationships: [
           {
+            foreignKeyName: "employee_certifications_certification_type_id_fkey"
+            columns: ["certification_type_id"]
+            isOneToOne: false
+            referencedRelation: "certification_types"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "employee_certifications_employee_id_fkey"
             columns: ["employee_id"]
             isOneToOne: false
             referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employee_certifications_training_session_id_fkey"
+            columns: ["training_session_id"]
+            isOneToOne: false
+            referencedRelation: "training_sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employee_certifications_training_session_id_fkey"
+            columns: ["training_session_id"]
+            isOneToOne: false
+            referencedRelation: "v_upcoming_training_sessions"
             referencedColumns: ["id"]
           },
         ]
@@ -19670,6 +20070,373 @@ export type Database = {
           },
         ]
       }
+      training_program_certifications: {
+        Row: {
+          certification_type_id: string
+          created_at: string
+          id: string
+          program_id: string
+          validity_months_override: number | null
+        }
+        Insert: {
+          certification_type_id: string
+          created_at?: string
+          id?: string
+          program_id: string
+          validity_months_override?: number | null
+        }
+        Update: {
+          certification_type_id?: string
+          created_at?: string
+          id?: string
+          program_id?: string
+          validity_months_override?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "training_program_certifications_certification_type_id_fkey"
+            columns: ["certification_type_id"]
+            isOneToOne: false
+            referencedRelation: "certification_types"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "training_program_certifications_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "training_programs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "training_program_certifications_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "v_expiring_certifications"
+            referencedColumns: ["renewal_program_id"]
+          },
+        ]
+      }
+      training_programs: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          default_duration_hours: number | null
+          default_instructor_notes: string | null
+          description: string | null
+          external_provider_contact: string | null
+          external_provider_name: string | null
+          id: string
+          instructor_qualifications: string | null
+          is_active: boolean
+          materials_required: string[] | null
+          max_attendees: number | null
+          min_attendees: number | null
+          name: string
+          organization_id: string
+          prerequisites: string[] | null
+          program_code: string | null
+          provider_type: string
+          recurrence_interval_months: number | null
+          topics_covered: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          default_duration_hours?: number | null
+          default_instructor_notes?: string | null
+          description?: string | null
+          external_provider_contact?: string | null
+          external_provider_name?: string | null
+          id?: string
+          instructor_qualifications?: string | null
+          is_active?: boolean
+          materials_required?: string[] | null
+          max_attendees?: number | null
+          min_attendees?: number | null
+          name: string
+          organization_id: string
+          prerequisites?: string[] | null
+          program_code?: string | null
+          provider_type?: string
+          recurrence_interval_months?: number | null
+          topics_covered?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          default_duration_hours?: number | null
+          default_instructor_notes?: string | null
+          description?: string | null
+          external_provider_contact?: string | null
+          external_provider_name?: string | null
+          id?: string
+          instructor_qualifications?: string | null
+          is_active?: boolean
+          materials_required?: string[] | null
+          max_attendees?: number | null
+          min_attendees?: number | null
+          name?: string
+          organization_id?: string
+          prerequisites?: string[] | null
+          program_code?: string | null
+          provider_type?: string
+          recurrence_interval_months?: number | null
+          topics_covered?: string[] | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "training_programs_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "training_programs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      training_session_attendees: {
+        Row: {
+          acknowledged_at: string | null
+          acknowledged_by: string | null
+          attendance_status: Database["public"]["Enums"]["attendance_status"]
+          certifications_granted: boolean
+          certifications_granted_at: string | null
+          created_at: string
+          employee_id: string | null
+          id: string
+          notes: string | null
+          session_id: string
+          signature_url: string | null
+          signed_at: string | null
+          subcontractor_worker_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          attendance_status?: Database["public"]["Enums"]["attendance_status"]
+          certifications_granted?: boolean
+          certifications_granted_at?: string | null
+          created_at?: string
+          employee_id?: string | null
+          id?: string
+          notes?: string | null
+          session_id: string
+          signature_url?: string | null
+          signed_at?: string | null
+          subcontractor_worker_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          attendance_status?: Database["public"]["Enums"]["attendance_status"]
+          certifications_granted?: boolean
+          certifications_granted_at?: string | null
+          created_at?: string
+          employee_id?: string | null
+          id?: string
+          notes?: string | null
+          session_id?: string
+          signature_url?: string | null
+          signed_at?: string | null
+          subcontractor_worker_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "training_session_attendees_acknowledged_by_fkey"
+            columns: ["acknowledged_by"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "training_session_attendees_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "training_session_attendees_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "training_sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "training_session_attendees_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "v_upcoming_training_sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "training_session_attendees_subcontractor_worker_id_fkey"
+            columns: ["subcontractor_worker_id"]
+            isOneToOne: false
+            referencedRelation: "subcontractor_workers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      training_sessions: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          created_by: string
+          duration_hours: number | null
+          id: string
+          instructor_credentials: string | null
+          instructor_name: string
+          instructor_user_id: string | null
+          location: string | null
+          materials_provided: string[] | null
+          notes: string | null
+          organization_id: string
+          program_id: string
+          project_id: string | null
+          session_date: string
+          session_number: string
+          session_time: string | null
+          started_at: string | null
+          status: Database["public"]["Enums"]["training_session_status"]
+          updated_at: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          created_by: string
+          duration_hours?: number | null
+          id?: string
+          instructor_credentials?: string | null
+          instructor_name: string
+          instructor_user_id?: string | null
+          location?: string | null
+          materials_provided?: string[] | null
+          notes?: string | null
+          organization_id: string
+          program_id: string
+          project_id?: string | null
+          session_date: string
+          session_number: string
+          session_time?: string | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["training_session_status"]
+          updated_at?: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string
+          duration_hours?: number | null
+          id?: string
+          instructor_credentials?: string | null
+          instructor_name?: string
+          instructor_user_id?: string | null
+          location?: string | null
+          materials_provided?: string[] | null
+          notes?: string | null
+          organization_id?: string
+          program_id?: string
+          project_id?: string | null
+          session_date?: string
+          session_number?: string
+          session_time?: string | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["training_session_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "training_sessions_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "training_sessions_instructor_user_id_fkey"
+            columns: ["instructor_user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "training_sessions_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "training_sessions_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "training_programs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "training_sessions_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "v_expiring_certifications"
+            referencedColumns: ["renewal_program_id"]
+          },
+          {
+            foreignKeyName: "training_sessions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "training_sessions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "training_sessions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "training_sessions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "training_sessions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "training_sessions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
       transmittal_items: {
         Row: {
           copies: number | null
@@ -22992,6 +23759,83 @@ export type Database = {
         }
         Relationships: []
       }
+      v_active_validation_rules: {
+        Row: {
+          blocking_behavior:
+            | Database["public"]["Enums"]["validation_blocking_behavior"]
+            | null
+          conditions: Json | null
+          description: string | null
+          id: string | null
+          organization_id: string | null
+          override_allowed: boolean | null
+          override_approver_roles: string[] | null
+          override_max_hours: number | null
+          regulatory_reference: string | null
+          required_certification_codes: string[] | null
+          required_competent_person_types: string[] | null
+          required_equipment_operator_certs: string[] | null
+          risk_level:
+            | Database["public"]["Enums"]["validation_risk_level"]
+            | null
+          rule_code: string | null
+          rule_name: string | null
+          work_type: string | null
+        }
+        Insert: {
+          blocking_behavior?:
+            | Database["public"]["Enums"]["validation_blocking_behavior"]
+            | null
+          conditions?: Json | null
+          description?: string | null
+          id?: string | null
+          organization_id?: string | null
+          override_allowed?: boolean | null
+          override_approver_roles?: string[] | null
+          override_max_hours?: number | null
+          regulatory_reference?: string | null
+          required_certification_codes?: string[] | null
+          required_competent_person_types?: string[] | null
+          required_equipment_operator_certs?: string[] | null
+          risk_level?:
+            | Database["public"]["Enums"]["validation_risk_level"]
+            | null
+          rule_code?: string | null
+          rule_name?: string | null
+          work_type?: string | null
+        }
+        Update: {
+          blocking_behavior?:
+            | Database["public"]["Enums"]["validation_blocking_behavior"]
+            | null
+          conditions?: Json | null
+          description?: string | null
+          id?: string | null
+          organization_id?: string | null
+          override_allowed?: boolean | null
+          override_approver_roles?: string[] | null
+          override_max_hours?: number | null
+          regulatory_reference?: string | null
+          required_certification_codes?: string[] | null
+          required_competent_person_types?: string[] | null
+          required_equipment_operator_certs?: string[] | null
+          risk_level?:
+            | Database["public"]["Enums"]["validation_risk_level"]
+            | null
+          rule_code?: string | null
+          rule_name?: string | null
+          work_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assignment_validation_rules_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       v_ai_usage_summary: {
         Row: {
           avg_latency_ms: number | null
@@ -24101,6 +24945,30 @@ export type Database = {
           },
         ]
       }
+      v_expiring_certifications: {
+        Row: {
+          certification_code: string | null
+          certification_name: string | null
+          days_until_expiry: number | null
+          employee_email: string | null
+          employee_id: string | null
+          employee_name: string | null
+          expiration_date: string | null
+          id: string | null
+          renewal_program: string | null
+          renewal_program_id: string | null
+          urgency: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_certifications_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       v_failed_tests: {
         Row: {
           id: string | null
@@ -25042,6 +25910,112 @@ export type Database = {
           },
         ]
       }
+      v_todays_safety_briefs: {
+        Row: {
+          all_required_complete: boolean | null
+          attendee_count: number | null
+          brief_date: string | null
+          duration_seconds: number | null
+          id: string | null
+          is_complete: boolean | null
+          organization_id: string | null
+          project_id: string | null
+          project_name: string | null
+          project_number: string | null
+          special_hazards: string | null
+          supervisor_id: string | null
+          supervisor_name: string | null
+          weather_conditions: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "daily_safety_briefs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_safety_briefs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_safety_briefs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_safety_briefs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_safety_briefs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_safety_briefs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_safety_briefs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_safety_briefs_supervisor_id_fkey"
+            columns: ["supervisor_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      v_upcoming_training_sessions: {
+        Row: {
+          attendee_count: number | null
+          certifications_granted: string[] | null
+          duration_hours: number | null
+          id: string | null
+          instructor_name: string | null
+          location: string | null
+          organization_id: string | null
+          program_code: string | null
+          program_name: string | null
+          project_name: string | null
+          project_number: string | null
+          provider_type: string | null
+          registered_count: number | null
+          session_date: string | null
+          session_number: string | null
+          session_time: string | null
+          status: Database["public"]["Enums"]["training_session_status"] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "training_sessions_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       v_user_accessible_modules: {
         Row: {
           module_group: string | null
@@ -25823,6 +26797,10 @@ export type Database = {
           week_regular_hours: number
         }[]
       }
+      can_approve_override: {
+        Args: { p_risk_level: string; p_user_id: string }
+        Returns: boolean
+      }
       check_dig_status: {
         Args: {
           p_check_date: string
@@ -25934,6 +26912,10 @@ export type Database = {
             }
             Returns: string
           }
+      employee_has_valid_cert: {
+        Args: { p_cert_code: string; p_employee_id: string }
+        Returns: boolean
+      }
       enablelongtransactions: { Args: never; Returns: string }
       equals: { Args: { geom1: unknown; geom2: unknown }; Returns: boolean }
       find_photos_by_utility_type: {
@@ -25966,6 +26948,10 @@ export type Database = {
           ticket_id: string
           ticket_number: string
         }[]
+      }
+      generate_cert_number: {
+        Args: { cert_code: string; issue_date: string }
+        Returns: string
       }
       generate_change_order_number: {
         Args: { p_project_id: string }
@@ -26120,6 +27106,25 @@ export type Database = {
           table_name: string
         }[]
       }
+      get_applicable_rules: {
+        Args: {
+          p_conditions?: Json
+          p_organization_id: string
+          p_work_type: string
+        }
+        Returns: {
+          blocking_behavior: string
+          override_allowed: boolean
+          override_approver_roles: string[]
+          regulatory_reference: string
+          required_certification_codes: string[]
+          required_competent_person_types: string[]
+          risk_level: string
+          rule_code: string
+          rule_id: string
+          rule_name: string
+        }[]
+      }
       get_bid_deliverables_status: {
         Args: { p_bid_project_id: string }
         Returns: {
@@ -26159,6 +27164,31 @@ export type Database = {
         Returns: {
           category: string
           tickets: Json
+        }[]
+      }
+      get_employee_certifications: {
+        Args: { p_employee_id: string }
+        Returns: {
+          category: string
+          certification_code: string
+          certification_name: string
+          days_until_expiry: number
+          expires_at: string
+          is_valid: boolean
+          issued_date: string
+          source: string
+        }[]
+      }
+      get_employee_training_history: {
+        Args: { p_employee_id: string }
+        Returns: {
+          attendance_status: string
+          certifications: string[]
+          certifications_granted: boolean
+          instructor_name: string
+          program_name: string
+          session_date: string
+          session_id: string
         }[]
       }
       get_equipment_maintenance_due: {
@@ -26231,6 +27261,16 @@ export type Database = {
       get_next_payroll_number: {
         Args: { p_project_id: string }
         Returns: number
+      }
+      get_project_brief_status: {
+        Args: { p_date?: string; p_project_id: string }
+        Returns: {
+          attendee_count: number
+          brief_completed: boolean
+          completed_at: string
+          supervisor_id: string
+          supervisor_name: string
+        }[]
       }
       get_project_report_summary: {
         Args: {
@@ -26366,6 +27406,10 @@ export type Database = {
         }[]
       }
       gettransactionid: { Args: never; Returns: unknown }
+      has_completed_daily_brief: {
+        Args: { p_date?: string; p_project_id: string; p_supervisor_id: string }
+        Returns: boolean
+      }
       is_within_project_geofence: {
         Args: { p_latitude: number; p_longitude: number; p_project_id: string }
         Returns: boolean
@@ -27140,6 +28184,12 @@ export type Database = {
         | "SUBCONTRACT"
         | "SMALL_TOOLS"
         | "OTHER"
+      attendance_status:
+        | "registered"
+        | "present"
+        | "absent"
+        | "excused"
+        | "no_show"
       bid_result_enum: "WON" | "LOST" | "NO_BID" | "WITHDRAWN" | "PENDING"
       bid_status_enum:
         | "IDENTIFIED"
@@ -27560,6 +28610,13 @@ export type Database = {
         | "variance_flagged"
         | "disputed"
         | "reconciled"
+      training_session_status:
+        | "scheduled"
+        | "in_progress"
+        | "completed"
+        | "cancelled"
+      validation_blocking_behavior: "block" | "warn" | "log"
+      validation_risk_level: "low" | "medium" | "high" | "critical"
       work_category_enum:
         | "MOBILIZATION"
         | "DEMOLITION"
@@ -27813,6 +28870,13 @@ export const Constants = {
         "SUBCONTRACT",
         "SMALL_TOOLS",
         "OTHER",
+      ],
+      attendance_status: [
+        "registered",
+        "present",
+        "absent",
+        "excused",
+        "no_show",
       ],
       bid_result_enum: ["WON", "LOST", "NO_BID", "WITHDRAWN", "PENDING"],
       bid_status_enum: [
@@ -28280,6 +29344,14 @@ export const Constants = {
         "disputed",
         "reconciled",
       ],
+      training_session_status: [
+        "scheduled",
+        "in_progress",
+        "completed",
+        "cancelled",
+      ],
+      validation_blocking_behavior: ["block", "warn", "log"],
+      validation_risk_level: ["low", "medium", "high", "critical"],
       work_category_enum: [
         "MOBILIZATION",
         "DEMOLITION",
