@@ -5780,6 +5780,173 @@ export type Database = {
           },
         ]
       }
+      competent_person_designations: {
+        Row: {
+          competent_person_type: string
+          created_at: string | null
+          designated_by: string | null
+          designation_date: string
+          employee_id: string | null
+          expiration_date: string | null
+          id: string
+          is_active: boolean | null
+          notes: string | null
+          organization_id: string
+          revoke_reason: string | null
+          revoked_at: string | null
+          revoked_by: string | null
+          subcontractor_worker_id: string | null
+          training_documentation_url: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          competent_person_type: string
+          created_at?: string | null
+          designated_by?: string | null
+          designation_date: string
+          employee_id?: string | null
+          expiration_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          notes?: string | null
+          organization_id: string
+          revoke_reason?: string | null
+          revoked_at?: string | null
+          revoked_by?: string | null
+          subcontractor_worker_id?: string | null
+          training_documentation_url?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          competent_person_type?: string
+          created_at?: string | null
+          designated_by?: string | null
+          designation_date?: string
+          employee_id?: string | null
+          expiration_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          notes?: string | null
+          organization_id?: string
+          revoke_reason?: string | null
+          revoked_at?: string | null
+          revoked_by?: string | null
+          subcontractor_worker_id?: string | null
+          training_documentation_url?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "competent_person_designations_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "competent_person_designations_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "competent_person_designations_subcontractor_worker_id_fkey"
+            columns: ["subcontractor_worker_id"]
+            isOneToOne: false
+            referencedRelation: "subcontractor_workers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      compliance_overrides: {
+        Row: {
+          approved_by: string | null
+          created_at: string | null
+          digital_signature: string
+          entity_id: string
+          entity_type: string
+          expires_at: string
+          id: string
+          is_active: boolean | null
+          justification: string
+          notification_sent_at: string | null
+          organization_id: string
+          override_type: string
+          project_id: string | null
+          reason: string
+          requested_by: string
+          revoke_reason: string | null
+          revoked_at: string | null
+          revoked_by: string | null
+          safety_director_notified: boolean | null
+        }
+        Insert: {
+          approved_by?: string | null
+          created_at?: string | null
+          digital_signature: string
+          entity_id: string
+          entity_type: string
+          expires_at: string
+          id?: string
+          is_active?: boolean | null
+          justification: string
+          notification_sent_at?: string | null
+          organization_id: string
+          override_type: string
+          project_id?: string | null
+          reason: string
+          requested_by: string
+          revoke_reason?: string | null
+          revoked_at?: string | null
+          revoked_by?: string | null
+          safety_director_notified?: boolean | null
+        }
+        Update: {
+          approved_by?: string | null
+          created_at?: string | null
+          digital_signature?: string
+          entity_id?: string
+          entity_type?: string
+          expires_at?: string
+          id?: string
+          is_active?: boolean | null
+          justification?: string
+          notification_sent_at?: string | null
+          organization_id?: string
+          override_type?: string
+          project_id?: string | null
+          reason?: string
+          requested_by?: string
+          revoke_reason?: string | null
+          revoked_at?: string | null
+          revoked_by?: string | null
+          safety_director_notified?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "compliance_overrides_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "compliance_overrides_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "compliance_overrides_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cost_codes: {
         Row: {
           billing_rate: number | null
@@ -5888,6 +6055,221 @@ export type Database = {
             columns: ["updated_by"]
             isOneToOne: false
             referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crew_assignment_members: {
+        Row: {
+          certifications_verified: string[] | null
+          checked_in_at: string | null
+          checked_out_at: string | null
+          compliance_status_at_assignment:
+            | Database["public"]["Enums"]["compliance_status"]
+            | null
+          created_at: string | null
+          crew_assignment_id: string
+          employee_id: string | null
+          hours_worked: number | null
+          id: string
+          notes: string | null
+          role_on_crew: string | null
+          subcontractor_worker_id: string | null
+          work_classification:
+            | Database["public"]["Enums"]["work_classification"]
+            | null
+        }
+        Insert: {
+          certifications_verified?: string[] | null
+          checked_in_at?: string | null
+          checked_out_at?: string | null
+          compliance_status_at_assignment?:
+            | Database["public"]["Enums"]["compliance_status"]
+            | null
+          created_at?: string | null
+          crew_assignment_id: string
+          employee_id?: string | null
+          hours_worked?: number | null
+          id?: string
+          notes?: string | null
+          role_on_crew?: string | null
+          subcontractor_worker_id?: string | null
+          work_classification?:
+            | Database["public"]["Enums"]["work_classification"]
+            | null
+        }
+        Update: {
+          certifications_verified?: string[] | null
+          checked_in_at?: string | null
+          checked_out_at?: string | null
+          compliance_status_at_assignment?:
+            | Database["public"]["Enums"]["compliance_status"]
+            | null
+          created_at?: string | null
+          crew_assignment_id?: string
+          employee_id?: string | null
+          hours_worked?: number | null
+          id?: string
+          notes?: string | null
+          role_on_crew?: string | null
+          subcontractor_worker_id?: string | null
+          work_classification?:
+            | Database["public"]["Enums"]["work_classification"]
+            | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crew_assignment_members_crew_assignment_id_fkey"
+            columns: ["crew_assignment_id"]
+            isOneToOne: false
+            referencedRelation: "crew_assignments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crew_assignment_members_crew_assignment_id_fkey"
+            columns: ["crew_assignment_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_crew_schedule"
+            referencedColumns: ["assignment_id"]
+          },
+          {
+            foreignKeyName: "crew_assignment_members_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crew_assignment_members_subcontractor_worker_id_fkey"
+            columns: ["subcontractor_worker_id"]
+            isOneToOne: false
+            referencedRelation: "subcontractor_workers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crew_assignments: {
+        Row: {
+          actual_end_time: string | null
+          actual_start_time: string | null
+          assignment_date: string
+          compliance_checked_at: string | null
+          compliance_issues: string[] | null
+          compliance_passed: boolean | null
+          cost_code: string | null
+          created_at: string | null
+          created_by: string | null
+          crew_name: string | null
+          foreman_employee_id: string | null
+          id: string
+          notes: string | null
+          organization_id: string
+          project_id: string
+          scheduled_end_time: string | null
+          scheduled_start_time: string | null
+          shift: string | null
+          status: Database["public"]["Enums"]["crew_assignment_status"] | null
+          supervisor_notes: string | null
+          template_id: string | null
+          updated_at: string | null
+          weather_conditions: string | null
+          weather_delayed: boolean | null
+          work_description: string | null
+          work_location: string | null
+          work_type: string | null
+        }
+        Insert: {
+          actual_end_time?: string | null
+          actual_start_time?: string | null
+          assignment_date: string
+          compliance_checked_at?: string | null
+          compliance_issues?: string[] | null
+          compliance_passed?: boolean | null
+          cost_code?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          crew_name?: string | null
+          foreman_employee_id?: string | null
+          id?: string
+          notes?: string | null
+          organization_id: string
+          project_id: string
+          scheduled_end_time?: string | null
+          scheduled_start_time?: string | null
+          shift?: string | null
+          status?: Database["public"]["Enums"]["crew_assignment_status"] | null
+          supervisor_notes?: string | null
+          template_id?: string | null
+          updated_at?: string | null
+          weather_conditions?: string | null
+          weather_delayed?: boolean | null
+          work_description?: string | null
+          work_location?: string | null
+          work_type?: string | null
+        }
+        Update: {
+          actual_end_time?: string | null
+          actual_start_time?: string | null
+          assignment_date?: string
+          compliance_checked_at?: string | null
+          compliance_issues?: string[] | null
+          compliance_passed?: boolean | null
+          cost_code?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          crew_name?: string | null
+          foreman_employee_id?: string | null
+          id?: string
+          notes?: string | null
+          organization_id?: string
+          project_id?: string
+          scheduled_end_time?: string | null
+          scheduled_start_time?: string | null
+          shift?: string | null
+          status?: Database["public"]["Enums"]["crew_assignment_status"] | null
+          supervisor_notes?: string | null
+          template_id?: string | null
+          updated_at?: string | null
+          weather_conditions?: string | null
+          weather_delayed?: boolean | null
+          work_description?: string | null
+          work_location?: string | null
+          work_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crew_assignments_foreman_employee_id_fkey"
+            columns: ["foreman_employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crew_assignments_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crew_assignments_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crew_assignments_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crew_assignments_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "crew_templates"
             referencedColumns: ["id"]
           },
         ]
@@ -6159,6 +6541,71 @@ export type Database = {
           },
         ]
       }
+      crew_templates: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          default_size: number | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          minimum_certifications: string[] | null
+          name: string
+          organization_id: string
+          required_equipment_types: string[] | null
+          required_roles: Json | null
+          requires_competent_person:
+            | Database["public"]["Enums"]["competent_person_type"][]
+            | null
+          updated_at: string | null
+          work_type: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          default_size?: number | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          minimum_certifications?: string[] | null
+          name: string
+          organization_id: string
+          required_equipment_types?: string[] | null
+          required_roles?: Json | null
+          requires_competent_person?:
+            | Database["public"]["Enums"]["competent_person_type"][]
+            | null
+          updated_at?: string | null
+          work_type?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          default_size?: number | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          minimum_certifications?: string[] | null
+          name?: string
+          organization_id?: string
+          required_equipment_types?: string[] | null
+          required_roles?: Json | null
+          requires_competent_person?:
+            | Database["public"]["Enums"]["competent_person_type"][]
+            | null
+          updated_at?: string | null
+          work_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crew_templates_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       daily_equipment_log: {
         Row: {
           cost_code: string | null
@@ -6426,6 +6873,73 @@ export type Database = {
             columns: ["updated_by"]
             isOneToOne: false
             referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      daily_material_summary: {
+        Row: {
+          category_totals: Json | null
+          computed_at: string | null
+          id: string
+          organization_id: string
+          project_id: string
+          summary_date: string
+          tickets_verified: number | null
+          tickets_with_variance: number | null
+          total_cost: number | null
+          total_quantity: number | null
+          total_tickets: number | null
+          total_variance_amount: number | null
+        }
+        Insert: {
+          category_totals?: Json | null
+          computed_at?: string | null
+          id?: string
+          organization_id: string
+          project_id: string
+          summary_date: string
+          tickets_verified?: number | null
+          tickets_with_variance?: number | null
+          total_cost?: number | null
+          total_quantity?: number | null
+          total_tickets?: number | null
+          total_variance_amount?: number | null
+        }
+        Update: {
+          category_totals?: Json | null
+          computed_at?: string | null
+          id?: string
+          organization_id?: string
+          project_id?: string
+          summary_date?: string
+          tickets_verified?: number | null
+          tickets_with_variance?: number | null
+          total_cost?: number | null
+          total_quantity?: number | null
+          total_tickets?: number | null
+          total_variance_amount?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "daily_material_summary_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_material_summary_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_material_summary_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
             referencedColumns: ["id"]
           },
         ]
@@ -6998,6 +7512,145 @@ export type Database = {
           },
         ]
       }
+      driver_licenses: {
+        Row: {
+          cdl_self_certification_type: string | null
+          created_at: string | null
+          document_url: string | null
+          eligibility_status: string | null
+          employee_id: string
+          endorsements: string[] | null
+          id: string
+          is_cdl: boolean | null
+          last_mvr_date: string | null
+          license_class: string
+          license_expiration: string
+          license_number: string
+          license_state: string
+          medical_card_expiration: string | null
+          points_total: number | null
+          restrictions: string[] | null
+          updated_at: string | null
+          verified_at: string | null
+          verified_by: string | null
+          violation_count: number | null
+        }
+        Insert: {
+          cdl_self_certification_type?: string | null
+          created_at?: string | null
+          document_url?: string | null
+          eligibility_status?: string | null
+          employee_id: string
+          endorsements?: string[] | null
+          id?: string
+          is_cdl?: boolean | null
+          last_mvr_date?: string | null
+          license_class: string
+          license_expiration: string
+          license_number: string
+          license_state?: string
+          medical_card_expiration?: string | null
+          points_total?: number | null
+          restrictions?: string[] | null
+          updated_at?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+          violation_count?: number | null
+        }
+        Update: {
+          cdl_self_certification_type?: string | null
+          created_at?: string | null
+          document_url?: string | null
+          eligibility_status?: string | null
+          employee_id?: string
+          endorsements?: string[] | null
+          id?: string
+          is_cdl?: boolean | null
+          last_mvr_date?: string | null
+          license_class?: string
+          license_expiration?: string
+          license_number?: string
+          license_state?: string
+          medical_card_expiration?: string | null
+          points_total?: number | null
+          restrictions?: string[] | null
+          updated_at?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+          violation_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "driver_licenses_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      drug_tests: {
+        Row: {
+          chain_of_custody_number: string | null
+          collection_site: string | null
+          created_at: string | null
+          created_by: string | null
+          document_url: string | null
+          employee_id: string
+          id: string
+          is_dot_test: boolean | null
+          lab_name: string | null
+          mro_name: string | null
+          notes: string | null
+          result: string
+          result_date: string | null
+          test_date: string
+          test_type: string
+        }
+        Insert: {
+          chain_of_custody_number?: string | null
+          collection_site?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          document_url?: string | null
+          employee_id: string
+          id?: string
+          is_dot_test?: boolean | null
+          lab_name?: string | null
+          mro_name?: string | null
+          notes?: string | null
+          result: string
+          result_date?: string | null
+          test_date: string
+          test_type: string
+        }
+        Update: {
+          chain_of_custody_number?: string | null
+          collection_site?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          document_url?: string | null
+          employee_id?: string
+          id?: string
+          is_dot_test?: boolean | null
+          lab_name?: string | null
+          mro_name?: string | null
+          notes?: string | null
+          result?: string
+          result_date?: string | null
+          test_date?: string
+          test_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "drug_tests_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       email_logs: {
         Row: {
           bcc_addresses: string[] | null
@@ -7075,6 +7728,193 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      employee_certifications: {
+        Row: {
+          certificate_number: string | null
+          certification_name: string
+          certification_type: string
+          created_at: string | null
+          document_url: string | null
+          employee_id: string
+          expiration_date: string | null
+          id: string
+          issue_date: string | null
+          issuing_authority: string | null
+          notes: string | null
+          status: string | null
+          updated_at: string | null
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          certificate_number?: string | null
+          certification_name: string
+          certification_type: string
+          created_at?: string | null
+          document_url?: string | null
+          employee_id: string
+          expiration_date?: string | null
+          id?: string
+          issue_date?: string | null
+          issuing_authority?: string | null
+          notes?: string | null
+          status?: string | null
+          updated_at?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          certificate_number?: string | null
+          certification_name?: string
+          certification_type?: string
+          created_at?: string | null
+          document_url?: string | null
+          employee_id?: string
+          expiration_date?: string | null
+          id?: string
+          issue_date?: string | null
+          issuing_authority?: string | null
+          notes?: string | null
+          status?: string | null
+          updated_at?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_certifications_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      employees: {
+        Row: {
+          can_drive_company_vehicle: boolean | null
+          can_operate_heavy_equipment: boolean | null
+          competent_person_types: string[] | null
+          compliance_issues: string[] | null
+          compliance_status: string | null
+          created_at: string | null
+          created_by: string | null
+          date_of_birth: string | null
+          email: string | null
+          emergency_contact_name: string | null
+          emergency_contact_phone: string | null
+          employee_number: string | null
+          first_name: string
+          fringe_rate: number | null
+          hire_date: string | null
+          hourly_rate: number | null
+          id: string
+          is_competent_person: boolean | null
+          is_union_member: boolean | null
+          last_name: string
+          metadata: Json | null
+          middle_name: string | null
+          notes: string | null
+          organization_id: string
+          phone: string | null
+          preferred_name: string | null
+          profile_photo_url: string | null
+          ssn_encrypted: string | null
+          status: string | null
+          suffix: string | null
+          termination_date: string | null
+          trade_classification: string | null
+          union_card_number: string | null
+          union_local: string | null
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          can_drive_company_vehicle?: boolean | null
+          can_operate_heavy_equipment?: boolean | null
+          competent_person_types?: string[] | null
+          compliance_issues?: string[] | null
+          compliance_status?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          date_of_birth?: string | null
+          email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          employee_number?: string | null
+          first_name: string
+          fringe_rate?: number | null
+          hire_date?: string | null
+          hourly_rate?: number | null
+          id?: string
+          is_competent_person?: boolean | null
+          is_union_member?: boolean | null
+          last_name: string
+          metadata?: Json | null
+          middle_name?: string | null
+          notes?: string | null
+          organization_id: string
+          phone?: string | null
+          preferred_name?: string | null
+          profile_photo_url?: string | null
+          ssn_encrypted?: string | null
+          status?: string | null
+          suffix?: string | null
+          termination_date?: string | null
+          trade_classification?: string | null
+          union_card_number?: string | null
+          union_local?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          can_drive_company_vehicle?: boolean | null
+          can_operate_heavy_equipment?: boolean | null
+          competent_person_types?: string[] | null
+          compliance_issues?: string[] | null
+          compliance_status?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          date_of_birth?: string | null
+          email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          employee_number?: string | null
+          first_name?: string
+          fringe_rate?: number | null
+          hire_date?: string | null
+          hourly_rate?: number | null
+          id?: string
+          is_competent_person?: boolean | null
+          is_union_member?: boolean | null
+          last_name?: string
+          metadata?: Json | null
+          middle_name?: string | null
+          notes?: string | null
+          organization_id?: string
+          phone?: string | null
+          preferred_name?: string | null
+          profile_photo_url?: string | null
+          ssn_encrypted?: string | null
+          status?: string | null
+          suffix?: string | null
+          termination_date?: string | null
+          trade_classification?: string | null
+          union_card_number?: string | null
+          union_local?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employees_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       equipment: {
         Row: {
@@ -7428,6 +8268,59 @@ export type Database = {
           },
         ]
       }
+      fleet_policy_rules: {
+        Row: {
+          consequence: string
+          created_at: string | null
+          created_by: string | null
+          description: string
+          effective_date: string | null
+          id: string
+          is_active: boolean | null
+          organization_id: string
+          rule_type: string
+          threshold_period_months: number | null
+          threshold_value: number
+          updated_at: string | null
+        }
+        Insert: {
+          consequence: string
+          created_at?: string | null
+          created_by?: string | null
+          description: string
+          effective_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          organization_id: string
+          rule_type: string
+          threshold_period_months?: number | null
+          threshold_value: number
+          updated_at?: string | null
+        }
+        Update: {
+          consequence?: string
+          created_at?: string | null
+          created_by?: string | null
+          description?: string
+          effective_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          organization_id?: string
+          rule_type?: string
+          threshold_period_months?: number | null
+          threshold_value?: number
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fleet_policy_rules_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       geocode_log: {
         Row: {
           accuracy_type: string | null
@@ -7495,6 +8388,139 @@ export type Database = {
             columns: ["ticket_id"]
             isOneToOne: false
             referencedRelation: "wv811_tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      incidents: {
+        Row: {
+          body_part_affected: string | null
+          classification: string
+          closed_at: string | null
+          closed_by: string | null
+          corrective_actions: string | null
+          created_at: string | null
+          days_away: number | null
+          description: string
+          id: string
+          immediate_actions: string | null
+          incident_date: string
+          incident_number: string | null
+          incident_time: string | null
+          injured_party_name: string | null
+          injured_party_type: string | null
+          injury_description: string | null
+          investigation_notes: string | null
+          location_description: string | null
+          lost_time: boolean | null
+          medical_attention_required: boolean | null
+          organization_id: string
+          osha_case_number: string | null
+          osha_recordable: boolean | null
+          project_id: string | null
+          reported_by_id: string | null
+          restricted_duty_days: number | null
+          root_cause: string | null
+          safety_director_notified: boolean | null
+          severity: string
+          status: string | null
+          supervisor_notified: boolean | null
+          treatment_provided: string | null
+          updated_at: string | null
+          witnesses: string[] | null
+        }
+        Insert: {
+          body_part_affected?: string | null
+          classification: string
+          closed_at?: string | null
+          closed_by?: string | null
+          corrective_actions?: string | null
+          created_at?: string | null
+          days_away?: number | null
+          description: string
+          id?: string
+          immediate_actions?: string | null
+          incident_date: string
+          incident_number?: string | null
+          incident_time?: string | null
+          injured_party_name?: string | null
+          injured_party_type?: string | null
+          injury_description?: string | null
+          investigation_notes?: string | null
+          location_description?: string | null
+          lost_time?: boolean | null
+          medical_attention_required?: boolean | null
+          organization_id: string
+          osha_case_number?: string | null
+          osha_recordable?: boolean | null
+          project_id?: string | null
+          reported_by_id?: string | null
+          restricted_duty_days?: number | null
+          root_cause?: string | null
+          safety_director_notified?: boolean | null
+          severity?: string
+          status?: string | null
+          supervisor_notified?: boolean | null
+          treatment_provided?: string | null
+          updated_at?: string | null
+          witnesses?: string[] | null
+        }
+        Update: {
+          body_part_affected?: string | null
+          classification?: string
+          closed_at?: string | null
+          closed_by?: string | null
+          corrective_actions?: string | null
+          created_at?: string | null
+          days_away?: number | null
+          description?: string
+          id?: string
+          immediate_actions?: string | null
+          incident_date?: string
+          incident_number?: string | null
+          incident_time?: string | null
+          injured_party_name?: string | null
+          injured_party_type?: string | null
+          injury_description?: string | null
+          investigation_notes?: string | null
+          location_description?: string | null
+          lost_time?: boolean | null
+          medical_attention_required?: boolean | null
+          organization_id?: string
+          osha_case_number?: string | null
+          osha_recordable?: boolean | null
+          project_id?: string | null
+          reported_by_id?: string | null
+          restricted_duty_days?: number | null
+          root_cause?: string | null
+          safety_director_notified?: boolean | null
+          severity?: string
+          status?: string | null
+          supervisor_notified?: boolean | null
+          treatment_provided?: string | null
+          updated_at?: string | null
+          witnesses?: string[] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "incidents_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "incidents_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "incidents_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
             referencedColumns: ["id"]
           },
         ]
@@ -7751,6 +8777,580 @@ export type Database = {
         }
         Relationships: []
       }
+      material_reconciliation: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          created_at: string | null
+          id: string
+          material_ticket_id: string
+          notes: string | null
+          organization_id: string
+          po_line_item_id: string | null
+          po_line_quantity: number | null
+          po_unit_price: number | null
+          project_id: string
+          reconciliation_type: string | null
+          ticket_amount: number | null
+          ticket_quantity: number
+          variance_amount: number | null
+          variance_percentage: number | null
+          variance_quantity: number | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string | null
+          id?: string
+          material_ticket_id: string
+          notes?: string | null
+          organization_id: string
+          po_line_item_id?: string | null
+          po_line_quantity?: number | null
+          po_unit_price?: number | null
+          project_id: string
+          reconciliation_type?: string | null
+          ticket_amount?: number | null
+          ticket_quantity: number
+          variance_amount?: number | null
+          variance_percentage?: number | null
+          variance_quantity?: number | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string | null
+          id?: string
+          material_ticket_id?: string
+          notes?: string | null
+          organization_id?: string
+          po_line_item_id?: string | null
+          po_line_quantity?: number | null
+          po_unit_price?: number | null
+          project_id?: string
+          reconciliation_type?: string | null
+          ticket_amount?: number | null
+          ticket_quantity?: number
+          variance_amount?: number | null
+          variance_percentage?: number | null
+          variance_quantity?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "material_reconciliation_material_ticket_id_fkey"
+            columns: ["material_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "material_tickets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_reconciliation_material_ticket_id_fkey"
+            columns: ["material_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_tickets_pending_verification"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_reconciliation_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_reconciliation_po_line_item_id_fkey"
+            columns: ["po_line_item_id"]
+            isOneToOne: false
+            referencedRelation: "po_line_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_reconciliation_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_reconciliation_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      material_tickets: {
+        Row: {
+          additional_photos: string[] | null
+          air_content: number | null
+          ambient_temp: number | null
+          asphalt_temp: number | null
+          batch_time: string | null
+          concrete_temp: number | null
+          cost_code: string | null
+          created_at: string | null
+          created_by: string | null
+          delivery_date: string
+          delivery_location: string | null
+          delivery_time: string | null
+          driver_name: string | null
+          gross_weight: number | null
+          has_variance: boolean | null
+          id: string
+          latitude: number | null
+          load_number: number | null
+          longitude: number | null
+          match_confidence: number | null
+          matched_po_id: string | null
+          matched_po_line_id: string | null
+          material_category:
+            | Database["public"]["Enums"]["material_category"]
+            | null
+          material_description: string | null
+          mix_design_number: string | null
+          net_weight: number | null
+          notes: string | null
+          ocr_extraction_id: string | null
+          ocr_status: Database["public"]["Enums"]["ocr_status"] | null
+          oil_percentage: number | null
+          organization_id: string
+          project_id: string
+          quantity: number
+          received_by: string | null
+          receiver_name: string | null
+          slump_at_site: number | null
+          slump_ordered: number | null
+          source_location: string | null
+          specification: string | null
+          status: Database["public"]["Enums"]["ticket_status"] | null
+          supplier_id: string | null
+          tare_weight: number | null
+          ticket_number: string
+          ticket_photo_url: string | null
+          truck_number: string | null
+          unit_of_measure: string
+          updated_at: string | null
+          variance_amount: number | null
+          variance_reason: string | null
+          variance_resolved_at: string | null
+          variance_resolved_by: string | null
+          vendor_name: string | null
+          vendor_ticket_number: string | null
+          verified_at: string | null
+          verified_by: string | null
+          water_added_gallons: number | null
+        }
+        Insert: {
+          additional_photos?: string[] | null
+          air_content?: number | null
+          ambient_temp?: number | null
+          asphalt_temp?: number | null
+          batch_time?: string | null
+          concrete_temp?: number | null
+          cost_code?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          delivery_date: string
+          delivery_location?: string | null
+          delivery_time?: string | null
+          driver_name?: string | null
+          gross_weight?: number | null
+          has_variance?: boolean | null
+          id?: string
+          latitude?: number | null
+          load_number?: number | null
+          longitude?: number | null
+          match_confidence?: number | null
+          matched_po_id?: string | null
+          matched_po_line_id?: string | null
+          material_category?:
+            | Database["public"]["Enums"]["material_category"]
+            | null
+          material_description?: string | null
+          mix_design_number?: string | null
+          net_weight?: number | null
+          notes?: string | null
+          ocr_extraction_id?: string | null
+          ocr_status?: Database["public"]["Enums"]["ocr_status"] | null
+          oil_percentage?: number | null
+          organization_id: string
+          project_id: string
+          quantity: number
+          received_by?: string | null
+          receiver_name?: string | null
+          slump_at_site?: number | null
+          slump_ordered?: number | null
+          source_location?: string | null
+          specification?: string | null
+          status?: Database["public"]["Enums"]["ticket_status"] | null
+          supplier_id?: string | null
+          tare_weight?: number | null
+          ticket_number: string
+          ticket_photo_url?: string | null
+          truck_number?: string | null
+          unit_of_measure: string
+          updated_at?: string | null
+          variance_amount?: number | null
+          variance_reason?: string | null
+          variance_resolved_at?: string | null
+          variance_resolved_by?: string | null
+          vendor_name?: string | null
+          vendor_ticket_number?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+          water_added_gallons?: number | null
+        }
+        Update: {
+          additional_photos?: string[] | null
+          air_content?: number | null
+          ambient_temp?: number | null
+          asphalt_temp?: number | null
+          batch_time?: string | null
+          concrete_temp?: number | null
+          cost_code?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          delivery_date?: string
+          delivery_location?: string | null
+          delivery_time?: string | null
+          driver_name?: string | null
+          gross_weight?: number | null
+          has_variance?: boolean | null
+          id?: string
+          latitude?: number | null
+          load_number?: number | null
+          longitude?: number | null
+          match_confidence?: number | null
+          matched_po_id?: string | null
+          matched_po_line_id?: string | null
+          material_category?:
+            | Database["public"]["Enums"]["material_category"]
+            | null
+          material_description?: string | null
+          mix_design_number?: string | null
+          net_weight?: number | null
+          notes?: string | null
+          ocr_extraction_id?: string | null
+          ocr_status?: Database["public"]["Enums"]["ocr_status"] | null
+          oil_percentage?: number | null
+          organization_id?: string
+          project_id?: string
+          quantity?: number
+          received_by?: string | null
+          receiver_name?: string | null
+          slump_at_site?: number | null
+          slump_ordered?: number | null
+          source_location?: string | null
+          specification?: string | null
+          status?: Database["public"]["Enums"]["ticket_status"] | null
+          supplier_id?: string | null
+          tare_weight?: number | null
+          ticket_number?: string
+          ticket_photo_url?: string | null
+          truck_number?: string | null
+          unit_of_measure?: string
+          updated_at?: string | null
+          variance_amount?: number | null
+          variance_reason?: string | null
+          variance_resolved_at?: string | null
+          variance_resolved_by?: string | null
+          vendor_name?: string | null
+          vendor_ticket_number?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+          water_added_gallons?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "material_tickets_matched_po_id_fkey"
+            columns: ["matched_po_id"]
+            isOneToOne: false
+            referencedRelation: "purchase_orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_tickets_matched_po_id_fkey"
+            columns: ["matched_po_id"]
+            isOneToOne: false
+            referencedRelation: "v_purchase_order_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_tickets_matched_po_line_id_fkey"
+            columns: ["matched_po_line_id"]
+            isOneToOne: false
+            referencedRelation: "po_line_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_tickets_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_tickets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_tickets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_tickets_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      medical_cards: {
+        Row: {
+          certification_type: string | null
+          conditions: string[] | null
+          created_at: string | null
+          document_url: string | null
+          driver_id: string
+          exam_date: string
+          examiner_name: string | null
+          examiner_registry_number: string | null
+          expiration_date: string
+          id: string
+          is_conditional: boolean | null
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          certification_type?: string | null
+          conditions?: string[] | null
+          created_at?: string | null
+          document_url?: string | null
+          driver_id: string
+          exam_date: string
+          examiner_name?: string | null
+          examiner_registry_number?: string | null
+          expiration_date: string
+          id?: string
+          is_conditional?: boolean | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          certification_type?: string | null
+          conditions?: string[] | null
+          created_at?: string | null
+          document_url?: string | null
+          driver_id?: string
+          exam_date?: string
+          examiner_name?: string | null
+          examiner_registry_number?: string | null
+          expiration_date?: string
+          id?: string
+          is_conditional?: boolean | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "medical_cards_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "driver_licenses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mvr_records: {
+        Row: {
+          affects_eligibility: boolean | null
+          conviction_date: string | null
+          created_at: string | null
+          description: string | null
+          document_url: string | null
+          driver_id: string
+          fine_amount: number | null
+          id: string
+          is_serious_violation: boolean | null
+          notes: string | null
+          points: number | null
+          report_date: string
+          report_source: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          state: string | null
+          violation_date: string | null
+          violation_type: string | null
+        }
+        Insert: {
+          affects_eligibility?: boolean | null
+          conviction_date?: string | null
+          created_at?: string | null
+          description?: string | null
+          document_url?: string | null
+          driver_id: string
+          fine_amount?: number | null
+          id?: string
+          is_serious_violation?: boolean | null
+          notes?: string | null
+          points?: number | null
+          report_date: string
+          report_source?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          state?: string | null
+          violation_date?: string | null
+          violation_type?: string | null
+        }
+        Update: {
+          affects_eligibility?: boolean | null
+          conviction_date?: string | null
+          created_at?: string | null
+          description?: string | null
+          document_url?: string | null
+          driver_id?: string
+          fine_amount?: number | null
+          id?: string
+          is_serious_violation?: boolean | null
+          notes?: string | null
+          points?: number | null
+          report_date?: string
+          report_source?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          state?: string | null
+          violation_date?: string | null
+          violation_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mvr_records_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "driver_licenses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ocr_extractions: {
+        Row: {
+          api_cost_cents: number | null
+          confidence_score: number | null
+          corrected_at: string | null
+          corrected_by: string | null
+          created_at: string | null
+          extracted_date: string | null
+          extracted_gross_weight: string | null
+          extracted_material: string | null
+          extracted_net_weight: string | null
+          extracted_quantity: string | null
+          extracted_tare_weight: string | null
+          extracted_ticket_number: string | null
+          extracted_time: string | null
+          extracted_truck_number: string | null
+          extracted_unit: string | null
+          extracted_vendor: string | null
+          human_corrected: boolean | null
+          id: string
+          image_hash: string | null
+          image_url: string
+          material_ticket_id: string
+          model_version: string | null
+          parsed_data: Json | null
+          processed_at: string | null
+          processing_time_ms: number | null
+          provider: string | null
+          raw_response: Json | null
+          status: Database["public"]["Enums"]["ocr_status"] | null
+          validation_errors: string[] | null
+        }
+        Insert: {
+          api_cost_cents?: number | null
+          confidence_score?: number | null
+          corrected_at?: string | null
+          corrected_by?: string | null
+          created_at?: string | null
+          extracted_date?: string | null
+          extracted_gross_weight?: string | null
+          extracted_material?: string | null
+          extracted_net_weight?: string | null
+          extracted_quantity?: string | null
+          extracted_tare_weight?: string | null
+          extracted_ticket_number?: string | null
+          extracted_time?: string | null
+          extracted_truck_number?: string | null
+          extracted_unit?: string | null
+          extracted_vendor?: string | null
+          human_corrected?: boolean | null
+          id?: string
+          image_hash?: string | null
+          image_url: string
+          material_ticket_id: string
+          model_version?: string | null
+          parsed_data?: Json | null
+          processed_at?: string | null
+          processing_time_ms?: number | null
+          provider?: string | null
+          raw_response?: Json | null
+          status?: Database["public"]["Enums"]["ocr_status"] | null
+          validation_errors?: string[] | null
+        }
+        Update: {
+          api_cost_cents?: number | null
+          confidence_score?: number | null
+          corrected_at?: string | null
+          corrected_by?: string | null
+          created_at?: string | null
+          extracted_date?: string | null
+          extracted_gross_weight?: string | null
+          extracted_material?: string | null
+          extracted_net_weight?: string | null
+          extracted_quantity?: string | null
+          extracted_tare_weight?: string | null
+          extracted_ticket_number?: string | null
+          extracted_time?: string | null
+          extracted_truck_number?: string | null
+          extracted_unit?: string | null
+          extracted_vendor?: string | null
+          human_corrected?: boolean | null
+          id?: string
+          image_hash?: string | null
+          image_url?: string
+          material_ticket_id?: string
+          model_version?: string | null
+          parsed_data?: Json | null
+          processed_at?: string | null
+          processing_time_ms?: number | null
+          provider?: string | null
+          raw_response?: Json | null
+          status?: Database["public"]["Enums"]["ocr_status"] | null
+          validation_errors?: string[] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ocr_extractions_material_ticket_id_fkey"
+            columns: ["material_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "material_tickets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ocr_extractions_material_ticket_id_fkey"
+            columns: ["material_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_tickets_pending_verification"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       organizations: {
         Row: {
           address_line1: string | null
@@ -7956,6 +9556,181 @@ export type Database = {
           name?: string
         }
         Relationships: []
+      }
+      po_line_items: {
+        Row: {
+          buy_america_required: boolean | null
+          cost_code: string | null
+          country_of_origin: string | null
+          created_at: string | null
+          description: string
+          extended_amount: number | null
+          id: string
+          line_number: number
+          material_category:
+            | Database["public"]["Enums"]["material_category"]
+            | null
+          mix_design_number: string | null
+          purchase_order_id: string
+          quantity: number
+          quantity_received: number | null
+          quantity_remaining: number | null
+          specification: string | null
+          unit_of_measure: string
+          unit_price: number
+        }
+        Insert: {
+          buy_america_required?: boolean | null
+          cost_code?: string | null
+          country_of_origin?: string | null
+          created_at?: string | null
+          description: string
+          extended_amount?: number | null
+          id?: string
+          line_number: number
+          material_category?:
+            | Database["public"]["Enums"]["material_category"]
+            | null
+          mix_design_number?: string | null
+          purchase_order_id: string
+          quantity: number
+          quantity_received?: number | null
+          quantity_remaining?: number | null
+          specification?: string | null
+          unit_of_measure: string
+          unit_price: number
+        }
+        Update: {
+          buy_america_required?: boolean | null
+          cost_code?: string | null
+          country_of_origin?: string | null
+          created_at?: string | null
+          description?: string
+          extended_amount?: number | null
+          id?: string
+          line_number?: number
+          material_category?:
+            | Database["public"]["Enums"]["material_category"]
+            | null
+          mix_design_number?: string | null
+          purchase_order_id?: string
+          quantity?: number
+          quantity_received?: number | null
+          quantity_remaining?: number | null
+          specification?: string | null
+          unit_of_measure?: string
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "po_line_items_purchase_order_id_fkey"
+            columns: ["purchase_order_id"]
+            isOneToOne: false
+            referencedRelation: "purchase_orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "po_line_items_purchase_order_id_fkey"
+            columns: ["purchase_order_id"]
+            isOneToOne: false
+            referencedRelation: "v_purchase_order_summary"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      prevailing_wage_rates: {
+        Row: {
+          base_rate: number
+          classification_title: string
+          counties: string[] | null
+          created_at: string | null
+          created_by: string | null
+          document_url: string | null
+          dt_base_rate: number | null
+          effective_date: string
+          expiration_date: string | null
+          fringe_rate: number
+          group_number: string | null
+          id: string
+          is_active: boolean | null
+          modification_number: number | null
+          organization_id: string
+          ot_base_rate: number | null
+          project_id: string | null
+          total_rate: number | null
+          updated_at: string | null
+          wage_determination_number: string
+          work_classification: Database["public"]["Enums"]["work_classification"]
+        }
+        Insert: {
+          base_rate: number
+          classification_title: string
+          counties?: string[] | null
+          created_at?: string | null
+          created_by?: string | null
+          document_url?: string | null
+          dt_base_rate?: number | null
+          effective_date: string
+          expiration_date?: string | null
+          fringe_rate?: number
+          group_number?: string | null
+          id?: string
+          is_active?: boolean | null
+          modification_number?: number | null
+          organization_id: string
+          ot_base_rate?: number | null
+          project_id?: string | null
+          total_rate?: number | null
+          updated_at?: string | null
+          wage_determination_number: string
+          work_classification: Database["public"]["Enums"]["work_classification"]
+        }
+        Update: {
+          base_rate?: number
+          classification_title?: string
+          counties?: string[] | null
+          created_at?: string | null
+          created_by?: string | null
+          document_url?: string | null
+          dt_base_rate?: number | null
+          effective_date?: string
+          expiration_date?: string | null
+          fringe_rate?: number
+          group_number?: string | null
+          id?: string
+          is_active?: boolean | null
+          modification_number?: number | null
+          organization_id?: string
+          ot_base_rate?: number | null
+          project_id?: string | null
+          total_rate?: number | null
+          updated_at?: string | null
+          wage_determination_number?: string
+          work_classification?: Database["public"]["Enums"]["work_classification"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prevailing_wage_rates_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prevailing_wage_rates_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prevailing_wage_rates_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       project_assignments: {
         Row: {
@@ -8659,6 +10434,140 @@ export type Database = {
           },
         ]
       }
+      purchase_orders: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          buy_america_certified: boolean | null
+          buy_america_docs_url: string | null
+          created_at: string | null
+          created_by: string | null
+          default_cost_code: string | null
+          expiration_date: string | null
+          freight_amount: number | null
+          id: string
+          internal_notes: string | null
+          notes: string | null
+          organization_id: string
+          po_date: string
+          po_document_url: string | null
+          po_number: string
+          project_id: string
+          remaining_amount: number | null
+          required_date: string | null
+          requires_buy_america: boolean | null
+          revision_number: number | null
+          status: Database["public"]["Enums"]["po_status"] | null
+          subtotal: number | null
+          supplier_id: string | null
+          tax_amount: number | null
+          total_amount: number | null
+          total_received_amount: number | null
+          updated_at: string | null
+          vendor_contact: string | null
+          vendor_email: string | null
+          vendor_name: string
+          vendor_phone: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          buy_america_certified?: boolean | null
+          buy_america_docs_url?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          default_cost_code?: string | null
+          expiration_date?: string | null
+          freight_amount?: number | null
+          id?: string
+          internal_notes?: string | null
+          notes?: string | null
+          organization_id: string
+          po_date?: string
+          po_document_url?: string | null
+          po_number: string
+          project_id: string
+          remaining_amount?: number | null
+          required_date?: string | null
+          requires_buy_america?: boolean | null
+          revision_number?: number | null
+          status?: Database["public"]["Enums"]["po_status"] | null
+          subtotal?: number | null
+          supplier_id?: string | null
+          tax_amount?: number | null
+          total_amount?: number | null
+          total_received_amount?: number | null
+          updated_at?: string | null
+          vendor_contact?: string | null
+          vendor_email?: string | null
+          vendor_name: string
+          vendor_phone?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          buy_america_certified?: boolean | null
+          buy_america_docs_url?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          default_cost_code?: string | null
+          expiration_date?: string | null
+          freight_amount?: number | null
+          id?: string
+          internal_notes?: string | null
+          notes?: string | null
+          organization_id?: string
+          po_date?: string
+          po_document_url?: string | null
+          po_number?: string
+          project_id?: string
+          remaining_amount?: number | null
+          required_date?: string | null
+          requires_buy_america?: boolean | null
+          revision_number?: number | null
+          status?: Database["public"]["Enums"]["po_status"] | null
+          subtotal?: number | null
+          supplier_id?: string | null
+          tax_amount?: number | null
+          total_amount?: number | null
+          total_received_amount?: number | null
+          updated_at?: string | null
+          vendor_contact?: string | null
+          vendor_email?: string | null
+          vendor_name?: string
+          vendor_phone?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "purchase_orders_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchase_orders_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchase_orders_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchase_orders_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       quote_requests: {
         Row: {
           created_at: string | null
@@ -9067,6 +10976,96 @@ export type Database = {
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      safety_orientations: {
+        Row: {
+          acknowledged_at: string | null
+          conducted_by: string | null
+          conducted_date: string
+          created_at: string | null
+          employee_id: string | null
+          id: string
+          is_site_specific: boolean | null
+          notes: string | null
+          organization_id: string
+          orientation_type: string
+          project_id: string | null
+          signature_data: string | null
+          subcontractor_worker_id: string | null
+          topics_covered: string[] | null
+          valid_until: string | null
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          conducted_by?: string | null
+          conducted_date: string
+          created_at?: string | null
+          employee_id?: string | null
+          id?: string
+          is_site_specific?: boolean | null
+          notes?: string | null
+          organization_id: string
+          orientation_type?: string
+          project_id?: string | null
+          signature_data?: string | null
+          subcontractor_worker_id?: string | null
+          topics_covered?: string[] | null
+          valid_until?: string | null
+        }
+        Update: {
+          acknowledged_at?: string | null
+          conducted_by?: string | null
+          conducted_date?: string
+          created_at?: string | null
+          employee_id?: string | null
+          id?: string
+          is_site_specific?: boolean | null
+          notes?: string | null
+          organization_id?: string
+          orientation_type?: string
+          project_id?: string | null
+          signature_data?: string | null
+          subcontractor_worker_id?: string | null
+          topics_covered?: string[] | null
+          valid_until?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "safety_orientations_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "safety_orientations_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "safety_orientations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "safety_orientations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "safety_orientations_subcontractor_worker_id_fkey"
+            columns: ["subcontractor_worker_id"]
+            isOneToOne: false
+            referencedRelation: "subcontractor_workers"
             referencedColumns: ["id"]
           },
         ]
@@ -9953,6 +11952,65 @@ export type Database = {
           },
         ]
       }
+      subcontractor_workers: {
+        Row: {
+          created_at: string | null
+          email: string | null
+          first_name: string
+          has_site_orientation: boolean | null
+          id: string
+          last_name: string
+          notes: string | null
+          orientation_date: string | null
+          phone: string | null
+          safety_cert_expires: string | null
+          status: string | null
+          subcontractor_id: string
+          trade_classification: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email?: string | null
+          first_name: string
+          has_site_orientation?: boolean | null
+          id?: string
+          last_name: string
+          notes?: string | null
+          orientation_date?: string | null
+          phone?: string | null
+          safety_cert_expires?: string | null
+          status?: string | null
+          subcontractor_id: string
+          trade_classification?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string | null
+          first_name?: string
+          has_site_orientation?: boolean | null
+          id?: string
+          last_name?: string
+          notes?: string | null
+          orientation_date?: string | null
+          phone?: string | null
+          safety_cert_expires?: string | null
+          status?: string | null
+          subcontractor_id?: string
+          trade_classification?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subcontractor_workers_subcontractor_id_fkey"
+            columns: ["subcontractor_id"]
+            isOneToOne: false
+            referencedRelation: "subcontractors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       subcontractors: {
         Row: {
           active_contract_count: number | null
@@ -10329,6 +12387,186 @@ export type Database = {
           },
         ]
       }
+      task_logs: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          certified_payroll_id: string | null
+          cost_code: string
+          created_at: string | null
+          created_by: string | null
+          crew_assignment_id: string | null
+          employee_id: string
+          end_time: string | null
+          equipment_description: string | null
+          equipment_id: string | null
+          fringe_owed: number | null
+          gps_verified: boolean | null
+          gross_double_time: number | null
+          gross_overtime: number | null
+          gross_regular: number | null
+          hours_double_time: number | null
+          hours_overtime: number | null
+          hours_regular: number | null
+          hours_total: number | null
+          id: string
+          latitude: number | null
+          locked_base_rate: number
+          locked_fringe_rate: number
+          locked_total_rate: number | null
+          longitude: number | null
+          organization_id: string
+          prevailing_wage_class: string
+          project_id: string
+          rejection_reason: string | null
+          start_time: string
+          status: string | null
+          submitted_at: string | null
+          task_description: string | null
+          updated_at: string | null
+          work_classification: Database["public"]["Enums"]["work_classification"]
+          work_date: string
+          work_location: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          certified_payroll_id?: string | null
+          cost_code: string
+          created_at?: string | null
+          created_by?: string | null
+          crew_assignment_id?: string | null
+          employee_id: string
+          end_time?: string | null
+          equipment_description?: string | null
+          equipment_id?: string | null
+          fringe_owed?: number | null
+          gps_verified?: boolean | null
+          gross_double_time?: number | null
+          gross_overtime?: number | null
+          gross_regular?: number | null
+          hours_double_time?: number | null
+          hours_overtime?: number | null
+          hours_regular?: number | null
+          hours_total?: number | null
+          id?: string
+          latitude?: number | null
+          locked_base_rate: number
+          locked_fringe_rate?: number
+          locked_total_rate?: number | null
+          longitude?: number | null
+          organization_id: string
+          prevailing_wage_class: string
+          project_id: string
+          rejection_reason?: string | null
+          start_time: string
+          status?: string | null
+          submitted_at?: string | null
+          task_description?: string | null
+          updated_at?: string | null
+          work_classification: Database["public"]["Enums"]["work_classification"]
+          work_date: string
+          work_location?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          certified_payroll_id?: string | null
+          cost_code?: string
+          created_at?: string | null
+          created_by?: string | null
+          crew_assignment_id?: string | null
+          employee_id?: string
+          end_time?: string | null
+          equipment_description?: string | null
+          equipment_id?: string | null
+          fringe_owed?: number | null
+          gps_verified?: boolean | null
+          gross_double_time?: number | null
+          gross_overtime?: number | null
+          gross_regular?: number | null
+          hours_double_time?: number | null
+          hours_overtime?: number | null
+          hours_regular?: number | null
+          hours_total?: number | null
+          id?: string
+          latitude?: number | null
+          locked_base_rate?: number
+          locked_fringe_rate?: number
+          locked_total_rate?: number | null
+          longitude?: number | null
+          organization_id?: string
+          prevailing_wage_class?: string
+          project_id?: string
+          rejection_reason?: string | null
+          start_time?: string
+          status?: string | null
+          submitted_at?: string | null
+          task_description?: string | null
+          updated_at?: string | null
+          work_classification?: Database["public"]["Enums"]["work_classification"]
+          work_date?: string
+          work_location?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "task_logs_crew_assignment_id_fkey"
+            columns: ["crew_assignment_id"]
+            isOneToOne: false
+            referencedRelation: "crew_assignments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "task_logs_crew_assignment_id_fkey"
+            columns: ["crew_assignment_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_crew_schedule"
+            referencedColumns: ["assignment_id"]
+          },
+          {
+            foreignKeyName: "task_logs_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "task_logs_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "equipment"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "task_logs_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_status"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "task_logs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "task_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "task_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       time_entries: {
         Row: {
           approved_at: string | null
@@ -10622,6 +12860,149 @@ export type Database = {
             columns: ["wage_rate_id"]
             isOneToOne: false
             referencedRelation: "wage_rates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      toolbox_talk_attendance: {
+        Row: {
+          acknowledged: boolean | null
+          acknowledged_at: string | null
+          created_at: string | null
+          employee_id: string | null
+          id: string
+          signature_data: string | null
+          subcontractor_worker_id: string | null
+          toolbox_talk_id: string
+        }
+        Insert: {
+          acknowledged?: boolean | null
+          acknowledged_at?: string | null
+          created_at?: string | null
+          employee_id?: string | null
+          id?: string
+          signature_data?: string | null
+          subcontractor_worker_id?: string | null
+          toolbox_talk_id: string
+        }
+        Update: {
+          acknowledged?: boolean | null
+          acknowledged_at?: string | null
+          created_at?: string | null
+          employee_id?: string | null
+          id?: string
+          signature_data?: string | null
+          subcontractor_worker_id?: string | null
+          toolbox_talk_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "toolbox_talk_attendance_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "toolbox_talk_attendance_subcontractor_worker_id_fkey"
+            columns: ["subcontractor_worker_id"]
+            isOneToOne: false
+            referencedRelation: "subcontractor_workers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "toolbox_talk_attendance_toolbox_talk_id_fkey"
+            columns: ["toolbox_talk_id"]
+            isOneToOne: false
+            referencedRelation: "toolbox_talks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      toolbox_talks: {
+        Row: {
+          acknowledged_count: number | null
+          conducted_date: string
+          conducted_time: string | null
+          content: string | null
+          created_at: string | null
+          duration_minutes: number | null
+          hazards_discussed: string | null
+          id: string
+          notes: string | null
+          organization_id: string
+          presenter_id: string | null
+          presenter_name: string | null
+          project_id: string | null
+          questions_asked: string | null
+          safety_measures: string | null
+          topic: string
+          topic_code: string | null
+          total_attendees: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          acknowledged_count?: number | null
+          conducted_date: string
+          conducted_time?: string | null
+          content?: string | null
+          created_at?: string | null
+          duration_minutes?: number | null
+          hazards_discussed?: string | null
+          id?: string
+          notes?: string | null
+          organization_id: string
+          presenter_id?: string | null
+          presenter_name?: string | null
+          project_id?: string | null
+          questions_asked?: string | null
+          safety_measures?: string | null
+          topic: string
+          topic_code?: string | null
+          total_attendees?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          acknowledged_count?: number | null
+          conducted_date?: string
+          conducted_time?: string | null
+          content?: string | null
+          created_at?: string | null
+          duration_minutes?: number | null
+          hazards_discussed?: string | null
+          id?: string
+          notes?: string | null
+          organization_id?: string
+          presenter_id?: string | null
+          presenter_name?: string | null
+          project_id?: string | null
+          questions_asked?: string | null
+          safety_measures?: string | null
+          topic?: string
+          topic_code?: string | null
+          total_attendees?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "toolbox_talks_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "toolbox_talks_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "toolbox_talks_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
             referencedColumns: ["id"]
           },
         ]
@@ -14375,6 +16756,46 @@ export type Database = {
         }
         Relationships: []
       }
+      v_daily_crew_schedule: {
+        Row: {
+          assignment_date: string | null
+          assignment_id: string | null
+          compliance_issues: string[] | null
+          compliance_passed: boolean | null
+          crew_name: string | null
+          crew_size: number | null
+          foreman_name: string | null
+          organization_id: string | null
+          project_id: string | null
+          project_name: string | null
+          shift: string | null
+          status: Database["public"]["Enums"]["crew_assignment_status"] | null
+          work_type: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crew_assignments_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crew_assignments_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crew_assignments_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       v_equipment_status: {
         Row: {
           current_hours: number | null
@@ -14589,6 +17010,46 @@ export type Database = {
           },
         ]
       }
+      v_purchase_order_summary: {
+        Row: {
+          id: string | null
+          line_count: number | null
+          organization_id: string | null
+          po_date: string | null
+          po_number: string | null
+          project_id: string | null
+          project_name: string | null
+          remaining_amount: number | null
+          status: Database["public"]["Enums"]["po_status"] | null
+          ticket_count: number | null
+          total_amount: number | null
+          total_received_amount: number | null
+          vendor_name: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "purchase_orders_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchase_orders_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchase_orders_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       v_recent_daily_reports: {
         Row: {
           approved_at: string | null
@@ -14675,6 +17136,46 @@ export type Database = {
           },
         ]
       }
+      v_tickets_pending_verification: {
+        Row: {
+          delivery_date: string | null
+          id: string | null
+          material_description: string | null
+          ocr_status: Database["public"]["Enums"]["ocr_status"] | null
+          organization_id: string | null
+          project_id: string | null
+          project_name: string | null
+          quantity: number | null
+          status: Database["public"]["Enums"]["ticket_status"] | null
+          ticket_number: string | null
+          ticket_photo_url: string | null
+          unit_of_measure: string | null
+          vendor_name: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "material_tickets_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_tickets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_tickets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       v_user_accessible_modules: {
         Row: {
           module_group: string | null
@@ -14685,6 +17186,46 @@ export type Database = {
           sort_order: number | null
         }
         Relationships: []
+      }
+      v_weekly_timesheet_summary: {
+        Row: {
+          employee_id: string | null
+          employee_name: string | null
+          employee_number: string | null
+          project_id: string | null
+          project_name: string | null
+          total_double_time: number | null
+          total_fringe: number | null
+          total_gross: number | null
+          total_hours: number | null
+          total_overtime: number | null
+          total_regular: number | null
+          week_end: string | null
+          week_start: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "task_logs_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "task_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "task_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       v_weekly_timesheets: {
         Row: {
@@ -15338,6 +17879,16 @@ export type Database = {
             Returns: string
           }
       auto_expire_tickets: { Args: never; Returns: number }
+      auto_match_material_ticket: {
+        Args: { p_ticket_id: string }
+        Returns: {
+          confidence: number
+          match_reason: string
+          matched: boolean
+          po_id: string
+          po_line_id: string
+        }[]
+      }
       calculate_item_assembly_cost: {
         Args: { p_item_assembly_id: string }
         Returns: number
@@ -15410,6 +17961,10 @@ export type Database = {
         Returns: boolean
       }
       check_utility_response_windows: { Args: never; Returns: number }
+      compute_daily_material_summary: {
+        Args: { p_date: string; p_project_id: string }
+        Returns: string
+      }
       confirm_ai_analysis: {
         Args: {
           p_attachment_id: string
@@ -15706,6 +18261,25 @@ export type Database = {
           subsection_title: string
         }[]
       }
+      get_materials_variance_report: {
+        Args: {
+          p_end_date?: string
+          p_project_id: string
+          p_start_date?: string
+        }
+        Returns: {
+          delivery_date: string
+          material_description: string
+          po_quantity: number
+          status: Database["public"]["Enums"]["ticket_status"]
+          ticket_id: string
+          ticket_number: string
+          ticket_quantity: number
+          variance_percentage: number
+          variance_quantity: number
+          vendor_name: string
+        }[]
+      }
       get_my_org_id: { Args: never; Returns: string }
       get_next_payroll_number: {
         Args: { p_project_id: string }
@@ -15824,6 +18398,19 @@ export type Database = {
           overtime_multiplier: number
           total_rate: number
           wage_rate_id: string
+        }[]
+      }
+      get_wage_rate_for_work: {
+        Args: {
+          p_organization_id: string
+          p_project_id: string
+          p_work_classification: Database["public"]["Enums"]["work_classification"]
+          p_work_date: string
+        }
+        Returns: {
+          base_rate: number
+          fringe_rate: number
+          wage_determination_number: string
         }[]
       }
       gettransactionid: { Args: never; Returns: unknown }
@@ -16019,7 +18606,6 @@ export type Database = {
               maxdecimaldigits?: number
               nprefix?: string
               options?: number
-              version: number
             }
             Returns: string
           }
@@ -16030,6 +18616,7 @@ export type Database = {
               maxdecimaldigits?: number
               nprefix?: string
               options?: number
+              version: number
             }
             Returns: string
           }
@@ -16492,11 +19079,11 @@ export type Database = {
           }
       st_triangulatepolygon: { Args: { g1: unknown }; Returns: unknown }
       st_union:
+        | { Args: { geom1: unknown; geom2: unknown }; Returns: unknown }
         | {
             Args: { geom1: unknown; geom2: unknown; gridsize: number }
             Returns: unknown
           }
-        | { Args: { geom1: unknown; geom2: unknown }; Returns: unknown }
       st_voronoilines: {
         Args: { extend_to?: unknown; g1: unknown; tolerance?: number }
         Returns: unknown
@@ -16596,7 +19183,26 @@ export type Database = {
         | "PERCENT_OF_TOTAL"
         | "MANUAL_ENTRY"
         | "SUBCONTRACT_QUOTE"
+      competent_person_type:
+        | "excavation"
+        | "scaffolding"
+        | "confined_space"
+        | "fall_protection"
+        | "crane_rigging"
+        | "electrical"
+        | "hazmat"
+        | "traffic_control"
+        | "blasting"
+        | "asbestos"
+        | "lead"
+        | "concrete_masonry"
       complexity_enum: "LOW" | "MEDIUM" | "HIGH" | "EXTREME"
+      compliance_status:
+        | "compliant"
+        | "incomplete"
+        | "expired"
+        | "pending_review"
+        | "suspended"
       correction_entity_enum:
         | "LINE_ITEM"
         | "RISK"
@@ -16608,6 +19214,7 @@ export type Database = {
         | "PROJECT_METADATA"
         | "BRIDGE_STRUCTURE"
         | "EXECUTIVE_SNAPSHOT"
+      crew_assignment_status: "scheduled" | "active" | "completed" | "cancelled"
       document_type_enum:
         | "PROPOSAL"
         | "BIDX"
@@ -16621,6 +19228,17 @@ export type Database = {
         | "TRAFFIC_STUDY"
         | "ADDENDUM"
         | "OTHER"
+      driver_eligibility:
+        | "eligible"
+        | "restricted"
+        | "suspended"
+        | "pending_review"
+      employment_status:
+        | "active"
+        | "inactive"
+        | "terminated"
+        | "leave_of_absence"
+        | "suspended"
       estimation_method_enum:
         | "ASSEMBLY_BASED"
         | "SUBQUOTE"
@@ -16653,6 +19271,13 @@ export type Database = {
         | "SUBCONTRACT"
         | "MATERIAL_BUY"
         | "COMBINATION"
+      incident_classification:
+        | "recordable_injury"
+        | "first_aid_only"
+        | "near_miss"
+        | "property_damage"
+        | "environmental"
+      incident_severity: "minor" | "moderate" | "serious" | "fatal"
       indirect_category_enum:
         | "SUPERINTENDENCE"
         | "PROJECT_MANAGEMENT"
@@ -16666,6 +19291,23 @@ export type Database = {
         | "PROFIT"
         | "CONTINGENCY"
         | "OTHER"
+      material_category:
+        | "aggregate"
+        | "asphalt"
+        | "concrete"
+        | "steel"
+        | "lumber"
+        | "pipe"
+        | "electrical"
+        | "fuel"
+        | "equipment_rental"
+        | "other"
+      ocr_status:
+        | "pending"
+        | "processing"
+        | "completed"
+        | "failed"
+        | "manual_entry"
       opportunity_type_enum:
         | "VALUE_ENGINEERING"
         | "MEANS_METHODS"
@@ -16674,6 +19316,15 @@ export type Database = {
         | "MATERIAL_SUBSTITUTION"
         | "EQUIPMENT_EFFICIENCY"
         | "CREW_OPTIMIZATION"
+      overtime_type: "regular" | "overtime" | "double_time"
+      po_status:
+        | "draft"
+        | "submitted"
+        | "approved"
+        | "partially_received"
+        | "fully_received"
+        | "closed"
+        | "cancelled"
       price_source_enum:
         | "AI_GENERATED"
         | "AI_APPROVED"
@@ -16749,6 +19400,14 @@ export type Database = {
         | "EMBEDDING"
         | "COMPLETED"
         | "FAILED"
+      ticket_status:
+        | "pending_ocr"
+        | "ocr_complete"
+        | "verified"
+        | "matched"
+        | "variance_flagged"
+        | "disputed"
+        | "reconciled"
       work_category_enum:
         | "MOBILIZATION"
         | "DEMOLITION"
@@ -16767,6 +19426,24 @@ export type Database = {
         | "LANDSCAPING"
         | "GENERAL_CONDITIONS"
         | "OTHER"
+      work_classification:
+        | "laborer"
+        | "carpenter"
+        | "cement_mason"
+        | "electrician"
+        | "equipment_operator"
+        | "ironworker"
+        | "painter"
+        | "pipefitter"
+        | "plumber"
+        | "roofer"
+        | "sheet_metal_worker"
+        | "truck_driver"
+        | "welder"
+        | "foreman"
+        | "superintendent"
+        | "other"
+      worker_classification: "employee" | "subcontractor" | "temp" | "seasonal"
       wv811_ack_status:
         | "SENT"
         | "DELIVERED"
@@ -17003,7 +19680,28 @@ export const Constants = {
         "MANUAL_ENTRY",
         "SUBCONTRACT_QUOTE",
       ],
+      competent_person_type: [
+        "excavation",
+        "scaffolding",
+        "confined_space",
+        "fall_protection",
+        "crane_rigging",
+        "electrical",
+        "hazmat",
+        "traffic_control",
+        "blasting",
+        "asbestos",
+        "lead",
+        "concrete_masonry",
+      ],
       complexity_enum: ["LOW", "MEDIUM", "HIGH", "EXTREME"],
+      compliance_status: [
+        "compliant",
+        "incomplete",
+        "expired",
+        "pending_review",
+        "suspended",
+      ],
       correction_entity_enum: [
         "LINE_ITEM",
         "RISK",
@@ -17016,6 +19714,7 @@ export const Constants = {
         "BRIDGE_STRUCTURE",
         "EXECUTIVE_SNAPSHOT",
       ],
+      crew_assignment_status: ["scheduled", "active", "completed", "cancelled"],
       document_type_enum: [
         "PROPOSAL",
         "BIDX",
@@ -17029,6 +19728,19 @@ export const Constants = {
         "TRAFFIC_STUDY",
         "ADDENDUM",
         "OTHER",
+      ],
+      driver_eligibility: [
+        "eligible",
+        "restricted",
+        "suspended",
+        "pending_review",
+      ],
+      employment_status: [
+        "active",
+        "inactive",
+        "terminated",
+        "leave_of_absence",
+        "suspended",
       ],
       estimation_method_enum: [
         "ASSEMBLY_BASED",
@@ -17067,6 +19779,14 @@ export const Constants = {
         "MATERIAL_BUY",
         "COMBINATION",
       ],
+      incident_classification: [
+        "recordable_injury",
+        "first_aid_only",
+        "near_miss",
+        "property_damage",
+        "environmental",
+      ],
+      incident_severity: ["minor", "moderate", "serious", "fatal"],
       indirect_category_enum: [
         "SUPERINTENDENCE",
         "PROJECT_MANAGEMENT",
@@ -17081,6 +19801,25 @@ export const Constants = {
         "CONTINGENCY",
         "OTHER",
       ],
+      material_category: [
+        "aggregate",
+        "asphalt",
+        "concrete",
+        "steel",
+        "lumber",
+        "pipe",
+        "electrical",
+        "fuel",
+        "equipment_rental",
+        "other",
+      ],
+      ocr_status: [
+        "pending",
+        "processing",
+        "completed",
+        "failed",
+        "manual_entry",
+      ],
       opportunity_type_enum: [
         "VALUE_ENGINEERING",
         "MEANS_METHODS",
@@ -17089,6 +19828,16 @@ export const Constants = {
         "MATERIAL_SUBSTITUTION",
         "EQUIPMENT_EFFICIENCY",
         "CREW_OPTIMIZATION",
+      ],
+      overtime_type: ["regular", "overtime", "double_time"],
+      po_status: [
+        "draft",
+        "submitted",
+        "approved",
+        "partially_received",
+        "fully_received",
+        "closed",
+        "cancelled",
       ],
       price_source_enum: [
         "AI_GENERATED",
@@ -17173,6 +19922,15 @@ export const Constants = {
         "COMPLETED",
         "FAILED",
       ],
+      ticket_status: [
+        "pending_ocr",
+        "ocr_complete",
+        "verified",
+        "matched",
+        "variance_flagged",
+        "disputed",
+        "reconciled",
+      ],
       work_category_enum: [
         "MOBILIZATION",
         "DEMOLITION",
@@ -17192,6 +19950,25 @@ export const Constants = {
         "GENERAL_CONDITIONS",
         "OTHER",
       ],
+      work_classification: [
+        "laborer",
+        "carpenter",
+        "cement_mason",
+        "electrician",
+        "equipment_operator",
+        "ironworker",
+        "painter",
+        "pipefitter",
+        "plumber",
+        "roofer",
+        "sheet_metal_worker",
+        "truck_driver",
+        "welder",
+        "foreman",
+        "superintendent",
+        "other",
+      ],
+      worker_classification: ["employee", "subcontractor", "temp", "seasonal"],
       wv811_ack_status: [
         "SENT",
         "DELIVERED",
