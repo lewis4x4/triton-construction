@@ -6998,6 +6998,84 @@ export type Database = {
           },
         ]
       }
+      email_logs: {
+        Row: {
+          bcc_addresses: string[] | null
+          bounce_type: string | null
+          bounced_at: string | null
+          category: string
+          cc_addresses: string[] | null
+          clicked_at: string | null
+          created_at: string
+          delivered_at: string | null
+          error_message: string | null
+          from_address: string
+          id: string
+          opened_at: string | null
+          organization_id: string | null
+          related_entity_id: string | null
+          related_entity_type: string | null
+          reply_to: string | null
+          resend_id: string | null
+          sent_at: string | null
+          status: string
+          subject: string
+          tags: Json | null
+          to_addresses: string[]
+          user_id: string | null
+        }
+        Insert: {
+          bcc_addresses?: string[] | null
+          bounce_type?: string | null
+          bounced_at?: string | null
+          category?: string
+          cc_addresses?: string[] | null
+          clicked_at?: string | null
+          created_at?: string
+          delivered_at?: string | null
+          error_message?: string | null
+          from_address: string
+          id?: string
+          opened_at?: string | null
+          organization_id?: string | null
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          reply_to?: string | null
+          resend_id?: string | null
+          sent_at?: string | null
+          status?: string
+          subject: string
+          tags?: Json | null
+          to_addresses: string[]
+          user_id?: string | null
+        }
+        Update: {
+          bcc_addresses?: string[] | null
+          bounce_type?: string | null
+          bounced_at?: string | null
+          category?: string
+          cc_addresses?: string[] | null
+          clicked_at?: string | null
+          created_at?: string
+          delivered_at?: string | null
+          error_message?: string | null
+          from_address?: string
+          id?: string
+          opened_at?: string | null
+          organization_id?: string | null
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          reply_to?: string | null
+          resend_id?: string | null
+          sent_at?: string | null
+          status?: string
+          subject?: string
+          tags?: Json | null
+          to_addresses?: string[]
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       equipment: {
         Row: {
           capacity: string | null
@@ -7346,6 +7424,77 @@ export type Database = {
             columns: ["updated_by"]
             isOneToOne: false
             referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      geocode_log: {
+        Row: {
+          accuracy_type: string | null
+          created_at: string
+          error_message: string | null
+          formatted_address: string | null
+          id: string
+          input_address: string
+          latitude: number | null
+          longitude: number | null
+          provider: string | null
+          status: string
+          ticket_id: string | null
+        }
+        Insert: {
+          accuracy_type?: string | null
+          created_at?: string
+          error_message?: string | null
+          formatted_address?: string | null
+          id?: string
+          input_address: string
+          latitude?: number | null
+          longitude?: number | null
+          provider?: string | null
+          status: string
+          ticket_id?: string | null
+        }
+        Update: {
+          accuracy_type?: string | null
+          created_at?: string
+          error_message?: string | null
+          formatted_address?: string | null
+          id?: string
+          input_address?: string
+          latitude?: number | null
+          longitude?: number | null
+          provider?: string | null
+          status?: string
+          ticket_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "geocode_log_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_active_tickets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "geocode_log_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_expiring_soon"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "geocode_log_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_tickets_with_coords"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "geocode_log_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "wv811_tickets"
             referencedColumns: ["id"]
           },
         ]
@@ -8921,6 +9070,144 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      sms_logs: {
+        Row: {
+          batch_count: number | null
+          batch_key: string | null
+          created_at: string
+          delivered_at: string | null
+          error_message: string | null
+          id: string
+          incident_id: string | null
+          message_preview: string
+          message_type: string
+          phone_number: string
+          project_id: string | null
+          sent_at: string
+          status: string
+          ticket_id: string | null
+          twilio_sid: string | null
+          user_id: string | null
+        }
+        Insert: {
+          batch_count?: number | null
+          batch_key?: string | null
+          created_at?: string
+          delivered_at?: string | null
+          error_message?: string | null
+          id?: string
+          incident_id?: string | null
+          message_preview: string
+          message_type: string
+          phone_number: string
+          project_id?: string | null
+          sent_at?: string
+          status?: string
+          ticket_id?: string | null
+          twilio_sid?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          batch_count?: number | null
+          batch_key?: string | null
+          created_at?: string
+          delivered_at?: string | null
+          error_message?: string | null
+          id?: string
+          incident_id?: string | null
+          message_preview?: string
+          message_type?: string
+          phone_number?: string
+          project_id?: string | null
+          sent_at?: string
+          status?: string
+          ticket_id?: string | null
+          twilio_sid?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sms_logs_incident_id_fkey"
+            columns: ["incident_id"]
+            isOneToOne: false
+            referencedRelation: "wv811_emergency_incidents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sms_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sms_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sms_logs_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_active_tickets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sms_logs_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_expiring_soon"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sms_logs_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_tickets_with_coords"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sms_logs_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "wv811_tickets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sms_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sms_rate_limits: {
+        Row: {
+          id: string
+          message_count: number
+          message_type: string
+          phone_number: string
+          window_start: string
+        }
+        Insert: {
+          id?: string
+          message_count?: number
+          message_type: string
+          phone_number: string
+          window_start?: string
+        }
+        Update: {
+          id?: string
+          message_count?: number
+          message_type?: string
+          phone_number?: string
+          window_start?: string
+        }
+        Relationships: []
       }
       spatial_ref_sys: {
         Row: {
@@ -11238,6 +11525,13 @@ export type Database = {
             foreignKeyName: "wv811_audit_packs_ticket_id_fkey"
             columns: ["ticket_id"]
             isOneToOne: false
+            referencedRelation: "v_wv811_tickets_with_coords"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_audit_packs_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
             referencedRelation: "wv811_tickets"
             referencedColumns: ["id"]
           },
@@ -11362,6 +11656,13 @@ export type Database = {
             columns: ["ticket_id"]
             isOneToOne: false
             referencedRelation: "v_wv811_expiring_soon"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_dig_checks_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_tickets_with_coords"
             referencedColumns: ["id"]
           },
           {
@@ -11513,6 +11814,13 @@ export type Database = {
             foreignKeyName: "wv811_draft_communications_ticket_id_fkey"
             columns: ["ticket_id"]
             isOneToOne: false
+            referencedRelation: "v_wv811_tickets_with_coords"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_draft_communications_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
             referencedRelation: "wv811_tickets"
             referencedColumns: ["id"]
           },
@@ -11598,6 +11906,13 @@ export type Database = {
             foreignKeyName: "fk_email_ticket"
             columns: ["ticket_id"]
             isOneToOne: false
+            referencedRelation: "v_wv811_tickets_with_coords"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_email_ticket"
+            columns: ["ticket_id"]
+            isOneToOne: false
             referencedRelation: "wv811_tickets"
             referencedColumns: ["id"]
           },
@@ -11616,6 +11931,7 @@ export type Database = {
           created_at: string
           crew_on_site: Json | null
           description: string | null
+          draft_email_to_811: Json | null
           follow_up_completed_at: string | null
           follow_up_required: boolean | null
           gps_accuracy_meters: number | null
@@ -11650,6 +11966,7 @@ export type Database = {
           created_at?: string
           crew_on_site?: Json | null
           description?: string | null
+          draft_email_to_811?: Json | null
           follow_up_completed_at?: string | null
           follow_up_required?: boolean | null
           gps_accuracy_meters?: number | null
@@ -11684,6 +12001,7 @@ export type Database = {
           created_at?: string
           crew_on_site?: Json | null
           description?: string | null
+          draft_email_to_811?: Json | null
           follow_up_completed_at?: string | null
           follow_up_required?: boolean | null
           gps_accuracy_meters?: number | null
@@ -11747,6 +12065,13 @@ export type Database = {
             columns: ["ticket_id"]
             isOneToOne: false
             referencedRelation: "v_wv811_expiring_soon"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_emergency_incidents_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_tickets_with_coords"
             referencedColumns: ["id"]
           },
           {
@@ -11850,6 +12175,81 @@ export type Database = {
           },
         ]
       }
+      wv811_photo_analysis_log: {
+        Row: {
+          ai_model: string | null
+          ai_provider: string | null
+          ai_version: string | null
+          analysis_completed_at: string | null
+          analysis_duration_ms: number | null
+          analysis_started_at: string | null
+          attachment_id: string
+          created_at: string | null
+          error_message: string | null
+          estimated_cost_cents: number | null
+          id: string
+          input_tokens: number | null
+          output_tokens: number | null
+          request_payload: Json | null
+          response_payload: Json | null
+          retry_count: number | null
+          status: string | null
+        }
+        Insert: {
+          ai_model?: string | null
+          ai_provider?: string | null
+          ai_version?: string | null
+          analysis_completed_at?: string | null
+          analysis_duration_ms?: number | null
+          analysis_started_at?: string | null
+          attachment_id: string
+          created_at?: string | null
+          error_message?: string | null
+          estimated_cost_cents?: number | null
+          id?: string
+          input_tokens?: number | null
+          output_tokens?: number | null
+          request_payload?: Json | null
+          response_payload?: Json | null
+          retry_count?: number | null
+          status?: string | null
+        }
+        Update: {
+          ai_model?: string | null
+          ai_provider?: string | null
+          ai_version?: string | null
+          analysis_completed_at?: string | null
+          analysis_duration_ms?: number | null
+          analysis_started_at?: string | null
+          attachment_id?: string
+          created_at?: string | null
+          error_message?: string | null
+          estimated_cost_cents?: number | null
+          id?: string
+          input_tokens?: number | null
+          output_tokens?: number | null
+          request_payload?: Json | null
+          response_payload?: Json | null
+          retry_count?: number | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wv811_photo_analysis_log_attachment_id_fkey"
+            columns: ["attachment_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_ai_confirmations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_photo_analysis_log_attachment_id_fkey"
+            columns: ["attachment_id"]
+            isOneToOne: false
+            referencedRelation: "wv811_ticket_attachments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       wv811_photo_verifications: {
         Row: {
           captured_at: string
@@ -11943,6 +12343,13 @@ export type Database = {
             foreignKeyName: "wv811_photo_verifications_ticket_id_fkey"
             columns: ["ticket_id"]
             isOneToOne: false
+            referencedRelation: "v_wv811_tickets_with_coords"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_photo_verifications_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
             referencedRelation: "wv811_tickets"
             referencedColumns: ["id"]
           },
@@ -11993,6 +12400,13 @@ export type Database = {
             columns: ["ticket_id"]
             isOneToOne: false
             referencedRelation: "v_wv811_expiring_soon"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_project_tickets_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_tickets_with_coords"
             referencedColumns: ["id"]
           },
           {
@@ -12085,6 +12499,13 @@ export type Database = {
             foreignKeyName: "wv811_ticket_alerts_ticket_id_fkey"
             columns: ["ticket_id"]
             isOneToOne: false
+            referencedRelation: "v_wv811_tickets_with_coords"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_ticket_alerts_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
             referencedRelation: "wv811_tickets"
             referencedColumns: ["id"]
           },
@@ -12092,48 +12513,163 @@ export type Database = {
       }
       wv811_ticket_attachments: {
         Row: {
+          ai_analysis_confirmed_at: string | null
+          ai_analysis_confirmed_by: string | null
+          ai_analysis_status: string | null
+          ai_analysis_version: string | null
+          ai_analyzed_at: string | null
+          ai_description: string | null
+          ai_keywords: string[] | null
+          ai_mark_colors_detected: string[] | null
+          ai_objects_detected: Json | null
+          ai_quality_score: number | null
+          ai_raw_response: Json | null
+          ai_safety_concerns: string[] | null
+          ai_scene_type: string | null
+          ai_time_of_day: string | null
+          ai_utility_types_visible: string[] | null
+          ai_weather_conditions: string | null
+          content_hash: string | null
           created_at: string
           description: string | null
+          exif_aperture: string | null
+          exif_camera_make: string | null
+          exif_camera_model: string | null
+          exif_exposure_time: string | null
+          exif_flash_used: boolean | null
+          exif_focal_length: string | null
+          exif_gps_accuracy: number | null
+          exif_gps_altitude: number | null
+          exif_height: number | null
+          exif_iso: string | null
+          exif_orientation: number | null
+          exif_raw_data: Json | null
+          exif_width: number | null
           file_name: string
           file_size_bytes: number | null
           file_type: string | null
+          human_override_data: Json | null
           id: string
           latitude: number | null
           longitude: number | null
+          photo_category: string | null
           storage_path: string
           taken_at: string | null
+          thumbnail_path: string | null
           ticket_id: string
           uploaded_by: string | null
+          verification_notes: string | null
+          verified_at: string | null
+          verified_by: string | null
         }
         Insert: {
+          ai_analysis_confirmed_at?: string | null
+          ai_analysis_confirmed_by?: string | null
+          ai_analysis_status?: string | null
+          ai_analysis_version?: string | null
+          ai_analyzed_at?: string | null
+          ai_description?: string | null
+          ai_keywords?: string[] | null
+          ai_mark_colors_detected?: string[] | null
+          ai_objects_detected?: Json | null
+          ai_quality_score?: number | null
+          ai_raw_response?: Json | null
+          ai_safety_concerns?: string[] | null
+          ai_scene_type?: string | null
+          ai_time_of_day?: string | null
+          ai_utility_types_visible?: string[] | null
+          ai_weather_conditions?: string | null
+          content_hash?: string | null
           created_at?: string
           description?: string | null
+          exif_aperture?: string | null
+          exif_camera_make?: string | null
+          exif_camera_model?: string | null
+          exif_exposure_time?: string | null
+          exif_flash_used?: boolean | null
+          exif_focal_length?: string | null
+          exif_gps_accuracy?: number | null
+          exif_gps_altitude?: number | null
+          exif_height?: number | null
+          exif_iso?: string | null
+          exif_orientation?: number | null
+          exif_raw_data?: Json | null
+          exif_width?: number | null
           file_name: string
           file_size_bytes?: number | null
           file_type?: string | null
+          human_override_data?: Json | null
           id?: string
           latitude?: number | null
           longitude?: number | null
+          photo_category?: string | null
           storage_path: string
           taken_at?: string | null
+          thumbnail_path?: string | null
           ticket_id: string
           uploaded_by?: string | null
+          verification_notes?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
         }
         Update: {
+          ai_analysis_confirmed_at?: string | null
+          ai_analysis_confirmed_by?: string | null
+          ai_analysis_status?: string | null
+          ai_analysis_version?: string | null
+          ai_analyzed_at?: string | null
+          ai_description?: string | null
+          ai_keywords?: string[] | null
+          ai_mark_colors_detected?: string[] | null
+          ai_objects_detected?: Json | null
+          ai_quality_score?: number | null
+          ai_raw_response?: Json | null
+          ai_safety_concerns?: string[] | null
+          ai_scene_type?: string | null
+          ai_time_of_day?: string | null
+          ai_utility_types_visible?: string[] | null
+          ai_weather_conditions?: string | null
+          content_hash?: string | null
           created_at?: string
           description?: string | null
+          exif_aperture?: string | null
+          exif_camera_make?: string | null
+          exif_camera_model?: string | null
+          exif_exposure_time?: string | null
+          exif_flash_used?: boolean | null
+          exif_focal_length?: string | null
+          exif_gps_accuracy?: number | null
+          exif_gps_altitude?: number | null
+          exif_height?: number | null
+          exif_iso?: string | null
+          exif_orientation?: number | null
+          exif_raw_data?: Json | null
+          exif_width?: number | null
           file_name?: string
           file_size_bytes?: number | null
           file_type?: string | null
+          human_override_data?: Json | null
           id?: string
           latitude?: number | null
           longitude?: number | null
+          photo_category?: string | null
           storage_path?: string
           taken_at?: string | null
+          thumbnail_path?: string | null
           ticket_id?: string
           uploaded_by?: string | null
+          verification_notes?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "wv811_ticket_attachments_ai_analysis_confirmed_by_fkey"
+            columns: ["ai_analysis_confirmed_by"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "wv811_ticket_attachments_ticket_id_fkey"
             columns: ["ticket_id"]
@@ -12146,6 +12682,13 @@ export type Database = {
             columns: ["ticket_id"]
             isOneToOne: false
             referencedRelation: "v_wv811_expiring_soon"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_ticket_attachments_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_tickets_with_coords"
             referencedColumns: ["id"]
           },
           {
@@ -12201,6 +12744,13 @@ export type Database = {
             columns: ["ticket_id"]
             isOneToOne: false
             referencedRelation: "v_wv811_expiring_soon"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_ticket_notes_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_tickets_with_coords"
             referencedColumns: ["id"]
           },
           {
@@ -12264,6 +12814,7 @@ export type Database = {
           total_utilities: number | null
           update_by_date: string | null
           updated_at: string
+          updated_by: string | null
           work_date: string | null
           work_description: string | null
           work_end_date: string | null
@@ -12321,6 +12872,7 @@ export type Database = {
           total_utilities?: number | null
           update_by_date?: string | null
           updated_at?: string
+          updated_by?: string | null
           work_date?: string | null
           work_description?: string | null
           work_end_date?: string | null
@@ -12378,6 +12930,7 @@ export type Database = {
           total_utilities?: number | null
           update_by_date?: string | null
           updated_at?: string
+          updated_by?: string | null
           work_date?: string | null
           work_description?: string | null
           work_end_date?: string | null
@@ -12411,6 +12964,13 @@ export type Database = {
             columns: ["parent_ticket_id"]
             isOneToOne: false
             referencedRelation: "v_wv811_expiring_soon"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_tickets_parent_ticket_id_fkey"
+            columns: ["parent_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_tickets_with_coords"
             referencedColumns: ["id"]
           },
           {
@@ -12625,6 +13185,13 @@ export type Database = {
             foreignKeyName: "wv811_utility_responses_ticket_id_fkey"
             columns: ["ticket_id"]
             isOneToOne: false
+            referencedRelation: "v_wv811_tickets_with_coords"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_utility_responses_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
             referencedRelation: "wv811_tickets"
             referencedColumns: ["id"]
           },
@@ -12710,6 +13277,13 @@ export type Database = {
             columns: ["matched_ticket_id"]
             isOneToOne: false
             referencedRelation: "v_wv811_expiring_soon"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_work_schedule_matched_ticket_id_fkey"
+            columns: ["matched_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_tickets_with_coords"
             referencedColumns: ["id"]
           },
           {
@@ -13883,6 +14457,51 @@ export type Database = {
           },
         ]
       }
+      v_pending_ai_confirmations: {
+        Row: {
+          ai_analyzed_at: string | null
+          ai_description: string | null
+          ai_mark_colors_detected: string[] | null
+          ai_quality_score: number | null
+          ai_safety_concerns: string[] | null
+          ai_utility_types_visible: string[] | null
+          created_at: string | null
+          file_name: string | null
+          id: string | null
+          ticket_id: string | null
+          ticket_number: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wv811_ticket_attachments_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_active_tickets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_ticket_attachments_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_expiring_soon"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_ticket_attachments_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_tickets_with_coords"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_ticket_attachments_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "wv811_tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       v_pending_report_approvals: {
         Row: {
           created_by_name: string | null
@@ -14339,6 +14958,232 @@ export type Database = {
           },
         ]
       }
+      v_wv811_tickets_with_coords: {
+        Row: {
+          alert_count: number | null
+          created_at: string | null
+          created_by: string | null
+          cross_street_1: string | null
+          cross_street_2: string | null
+          depth_in_inches: number | null
+          dig_area_polygon: unknown
+          dig_site_address: string | null
+          dig_site_city: string | null
+          dig_site_county: string | null
+          dig_site_location: unknown
+          dig_site_state: string | null
+          dig_site_zip: string | null
+          done_for: string | null
+          excavator_address: string | null
+          excavator_company: string | null
+          excavator_email: string | null
+          excavator_name: string | null
+          excavator_phone: string | null
+          extent_description: string | null
+          has_coordinates: boolean | null
+          has_electric_utility: boolean | null
+          has_gas_utility: boolean | null
+          id: string | null
+          is_high_risk: boolean | null
+          last_alert_sent_at: string | null
+          latitude: number | null
+          legal_dig_date: string | null
+          location_description: string | null
+          longitude: number | null
+          notes: string | null
+          organization_id: string | null
+          original_email_id: string | null
+          parent_ticket_id: string | null
+          parsed_at: string | null
+          parsing_confidence: number | null
+          parsing_model: string | null
+          portal_url: string | null
+          project_id: string | null
+          raw_parsed_data: Json | null
+          renewal_requested_at: string | null
+          responded_utilities: number | null
+          risk_score: number | null
+          status: Database["public"]["Enums"]["wv811_ticket_status"] | null
+          status_changed_at: string | null
+          taken_date: string | null
+          ticket_created_at: string | null
+          ticket_expires_at: string | null
+          ticket_number: string | null
+          ticket_type: string | null
+          total_utilities: number | null
+          update_by_date: string | null
+          updated_at: string | null
+          work_date: string | null
+          work_description: string | null
+          work_end_date: string | null
+          work_start_date: string | null
+          work_type: Database["public"]["Enums"]["wv811_work_type"] | null
+        }
+        Insert: {
+          alert_count?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          cross_street_1?: string | null
+          cross_street_2?: string | null
+          depth_in_inches?: number | null
+          dig_area_polygon?: unknown
+          dig_site_address?: string | null
+          dig_site_city?: string | null
+          dig_site_county?: string | null
+          dig_site_location?: unknown
+          dig_site_state?: string | null
+          dig_site_zip?: string | null
+          done_for?: string | null
+          excavator_address?: string | null
+          excavator_company?: string | null
+          excavator_email?: string | null
+          excavator_name?: string | null
+          excavator_phone?: string | null
+          extent_description?: string | null
+          has_coordinates?: never
+          has_electric_utility?: boolean | null
+          has_gas_utility?: boolean | null
+          id?: string | null
+          is_high_risk?: boolean | null
+          last_alert_sent_at?: string | null
+          latitude?: never
+          legal_dig_date?: string | null
+          location_description?: string | null
+          longitude?: never
+          notes?: string | null
+          organization_id?: string | null
+          original_email_id?: string | null
+          parent_ticket_id?: string | null
+          parsed_at?: string | null
+          parsing_confidence?: number | null
+          parsing_model?: string | null
+          portal_url?: string | null
+          project_id?: string | null
+          raw_parsed_data?: Json | null
+          renewal_requested_at?: string | null
+          responded_utilities?: number | null
+          risk_score?: number | null
+          status?: Database["public"]["Enums"]["wv811_ticket_status"] | null
+          status_changed_at?: string | null
+          taken_date?: string | null
+          ticket_created_at?: string | null
+          ticket_expires_at?: string | null
+          ticket_number?: string | null
+          ticket_type?: string | null
+          total_utilities?: number | null
+          update_by_date?: string | null
+          updated_at?: string | null
+          work_date?: string | null
+          work_description?: string | null
+          work_end_date?: string | null
+          work_start_date?: string | null
+          work_type?: Database["public"]["Enums"]["wv811_work_type"] | null
+        }
+        Update: {
+          alert_count?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          cross_street_1?: string | null
+          cross_street_2?: string | null
+          depth_in_inches?: number | null
+          dig_area_polygon?: unknown
+          dig_site_address?: string | null
+          dig_site_city?: string | null
+          dig_site_county?: string | null
+          dig_site_location?: unknown
+          dig_site_state?: string | null
+          dig_site_zip?: string | null
+          done_for?: string | null
+          excavator_address?: string | null
+          excavator_company?: string | null
+          excavator_email?: string | null
+          excavator_name?: string | null
+          excavator_phone?: string | null
+          extent_description?: string | null
+          has_coordinates?: never
+          has_electric_utility?: boolean | null
+          has_gas_utility?: boolean | null
+          id?: string | null
+          is_high_risk?: boolean | null
+          last_alert_sent_at?: string | null
+          latitude?: never
+          legal_dig_date?: string | null
+          location_description?: string | null
+          longitude?: never
+          notes?: string | null
+          organization_id?: string | null
+          original_email_id?: string | null
+          parent_ticket_id?: string | null
+          parsed_at?: string | null
+          parsing_confidence?: number | null
+          parsing_model?: string | null
+          portal_url?: string | null
+          project_id?: string | null
+          raw_parsed_data?: Json | null
+          renewal_requested_at?: string | null
+          responded_utilities?: number | null
+          risk_score?: number | null
+          status?: Database["public"]["Enums"]["wv811_ticket_status"] | null
+          status_changed_at?: string | null
+          taken_date?: string | null
+          ticket_created_at?: string | null
+          ticket_expires_at?: string | null
+          ticket_number?: string | null
+          ticket_type?: string | null
+          total_utilities?: number | null
+          update_by_date?: string | null
+          updated_at?: string | null
+          work_date?: string | null
+          work_description?: string | null
+          work_end_date?: string | null
+          work_start_date?: string | null
+          work_type?: Database["public"]["Enums"]["wv811_work_type"] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wv811_tickets_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_tickets_original_email_id_fkey"
+            columns: ["original_email_id"]
+            isOneToOne: false
+            referencedRelation: "wv811_email_ingests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_tickets_parent_ticket_id_fkey"
+            columns: ["parent_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_active_tickets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_tickets_parent_ticket_id_fkey"
+            columns: ["parent_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_expiring_soon"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_tickets_parent_ticket_id_fkey"
+            columns: ["parent_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_tickets_with_coords"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_tickets_parent_ticket_id_fkey"
+            columns: ["parent_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "wv811_tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       _postgis_deprecate: {
@@ -14560,7 +15405,23 @@ export type Database = {
           utility_statuses: Json
         }[]
       }
+      check_sms_rate_limit: {
+        Args: { p_max_per_hour?: number; p_phone: string; p_type: string }
+        Returns: boolean
+      }
       check_utility_response_windows: { Args: never; Returns: number }
+      confirm_ai_analysis: {
+        Args: {
+          p_attachment_id: string
+          p_confirmed?: boolean
+          p_modified_data?: Json
+        }
+        Returns: boolean
+      }
+      count_tickets_without_coordinates: {
+        Args: { p_organization_id?: string }
+        Returns: number
+      }
       create_default_pricing_scenarios: {
         Args: { p_bid_project_id: string }
         Returns: undefined
@@ -14608,6 +15469,37 @@ export type Database = {
           }
       enablelongtransactions: { Args: never; Returns: string }
       equals: { Args: { geom1: unknown; geom2: unknown }; Returns: boolean }
+      find_photos_by_utility_type: {
+        Args: { p_organization_id?: string; p_utility_type: string }
+        Returns: {
+          ai_description: string
+          ai_utility_types_visible: string[]
+          attachment_id: string
+          file_name: string
+          storage_path: string
+          taken_at: string
+          ticket_id: string
+          ticket_number: string
+        }[]
+      }
+      find_photos_near_location: {
+        Args: {
+          p_latitude: number
+          p_longitude: number
+          p_organization_id?: string
+          p_radius_meters?: number
+        }
+        Returns: {
+          attachment_id: string
+          distance_meters: number
+          file_name: string
+          latitude: number
+          longitude: number
+          storage_path: string
+          ticket_id: string
+          ticket_number: string
+        }[]
+      }
       generate_incident_number: {
         Args: { p_organization_id: string }
         Returns: string
@@ -14844,6 +15736,13 @@ export type Database = {
           section_title: string
         }[]
       }
+      get_ticket_coordinates: {
+        Args: { p_ticket_id: string }
+        Returns: {
+          latitude: number
+          longitude: number
+        }[]
+      }
       get_tickets_needing_alerts: {
         Args: never
         Returns: {
@@ -14868,6 +15767,28 @@ export type Database = {
           ticket_id: string
           ticket_number: string
           update_by_date: string
+        }[]
+      }
+      get_tickets_without_coordinates: {
+        Args: { p_limit?: number; p_organization_id?: string }
+        Returns: {
+          dig_site_address: string
+          dig_site_city: string
+          dig_site_county: string
+          dig_site_state: string
+          dig_site_zip: string
+          id: string
+          ticket_number: string
+        }[]
+      }
+      get_unanalyzed_photos: {
+        Args: { p_limit?: number }
+        Returns: {
+          attachment_id: string
+          created_at: string
+          file_type: string
+          storage_path: string
+          ticket_id: string
         }[]
       }
       get_user_organization_id: {
@@ -14985,6 +15906,19 @@ export type Database = {
           section_number: string
           section_title: string
           similarity: number
+        }[]
+      }
+      search_ticket_photos_by_keywords: {
+        Args: { p_keywords: string[]; p_organization_id?: string }
+        Returns: {
+          ai_description: string
+          ai_keywords: string[]
+          attachment_id: string
+          file_name: string
+          relevance_score: number
+          storage_path: string
+          ticket_id: string
+          ticket_number: string
         }[]
       }
       should_user_receive_alert: {
@@ -15603,6 +16537,10 @@ export type Database = {
       }
       update_proposal_totals: {
         Args: { p_proposal_id: string }
+        Returns: undefined
+      }
+      update_ticket_location: {
+        Args: { p_latitude: number; p_longitude: number; p_ticket_id: string }
         Returns: undefined
       }
       updategeometrysrid: {
