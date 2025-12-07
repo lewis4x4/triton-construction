@@ -8,55 +8,56 @@
 
 /* ============================================
    CSS Variables - Design Tokens
+   TRITON THEME - Inspired by Donezo Dashboard
+   Forest Green + Warm Neutrals
    ============================================ */
 
 :root {
-  /* Backgrounds - Light, airy layers */
-  --bg-primary: #F8F9FA;
+  /* Backgrounds - Warm, earthy tones */
+  --bg-primary: #F5F5F0;
   --bg-secondary: #FFFFFF;
-  --bg-tertiary: #F1F3F5;
+  --bg-tertiary: #EEEEE8;
   --bg-elevated: #FFFFFF;
-  --bg-hover: #E9ECEF;
-  --bg-sidebar: #E8ECEF;
+  --bg-hover: #E8E8E2;
+  --bg-sidebar: #FAFAF8;
 
-  /* Borders - Subtle definition */
+  /* Borders - Soft definition */
   --border-subtle: rgba(0, 0, 0, 0.06);
   --border-default: rgba(0, 0, 0, 0.1);
   --border-strong: rgba(0, 0, 0, 0.15);
-  --border-focus: rgba(49, 130, 206, 0.5);
+  --border-focus: rgba(61, 107, 79, 0.5);
 
-  /* Text - Dark on light */
-  --text-primary: #1A202C;
+  /* Text - Rich dark tones */
+  --text-primary: #1A1A2E;
   --text-secondary: #4A5568;
-  --text-tertiary: #718096;
-  --text-muted: #A0AEC0;
+  --text-tertiary: #6B7280;
+  --text-muted: #9CA3AF;
 
-  /* Accent - Refined blue */
-  --accent-primary: #3182CE;
-  --accent-hover: #2B6CB0;
-  --accent-subtle: rgba(49, 130, 206, 0.1);
-  --accent-border: rgba(49, 130, 206, 0.3);
+  /* Accent - Forest Green (Primary Brand Color) */
+  --accent-primary: #3D6B4F;
+  --accent-hover: #2D5A3D;
+  --accent-light: #4A7D5C;
+  --accent-subtle: rgba(61, 107, 79, 0.1);
+  --accent-border: rgba(61, 107, 79, 0.3);
 
-  /* Extended palette for visual interest */
-  --accent-lavender: #E9D8FD;
-  --accent-lavender-dark: #805AD5;
-  --accent-coral: #FED7D7;
-  --accent-coral-dark: #E53E3E;
-  --accent-mint: #C6F6D5;
-  --accent-mint-dark: #38A169;
+  /* Extended palette - Olive & Earth tones */
+  --accent-olive: #5C7A4A;
+  --accent-olive-light: #7A9B62;
+  --accent-sage: #8BA888;
+  --accent-cream: #F5F3E7;
 
-  /* Semantic Colors */
-  --success: #38A169;
-  --success-subtle: rgba(56, 161, 105, 0.1);
-  --success-text: #276749;
-  --warning: #D69E2E;
-  --warning-subtle: rgba(214, 158, 46, 0.1);
-  --warning-text: #975A16;
-  --error: #E53E3E;
-  --error-subtle: rgba(229, 62, 62, 0.1);
-  --error-text: #C53030;
-  --info: #3182CE;
-  --info-subtle: rgba(49, 130, 206, 0.1);
+  /* Semantic Colors - Harmonized with green theme */
+  --success: #3D6B4F;
+  --success-subtle: rgba(61, 107, 79, 0.1);
+  --success-text: #2D5A3D;
+  --warning: #C9A227;
+  --warning-subtle: rgba(201, 162, 39, 0.1);
+  --warning-text: #8B6914;
+  --error: #C53030;
+  --error-subtle: rgba(197, 48, 48, 0.1);
+  --error-text: #9B2C2C;
+  --info: #3D6B4F;
+  --info-subtle: rgba(61, 107, 79, 0.1);
 
   /* Typography */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -195,16 +196,16 @@ p {
 }
 
 .sidebar-logo {
-  width: 32px;
-  height: 32px;
-  background: linear-gradient(135deg, var(--accent-primary) 0%, #8b5cf6 100%);
-  border-radius: var(--radius-md);
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-olive) 100%);
+  border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.125rem;
 }
 
 .sidebar-header h1 {
@@ -311,10 +312,10 @@ p {
 }
 
 .user-avatar {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: var(--radius-full);
-  background: linear-gradient(135deg, var(--accent-primary) 0%, #8b5cf6 100%);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-olive) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -426,6 +427,131 @@ p {
 }
 
 /* ============================================
+   Stat Cards - Dashboard KPIs
+   ============================================ */
+
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-5);
+  margin-bottom: var(--space-8);
+}
+
+.stat-card {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.stat-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.stat-card.primary {
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+}
+
+.stat-card.primary .stat-label,
+.stat-card.primary .stat-trend {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.stat-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-3);
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.stat-arrow {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  background: var(--bg-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all var(--duration-fast);
+}
+
+.stat-card.primary .stat-arrow {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.stat-arrow:hover {
+  background: var(--accent-subtle);
+  color: var(--accent-primary);
+}
+
+.stat-card.primary .stat-arrow:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: var(--space-2);
+  color: var(--text-primary);
+}
+
+.stat-card.primary .stat-value {
+  color: white;
+}
+
+.stat-trend {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+}
+
+.stat-trend.positive {
+  color: var(--success-text);
+}
+
+.stat-trend.negative {
+  color: var(--error-text);
+}
+
+.stat-trend-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+.stat-trend.positive .stat-trend-icon {
+  background: var(--success-subtle);
+}
+
+.stat-trend.negative .stat-trend-icon {
+  background: var(--error-subtle);
+}
+
+/* ============================================
    Buttons
    ============================================ */
 
@@ -434,11 +560,11 @@ p {
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  height: 36px;
-  padding: 0 var(--space-4);
+  height: 40px;
+  padding: 0 var(--space-5);
   font-size: 0.875rem;
   font-weight: 500;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   border: 1px solid transparent;
   cursor: pointer;
   transition: all var(--duration-fast) var(--ease-out);
@@ -758,7 +884,333 @@ table tbody tr:hover td {
 
 .badge-purple {
   background: rgba(139, 92, 246, 0.1);
-  color: #a78bfa;
+  color: #7c3aed;
+}
+
+/* Pill badges (like Donezo status badges) */
+.badge-pill {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-completed {
+  background: var(--success-subtle);
+  color: var(--success-text);
+}
+
+.badge-in-progress {
+  background: var(--warning-subtle);
+  color: var(--warning-text);
+}
+
+.badge-pending {
+  background: var(--bg-tertiary);
+  color: var(--text-tertiary);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hatched pattern for pending items (like Donezo) */
+.badge-pending::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 3px,
+    rgba(0, 0, 0, 0.05) 3px,
+    rgba(0, 0, 0, 0.05) 6px
+  );
+}
+
+.badge-pending span {
+  position: relative;
+}
+
+/* ============================================
+   Project List Cards (Donezo-style)
+   ============================================ */
+
+.project-list {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+
+.project-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.project-list-header h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.project-list-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-5);
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background var(--duration-fast);
+}
+
+.project-list-item:last-child {
+  border-bottom: none;
+}
+
+.project-list-item:hover {
+  background: var(--bg-tertiary);
+}
+
+.project-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.project-icon.green { background: var(--success-subtle); }
+.project-icon.yellow { background: var(--warning-subtle); }
+.project-icon.red { background: var(--error-subtle); }
+.project-icon.blue { background: var(--info-subtle); }
+
+.project-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.project-name {
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.project-meta {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+}
+
+/* ============================================
+   Team Collaboration List
+   ============================================ */
+
+.team-list {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+}
+
+.team-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.team-member {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-5);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.team-member:last-child {
+  border-bottom: none;
+}
+
+.member-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-olive) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.member-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.member-name {
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.member-task {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+}
+
+.member-task strong {
+  color: var(--text-primary);
+}
+
+/* ============================================
+   Progress Circle (like Donezo)
+   ============================================ */
+
+.progress-circle-container {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+  padding: var(--space-5);
+  text-align: center;
+}
+
+.progress-circle {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto var(--space-4);
+  position: relative;
+}
+
+.progress-circle-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.progress-circle-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.progress-circle-label {
+  font-size: 0.875rem;
+  color: var(--text-tertiary);
+}
+
+.progress-legend {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-5);
+  font-size: 0.8125rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+}
+
+.legend-dot.completed { background: var(--accent-primary); }
+.legend-dot.in-progress { background: var(--warning); }
+.legend-dot.pending {
+  background: var(--bg-tertiary);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.1) 2px,
+    rgba(0, 0, 0, 0.1) 4px
+  );
+}
+
+/* ============================================
+   Time Tracker Widget
+   ============================================ */
+
+.time-tracker {
+  background: linear-gradient(135deg, #1a2e1a 0%, #2d4a2d 100%);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.time-tracker::before {
+  content: '';
+  position: absolute;
+  right: -50px;
+  bottom: -50px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+}
+
+.time-tracker-label {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: var(--space-2);
+}
+
+.time-tracker-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  margin-bottom: var(--space-4);
+}
+
+.time-tracker-controls {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.time-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--duration-fast);
+}
+
+.time-btn.pause {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.time-btn.pause:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.time-btn.stop {
+  background: #dc2626;
+  color: white;
+}
+
+.time-btn.stop:hover {
+  background: #b91c1c;
 }
 
 /* ============================================
@@ -913,15 +1365,15 @@ table tbody tr:hover td {
 }
 
 .auth-logo {
-  width: 48px;
-  height: 48px;
-  background: linear-gradient(135deg, var(--accent-primary) 0%, #8b5cf6 100%);
-  border-radius: var(--radius-lg);
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-olive) 100%);
+  border-radius: var(--radius-xl);
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto var(--space-4);
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 700;
   color: white;
 }

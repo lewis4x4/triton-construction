@@ -1,0 +1,320 @@
+/* Dashboard.css - Donezo-inspired theme */
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+  margin-bottom: var(--space-6);
+}
+
+@media (max-width: 1200px) {
+  .dashboard-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stat-card {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  transition: all var(--duration-normal) var(--ease-out);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+  transform: translateY(-2px);
+}
+
+/* Primary stat card - forest green background */
+.stat-card-primary {
+  background: var(--accent-primary);
+  color: white;
+}
+
+.stat-card-primary .stat-value,
+.stat-card-primary .stat-label {
+  color: white;
+}
+
+.stat-card-primary .stat-trend {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+/* Green accent bar on left */
+.stat-accent-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--accent-light);
+}
+
+.stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-subtle);
+  color: var(--accent-primary);
+}
+
+.stat-icon-primary {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.stat-trend {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-full);
+}
+
+.stat-trend-up {
+  background: var(--success-subtle);
+  color: var(--success-text);
+}
+
+.stat-trend-warning {
+  background: var(--warning-subtle);
+  color: var(--warning-text);
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-top: var(--space-1);
+  font-weight: 500;
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-5);
+}
+
+@media (max-width: 900px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dashboard-card {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.dashboard-card.span-2 {
+  grid-column: span 2;
+}
+
+@media (max-width: 900px) {
+  .dashboard-card.span-2 {
+    grid-column: span 1;
+  }
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.card-header h3 {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.card-badge {
+  font-size: 0.75rem;
+  padding: var(--space-1) var(--space-3);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.card-link {
+  font-size: 0.8125rem;
+  color: var(--accent-primary);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.card-link:hover {
+  color: var(--accent-hover);
+}
+
+/* Quick Actions */
+.quick-actions {
+  padding: var(--space-2);
+}
+
+.quick-action-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: var(--radius-lg);
+  transition: all var(--duration-fast);
+}
+
+.quick-action-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.quick-action-btn span {
+  flex: 1;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.quick-action-btn .arrow {
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: all var(--duration-fast);
+  color: var(--accent-primary);
+}
+
+.quick-action-btn:hover .arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Checklist */
+.checklist {
+  padding: var(--space-2);
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: var(--radius-lg);
+  transition: all var(--duration-fast);
+}
+
+.checklist-item:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.check-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-tertiary);
+  border: 2px solid var(--border-default);
+  flex-shrink: 0;
+}
+
+.check-icon.done {
+  background: var(--success);
+  border-color: var(--success);
+  color: white;
+}
+
+.check-number {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+}
+
+.check-label {
+  flex: 1;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.checklist-item .arrow {
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: all var(--duration-fast);
+  color: var(--accent-primary);
+}
+
+.checklist-item:hover .arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Empty State */
+.empty-state-inline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-10);
+  text-align: center;
+}
+
+.empty-state-inline .empty-icon {
+  color: var(--text-muted);
+  margin-bottom: var(--space-3);
+}
+
+.empty-state-inline p {
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+  margin: 0;
+}
+
+.empty-state-inline .empty-hint {
+  color: var(--text-tertiary);
+  font-size: 0.8125rem;
+  margin-top: var(--space-1);
+}
