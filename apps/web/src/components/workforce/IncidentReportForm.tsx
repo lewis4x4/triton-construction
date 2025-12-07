@@ -5,7 +5,7 @@
 // =============================================================================
 
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../../lib/supabase';
+import { supabase } from '@triton/supabase-client';
 import {
   AlertTriangle,
   User,

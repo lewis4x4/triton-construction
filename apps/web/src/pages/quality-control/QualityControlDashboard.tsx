@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../../lib/supabase';
+import { supabase } from '@triton/supabase-client';
 import { InspectionList } from '../../components/quality-control/InspectionList';
 import { TestResultsPanel } from '../../components/quality-control/TestResultsPanel';
 import { NCRTracker } from '../../components/quality-control/NCRTracker';

@@ -1,0 +1,482 @@
+.my-certs-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.my-certs-header {
+  margin-bottom: 24px;
+}
+
+.my-certs-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 8px 0;
+}
+
+.my-certs-header .subtitle {
+  color: #666;
+  font-size: 16px;
+  margin: 0;
+}
+
+.error-banner {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 12px 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.error-icon {
+  font-size: 18px;
+}
+
+.loading-spinner {
+  text-align: center;
+  padding: 48px;
+  color: #666;
+}
+
+/* Summary Cards */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.summary-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid;
+}
+
+.summary-card.valid {
+  border-color: #22c55e;
+}
+
+.summary-card.warning {
+  border-color: #f59e0b;
+}
+
+.summary-card.danger {
+  border-color: #ef4444;
+}
+
+.summary-card.info {
+  border-color: #3b82f6;
+}
+
+.card-icon {
+  font-size: 24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f4f6;
+}
+
+.summary-card.valid .card-icon {
+  background: #dcfce7;
+  color: #22c55e;
+}
+
+.summary-card.warning .card-icon {
+  background: #fef3c7;
+  color: #f59e0b;
+}
+
+.summary-card.danger .card-icon {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+.summary-card.info .card-icon {
+  background: #dbeafe;
+  color: #3b82f6;
+}
+
+.card-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.card-label {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 2px solid #e5e7eb;
+  margin-bottom: 24px;
+}
+
+.tab {
+  padding: 12px 24px;
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s;
+}
+
+.tab:hover {
+  color: #3b82f6;
+}
+
+.tab.active {
+  color: #3b82f6;
+  border-bottom-color: #3b82f6;
+}
+
+/* Certifications Grid */
+.certifications-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.cert-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-top: 4px solid #22c55e;
+}
+
+.cert-card.expiring_soon {
+  border-top-color: #f59e0b;
+}
+
+.cert-card.expired {
+  border-top-color: #ef4444;
+  opacity: 0.8;
+}
+
+.cert-card.no_expiry {
+  border-top-color: #6366f1;
+}
+
+.cert-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.expiry-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.badge-valid {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.badge-warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge-expired {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.badge-info {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.days-remaining {
+  font-size: 12px;
+  color: #666;
+}
+
+.cert-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin: 0 0 4px 0;
+}
+
+.cert-code {
+  font-size: 13px;
+  color: #666;
+  font-family: monospace;
+  margin: 0 0 16px 0;
+}
+
+.cert-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.detail-row .label {
+  color: #666;
+}
+
+.detail-row .value {
+  color: #1a1a2e;
+  font-weight: 500;
+}
+
+.verify-link {
+  display: inline-block;
+  margin-top: 16px;
+  color: #3b82f6;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.verify-link:hover {
+  text-decoration: underline;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  background: #f9fafb;
+  border-radius: 12px;
+  grid-column: 1 / -1;
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.empty-state h3 {
+  font-size: 18px;
+  color: #1a1a2e;
+  margin: 0 0 8px 0;
+}
+
+.empty-state p {
+  color: #666;
+  margin: 0;
+}
+
+/* Training History Table */
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.history-table th,
+.history-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.history-table th {
+  background: #f9fafb;
+  font-weight: 600;
+  color: #374151;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.history-table td {
+  font-size: 14px;
+  color: #1a1a2e;
+}
+
+.program-code {
+  color: #666;
+  font-size: 12px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.status-badge.present {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.absent {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status-badge.excused {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-badge.registered {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.certs-earned {
+  margin: 0;
+  padding-left: 16px;
+  font-size: 13px;
+}
+
+.certs-earned li {
+  margin-bottom: 4px;
+}
+
+/* Upcoming Training Cards */
+.upcoming-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.upcoming-card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.upcoming-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #3b82f6;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  min-width: 60px;
+}
+
+.upcoming-date .month {
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.upcoming-date .day {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.upcoming-details {
+  flex: 1;
+}
+
+.upcoming-details h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  color: #1a1a2e;
+}
+
+.upcoming-details .meta {
+  display: flex;
+  gap: 16px;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.upcoming-details .instructor {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+}
+
+.registration-status {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.registration-status.registered {
+  background: #dcfce7;
+  color: #166534;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .my-certs-container {
+    padding: 16px;
+  }
+
+  .summary-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tabs {
+    overflow-x: auto;
+  }
+
+  .tab {
+    padding: 12px 16px;
+    white-space: nowrap;
+  }
+
+  .certifications-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .history-table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .upcoming-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .upcoming-date {
+    flex-direction: row;
+    gap: 8px;
+    width: 100%;
+    justify-content: center;
+  }
+}

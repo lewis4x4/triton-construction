@@ -56,6 +56,8 @@ import { TrainingDashboard } from './pages/training/TrainingDashboard';
 // Safety Module
 import { DailySafetyBriefForm } from './components/safety/DailySafetyBriefForm';
 import { StartMyDayScreen } from './components/safety/StartMyDayScreen';
+// Self-Service Module
+import { MyCertifications } from './pages/my/MyCertifications';
 import './styles/index.css';
 
 function App() {
@@ -422,6 +424,18 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <PredictiveAnalyticsDashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Self-Service routes */}
+          <Route
+            path="/my/certifications"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <MyCertifications />
                 </Layout>
               </ProtectedRoute>
             }
