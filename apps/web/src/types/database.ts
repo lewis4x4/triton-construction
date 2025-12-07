@@ -10423,6 +10423,20 @@ export type Database = {
             foreignKeyName: "employee_certifications_training_session_id_fkey"
             columns: ["training_session_id"]
             isOneToOne: false
+            referencedRelation: "v_my_training_history"
+            referencedColumns: ["session_id"]
+          },
+          {
+            foreignKeyName: "employee_certifications_training_session_id_fkey"
+            columns: ["training_session_id"]
+            isOneToOne: false
+            referencedRelation: "v_my_upcoming_training"
+            referencedColumns: ["session_id"]
+          },
+          {
+            foreignKeyName: "employee_certifications_training_session_id_fkey"
+            columns: ["training_session_id"]
+            isOneToOne: false
             referencedRelation: "v_upcoming_training_sessions"
             referencedColumns: ["id"]
           },
@@ -10466,6 +10480,7 @@ export type Database = {
           union_local: string | null
           updated_at: string | null
           updated_by: string | null
+          user_id: string | null
         }
         Insert: {
           can_drive_company_vehicle?: boolean | null
@@ -10504,6 +10519,7 @@ export type Database = {
           union_local?: string | null
           updated_at?: string | null
           updated_by?: string | null
+          user_id?: string | null
         }
         Update: {
           can_drive_company_vehicle?: boolean | null
@@ -10542,6 +10558,7 @@ export type Database = {
           union_local?: string | null
           updated_at?: string | null
           updated_by?: string | null
+          user_id?: string | null
         }
         Relationships: [
           {
@@ -20278,6 +20295,20 @@ export type Database = {
             foreignKeyName: "training_session_attendees_session_id_fkey"
             columns: ["session_id"]
             isOneToOne: false
+            referencedRelation: "v_my_training_history"
+            referencedColumns: ["session_id"]
+          },
+          {
+            foreignKeyName: "training_session_attendees_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "v_my_upcoming_training"
+            referencedColumns: ["session_id"]
+          },
+          {
+            foreignKeyName: "training_session_attendees_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
             referencedRelation: "v_upcoming_training_sessions"
             referencedColumns: ["id"]
           },
@@ -25076,6 +25107,65 @@ export type Database = {
           },
         ]
       }
+      v_my_certifications: {
+        Row: {
+          category: string | null
+          certificate_number: string | null
+          certification_code: string | null
+          certification_name: string | null
+          days_until_expiry: number | null
+          document_url: string | null
+          employee_id: string | null
+          expiration_date: string | null
+          expiry_status: string | null
+          id: string | null
+          issue_date: string | null
+          issuing_authority: string | null
+          status: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_certifications_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      v_my_training_history: {
+        Row: {
+          attendance_status:
+            | Database["public"]["Enums"]["attendance_status"]
+            | null
+          certifications_earned: string[] | null
+          certifications_granted: boolean | null
+          duration_hours: number | null
+          instructor_name: string | null
+          location: string | null
+          program_code: string | null
+          program_name: string | null
+          session_date: string | null
+          session_id: string | null
+          signed_at: string | null
+        }
+        Relationships: []
+      }
+      v_my_upcoming_training: {
+        Row: {
+          attendance_status:
+            | Database["public"]["Enums"]["attendance_status"]
+            | null
+          duration_hours: number | null
+          instructor_name: string | null
+          location: string | null
+          program_name: string | null
+          session_date: string | null
+          session_id: string | null
+          session_time: string | null
+        }
+        Relationships: []
+      }
       v_open_ncrs: {
         Row: {
           corrective_action_due_date: string | null
@@ -28168,6 +28258,10 @@ export type Database = {
           p_project_id?: string
           p_user_id: string
         }
+        Returns: boolean
+      }
+      user_has_valid_certification: {
+        Args: { cert_code: string }
         Returns: boolean
       }
       user_is_on_project: {
