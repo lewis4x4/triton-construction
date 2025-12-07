@@ -8,10 +8,10 @@
 export { EmergencyDigUp, EmergencyDigUpButton } from './EmergencyDigUp';
 
 // Photo Verification - 48hr verification prompts
-export { PhotoVerificationPrompt, PhotoVerificationButton, PhotoVerifiedBadge } from './PhotoVerificationPrompt';
+export { PhotoVerificationPrompt, PhotoVerificationButton } from './PhotoVerificationPrompt';
 
 // Alert Acknowledgement - Tracking sent/delivered/acknowledged
-export { AlertAcknowledgementBanner, AlertAcknowledgementModal, usePendingAlertCount } from './AlertAcknowledgement';
+export { AlertAcknowledgementBanner, AlertNotificationBadge, usePendingAlertCount } from './AlertAcknowledgement';
 
 // Conflict Resolution - Log and resolve utility conflicts
 export { ConflictResolutionModal, ConflictBadge, LogConflictModal } from './ConflictResolution';
@@ -43,7 +43,7 @@ export { TicketAnalyticsDashboard } from './TicketAnalyticsDashboard';
 export { MultiCrewCoordination, NearbyCrewsWidget } from './MultiCrewCoordination';
 
 // Ticket Renewal - Chain management and renewal workflow
-export { TicketRenewal, RenewalButton } from './TicketRenewal';
+export { TicketRenewalModal, RenewalButton } from './TicketRenewal';
 
 // Polygon Drawing Tool - Draw dig area boundaries on map
 export { PolygonDrawingTool, DrawDigAreaButton } from './PolygonDrawingTool';

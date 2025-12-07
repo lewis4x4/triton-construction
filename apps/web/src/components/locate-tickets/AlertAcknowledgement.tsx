@@ -3,7 +3,6 @@ import {
   AlertTriangle,
   XCircle,
   Clock,
-  CheckCircle,
   Bell,
   X,
   ChevronRight,
@@ -124,7 +123,7 @@ export function AlertAcknowledgementBanner({ onAcknowledge, onDismiss }: AlertAc
   if (isLoading || pendingAlerts.length === 0) return null;
 
   const criticalAlerts = pendingAlerts.filter((a) => a.priority === 'CRITICAL');
-  const warningAlerts = pendingAlerts.filter((a) => a.priority === 'WARNING');
+  const _warningAlerts = pendingAlerts.filter((a) => a.priority === 'WARNING');
 
   return (
     <>

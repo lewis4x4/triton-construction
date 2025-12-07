@@ -6,7 +6,6 @@ import {
   User,
   Calendar,
   FileText,
-  Clock,
   X,
   Send,
   Loader2,

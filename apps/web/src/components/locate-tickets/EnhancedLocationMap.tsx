@@ -106,7 +106,7 @@ function createBufferPolygon(
  * Alternative buffer using perpendicular offset at each edge midpoint
  * This creates a more uniform buffer around the polygon edges
  */
-function createEdgeBufferPolygon(
+function _createEdgeBufferPolygon(
   coordinates: [number, number][],
   bufferMeters: number = DEFAULT_BUFFER_DISTANCE
 ): [number, number][] {
@@ -201,7 +201,7 @@ export function EnhancedLocationMap({
   initialLng,
   onCoordinatesFound,
   height = 250,
-  ticketStatus,
+  ticketStatus: _ticketStatus,
   ticketNumber,
   safeZones = [],
   photoPins = [],
@@ -554,7 +554,7 @@ export function EnhancedLocationMap({
   };
 
   // Check if point is inside safe zone
-  const checkPointInSafeZone = useCallback((lat: number, lng: number) => {
+  const _checkPointInSafeZone = useCallback((lat: number, lng: number) => {
     // Simple ray casting algorithm for point in polygon
     for (const zone of safeZones) {
       const poly = zone.coordinates;
