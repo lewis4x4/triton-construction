@@ -29,6 +29,10 @@ import { MaterialTicketCapture } from './components/workforce/MaterialTicketCapt
 import { IncidentReportForm } from './components/workforce/IncidentReportForm';
 import { ToolboxTalkForm } from './components/workforce/ToolboxTalkForm';
 import { FleetDashboard } from './components/workforce/FleetDashboard';
+// Quality Control Module
+import { QualityControlDashboard } from './pages/quality-control/QualityControlDashboard';
+// Daily Reports
+import { VoiceDailyReportPage } from './pages/daily-reports/VoiceDailyReportPage';
 import './styles/index.css';
 
 function App() {
@@ -257,6 +261,30 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <FleetDashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Quality Control routes */}
+          <Route
+            path="/quality-control"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <QualityControlDashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Daily Reports routes */}
+          <Route
+            path="/daily-reports/voice"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <VoiceDailyReportPage />
                 </Layout>
               </ProtectedRoute>
             }
