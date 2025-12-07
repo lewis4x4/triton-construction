@@ -5780,6 +5780,74 @@ export type Database = {
           },
         ]
       }
+      checklist_items: {
+        Row: {
+          acceptance_criteria: string | null
+          checklist_id: string
+          created_at: string | null
+          description: string
+          id: string
+          is_required: boolean | null
+          item_number: number
+          max_value: number | null
+          min_value: number | null
+          requires_measurement: boolean | null
+          requires_photo: boolean | null
+          requires_signature: boolean | null
+          response_type: string | null
+          section: string | null
+          sort_order: number | null
+          specification_reference: string | null
+          unit_of_measure: string | null
+        }
+        Insert: {
+          acceptance_criteria?: string | null
+          checklist_id: string
+          created_at?: string | null
+          description: string
+          id?: string
+          is_required?: boolean | null
+          item_number: number
+          max_value?: number | null
+          min_value?: number | null
+          requires_measurement?: boolean | null
+          requires_photo?: boolean | null
+          requires_signature?: boolean | null
+          response_type?: string | null
+          section?: string | null
+          sort_order?: number | null
+          specification_reference?: string | null
+          unit_of_measure?: string | null
+        }
+        Update: {
+          acceptance_criteria?: string | null
+          checklist_id?: string
+          created_at?: string | null
+          description?: string
+          id?: string
+          is_required?: boolean | null
+          item_number?: number
+          max_value?: number | null
+          min_value?: number | null
+          requires_measurement?: boolean | null
+          requires_photo?: boolean | null
+          requires_signature?: boolean | null
+          response_type?: string | null
+          section?: string | null
+          sort_order?: number | null
+          specification_reference?: string | null
+          unit_of_measure?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "checklist_items_checklist_id_fkey"
+            columns: ["checklist_id"]
+            isOneToOne: false
+            referencedRelation: "inspection_checklists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       competent_person_designations: {
         Row: {
           competent_person_type: string
@@ -8392,6 +8460,128 @@ export type Database = {
           },
         ]
       }
+      hold_points: {
+        Row: {
+          activity_description: string
+          advance_notice_days: number | null
+          bypass_approved_by: string | null
+          bypass_reason: string | null
+          cost_code: string | null
+          created_at: string | null
+          created_by: string | null
+          hold_point_number: string
+          hold_type: string | null
+          id: string
+          inspection_id: string | null
+          notes: string | null
+          notify_owner: boolean | null
+          notify_wvdoh: boolean | null
+          organization_id: string
+          project_id: string
+          release_notes: string | null
+          released_at: string | null
+          released_by: string | null
+          requested_by: string | null
+          requested_date: string | null
+          required_documentation: string[] | null
+          required_inspections: string[] | null
+          required_tests: string[] | null
+          specification_section: string | null
+          status: string | null
+          updated_at: string | null
+          work_item: string | null
+        }
+        Insert: {
+          activity_description: string
+          advance_notice_days?: number | null
+          bypass_approved_by?: string | null
+          bypass_reason?: string | null
+          cost_code?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          hold_point_number: string
+          hold_type?: string | null
+          id?: string
+          inspection_id?: string | null
+          notes?: string | null
+          notify_owner?: boolean | null
+          notify_wvdoh?: boolean | null
+          organization_id: string
+          project_id: string
+          release_notes?: string | null
+          released_at?: string | null
+          released_by?: string | null
+          requested_by?: string | null
+          requested_date?: string | null
+          required_documentation?: string[] | null
+          required_inspections?: string[] | null
+          required_tests?: string[] | null
+          specification_section?: string | null
+          status?: string | null
+          updated_at?: string | null
+          work_item?: string | null
+        }
+        Update: {
+          activity_description?: string
+          advance_notice_days?: number | null
+          bypass_approved_by?: string | null
+          bypass_reason?: string | null
+          cost_code?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          hold_point_number?: string
+          hold_type?: string | null
+          id?: string
+          inspection_id?: string | null
+          notes?: string | null
+          notify_owner?: boolean | null
+          notify_wvdoh?: boolean | null
+          organization_id?: string
+          project_id?: string
+          release_notes?: string | null
+          released_at?: string | null
+          released_by?: string | null
+          requested_by?: string | null
+          requested_date?: string | null
+          required_documentation?: string[] | null
+          required_inspections?: string[] | null
+          required_tests?: string[] | null
+          specification_section?: string | null
+          status?: string | null
+          updated_at?: string | null
+          work_item?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hold_points_inspection_id_fkey"
+            columns: ["inspection_id"]
+            isOneToOne: false
+            referencedRelation: "inspections"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "hold_points_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "hold_points_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "hold_points_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       incidents: {
         Row: {
           body_part_affected: string | null
@@ -8596,6 +8786,325 @@ export type Database = {
             columns: ["proposal_id"]
             isOneToOne: false
             referencedRelation: "v_bid_summary"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inspection_checklists: {
+        Row: {
+          code: string
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          effective_date: string | null
+          id: string
+          inspection_type: Database["public"]["Enums"]["inspection_type"]
+          is_active: boolean | null
+          name: string
+          organization_id: string
+          updated_at: string | null
+          version: number | null
+          work_type: string | null
+          wvdoh_division: string | null
+          wvdoh_form_number: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          effective_date?: string | null
+          id?: string
+          inspection_type: Database["public"]["Enums"]["inspection_type"]
+          is_active?: boolean | null
+          name: string
+          organization_id: string
+          updated_at?: string | null
+          version?: number | null
+          work_type?: string | null
+          wvdoh_division?: string | null
+          wvdoh_form_number?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          effective_date?: string | null
+          id?: string
+          inspection_type?: Database["public"]["Enums"]["inspection_type"]
+          is_active?: boolean | null
+          name?: string
+          organization_id?: string
+          updated_at?: string | null
+          version?: number | null
+          work_type?: string | null
+          wvdoh_division?: string | null
+          wvdoh_form_number?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inspection_checklists_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inspection_responses: {
+        Row: {
+          checklist_item_id: string
+          deficiency_description: string | null
+          id: string
+          inspection_id: string
+          is_compliant: boolean | null
+          notes: string | null
+          numeric_value: number | null
+          photo_urls: string[] | null
+          responded_at: string | null
+          responded_by: string | null
+          response: string | null
+          text_value: string | null
+        }
+        Insert: {
+          checklist_item_id: string
+          deficiency_description?: string | null
+          id?: string
+          inspection_id: string
+          is_compliant?: boolean | null
+          notes?: string | null
+          numeric_value?: number | null
+          photo_urls?: string[] | null
+          responded_at?: string | null
+          responded_by?: string | null
+          response?: string | null
+          text_value?: string | null
+        }
+        Update: {
+          checklist_item_id?: string
+          deficiency_description?: string | null
+          id?: string
+          inspection_id?: string
+          is_compliant?: boolean | null
+          notes?: string | null
+          numeric_value?: number | null
+          photo_urls?: string[] | null
+          responded_at?: string | null
+          responded_by?: string | null
+          response?: string | null
+          text_value?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inspection_responses_checklist_item_id_fkey"
+            columns: ["checklist_item_id"]
+            isOneToOne: false
+            referencedRelation: "checklist_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inspection_responses_inspection_id_fkey"
+            columns: ["inspection_id"]
+            isOneToOne: false
+            referencedRelation: "inspections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inspections: {
+        Row: {
+          actual_date: string | null
+          actual_end_time: string | null
+          actual_start_time: string | null
+          checklist_id: string | null
+          conditions_due_date: string | null
+          conditions_for_acceptance: string | null
+          contractor_rep_name: string | null
+          contractor_signature_url: string | null
+          contractor_signed_at: string | null
+          cost_code: string | null
+          created_at: string | null
+          created_by: string | null
+          daily_report_id: string | null
+          documents: string[] | null
+          id: string
+          inspection_number: string
+          inspection_type: Database["public"]["Enums"]["inspection_type"]
+          inspector_company: string | null
+          inspector_name: string | null
+          inspector_signature_url: string | null
+          inspector_signed_at: string | null
+          items_failed: number | null
+          items_na: number | null
+          items_passed: number | null
+          latitude: number | null
+          lead_inspector_id: string | null
+          location_description: string | null
+          longitude: number | null
+          notes: string | null
+          organization_id: string
+          overall_result: string | null
+          pass_percentage: number | null
+          photos: string[] | null
+          project_id: string
+          reinspection_id: string | null
+          requires_reinspection: boolean | null
+          scheduled_date: string | null
+          scheduled_time: string | null
+          station_from: string | null
+          station_to: string | null
+          status: Database["public"]["Enums"]["inspection_status"] | null
+          updated_at: string | null
+          work_description: string | null
+          wvdoh_comments: string | null
+          wvdoh_inspector_name: string | null
+          wvdoh_inspector_present: boolean | null
+        }
+        Insert: {
+          actual_date?: string | null
+          actual_end_time?: string | null
+          actual_start_time?: string | null
+          checklist_id?: string | null
+          conditions_due_date?: string | null
+          conditions_for_acceptance?: string | null
+          contractor_rep_name?: string | null
+          contractor_signature_url?: string | null
+          contractor_signed_at?: string | null
+          cost_code?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          daily_report_id?: string | null
+          documents?: string[] | null
+          id?: string
+          inspection_number: string
+          inspection_type: Database["public"]["Enums"]["inspection_type"]
+          inspector_company?: string | null
+          inspector_name?: string | null
+          inspector_signature_url?: string | null
+          inspector_signed_at?: string | null
+          items_failed?: number | null
+          items_na?: number | null
+          items_passed?: number | null
+          latitude?: number | null
+          lead_inspector_id?: string | null
+          location_description?: string | null
+          longitude?: number | null
+          notes?: string | null
+          organization_id: string
+          overall_result?: string | null
+          pass_percentage?: number | null
+          photos?: string[] | null
+          project_id: string
+          reinspection_id?: string | null
+          requires_reinspection?: boolean | null
+          scheduled_date?: string | null
+          scheduled_time?: string | null
+          station_from?: string | null
+          station_to?: string | null
+          status?: Database["public"]["Enums"]["inspection_status"] | null
+          updated_at?: string | null
+          work_description?: string | null
+          wvdoh_comments?: string | null
+          wvdoh_inspector_name?: string | null
+          wvdoh_inspector_present?: boolean | null
+        }
+        Update: {
+          actual_date?: string | null
+          actual_end_time?: string | null
+          actual_start_time?: string | null
+          checklist_id?: string | null
+          conditions_due_date?: string | null
+          conditions_for_acceptance?: string | null
+          contractor_rep_name?: string | null
+          contractor_signature_url?: string | null
+          contractor_signed_at?: string | null
+          cost_code?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          daily_report_id?: string | null
+          documents?: string[] | null
+          id?: string
+          inspection_number?: string
+          inspection_type?: Database["public"]["Enums"]["inspection_type"]
+          inspector_company?: string | null
+          inspector_name?: string | null
+          inspector_signature_url?: string | null
+          inspector_signed_at?: string | null
+          items_failed?: number | null
+          items_na?: number | null
+          items_passed?: number | null
+          latitude?: number | null
+          lead_inspector_id?: string | null
+          location_description?: string | null
+          longitude?: number | null
+          notes?: string | null
+          organization_id?: string
+          overall_result?: string | null
+          pass_percentage?: number | null
+          photos?: string[] | null
+          project_id?: string
+          reinspection_id?: string | null
+          requires_reinspection?: boolean | null
+          scheduled_date?: string | null
+          scheduled_time?: string | null
+          station_from?: string | null
+          station_to?: string | null
+          status?: Database["public"]["Enums"]["inspection_status"] | null
+          updated_at?: string | null
+          work_description?: string | null
+          wvdoh_comments?: string | null
+          wvdoh_inspector_name?: string | null
+          wvdoh_inspector_present?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inspections_checklist_id_fkey"
+            columns: ["checklist_id"]
+            isOneToOne: false
+            referencedRelation: "inspection_checklists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inspections_daily_report_id_fkey"
+            columns: ["daily_report_id"]
+            isOneToOne: false
+            referencedRelation: "daily_reports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inspections_daily_report_id_fkey"
+            columns: ["daily_report_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_report_approvals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inspections_daily_report_id_fkey"
+            columns: ["daily_report_id"]
+            isOneToOne: false
+            referencedRelation: "v_recent_daily_reports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inspections_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inspections_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inspections_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
             referencedColumns: ["id"]
           },
         ]
@@ -9236,6 +9745,212 @@ export type Database = {
             columns: ["driver_id"]
             isOneToOne: false
             referencedRelation: "driver_licenses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      non_conformances: {
+        Row: {
+          actual_cost: number | null
+          category: string | null
+          closed_at: string | null
+          closed_by: string | null
+          closure_notes: string | null
+          corrective_action: string | null
+          corrective_action_by: string | null
+          corrective_action_completed_at: string | null
+          corrective_action_due_date: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string
+          discovered_by: string | null
+          discovered_date: string
+          discoverer_name: string | null
+          documents: string[] | null
+          estimated_cost: number | null
+          id: string
+          inspection_id: string | null
+          investigated_by: string | null
+          investigation_completed_at: string | null
+          investigation_notes: string | null
+          latitude: number | null
+          lessons_learned: string | null
+          location_description: string | null
+          longitude: number | null
+          ncr_number: string
+          organization_id: string
+          photos: string[] | null
+          preventive_action: string | null
+          project_id: string
+          responsible_party: string | null
+          root_cause: string | null
+          severity: Database["public"]["Enums"]["ncr_severity"]
+          source_type: string | null
+          specification_reference: string | null
+          station: string | null
+          status: Database["public"]["Enums"]["ncr_status"] | null
+          subcontractor_id: string | null
+          test_result_id: string | null
+          title: string
+          updated_at: string | null
+          verification_method: string | null
+          verification_notes: string | null
+          verified_at: string | null
+          verified_by: string | null
+          wvdoh_notification_date: string | null
+          wvdoh_notified: boolean | null
+          wvdoh_response: string | null
+        }
+        Insert: {
+          actual_cost?: number | null
+          category?: string | null
+          closed_at?: string | null
+          closed_by?: string | null
+          closure_notes?: string | null
+          corrective_action?: string | null
+          corrective_action_by?: string | null
+          corrective_action_completed_at?: string | null
+          corrective_action_due_date?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description: string
+          discovered_by?: string | null
+          discovered_date: string
+          discoverer_name?: string | null
+          documents?: string[] | null
+          estimated_cost?: number | null
+          id?: string
+          inspection_id?: string | null
+          investigated_by?: string | null
+          investigation_completed_at?: string | null
+          investigation_notes?: string | null
+          latitude?: number | null
+          lessons_learned?: string | null
+          location_description?: string | null
+          longitude?: number | null
+          ncr_number: string
+          organization_id: string
+          photos?: string[] | null
+          preventive_action?: string | null
+          project_id: string
+          responsible_party?: string | null
+          root_cause?: string | null
+          severity: Database["public"]["Enums"]["ncr_severity"]
+          source_type?: string | null
+          specification_reference?: string | null
+          station?: string | null
+          status?: Database["public"]["Enums"]["ncr_status"] | null
+          subcontractor_id?: string | null
+          test_result_id?: string | null
+          title: string
+          updated_at?: string | null
+          verification_method?: string | null
+          verification_notes?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+          wvdoh_notification_date?: string | null
+          wvdoh_notified?: boolean | null
+          wvdoh_response?: string | null
+        }
+        Update: {
+          actual_cost?: number | null
+          category?: string | null
+          closed_at?: string | null
+          closed_by?: string | null
+          closure_notes?: string | null
+          corrective_action?: string | null
+          corrective_action_by?: string | null
+          corrective_action_completed_at?: string | null
+          corrective_action_due_date?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string
+          discovered_by?: string | null
+          discovered_date?: string
+          discoverer_name?: string | null
+          documents?: string[] | null
+          estimated_cost?: number | null
+          id?: string
+          inspection_id?: string | null
+          investigated_by?: string | null
+          investigation_completed_at?: string | null
+          investigation_notes?: string | null
+          latitude?: number | null
+          lessons_learned?: string | null
+          location_description?: string | null
+          longitude?: number | null
+          ncr_number?: string
+          organization_id?: string
+          photos?: string[] | null
+          preventive_action?: string | null
+          project_id?: string
+          responsible_party?: string | null
+          root_cause?: string | null
+          severity?: Database["public"]["Enums"]["ncr_severity"]
+          source_type?: string | null
+          specification_reference?: string | null
+          station?: string | null
+          status?: Database["public"]["Enums"]["ncr_status"] | null
+          subcontractor_id?: string | null
+          test_result_id?: string | null
+          title?: string
+          updated_at?: string | null
+          verification_method?: string | null
+          verification_notes?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+          wvdoh_notification_date?: string | null
+          wvdoh_notified?: boolean | null
+          wvdoh_response?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "non_conformances_inspection_id_fkey"
+            columns: ["inspection_id"]
+            isOneToOne: false
+            referencedRelation: "inspections"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "non_conformances_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "non_conformances_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "non_conformances_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "non_conformances_subcontractor_id_fkey"
+            columns: ["subcontractor_id"]
+            isOneToOne: false
+            referencedRelation: "subcontractors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "non_conformances_test_result_id_fkey"
+            columns: ["test_result_id"]
+            isOneToOne: false
+            referencedRelation: "test_results"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "non_conformances_test_result_id_fkey"
+            columns: ["test_result_id"]
+            isOneToOne: false
+            referencedRelation: "v_failed_tests"
             referencedColumns: ["id"]
           },
         ]
@@ -10431,6 +11146,212 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "master_wvdoh_items"
             referencedColumns: ["item_code"]
+          },
+        ]
+      }
+      punch_list_items: {
+        Row: {
+          after_photos: string[] | null
+          area: string | null
+          assigned_to: string | null
+          before_photos: string[] | null
+          completed_at: string | null
+          completed_by: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string
+          due_date: string | null
+          grid_reference: string | null
+          id: string
+          item_number: number
+          location: string
+          notes: string | null
+          priority: Database["public"]["Enums"]["punch_item_priority"] | null
+          punch_list_id: string
+          resolution_notes: string | null
+          responsible_party: string | null
+          room: string | null
+          specification_reference: string | null
+          status: Database["public"]["Enums"]["punch_item_status"] | null
+          subcontractor_id: string | null
+          trade: string | null
+          updated_at: string | null
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          after_photos?: string[] | null
+          area?: string | null
+          assigned_to?: string | null
+          before_photos?: string[] | null
+          completed_at?: string | null
+          completed_by?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description: string
+          due_date?: string | null
+          grid_reference?: string | null
+          id?: string
+          item_number: number
+          location: string
+          notes?: string | null
+          priority?: Database["public"]["Enums"]["punch_item_priority"] | null
+          punch_list_id: string
+          resolution_notes?: string | null
+          responsible_party?: string | null
+          room?: string | null
+          specification_reference?: string | null
+          status?: Database["public"]["Enums"]["punch_item_status"] | null
+          subcontractor_id?: string | null
+          trade?: string | null
+          updated_at?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          after_photos?: string[] | null
+          area?: string | null
+          assigned_to?: string | null
+          before_photos?: string[] | null
+          completed_at?: string | null
+          completed_by?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string
+          due_date?: string | null
+          grid_reference?: string | null
+          id?: string
+          item_number?: number
+          location?: string
+          notes?: string | null
+          priority?: Database["public"]["Enums"]["punch_item_priority"] | null
+          punch_list_id?: string
+          resolution_notes?: string | null
+          responsible_party?: string | null
+          room?: string | null
+          specification_reference?: string | null
+          status?: Database["public"]["Enums"]["punch_item_status"] | null
+          subcontractor_id?: string | null
+          trade?: string | null
+          updated_at?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "punch_list_items_punch_list_id_fkey"
+            columns: ["punch_list_id"]
+            isOneToOne: false
+            referencedRelation: "punch_lists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "punch_list_items_punch_list_id_fkey"
+            columns: ["punch_list_id"]
+            isOneToOne: false
+            referencedRelation: "v_punch_list_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "punch_list_items_subcontractor_id_fkey"
+            columns: ["subcontractor_id"]
+            isOneToOne: false
+            referencedRelation: "subcontractors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      punch_lists: {
+        Row: {
+          closed_at: string | null
+          closed_by: string | null
+          completed_items: number | null
+          completion_percentage: number | null
+          contractor_rep_id: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          due_date: string | null
+          final_sign_off_url: string | null
+          id: string
+          list_type: string | null
+          name: string
+          organization_id: string
+          owner_rep_name: string | null
+          project_id: string
+          status: string | null
+          total_items: number | null
+          updated_at: string | null
+          walkthrough_date: string | null
+          walkthrough_notes: string | null
+        }
+        Insert: {
+          closed_at?: string | null
+          closed_by?: string | null
+          completed_items?: number | null
+          completion_percentage?: number | null
+          contractor_rep_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          due_date?: string | null
+          final_sign_off_url?: string | null
+          id?: string
+          list_type?: string | null
+          name: string
+          organization_id: string
+          owner_rep_name?: string | null
+          project_id: string
+          status?: string | null
+          total_items?: number | null
+          updated_at?: string | null
+          walkthrough_date?: string | null
+          walkthrough_notes?: string | null
+        }
+        Update: {
+          closed_at?: string | null
+          closed_by?: string | null
+          completed_items?: number | null
+          completion_percentage?: number | null
+          contractor_rep_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          due_date?: string | null
+          final_sign_off_url?: string | null
+          id?: string
+          list_type?: string | null
+          name?: string
+          organization_id?: string
+          owner_rep_name?: string | null
+          project_id?: string
+          status?: string | null
+          total_items?: number | null
+          updated_at?: string | null
+          walkthrough_date?: string | null
+          walkthrough_notes?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "punch_lists_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "punch_lists_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "punch_lists_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -12563,6 +13484,259 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_active_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      test_results: {
+        Row: {
+          additional_results: Json | null
+          air_content: number | null
+          batch_number: string | null
+          created_at: string | null
+          created_by: string | null
+          failure_notes: string | null
+          id: string
+          inspection_id: string | null
+          lab_name: string | null
+          lab_report_url: string | null
+          mat_temperature: number | null
+          material_description: string | null
+          material_source: string | null
+          material_ticket_id: string | null
+          meets_specification: boolean | null
+          mix_design: string | null
+          ncr_id: string | null
+          notes: string | null
+          oil_content: number | null
+          organization_id: string
+          photos: string[] | null
+          project_id: string
+          result_unit: string | null
+          result_value: number | null
+          sample_date: string
+          sample_id: string | null
+          sample_location: string | null
+          sample_time: string | null
+          slump: number | null
+          specification_max: number | null
+          specification_min: number | null
+          station: string | null
+          status: Database["public"]["Enums"]["test_status"] | null
+          temperature: number | null
+          test_age_days: number | null
+          test_date: string | null
+          test_number: string
+          test_type_id: string | null
+          tested_by: string | null
+          updated_at: string | null
+          wvdoh_form_submitted: boolean | null
+          wvdoh_submission_date: string | null
+        }
+        Insert: {
+          additional_results?: Json | null
+          air_content?: number | null
+          batch_number?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          failure_notes?: string | null
+          id?: string
+          inspection_id?: string | null
+          lab_name?: string | null
+          lab_report_url?: string | null
+          mat_temperature?: number | null
+          material_description?: string | null
+          material_source?: string | null
+          material_ticket_id?: string | null
+          meets_specification?: boolean | null
+          mix_design?: string | null
+          ncr_id?: string | null
+          notes?: string | null
+          oil_content?: number | null
+          organization_id: string
+          photos?: string[] | null
+          project_id: string
+          result_unit?: string | null
+          result_value?: number | null
+          sample_date: string
+          sample_id?: string | null
+          sample_location?: string | null
+          sample_time?: string | null
+          slump?: number | null
+          specification_max?: number | null
+          specification_min?: number | null
+          station?: string | null
+          status?: Database["public"]["Enums"]["test_status"] | null
+          temperature?: number | null
+          test_age_days?: number | null
+          test_date?: string | null
+          test_number: string
+          test_type_id?: string | null
+          tested_by?: string | null
+          updated_at?: string | null
+          wvdoh_form_submitted?: boolean | null
+          wvdoh_submission_date?: string | null
+        }
+        Update: {
+          additional_results?: Json | null
+          air_content?: number | null
+          batch_number?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          failure_notes?: string | null
+          id?: string
+          inspection_id?: string | null
+          lab_name?: string | null
+          lab_report_url?: string | null
+          mat_temperature?: number | null
+          material_description?: string | null
+          material_source?: string | null
+          material_ticket_id?: string | null
+          meets_specification?: boolean | null
+          mix_design?: string | null
+          ncr_id?: string | null
+          notes?: string | null
+          oil_content?: number | null
+          organization_id?: string
+          photos?: string[] | null
+          project_id?: string
+          result_unit?: string | null
+          result_value?: number | null
+          sample_date?: string
+          sample_id?: string | null
+          sample_location?: string | null
+          sample_time?: string | null
+          slump?: number | null
+          specification_max?: number | null
+          specification_min?: number | null
+          station?: string | null
+          status?: Database["public"]["Enums"]["test_status"] | null
+          temperature?: number | null
+          test_age_days?: number | null
+          test_date?: string | null
+          test_number?: string
+          test_type_id?: string | null
+          tested_by?: string | null
+          updated_at?: string | null
+          wvdoh_form_submitted?: boolean | null
+          wvdoh_submission_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "test_results_inspection_id_fkey"
+            columns: ["inspection_id"]
+            isOneToOne: false
+            referencedRelation: "inspections"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "test_results_material_ticket_id_fkey"
+            columns: ["material_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "material_tickets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "test_results_material_ticket_id_fkey"
+            columns: ["material_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_tickets_pending_verification"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "test_results_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "test_results_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "test_results_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "test_results_test_type_id_fkey"
+            columns: ["test_type_id"]
+            isOneToOne: false
+            referencedRelation: "test_types"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      test_types: {
+        Row: {
+          category: Database["public"]["Enums"]["test_category"]
+          code: string
+          created_at: string | null
+          created_by: string | null
+          id: string
+          is_active: boolean | null
+          max_value: number | null
+          min_value: number | null
+          name: string
+          organization_id: string
+          required_frequency: string | null
+          specification_reference: string | null
+          target_value: number | null
+          test_method: string | null
+          unit_of_measure: string | null
+          updated_at: string | null
+          wvdoh_form_number: string | null
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["test_category"]
+          code: string
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          max_value?: number | null
+          min_value?: number | null
+          name: string
+          organization_id: string
+          required_frequency?: string | null
+          specification_reference?: string | null
+          target_value?: number | null
+          test_method?: string | null
+          unit_of_measure?: string | null
+          updated_at?: string | null
+          wvdoh_form_number?: string | null
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["test_category"]
+          code?: string
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          max_value?: number | null
+          min_value?: number | null
+          name?: string
+          organization_id?: string
+          required_frequency?: string | null
+          specification_reference?: string | null
+          target_value?: number | null
+          test_method?: string | null
+          unit_of_measure?: string | null
+          updated_at?: string | null
+          wvdoh_form_number?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "test_types_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
             referencedColumns: ["id"]
           },
         ]
@@ -16837,6 +18011,44 @@ export type Database = {
           },
         ]
       }
+      v_failed_tests: {
+        Row: {
+          id: string | null
+          organization_id: string | null
+          project_id: string | null
+          project_name: string | null
+          result_unit: string | null
+          result_value: number | null
+          sample_date: string | null
+          specification_max: number | null
+          specification_min: number | null
+          test_number: string | null
+          test_type: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "test_results_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "test_results_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "test_results_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       v_line_item_costing: {
         Row: {
           calculated_unit_price: number | null
@@ -16874,6 +18086,44 @@ export type Database = {
             columns: ["proposal_id"]
             isOneToOne: false
             referencedRelation: "v_bid_summary"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      v_open_ncrs: {
+        Row: {
+          corrective_action_due_date: string | null
+          discovered_date: string | null
+          id: string | null
+          is_overdue: boolean | null
+          ncr_number: string | null
+          organization_id: string | null
+          project_id: string | null
+          project_name: string | null
+          severity: Database["public"]["Enums"]["ncr_severity"] | null
+          status: Database["public"]["Enums"]["ncr_status"] | null
+          title: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "non_conformances_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "non_conformances_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "non_conformances_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
             referencedColumns: ["id"]
           },
         ]
@@ -17003,6 +18253,45 @@ export type Database = {
           },
           {
             foreignKeyName: "time_entries_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      v_punch_list_summary: {
+        Row: {
+          completed_items: number | null
+          completion_percentage: number | null
+          due_date: string | null
+          id: string | null
+          list_type: string | null
+          name: string | null
+          organization_id: string | null
+          project_id: string | null
+          project_name: string | null
+          remaining_items: number | null
+          status: string | null
+          total_items: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "punch_lists_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "punch_lists_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "punch_lists_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_active_projects"
@@ -18059,6 +19348,11 @@ export type Database = {
         Args: { p_organization_id: string }
         Returns: string
       }
+      generate_inspection_number: {
+        Args: { p_project_id: string }
+        Returns: string
+      }
+      generate_ncr_number: { Args: { p_project_id: string }; Returns: string }
       generate_opportunity_number: {
         Args: { p_bid_project_id: string }
         Returns: string
@@ -19291,6 +20585,21 @@ export type Database = {
         | "PROFIT"
         | "CONTINGENCY"
         | "OTHER"
+      inspection_status:
+        | "scheduled"
+        | "in_progress"
+        | "passed"
+        | "failed"
+        | "conditional"
+        | "cancelled"
+      inspection_type:
+        | "pre_construction"
+        | "in_progress"
+        | "milestone"
+        | "final"
+        | "special"
+        | "wvdoh"
+        | "third_party"
       material_category:
         | "aggregate"
         | "asphalt"
@@ -19302,6 +20611,14 @@ export type Database = {
         | "fuel"
         | "equipment_rental"
         | "other"
+      ncr_severity: "minor" | "major" | "critical"
+      ncr_status:
+        | "open"
+        | "investigation"
+        | "corrective_action"
+        | "verification"
+        | "closed"
+        | "void"
       ocr_status:
         | "pending"
         | "processing"
@@ -19342,6 +20659,14 @@ export type Database = {
         | "FAILED"
         | "NEEDS_OCR"
         | "PARTIAL"
+      punch_item_priority: "critical" | "high" | "medium" | "low"
+      punch_item_status:
+        | "open"
+        | "in_progress"
+        | "ready_for_inspection"
+        | "completed"
+        | "deferred"
+        | "not_applicable"
       question_status_enum:
         | "AI_SUGGESTED"
         | "APPROVED"
@@ -19400,6 +20725,24 @@ export type Database = {
         | "EMBEDDING"
         | "COMPLETED"
         | "FAILED"
+      test_category:
+        | "concrete"
+        | "asphalt"
+        | "soil"
+        | "aggregate"
+        | "steel"
+        | "weld"
+        | "coating"
+        | "compaction"
+        | "gradation"
+        | "other"
+      test_status:
+        | "pending"
+        | "in_progress"
+        | "passed"
+        | "failed"
+        | "retest_required"
+        | "waived"
       ticket_status:
         | "pending_ocr"
         | "ocr_complete"
@@ -19801,6 +21144,23 @@ export const Constants = {
         "CONTINGENCY",
         "OTHER",
       ],
+      inspection_status: [
+        "scheduled",
+        "in_progress",
+        "passed",
+        "failed",
+        "conditional",
+        "cancelled",
+      ],
+      inspection_type: [
+        "pre_construction",
+        "in_progress",
+        "milestone",
+        "final",
+        "special",
+        "wvdoh",
+        "third_party",
+      ],
       material_category: [
         "aggregate",
         "asphalt",
@@ -19812,6 +21172,15 @@ export const Constants = {
         "fuel",
         "equipment_rental",
         "other",
+      ],
+      ncr_severity: ["minor", "major", "critical"],
+      ncr_status: [
+        "open",
+        "investigation",
+        "corrective_action",
+        "verification",
+        "closed",
+        "void",
       ],
       ocr_status: [
         "pending",
@@ -19857,6 +21226,15 @@ export const Constants = {
         "FAILED",
         "NEEDS_OCR",
         "PARTIAL",
+      ],
+      punch_item_priority: ["critical", "high", "medium", "low"],
+      punch_item_status: [
+        "open",
+        "in_progress",
+        "ready_for_inspection",
+        "completed",
+        "deferred",
+        "not_applicable",
       ],
       question_status_enum: [
         "AI_SUGGESTED",
@@ -19921,6 +21299,26 @@ export const Constants = {
         "EMBEDDING",
         "COMPLETED",
         "FAILED",
+      ],
+      test_category: [
+        "concrete",
+        "asphalt",
+        "soil",
+        "aggregate",
+        "steel",
+        "weld",
+        "coating",
+        "compaction",
+        "gradation",
+        "other",
+      ],
+      test_status: [
+        "pending",
+        "in_progress",
+        "passed",
+        "failed",
+        "retest_required",
+        "waived",
       ],
       ticket_status: [
         "pending_ocr",
