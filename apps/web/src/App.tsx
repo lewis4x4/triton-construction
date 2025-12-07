@@ -22,6 +22,13 @@ import { OrganizationSettings } from './pages/settings/OrganizationSettings';
 import { AdminDashboard } from './pages/admin/AdminDashboard';
 import { RoleAccessControl } from './pages/admin/RoleAccessControl';
 import { DocumentManagement } from './pages/admin/DocumentManagement';
+// Workforce Compliance Module
+import { WorkforceComplianceDashboard } from './pages/workforce-compliance/WorkforceComplianceDashboard';
+import { CrewBuilder } from './components/workforce/CrewBuilder';
+import { MaterialTicketCapture } from './components/workforce/MaterialTicketCapture';
+import { IncidentReportForm } from './components/workforce/IncidentReportForm';
+import { ToolboxTalkForm } from './components/workforce/ToolboxTalkForm';
+import { FleetDashboard } from './components/workforce/FleetDashboard';
 import './styles/index.css';
 
 function App() {
@@ -188,6 +195,68 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <OrganizationSettings />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Workforce Compliance routes */}
+          <Route
+            path="/workforce"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <WorkforceComplianceDashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/workforce/crew-builder"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <CrewBuilder projectId="" projectName="" onAssignmentCreated={() => {}} />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/workforce/material-tickets"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <MaterialTicketCapture projectId="" projectName="" />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/workforce/incident-report"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <IncidentReportForm projectId="" />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/workforce/toolbox-talk"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <ToolboxTalkForm projectId="" />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/workforce/fleet"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <FleetDashboard />
                 </Layout>
               </ProtectedRoute>
             }
