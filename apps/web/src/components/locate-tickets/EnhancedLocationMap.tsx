@@ -283,10 +283,10 @@ export function EnhancedLocationMap({
       interactive: interactive,
     });
 
-    // Add navigation controls
+    // Add navigation controls - positioned at bottom-right to avoid overlap with close button
     map.current.addControl(
       new mapboxgl.NavigationControl({ visualizePitch: true }),
-      'top-right'
+      'bottom-right'
     );
 
     // Add scale control

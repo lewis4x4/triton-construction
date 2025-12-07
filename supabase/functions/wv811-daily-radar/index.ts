@@ -175,27 +175,75 @@ serve(async (req) => {
         first_name: s.user_profiles.first_name,
       }));
 
-    // For now, generate a sample email for the first recipient
-    const sampleRecipient = recipients[0] || { first_name: 'Team' };
-    const emailHtml = generateMorningCoffeeEmail(radarData, today, sampleRecipient.first_name || 'Team', expiringSoon);
+    // Send emails to all subscribed recipients
+    const emailResults = {
+      sent: 0,
+      failed: 0,
+      errors: [] as string[],
+    };
 
-    console.log('Morning Coffee Brief Generated');
-    console.log('Recipients:', recipients.length);
+    for (const recipient of recipients) {
+      const emailHtml = generateMorningCoffeeEmail(
+        radarData,
+        today,
+        recipient.first_name || 'Team',
+        expiringSoon
+      );
+
+      try {
+        const emailResponse = await fetch(`${supabaseUrl}/functions/v1/email-send`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${supabaseKey}`,
+          },
+          body: JSON.stringify({
+            to: recipient.email,
+            subject: `Morning Coffee Brief - ${new Date(today).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}`,
+            html: emailHtml,
+            category: 'DAILY_RADAR',
+            userId: recipient.user_id,
+            tags: [
+              { name: 'type', value: 'daily-radar' },
+              { name: 'date', value: today },
+            ],
+          }),
+        });
+
+        if (emailResponse.ok) {
+          emailResults.sent++;
+          console.log(`Sent Morning Coffee Brief to ${recipient.email}`);
+        } else {
+          emailResults.failed++;
+          const error = await emailResponse.json();
+          emailResults.errors.push(`${recipient.email}: ${error.error || 'Unknown error'}`);
+        }
+      } catch (error) {
+        emailResults.failed++;
+        emailResults.errors.push(`${recipient.email}: ${error instanceof Error ? error.message : 'Send failed'}`);
+      }
+    }
+
+    console.log(`Morning Coffee Brief: Sent ${emailResults.sent}, Failed ${emailResults.failed}`);
 
     // Record that we sent the radar
     await supabase.from('wv811_daily_radar_sends').insert({
       sent_at: new Date().toISOString(),
       recipient_count: recipients.length,
+      emails_sent: emailResults.sent,
+      emails_failed: emailResults.failed,
       stats: radarData.stats,
     });
 
     return new Response(
       JSON.stringify({
         success: true,
-        message: 'Morning Coffee Brief generated',
+        message: `Morning Coffee Brief sent to ${emailResults.sent} recipients`,
         stats: radarData.stats,
         recipientCount: recipients.length,
-        emailHtml: emailHtml.substring(0, 500) + '...', // Preview only
+        emailsSent: emailResults.sent,
+        emailsFailed: emailResults.failed,
+        errors: emailResults.errors.length > 0 ? emailResults.errors : undefined,
       }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );

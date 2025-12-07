@@ -251,7 +251,14 @@ serve(async (req) => {
 
               // Send the actual alert based on channel
               if (channel.type === 'EMAIL' && sub.email_address) {
-                await sendEmailAlert(sub.email_address, alertSubject, alertBody);
+                await sendEmailAlert(
+                  sub.email_address,
+                  alertSubject,
+                  alertBody,
+                  ticket.ticket_id,
+                  sub.user_id,
+                  ticket.organization_id
+                );
               } else if (channel.type === 'SMS' && sub.phone_number) {
                 // SMS sending would be implemented with Twilio
                 // For now, just log it
@@ -425,30 +432,100 @@ async function getTicketAlertCount(
   return count || 0;
 }
 
-async function sendEmailAlert(to: string, subject: string, body: string): Promise<void> {
-  // In production, this would use SendGrid or another email service
-  // For now, just log it
-  console.log(`Sending email to ${to}:`);
-  console.log(`Subject: ${subject}`);
-  console.log(`Body: ${body.substring(0, 100)}...`);
+async function sendEmailAlert(
+  to: string,
+  subject: string,
+  body: string,
+  ticketId?: string,
+  userId?: string,
+  organizationId?: string
+): Promise<void> {
+  const supabaseUrl = Deno.env.get('SUPABASE_URL');
+  const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
 
-  // Example SendGrid implementation:
-  // const sendgridApiKey = Deno.env.get('SENDGRID_API_KEY');
-  // if (!sendgridApiKey) return;
-  //
-  // await fetch('https://api.sendgrid.com/v3/mail/send', {
-  //   method: 'POST',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     'Authorization': `Bearer ${sendgridApiKey}`,
-  //   },
-  //   body: JSON.stringify({
-  //     personalizations: [{ to: [{ email: to }] }],
-  //     from: { email: 'alerts@triton.app', name: 'Triton 811 Alerts' },
-  //     subject,
-  //     content: [{ type: 'text/plain', value: body }],
-  //   }),
-  // });
+  if (!supabaseUrl || !supabaseKey) {
+    console.error('Missing Supabase credentials for email sending');
+    return;
+  }
+
+  try {
+    // Call the email-send edge function
+    const response = await fetch(`${supabaseUrl}/functions/v1/email-send`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${supabaseKey}`,
+      },
+      body: JSON.stringify({
+        to,
+        subject,
+        text: body,
+        html: generateAlertEmailHtml(subject, body),
+        category: 'ALERT',
+        relatedEntityType: 'TICKET',
+        relatedEntityId: ticketId,
+        userId,
+        organizationId,
+        tags: [
+          { name: 'type', value: 'wv811-alert' },
+        ],
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      console.error('Failed to send email:', error);
+    } else {
+      const result = await response.json();
+      console.log(`Email sent successfully. ID: ${result.id}`);
+    }
+  } catch (error) {
+    console.error('Email send error:', error);
+  }
+}
+
+function generateAlertEmailHtml(subject: string, body: string): string {
+  // Determine alert level from subject
+  const isCritical = subject.includes('CRITICAL') || subject.includes('EXPIRED');
+  const isUrgent = subject.includes('URGENT') || subject.includes('ALERT') || subject.includes('CONFLICT');
+  const isWarning = subject.includes('Warning') || subject.includes('Reminder');
+
+  const alertColor = isCritical ? '#dc2626' : isUrgent ? '#ea580c' : isWarning ? '#ca8a04' : '#2563eb';
+  const alertBg = isCritical ? '#fef2f2' : isUrgent ? '#fff7ed' : isWarning ? '#fefce8' : '#eff6ff';
+
+  return `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${subject}</title>
+</head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 20px; background: #f8fafc;">
+  <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+    <div style="background: ${alertColor}; color: white; padding: 24px;">
+      <h1 style="margin: 0; font-size: 18px; font-weight: 600;">WV811 Alert</h1>
+    </div>
+    <div style="padding: 24px;">
+      <div style="background: ${alertBg}; border-left: 4px solid ${alertColor}; padding: 16px; margin-bottom: 20px; border-radius: 0 8px 8px 0;">
+        <h2 style="margin: 0 0 8px 0; font-size: 16px; color: #1e293b;">${subject}</h2>
+      </div>
+      <p style="font-size: 15px; line-height: 1.6; color: #475569; margin: 0 0 20px 0;">
+        ${body}
+      </p>
+      <a href="#" style="display: inline-block; padding: 12px 24px; background: ${alertColor}; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 14px;">
+        View Ticket Details
+      </a>
+    </div>
+    <div style="padding: 20px 24px; background: #f8fafc; border-top: 1px solid #e2e8f0; text-align: center;">
+      <p style="margin: 0; font-size: 12px; color: #64748b;">
+        Triton Construction AI Platform<br>
+        Always call 811 before you dig!
+      </p>
+    </div>
+  </div>
+</body>
+</html>`;
 }
 
 /**

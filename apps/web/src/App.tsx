@@ -9,12 +9,15 @@ import { Dashboard } from './pages/Dashboard';
 import { BidList } from './pages/bids/BidList';
 import { CreateBid } from './pages/bids/CreateBid';
 import { BidDetail } from './pages/bids/BidDetail';
+import { BidCommandCenter } from './pages/bid-intelligence/BidCommandCenter';
 import { SpecsPage } from './pages/specs/SpecsPage';
 import { LocateTicketsPage } from './pages/locate-tickets/LocateTicketsPage';
 import { TicketDetail } from './pages/locate-tickets/TicketDetail';
 import { DigCheckPage } from './pages/locate-tickets/DigCheckPage';
 import { DailyRadarPage } from './pages/locate-tickets/DailyRadarPage';
 import { TicketMapPage } from './pages/locate-tickets/TicketMapPage';
+import { AlertSettingsPage } from './pages/locate-tickets/AlertSettingsPage';
+import { AnalyticsDashboard } from './pages/locate-tickets/AnalyticsDashboard';
 import { OrganizationSettings } from './pages/settings/OrganizationSettings';
 import { AdminDashboard } from './pages/admin/AdminDashboard';
 import { RoleAccessControl } from './pages/admin/RoleAccessControl';
@@ -69,6 +72,26 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <BidDetail />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/bids/:id/command-center"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <BidCommandCenter />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/bid-command-center"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <BidCommandCenter />
                 </Layout>
               </ProtectedRoute>
             }
@@ -128,11 +151,31 @@ function App() {
             }
           />
           <Route
+            path="/locate-tickets/settings"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <AlertSettingsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/locate-tickets/:id"
             element={
               <ProtectedRoute>
                 <Layout>
                   <TicketDetail />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/locate-tickets/analytics"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <AnalyticsDashboard />
                 </Layout>
               </ProtectedRoute>
             }

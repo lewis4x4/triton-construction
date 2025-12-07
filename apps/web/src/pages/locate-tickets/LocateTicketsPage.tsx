@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Plus, Settings, RefreshCw, AlertTriangle, CheckCircle, Clock, Shovel, Radio, Map, ArrowUpDown } from 'lucide-react';
+import { MapPin, Plus, Settings, RefreshCw, AlertTriangle, CheckCircle, Clock, Shovel, Radio, Map, ArrowUpDown, BarChart3 } from 'lucide-react';
 import { supabase } from '@triton/supabase-client';
 import { TicketCard, type TicketData } from '../../components/locate-tickets/TicketCard';
 import { type TicketStatus } from '../../components/locate-tickets/StatusBadge';
@@ -155,6 +155,10 @@ export function LocateTicketsPage() {
           <Link to="/locate-tickets/map" className="btn btn-secondary">
             <Map size={18} />
             Map View
+          </Link>
+          <Link to="/locate-tickets/analytics" className="btn btn-secondary">
+            <BarChart3 size={18} />
+            Analytics
           </Link>
           <button onClick={fetchTickets} className="btn btn-secondary" disabled={isLoading}>
             <RefreshCw size={18} className={isLoading ? 'spin' : ''} />

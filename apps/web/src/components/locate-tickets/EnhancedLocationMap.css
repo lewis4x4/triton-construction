@@ -281,7 +281,7 @@
 /* Zone Legend */
 .zone-legend {
   position: absolute;
-  bottom: 48px;
+  bottom: 120px;
   right: 12px;
   background: white;
   border-radius: 10px;
