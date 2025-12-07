@@ -76,7 +76,7 @@ SELECT
   ec.expiration_date,
   ec.certificate_number,
   ec.issuing_authority,
-  ec.verification_url,
+  ec.document_url,
   ec.status,
   CASE
     WHEN ec.expiration_date IS NULL THEN 'no_expiry'

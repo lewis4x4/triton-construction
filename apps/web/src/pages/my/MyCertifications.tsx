@@ -12,7 +12,7 @@ interface Certification {
   expiration_date: string | null;
   certificate_number: string | null;
   issuing_authority: string | null;
-  verification_url: string | null;
+  document_url: string | null;
   status: string;
   expiry_status: 'valid' | 'expiring_soon' | 'expired' | 'no_expiry';
   days_until_expiry: number | null;
@@ -242,14 +242,14 @@ export function MyCertifications() {
                       </div>
                     )}
                   </div>
-                  {cert.verification_url && (
+                  {cert.document_url && (
                     <a
-                      href={cert.verification_url}
+                      href={cert.document_url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="verify-link"
                     >
-                      Verify Certificate →
+                      View Certificate →
                     </a>
                   )}
                 </div>
