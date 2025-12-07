@@ -33,6 +33,22 @@ import { FleetDashboard } from './components/workforce/FleetDashboard';
 import { QualityControlDashboard } from './pages/quality-control/QualityControlDashboard';
 // Daily Reports
 import { VoiceDailyReportPage } from './pages/daily-reports/VoiceDailyReportPage';
+// Project Management
+import { ProjectDashboard } from './pages/projects/ProjectDashboard';
+// Subcontractor Management
+import { SubcontractorDashboard } from './pages/subcontractors/SubcontractorDashboard';
+// Document Management
+import { DocumentDashboard } from './pages/documents/DocumentDashboard';
+// Change Order Management
+import { ChangeOrderDashboard } from './pages/change-orders/ChangeOrderDashboard';
+// RFI Management
+import { RFIDashboard } from './pages/rfis/RFIDashboard';
+// AI Query
+import { AIQueryPage } from './pages/ai/AIQueryPage';
+// Predictive Analytics
+import { PredictiveAnalyticsDashboard } from './pages/analytics/PredictiveAnalyticsDashboard';
+// User Management
+import { UserManagement } from './pages/admin/UserManagement';
 import './styles/index.css';
 
 function App() {
@@ -290,6 +306,90 @@ function App() {
             }
           />
 
+          {/* Project Management routes */}
+          <Route
+            path="/projects"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <ProjectDashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Subcontractor Management routes */}
+          <Route
+            path="/subcontractors"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <SubcontractorDashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Document Management routes */}
+          <Route
+            path="/documents"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <DocumentDashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Change Order routes */}
+          <Route
+            path="/change-orders"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <ChangeOrderDashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* RFI routes */}
+          <Route
+            path="/rfis"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <RFIDashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* AI Query routes */}
+          <Route
+            path="/ai"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <AIQueryPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Predictive Analytics routes */}
+          <Route
+            path="/analytics"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <PredictiveAnalyticsDashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
           {/* Admin routes */}
           <Route
             path="/admin"
@@ -317,6 +417,16 @@ function App() {
               <AdminRoute>
                 <Layout>
                   <RoleAccessControl />
+                </Layout>
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <AdminRoute>
+                <Layout>
+                  <UserManagement />
                 </Layout>
               </AdminRoute>
             }
