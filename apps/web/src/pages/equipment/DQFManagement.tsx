@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import {
   FileText,
   User,
-  Calendar,
-  AlertTriangle,
   CheckCircle,
   XCircle,
   Search,
@@ -17,7 +15,6 @@ import {
   Download,
   Eye,
   AlertOctagon,
-  Truck,
   Award,
 } from 'lucide-react';
 import { supabase } from '@triton/supabase-client';
@@ -76,7 +73,6 @@ interface DQFStats {
 
 export function DQFManagement() {
   const [dqfRecords, setDqfRecords] = useState<DriverQualificationFile[]>([]);
-  const [documents, setDocuments] = useState<DQFDocument[]>([]);
   const [stats, setStats] = useState<DQFStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -93,7 +89,7 @@ export function DQFManagement() {
     setIsLoading(true);
     try {
       // Load DQF records from the view
-      const { data: dqfData, error: dqfError } = await supabase
+      const { data: dqfData, error: dqfError } = await (supabase as any)
         .from('v_dqf_compliance')
         .select('*')
         .order('driver_name');
@@ -169,7 +165,7 @@ export function DQFManagement() {
 
   const loadDocuments = async (dqfId: string) => {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('dqf_documents')
         .select('*')
         .eq('dqf_id', dqfId)
@@ -177,7 +173,7 @@ export function DQFManagement() {
 
       if (error) throw error;
 
-      setSelectedDocs(data || []);
+      setSelectedDocs((data || []) as DQFDocument[]);
     } catch (err) {
       console.error('Error loading documents:', err);
     }

@@ -14,7 +14,6 @@ import {
   Clock,
   User,
   FileText,
-  Shield,
   AlertOctagon,
   Eye,
 } from 'lucide-react';
@@ -71,7 +70,7 @@ export function VehicleInspections() {
   const loadInspections = async () => {
     setIsLoading(true);
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('vehicle_inspections')
         .select(`
           *,

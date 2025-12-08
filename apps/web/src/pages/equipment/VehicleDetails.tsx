@@ -84,7 +84,7 @@ export function VehicleDetails() {
   const loadVehicles = async () => {
     setIsLoading(true);
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('vehicles')
         .select(`
           *,

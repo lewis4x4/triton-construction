@@ -18,6 +18,20 @@ import {
   Bell,
   Map,
   BarChart3,
+  HardHat,
+  CheckSquare,
+  GraduationCap,
+  Building2,
+  FileStack,
+  FilePlus2,
+  MessageSquareMore,
+  Sparkles,
+  TrendingUp,
+  Fuel,
+  Wrench,
+  UserCheck,
+  Car,
+  Receipt,
 } from 'lucide-react';
 
 interface LayoutProps {
@@ -41,27 +55,67 @@ const navGroups: NavGroup[] = [
     items: [
       { path: '/', label: 'Dashboard', icon: <LayoutDashboard size={20} strokeWidth={1.5} /> },
       { path: '/executive', label: 'Executive View', icon: <BarChart3 size={20} strokeWidth={1.5} /> },
+      { path: '/ai', label: 'AI Assistant', icon: <Sparkles size={20} strokeWidth={1.5} /> },
+    ],
+  },
+  {
+    label: 'Bidding',
+    items: [
       { path: '/bids', label: 'Bid Packages', icon: <FileText size={20} strokeWidth={1.5} /> },
       { path: '/specs', label: 'Specifications', icon: <BookOpen size={20} strokeWidth={1.5} /> },
     ],
   },
   {
-    label: 'Operations',
+    label: 'Field Operations',
     items: [
       { path: '/projects', label: 'Projects', icon: <FolderKanban size={20} strokeWidth={1.5} /> },
       { path: '/locate-tickets', label: 'Locate Tickets', icon: <MapPin size={20} strokeWidth={1.5} /> },
-      { path: '/reports', label: 'Daily Reports', icon: <ClipboardList size={20} strokeWidth={1.5} /> },
-      { path: '/time', label: 'Time Tracking', icon: <Clock size={20} strokeWidth={1.5} /> },
-      { path: '/pay-estimates', label: 'Pay Estimates', icon: <DollarSign size={20} strokeWidth={1.5} /> },
-      { path: '/alerts', label: 'Alerts', icon: <Bell size={20} strokeWidth={1.5} /> },
-      { path: '/geofences', label: 'Geofences', icon: <Map size={20} strokeWidth={1.5} /> },
+      { path: '/daily-reports/voice', label: 'Daily Reports', icon: <ClipboardList size={20} strokeWidth={1.5} /> },
+      { path: '/self-perform', label: 'Self-Perform', icon: <Wrench size={20} strokeWidth={1.5} /> },
+    ],
+  },
+  {
+    label: 'Safety & Quality',
+    items: [
+      { path: '/workforce', label: 'Safety & Compliance', icon: <HardHat size={20} strokeWidth={1.5} /> },
+      { path: '/quality-control', label: 'Quality Control', icon: <CheckSquare size={20} strokeWidth={1.5} /> },
+      { path: '/training', label: 'Training', icon: <GraduationCap size={20} strokeWidth={1.5} /> },
     ],
   },
   {
     label: 'Resources',
     items: [
-      { path: '/equipment', label: 'Equipment', icon: <Truck size={20} strokeWidth={1.5} /> },
-      { path: '/crew', label: 'Crew', icon: <Users size={20} strokeWidth={1.5} /> },
+      { path: '/equipment', label: 'Fleet Dashboard', icon: <Truck size={20} strokeWidth={1.5} /> },
+      { path: '/equipment/vehicles', label: 'Vehicle Details', icon: <Car size={20} strokeWidth={1.5} /> },
+      { path: '/equipment/fuel', label: 'Fuel Management', icon: <Fuel size={20} strokeWidth={1.5} /> },
+      { path: '/equipment/inspections', label: 'Inspections', icon: <ClipboardList size={20} strokeWidth={1.5} /> },
+      { path: '/equipment/dqf', label: 'Driver Files (DQF)', icon: <UserCheck size={20} strokeWidth={1.5} /> },
+      { path: '/equipment/ifta', label: 'IFTA Reports', icon: <Receipt size={20} strokeWidth={1.5} /> },
+      { path: '/equipment/crew', label: 'Crew Roster', icon: <Users size={20} strokeWidth={1.5} /> },
+      { path: '/subcontractors', label: 'Subcontractors', icon: <Building2 size={20} strokeWidth={1.5} /> },
+    ],
+  },
+  {
+    label: 'Documents',
+    items: [
+      { path: '/documents', label: 'Document Center', icon: <FileStack size={20} strokeWidth={1.5} /> },
+      { path: '/change-orders', label: 'Change Orders', icon: <FilePlus2 size={20} strokeWidth={1.5} /> },
+      { path: '/rfis', label: 'RFIs', icon: <MessageSquareMore size={20} strokeWidth={1.5} /> },
+    ],
+  },
+  {
+    label: 'Financial',
+    items: [
+      { path: '/pay-estimates', label: 'Pay Estimates', icon: <DollarSign size={20} strokeWidth={1.5} /> },
+      { path: '/workforce', label: 'Time & Payroll', icon: <Clock size={20} strokeWidth={1.5} /> },
+    ],
+  },
+  {
+    label: 'Platform',
+    items: [
+      { path: '/alerts', label: 'Alerts', icon: <Bell size={20} strokeWidth={1.5} /> },
+      { path: '/geofences', label: 'Geofences', icon: <Map size={20} strokeWidth={1.5} /> },
+      { path: '/analytics', label: 'Analytics', icon: <TrendingUp size={20} strokeWidth={1.5} /> },
     ],
   },
   {

@@ -9,16 +9,12 @@ import {
   RefreshCw,
   Plus,
   CheckCircle,
-  XCircle,
-  Clock,
   ChevronRight,
   DollarSign,
   Gauge,
   MapPin,
-  Calendar,
   AlertOctagon,
   Eye,
-  Flag,
 } from 'lucide-react';
 import { supabase } from '@triton/supabase-client';
 import './FuelManagement.css';
@@ -87,7 +83,7 @@ export function FuelManagement() {
   const [vehicleFilter, setVehicleFilter] = useState<string>('all');
   const [anomalyFilter, setAnomalyFilter] = useState<string>('all');
   const [selectedTransaction, setSelectedTransaction] = useState<FuelTransaction | null>(null);
-  const [selectedCard, setSelectedCard] = useState<FuelCard | null>(null);
+  const [_selectedCard, setSelectedCard] = useState<FuelCard | null>(null);
 
   useEffect(() => {
     loadData();
@@ -97,12 +93,11 @@ export function FuelManagement() {
     setIsLoading(true);
     try {
       // Calculate date range
-      const endDate = new Date();
       const startDate = new Date();
       startDate.setDate(startDate.getDate() - parseInt(dateFilter));
 
       // Load fuel transactions
-      const { data: txnData, error: txnError } = await supabase
+      const { data: txnData, error: txnError } = await (supabase as any)
         .from('fuel_transactions')
         .select(`
           *,
@@ -144,7 +139,7 @@ export function FuelManagement() {
       setTransactions(txnList);
 
       // Load fuel cards
-      const { data: cardData, error: cardError } = await supabase
+      const { data: cardData, error: cardError } = await (supabase as any)
         .from('fuel_cards')
         .select(`
           *,
@@ -198,7 +193,7 @@ export function FuelManagement() {
 
   const acknowledgeAnomaly = async (transactionId: string) => {
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('fuel_transactions')
         .update({ anomaly_acknowledged: true, anomaly_acknowledged_at: new Date().toISOString() })
         .eq('id', transactionId);

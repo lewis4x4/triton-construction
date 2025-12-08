@@ -6,15 +6,12 @@ import {
   Fuel,
   MapPin,
   TrendingUp,
-  Search,
-  Filter,
   RefreshCw,
   Plus,
   ChevronRight,
   Download,
   CheckCircle,
   Clock,
-  AlertTriangle,
   Eye,
   Send,
   Truck,
@@ -79,7 +76,7 @@ export function IFTAReporting() {
   const loadReports = async () => {
     setIsLoading(true);
     try {
-      let query = supabase
+      let query = (supabase as any)
         .from('ifta_reports')
         .select('*')
         .order('report_year', { ascending: false })
@@ -147,7 +144,7 @@ export function IFTAReporting() {
     return `Q${quarter}`;
   };
 
-  const getQuarterDates = (year: number, quarter: number) => {
+  const getQuarterDates = (_year: number, quarter: number) => {
     const quarters: Record<number, string> = {
       1: 'Jan 1 - Mar 31',
       2: 'Apr 1 - Jun 30',
