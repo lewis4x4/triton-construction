@@ -7231,6 +7231,13 @@ export type Database = {
             foreignKeyName: "certified_payroll_lines_crew_member_id_fkey"
             columns: ["crew_member_id"]
             isOneToOne: false
+            referencedRelation: "v_dqf_compliance"
+            referencedColumns: ["driver_id"]
+          },
+          {
+            foreignKeyName: "certified_payroll_lines_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
             referencedRelation: "v_weekly_timesheets"
             referencedColumns: ["crew_member_id"]
           },
@@ -9541,6 +9548,13 @@ export type Database = {
             foreignKeyName: "crew_certifications_crew_member_id_fkey"
             columns: ["crew_member_id"]
             isOneToOne: false
+            referencedRelation: "v_dqf_compliance"
+            referencedColumns: ["driver_id"]
+          },
+          {
+            foreignKeyName: "crew_certifications_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
             referencedRelation: "v_weekly_timesheets"
             referencedColumns: ["crew_member_id"]
           },
@@ -9826,6 +9840,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_crew_roster"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crew_members_current_supervisor_id_fkey"
+            columns: ["current_supervisor_id"]
+            isOneToOne: false
+            referencedRelation: "v_dqf_compliance"
+            referencedColumns: ["driver_id"]
           },
           {
             foreignKeyName: "crew_members_current_supervisor_id_fkey"
@@ -10637,6 +10658,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_crew_roster"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_manpower_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
+            referencedRelation: "v_dqf_compliance"
+            referencedColumns: ["driver_id"]
           },
           {
             foreignKeyName: "daily_manpower_crew_member_id_fkey"
@@ -12616,6 +12644,69 @@ export type Database = {
           },
         ]
       }
+      dqf_documents: {
+        Row: {
+          created_at: string | null
+          document_date: string | null
+          document_type: string
+          document_url: string | null
+          dqf_id: string
+          expiry_date: string | null
+          id: string
+          is_required: boolean | null
+          notes: string | null
+          updated_at: string | null
+          verified: boolean | null
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          document_date?: string | null
+          document_type: string
+          document_url?: string | null
+          dqf_id: string
+          expiry_date?: string | null
+          id?: string
+          is_required?: boolean | null
+          notes?: string | null
+          updated_at?: string | null
+          verified?: boolean | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          document_date?: string | null
+          document_type?: string
+          document_url?: string | null
+          dqf_id?: string
+          expiry_date?: string | null
+          id?: string
+          is_required?: boolean | null
+          notes?: string | null
+          updated_at?: string | null
+          verified?: boolean | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dqf_documents_dqf_id_fkey"
+            columns: ["dqf_id"]
+            isOneToOne: false
+            referencedRelation: "driver_qualification_files"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dqf_documents_dqf_id_fkey"
+            columns: ["dqf_id"]
+            isOneToOne: false
+            referencedRelation: "v_dqf_drug_tests"
+            referencedColumns: ["dqf_id"]
+          },
+        ]
+      }
       driver_licenses: {
         Row: {
           cdl_self_certification_type: string | null
@@ -12692,6 +12783,163 @@ export type Database = {
             columns: ["employee_id"]
             isOneToOne: false
             referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      driver_qualification_files: {
+        Row: {
+          application_date: string | null
+          cdl_class: string
+          cdl_endorsements: string[] | null
+          cdl_expiry: string
+          cdl_number: string
+          cdl_restrictions: string[] | null
+          cdl_state: string
+          cdl_verified: boolean | null
+          cdl_verified_date: string | null
+          clearinghouse_consent_on_file: boolean | null
+          clearinghouse_query_date: string | null
+          clearinghouse_status: string | null
+          created_at: string | null
+          dqf_status: Database["public"]["Enums"]["dqf_status"]
+          driver_id: string
+          hire_date: string | null
+          id: string
+          last_mvr_date: string | null
+          medical_card_expiry: string
+          medical_certificate_url: string | null
+          medical_examiner_name: string | null
+          medical_examiner_npi: string | null
+          mvr_accidents_count: number | null
+          mvr_result: string | null
+          mvr_violations_count: number | null
+          next_mvr_due: string | null
+          notes: string | null
+          organization_id: string
+          psp_crash_count: number | null
+          psp_inspection_count: number | null
+          psp_report_date: string | null
+          psp_violation_count: number | null
+          road_test_date: string | null
+          status_updated_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          application_date?: string | null
+          cdl_class: string
+          cdl_endorsements?: string[] | null
+          cdl_expiry: string
+          cdl_number: string
+          cdl_restrictions?: string[] | null
+          cdl_state: string
+          cdl_verified?: boolean | null
+          cdl_verified_date?: string | null
+          clearinghouse_consent_on_file?: boolean | null
+          clearinghouse_query_date?: string | null
+          clearinghouse_status?: string | null
+          created_at?: string | null
+          dqf_status?: Database["public"]["Enums"]["dqf_status"]
+          driver_id: string
+          hire_date?: string | null
+          id?: string
+          last_mvr_date?: string | null
+          medical_card_expiry: string
+          medical_certificate_url?: string | null
+          medical_examiner_name?: string | null
+          medical_examiner_npi?: string | null
+          mvr_accidents_count?: number | null
+          mvr_result?: string | null
+          mvr_violations_count?: number | null
+          next_mvr_due?: string | null
+          notes?: string | null
+          organization_id: string
+          psp_crash_count?: number | null
+          psp_inspection_count?: number | null
+          psp_report_date?: string | null
+          psp_violation_count?: number | null
+          road_test_date?: string | null
+          status_updated_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          application_date?: string | null
+          cdl_class?: string
+          cdl_endorsements?: string[] | null
+          cdl_expiry?: string
+          cdl_number?: string
+          cdl_restrictions?: string[] | null
+          cdl_state?: string
+          cdl_verified?: boolean | null
+          cdl_verified_date?: string | null
+          clearinghouse_consent_on_file?: boolean | null
+          clearinghouse_query_date?: string | null
+          clearinghouse_status?: string | null
+          created_at?: string | null
+          dqf_status?: Database["public"]["Enums"]["dqf_status"]
+          driver_id?: string
+          hire_date?: string | null
+          id?: string
+          last_mvr_date?: string | null
+          medical_card_expiry?: string
+          medical_certificate_url?: string | null
+          medical_examiner_name?: string | null
+          medical_examiner_npi?: string | null
+          mvr_accidents_count?: number | null
+          mvr_result?: string | null
+          mvr_violations_count?: number | null
+          next_mvr_due?: string | null
+          notes?: string | null
+          organization_id?: string
+          psp_crash_count?: number | null
+          psp_inspection_count?: number | null
+          psp_report_date?: string | null
+          psp_violation_count?: number | null
+          road_test_date?: string | null
+          status_updated_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "driver_qualification_files_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: true
+            referencedRelation: "crew_members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "driver_qualification_files_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: true
+            referencedRelation: "v_active_crew"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "driver_qualification_files_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: true
+            referencedRelation: "v_crew_roster"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "driver_qualification_files_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: true
+            referencedRelation: "v_dqf_compliance"
+            referencedColumns: ["driver_id"]
+          },
+          {
+            foreignKeyName: "driver_qualification_files_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: true
+            referencedRelation: "v_weekly_timesheets"
+            referencedColumns: ["crew_member_id"]
+          },
+          {
+            foreignKeyName: "driver_qualification_files_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
             referencedColumns: ["id"]
           },
         ]
@@ -14473,6 +14721,512 @@ export type Database = {
           },
         ]
       }
+      fuel_anomaly_config: {
+        Row: {
+          created_at: string | null
+          id: string
+          location_variance_threshold: number | null
+          max_acceptable_mpg: number | null
+          min_acceptable_mpg: number | null
+          min_hours_between_fills: number | null
+          odometer_variance_threshold: number | null
+          organization_id: string
+          tank_overfill_percent: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          location_variance_threshold?: number | null
+          max_acceptable_mpg?: number | null
+          min_acceptable_mpg?: number | null
+          min_hours_between_fills?: number | null
+          odometer_variance_threshold?: number | null
+          organization_id: string
+          tank_overfill_percent?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          location_variance_threshold?: number | null
+          max_acceptable_mpg?: number | null
+          min_acceptable_mpg?: number | null
+          min_hours_between_fills?: number | null
+          odometer_variance_threshold?: number | null
+          organization_id?: string
+          tank_overfill_percent?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fuel_anomaly_config_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: true
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fuel_cards: {
+        Row: {
+          activated_date: string | null
+          allowed_fuel_types: string[] | null
+          assigned_to_driver_id: string | null
+          assigned_to_vehicle_id: string | null
+          card_number: string
+          card_provider: Database["public"]["Enums"]["fuel_card_provider"]
+          created_at: string | null
+          daily_limit: number | null
+          deactivated_date: string | null
+          deactivation_reason: string | null
+          fuel_only: boolean | null
+          id: string
+          is_active: boolean | null
+          monthly_limit: number | null
+          notes: string | null
+          organization_id: string
+          per_transaction_limit: number | null
+          pin_last_four: string | null
+          updated_at: string | null
+          weekly_limit: number | null
+        }
+        Insert: {
+          activated_date?: string | null
+          allowed_fuel_types?: string[] | null
+          assigned_to_driver_id?: string | null
+          assigned_to_vehicle_id?: string | null
+          card_number: string
+          card_provider: Database["public"]["Enums"]["fuel_card_provider"]
+          created_at?: string | null
+          daily_limit?: number | null
+          deactivated_date?: string | null
+          deactivation_reason?: string | null
+          fuel_only?: boolean | null
+          id?: string
+          is_active?: boolean | null
+          monthly_limit?: number | null
+          notes?: string | null
+          organization_id: string
+          per_transaction_limit?: number | null
+          pin_last_four?: string | null
+          updated_at?: string | null
+          weekly_limit?: number | null
+        }
+        Update: {
+          activated_date?: string | null
+          allowed_fuel_types?: string[] | null
+          assigned_to_driver_id?: string | null
+          assigned_to_vehicle_id?: string | null
+          card_number?: string
+          card_provider?: Database["public"]["Enums"]["fuel_card_provider"]
+          created_at?: string | null
+          daily_limit?: number | null
+          deactivated_date?: string | null
+          deactivation_reason?: string | null
+          fuel_only?: boolean | null
+          id?: string
+          is_active?: boolean | null
+          monthly_limit?: number | null
+          notes?: string | null
+          organization_id?: string
+          per_transaction_limit?: number | null
+          pin_last_four?: string | null
+          updated_at?: string | null
+          weekly_limit?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fuel_cards_assigned_to_driver_id_fkey"
+            columns: ["assigned_to_driver_id"]
+            isOneToOne: false
+            referencedRelation: "crew_members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fuel_cards_assigned_to_driver_id_fkey"
+            columns: ["assigned_to_driver_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_crew"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fuel_cards_assigned_to_driver_id_fkey"
+            columns: ["assigned_to_driver_id"]
+            isOneToOne: false
+            referencedRelation: "v_crew_roster"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fuel_cards_assigned_to_driver_id_fkey"
+            columns: ["assigned_to_driver_id"]
+            isOneToOne: false
+            referencedRelation: "v_dqf_compliance"
+            referencedColumns: ["driver_id"]
+          },
+          {
+            foreignKeyName: "fuel_cards_assigned_to_driver_id_fkey"
+            columns: ["assigned_to_driver_id"]
+            isOneToOne: false
+            referencedRelation: "v_weekly_timesheets"
+            referencedColumns: ["crew_member_id"]
+          },
+          {
+            foreignKeyName: "fuel_cards_assigned_to_vehicle_id_fkey"
+            columns: ["assigned_to_vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "v_vehicle_fleet_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fuel_cards_assigned_to_vehicle_id_fkey"
+            columns: ["assigned_to_vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fuel_cards_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fuel_reconciliation: {
+        Row: {
+          cost_per_mile: number | null
+          created_at: string | null
+          disputed_amount: number | null
+          flagged_transactions: number | null
+          id: string
+          mpg: number | null
+          mpg_variance: number | null
+          notes: string | null
+          organization_id: string
+          reconciled: boolean | null
+          reconciled_at: string | null
+          reconciled_by: string | null
+          reconciliation_month: string
+          target_mpg: number | null
+          total_cost: number | null
+          total_gallons: number | null
+          total_miles: number | null
+          vehicle_id: string
+        }
+        Insert: {
+          cost_per_mile?: number | null
+          created_at?: string | null
+          disputed_amount?: number | null
+          flagged_transactions?: number | null
+          id?: string
+          mpg?: number | null
+          mpg_variance?: number | null
+          notes?: string | null
+          organization_id: string
+          reconciled?: boolean | null
+          reconciled_at?: string | null
+          reconciled_by?: string | null
+          reconciliation_month: string
+          target_mpg?: number | null
+          total_cost?: number | null
+          total_gallons?: number | null
+          total_miles?: number | null
+          vehicle_id: string
+        }
+        Update: {
+          cost_per_mile?: number | null
+          created_at?: string | null
+          disputed_amount?: number | null
+          flagged_transactions?: number | null
+          id?: string
+          mpg?: number | null
+          mpg_variance?: number | null
+          notes?: string | null
+          organization_id?: string
+          reconciled?: boolean | null
+          reconciled_at?: string | null
+          reconciled_by?: string | null
+          reconciliation_month?: string
+          target_mpg?: number | null
+          total_cost?: number | null
+          total_gallons?: number | null
+          total_miles?: number | null
+          vehicle_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fuel_reconciliation_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fuel_reconciliation_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "v_vehicle_fleet_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fuel_reconciliation_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fuel_transactions: {
+        Row: {
+          anomaly_flags: string[] | null
+          anomaly_score: number | null
+          cost_code_id: string | null
+          created_at: string | null
+          driver_id: string | null
+          fuel_card_id: string | null
+          fuel_type: string
+          gallons: number
+          id: string
+          import_batch_id: string | null
+          latitude: number | null
+          longitude: number | null
+          merchant_address: string | null
+          merchant_city: string | null
+          merchant_name: string | null
+          merchant_state: string | null
+          merchant_zip: string | null
+          odometer_expected: number | null
+          odometer_reported: number | null
+          odometer_variance: number | null
+          organization_id: string
+          price_per_gallon: number | null
+          project_id: string | null
+          raw_data: Json | null
+          reconciled: boolean | null
+          reconciled_at: string | null
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: Database["public"]["Enums"]["fuel_transaction_status"]
+          total_amount: number
+          transaction_date: string
+          transaction_id: string | null
+          transaction_time: string | null
+          vehicle_id: string | null
+        }
+        Insert: {
+          anomaly_flags?: string[] | null
+          anomaly_score?: number | null
+          cost_code_id?: string | null
+          created_at?: string | null
+          driver_id?: string | null
+          fuel_card_id?: string | null
+          fuel_type: string
+          gallons: number
+          id?: string
+          import_batch_id?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          merchant_address?: string | null
+          merchant_city?: string | null
+          merchant_name?: string | null
+          merchant_state?: string | null
+          merchant_zip?: string | null
+          odometer_expected?: number | null
+          odometer_reported?: number | null
+          odometer_variance?: number | null
+          organization_id: string
+          price_per_gallon?: number | null
+          project_id?: string | null
+          raw_data?: Json | null
+          reconciled?: boolean | null
+          reconciled_at?: string | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["fuel_transaction_status"]
+          total_amount: number
+          transaction_date: string
+          transaction_id?: string | null
+          transaction_time?: string | null
+          vehicle_id?: string | null
+        }
+        Update: {
+          anomaly_flags?: string[] | null
+          anomaly_score?: number | null
+          cost_code_id?: string | null
+          created_at?: string | null
+          driver_id?: string | null
+          fuel_card_id?: string | null
+          fuel_type?: string
+          gallons?: number
+          id?: string
+          import_batch_id?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          merchant_address?: string | null
+          merchant_city?: string | null
+          merchant_name?: string | null
+          merchant_state?: string | null
+          merchant_zip?: string | null
+          odometer_expected?: number | null
+          odometer_reported?: number | null
+          odometer_variance?: number | null
+          organization_id?: string
+          price_per_gallon?: number | null
+          project_id?: string | null
+          raw_data?: Json | null
+          reconciled?: boolean | null
+          reconciled_at?: string | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["fuel_transaction_status"]
+          total_amount?: number
+          transaction_date?: string
+          transaction_id?: string | null
+          transaction_time?: string | null
+          vehicle_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fuel_transactions_cost_code_id_fkey"
+            columns: ["cost_code_id"]
+            isOneToOne: false
+            referencedRelation: "cost_codes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fuel_transactions_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "crew_members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fuel_transactions_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_crew"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fuel_transactions_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "v_crew_roster"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fuel_transactions_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "v_dqf_compliance"
+            referencedColumns: ["driver_id"]
+          },
+          {
+            foreignKeyName: "fuel_transactions_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "v_weekly_timesheets"
+            referencedColumns: ["crew_member_id"]
+          },
+          {
+            foreignKeyName: "fuel_transactions_fuel_card_id_fkey"
+            columns: ["fuel_card_id"]
+            isOneToOne: false
+            referencedRelation: "fuel_cards"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fuel_transactions_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fuel_transactions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fuel_transactions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "fuel_transactions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "fuel_transactions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "fuel_transactions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "fuel_transactions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "fuel_transactions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "fuel_transactions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "fuel_transactions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "fuel_transactions_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "v_vehicle_fleet_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fuel_transactions_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       geocode_log: {
         Row: {
           accuracy_type: string | null
@@ -14975,6 +15729,92 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      ifta_reports: {
+        Row: {
+          avg_mpg: number | null
+          confirmation_number: string | null
+          created_at: string | null
+          filed: boolean | null
+          filed_date: string | null
+          id: string
+          jurisdiction_details: Json
+          net_tax_due: number | null
+          notes: string | null
+          organization_id: string
+          paid: boolean | null
+          paid_amount: number | null
+          paid_date: string | null
+          payment_reference: string | null
+          period_end: string
+          period_start: string
+          report_quarter: number
+          report_year: number
+          tax_credits: number | null
+          tax_owed: number | null
+          total_gallons: number
+          total_miles: number
+          updated_at: string | null
+        }
+        Insert: {
+          avg_mpg?: number | null
+          confirmation_number?: string | null
+          created_at?: string | null
+          filed?: boolean | null
+          filed_date?: string | null
+          id?: string
+          jurisdiction_details: Json
+          net_tax_due?: number | null
+          notes?: string | null
+          organization_id: string
+          paid?: boolean | null
+          paid_amount?: number | null
+          paid_date?: string | null
+          payment_reference?: string | null
+          period_end: string
+          period_start: string
+          report_quarter: number
+          report_year: number
+          tax_credits?: number | null
+          tax_owed?: number | null
+          total_gallons: number
+          total_miles: number
+          updated_at?: string | null
+        }
+        Update: {
+          avg_mpg?: number | null
+          confirmation_number?: string | null
+          created_at?: string | null
+          filed?: boolean | null
+          filed_date?: string | null
+          id?: string
+          jurisdiction_details?: Json
+          net_tax_due?: number | null
+          notes?: string | null
+          organization_id?: string
+          paid?: boolean | null
+          paid_amount?: number | null
+          paid_date?: string | null
+          payment_reference?: string | null
+          period_end?: string
+          period_start?: string
+          report_quarter?: number
+          report_year?: number
+          tax_credits?: number | null
+          tax_owed?: number | null
+          total_gallons?: number
+          total_miles?: number
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ifta_reports_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -18793,6 +19633,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_crew_roster"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "operator_qualifications_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
+            referencedRelation: "v_dqf_compliance"
+            referencedColumns: ["driver_id"]
           },
           {
             foreignKeyName: "operator_qualifications_crew_member_id_fkey"
@@ -25342,6 +26189,13 @@ export type Database = {
             foreignKeyName: "self_perform_labor_entries_crew_member_id_fkey"
             columns: ["crew_member_id"]
             isOneToOne: false
+            referencedRelation: "v_dqf_compliance"
+            referencedColumns: ["driver_id"]
+          },
+          {
+            foreignKeyName: "self_perform_labor_entries_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
             referencedRelation: "v_weekly_timesheets"
             referencedColumns: ["crew_member_id"]
           },
@@ -30109,6 +30963,13 @@ export type Database = {
             foreignKeyName: "time_entries_crew_member_id_fkey"
             columns: ["crew_member_id"]
             isOneToOne: false
+            referencedRelation: "v_dqf_compliance"
+            referencedColumns: ["driver_id"]
+          },
+          {
+            foreignKeyName: "time_entries_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
             referencedRelation: "v_weekly_timesheets"
             referencedColumns: ["crew_member_id"]
           },
@@ -30686,6 +31547,167 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      trailers: {
+        Row: {
+          created_at: string | null
+          current_latitude: number | null
+          current_location: string | null
+          current_longitude: number | null
+          current_project_id: string | null
+          deck_height_inches: number | null
+          deleted_at: string | null
+          description: string
+          gps_device_id: string | null
+          gvwr_lbs: number | null
+          id: string
+          last_inspection_date: string | null
+          length_ft: number | null
+          license_plate: string | null
+          license_plate_state: string | null
+          make: string | null
+          model: string | null
+          next_inspection_date: string | null
+          notes: string | null
+          organization_id: string
+          registration_expiry: string | null
+          status: Database["public"]["Enums"]["vehicle_status"]
+          trailer_number: string
+          trailer_type: Database["public"]["Enums"]["trailer_type"]
+          updated_at: string | null
+          vin: string | null
+          year: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          current_latitude?: number | null
+          current_location?: string | null
+          current_longitude?: number | null
+          current_project_id?: string | null
+          deck_height_inches?: number | null
+          deleted_at?: string | null
+          description: string
+          gps_device_id?: string | null
+          gvwr_lbs?: number | null
+          id?: string
+          last_inspection_date?: string | null
+          length_ft?: number | null
+          license_plate?: string | null
+          license_plate_state?: string | null
+          make?: string | null
+          model?: string | null
+          next_inspection_date?: string | null
+          notes?: string | null
+          organization_id: string
+          registration_expiry?: string | null
+          status?: Database["public"]["Enums"]["vehicle_status"]
+          trailer_number: string
+          trailer_type: Database["public"]["Enums"]["trailer_type"]
+          updated_at?: string | null
+          vin?: string | null
+          year?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          current_latitude?: number | null
+          current_location?: string | null
+          current_longitude?: number | null
+          current_project_id?: string | null
+          deck_height_inches?: number | null
+          deleted_at?: string | null
+          description?: string
+          gps_device_id?: string | null
+          gvwr_lbs?: number | null
+          id?: string
+          last_inspection_date?: string | null
+          length_ft?: number | null
+          license_plate?: string | null
+          license_plate_state?: string | null
+          make?: string | null
+          model?: string | null
+          next_inspection_date?: string | null
+          notes?: string | null
+          organization_id?: string
+          registration_expiry?: string | null
+          status?: Database["public"]["Enums"]["vehicle_status"]
+          trailer_number?: string
+          trailer_type?: Database["public"]["Enums"]["trailer_type"]
+          updated_at?: string | null
+          vin?: string | null
+          year?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trailers_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "trailers_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "trailers_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "trailers_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "trailers_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "trailers_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "trailers_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "trailers_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "trailers_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "trailers_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -31547,6 +32569,831 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vehicle_inspections: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          critical_defects: number | null
+          defect_count: number | null
+          defects: Json | null
+          dot_report_number: string | null
+          expiration_date: string | null
+          id: string
+          inspection_cost: number | null
+          inspection_date: string
+          inspection_report_url: string | null
+          inspection_type: Database["public"]["Enums"]["vehicle_inspection_type"]
+          inspector_certification: string | null
+          inspector_company: string | null
+          inspector_name: string | null
+          location: string | null
+          next_inspection_due: string | null
+          notes: string | null
+          odometer_reading: number | null
+          photos: string[] | null
+          repair_cost: number | null
+          result: Database["public"]["Enums"]["vehicle_inspection_result"]
+          sticker_number: string | null
+          vehicle_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          critical_defects?: number | null
+          defect_count?: number | null
+          defects?: Json | null
+          dot_report_number?: string | null
+          expiration_date?: string | null
+          id?: string
+          inspection_cost?: number | null
+          inspection_date: string
+          inspection_report_url?: string | null
+          inspection_type: Database["public"]["Enums"]["vehicle_inspection_type"]
+          inspector_certification?: string | null
+          inspector_company?: string | null
+          inspector_name?: string | null
+          location?: string | null
+          next_inspection_due?: string | null
+          notes?: string | null
+          odometer_reading?: number | null
+          photos?: string[] | null
+          repair_cost?: number | null
+          result: Database["public"]["Enums"]["vehicle_inspection_result"]
+          sticker_number?: string | null
+          vehicle_id: string
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          critical_defects?: number | null
+          defect_count?: number | null
+          defects?: Json | null
+          dot_report_number?: string | null
+          expiration_date?: string | null
+          id?: string
+          inspection_cost?: number | null
+          inspection_date?: string
+          inspection_report_url?: string | null
+          inspection_type?: Database["public"]["Enums"]["vehicle_inspection_type"]
+          inspector_certification?: string | null
+          inspector_company?: string | null
+          inspector_name?: string | null
+          location?: string | null
+          next_inspection_due?: string | null
+          notes?: string | null
+          odometer_reading?: number | null
+          photos?: string[] | null
+          repair_cost?: number | null
+          result?: Database["public"]["Enums"]["vehicle_inspection_result"]
+          sticker_number?: string | null
+          vehicle_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vehicle_inspections_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "v_vehicle_fleet_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vehicle_inspections_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vehicle_locations: {
+        Row: {
+          address: string | null
+          altitude_ft: number | null
+          city: string | null
+          created_at: string | null
+          engine_running: boolean | null
+          geofence_id: string | null
+          heading_degrees: number | null
+          id: string
+          jurisdiction_state: string | null
+          latitude: number
+          longitude: number
+          odometer: number | null
+          project_id: string | null
+          recorded_at: string
+          source: Database["public"]["Enums"]["vehicle_gps_provider"]
+          source_device_id: string | null
+          speed_mph: number | null
+          state: string | null
+          vehicle_id: string
+        }
+        Insert: {
+          address?: string | null
+          altitude_ft?: number | null
+          city?: string | null
+          created_at?: string | null
+          engine_running?: boolean | null
+          geofence_id?: string | null
+          heading_degrees?: number | null
+          id?: string
+          jurisdiction_state?: string | null
+          latitude: number
+          longitude: number
+          odometer?: number | null
+          project_id?: string | null
+          recorded_at: string
+          source: Database["public"]["Enums"]["vehicle_gps_provider"]
+          source_device_id?: string | null
+          speed_mph?: number | null
+          state?: string | null
+          vehicle_id: string
+        }
+        Update: {
+          address?: string | null
+          altitude_ft?: number | null
+          city?: string | null
+          created_at?: string | null
+          engine_running?: boolean | null
+          geofence_id?: string | null
+          heading_degrees?: number | null
+          id?: string
+          jurisdiction_state?: string | null
+          latitude?: number
+          longitude?: number
+          odometer?: number | null
+          project_id?: string | null
+          recorded_at?: string
+          source?: Database["public"]["Enums"]["vehicle_gps_provider"]
+          source_device_id?: string | null
+          speed_mph?: number | null
+          state?: string | null
+          vehicle_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vehicle_locations_geofence_id_fkey"
+            columns: ["geofence_id"]
+            isOneToOne: false
+            referencedRelation: "geofences"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vehicle_locations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vehicle_locations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicle_locations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicle_locations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicle_locations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicle_locations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicle_locations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicle_locations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicle_locations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicle_locations_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "v_vehicle_fleet_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vehicle_locations_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vehicle_maintenance: {
+        Row: {
+          completed_at: string | null
+          cost_code_id: string | null
+          created_at: string | null
+          description: string | null
+          document_urls: string[] | null
+          id: string
+          invoice_number: string | null
+          labor_cost: number | null
+          labor_hours: number | null
+          maintenance_type: Database["public"]["Enums"]["maintenance_type"]
+          next_service_date: string | null
+          next_service_odometer: number | null
+          odometer_at_service: number | null
+          parts_cost: number | null
+          parts_used: Json | null
+          photo_urls: string[] | null
+          priority: Database["public"]["Enums"]["maintenance_priority"]
+          project_id: string | null
+          scheduled_date: string | null
+          service_location: string | null
+          started_at: string | null
+          status: string
+          title: string
+          total_cost: number | null
+          updated_at: string | null
+          vehicle_id: string
+          vendor_name: string | null
+          work_order_number: string | null
+          work_performed: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          cost_code_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          document_urls?: string[] | null
+          id?: string
+          invoice_number?: string | null
+          labor_cost?: number | null
+          labor_hours?: number | null
+          maintenance_type: Database["public"]["Enums"]["maintenance_type"]
+          next_service_date?: string | null
+          next_service_odometer?: number | null
+          odometer_at_service?: number | null
+          parts_cost?: number | null
+          parts_used?: Json | null
+          photo_urls?: string[] | null
+          priority?: Database["public"]["Enums"]["maintenance_priority"]
+          project_id?: string | null
+          scheduled_date?: string | null
+          service_location?: string | null
+          started_at?: string | null
+          status?: string
+          title: string
+          total_cost?: number | null
+          updated_at?: string | null
+          vehicle_id: string
+          vendor_name?: string | null
+          work_order_number?: string | null
+          work_performed?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          cost_code_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          document_urls?: string[] | null
+          id?: string
+          invoice_number?: string | null
+          labor_cost?: number | null
+          labor_hours?: number | null
+          maintenance_type?: Database["public"]["Enums"]["maintenance_type"]
+          next_service_date?: string | null
+          next_service_odometer?: number | null
+          odometer_at_service?: number | null
+          parts_cost?: number | null
+          parts_used?: Json | null
+          photo_urls?: string[] | null
+          priority?: Database["public"]["Enums"]["maintenance_priority"]
+          project_id?: string | null
+          scheduled_date?: string | null
+          service_location?: string | null
+          started_at?: string | null
+          status?: string
+          title?: string
+          total_cost?: number | null
+          updated_at?: string | null
+          vehicle_id?: string
+          vendor_name?: string | null
+          work_order_number?: string | null
+          work_performed?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vehicle_maintenance_cost_code_id_fkey"
+            columns: ["cost_code_id"]
+            isOneToOne: false
+            referencedRelation: "cost_codes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vehicle_maintenance_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vehicle_maintenance_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicle_maintenance_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicle_maintenance_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicle_maintenance_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicle_maintenance_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicle_maintenance_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicle_maintenance_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicle_maintenance_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicle_maintenance_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "v_vehicle_fleet_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vehicle_maintenance_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vehicle_odometer_readings: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          expected_odometer: number | null
+          id: string
+          notes: string | null
+          odometer: number
+          reading_date: string
+          source: string
+          source_reference: string | null
+          variance: number | null
+          variance_flagged: boolean | null
+          vehicle_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          expected_odometer?: number | null
+          id?: string
+          notes?: string | null
+          odometer: number
+          reading_date: string
+          source: string
+          source_reference?: string | null
+          variance?: number | null
+          variance_flagged?: boolean | null
+          vehicle_id: string
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          expected_odometer?: number | null
+          id?: string
+          notes?: string | null
+          odometer?: number
+          reading_date?: string
+          source?: string
+          source_reference?: string | null
+          variance?: number | null
+          variance_flagged?: boolean | null
+          vehicle_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vehicle_odometer_readings_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "v_vehicle_fleet_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vehicle_odometer_readings_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vehicles: {
+        Row: {
+          acquisition_cost: number | null
+          acquisition_date: string | null
+          assigned_at: string | null
+          axle_count: number | null
+          cdl_class_required: string | null
+          created_at: string | null
+          created_by: string | null
+          current_book_value: number | null
+          current_driver_id: string | null
+          current_latitude: number | null
+          current_longitude: number | null
+          current_odometer: number | null
+          current_project_id: string | null
+          deleted_at: string | null
+          deleted_by: string | null
+          description: string
+          dot_inspection_sticker: string | null
+          dot_number: string | null
+          dot_status: Database["public"]["Enums"]["dot_status"]
+          fuel_card_number: string | null
+          fuel_card_provider:
+            | Database["public"]["Enums"]["fuel_card_provider"]
+            | null
+          fuel_tank_capacity_gallons: number | null
+          fuel_type: string | null
+          gcwr_lbs: number | null
+          gps_device_id: string | null
+          gps_device_serial: string | null
+          gps_provider:
+            | Database["public"]["Enums"]["vehicle_gps_provider"]
+            | null
+          gvwr_lbs: number | null
+          home_location: string | null
+          id: string
+          ifta_account_number: string | null
+          ifta_decal_number: string | null
+          ifta_license_expiry: string | null
+          insurance_expiry: string | null
+          insurance_policy_number: string | null
+          insured_value: number | null
+          irp_account_number: string | null
+          irp_base_state: string | null
+          irp_cab_card_expiry: string | null
+          last_dot_inspection_date: string | null
+          last_gps_update: string | null
+          last_location_update: string | null
+          last_service_date: string | null
+          last_service_odometer: number | null
+          license_plate: string | null
+          license_plate_state: string | null
+          make: string
+          mc_number: string | null
+          model: string
+          next_dot_inspection_date: string | null
+          next_service_due_date: string | null
+          next_service_due_odometer: number | null
+          notes: string | null
+          odometer_updated_at: string | null
+          organization_id: string
+          ownership_type: string | null
+          primary_photo_url: string | null
+          registration_expiry: string | null
+          requires_cdl: boolean | null
+          service_interval_miles: number | null
+          status: Database["public"]["Enums"]["vehicle_status"]
+          target_mpg: number | null
+          title_number: string | null
+          title_state: string | null
+          updated_at: string | null
+          updated_by: string | null
+          vehicle_number: string
+          vehicle_type: Database["public"]["Enums"]["vehicle_type"]
+          vin: string
+          year: number
+        }
+        Insert: {
+          acquisition_cost?: number | null
+          acquisition_date?: string | null
+          assigned_at?: string | null
+          axle_count?: number | null
+          cdl_class_required?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          current_book_value?: number | null
+          current_driver_id?: string | null
+          current_latitude?: number | null
+          current_longitude?: number | null
+          current_odometer?: number | null
+          current_project_id?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
+          description: string
+          dot_inspection_sticker?: string | null
+          dot_number?: string | null
+          dot_status?: Database["public"]["Enums"]["dot_status"]
+          fuel_card_number?: string | null
+          fuel_card_provider?:
+            | Database["public"]["Enums"]["fuel_card_provider"]
+            | null
+          fuel_tank_capacity_gallons?: number | null
+          fuel_type?: string | null
+          gcwr_lbs?: number | null
+          gps_device_id?: string | null
+          gps_device_serial?: string | null
+          gps_provider?:
+            | Database["public"]["Enums"]["vehicle_gps_provider"]
+            | null
+          gvwr_lbs?: number | null
+          home_location?: string | null
+          id?: string
+          ifta_account_number?: string | null
+          ifta_decal_number?: string | null
+          ifta_license_expiry?: string | null
+          insurance_expiry?: string | null
+          insurance_policy_number?: string | null
+          insured_value?: number | null
+          irp_account_number?: string | null
+          irp_base_state?: string | null
+          irp_cab_card_expiry?: string | null
+          last_dot_inspection_date?: string | null
+          last_gps_update?: string | null
+          last_location_update?: string | null
+          last_service_date?: string | null
+          last_service_odometer?: number | null
+          license_plate?: string | null
+          license_plate_state?: string | null
+          make: string
+          mc_number?: string | null
+          model: string
+          next_dot_inspection_date?: string | null
+          next_service_due_date?: string | null
+          next_service_due_odometer?: number | null
+          notes?: string | null
+          odometer_updated_at?: string | null
+          organization_id: string
+          ownership_type?: string | null
+          primary_photo_url?: string | null
+          registration_expiry?: string | null
+          requires_cdl?: boolean | null
+          service_interval_miles?: number | null
+          status?: Database["public"]["Enums"]["vehicle_status"]
+          target_mpg?: number | null
+          title_number?: string | null
+          title_state?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
+          vehicle_number: string
+          vehicle_type: Database["public"]["Enums"]["vehicle_type"]
+          vin: string
+          year: number
+        }
+        Update: {
+          acquisition_cost?: number | null
+          acquisition_date?: string | null
+          assigned_at?: string | null
+          axle_count?: number | null
+          cdl_class_required?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          current_book_value?: number | null
+          current_driver_id?: string | null
+          current_latitude?: number | null
+          current_longitude?: number | null
+          current_odometer?: number | null
+          current_project_id?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
+          description?: string
+          dot_inspection_sticker?: string | null
+          dot_number?: string | null
+          dot_status?: Database["public"]["Enums"]["dot_status"]
+          fuel_card_number?: string | null
+          fuel_card_provider?:
+            | Database["public"]["Enums"]["fuel_card_provider"]
+            | null
+          fuel_tank_capacity_gallons?: number | null
+          fuel_type?: string | null
+          gcwr_lbs?: number | null
+          gps_device_id?: string | null
+          gps_device_serial?: string | null
+          gps_provider?:
+            | Database["public"]["Enums"]["vehicle_gps_provider"]
+            | null
+          gvwr_lbs?: number | null
+          home_location?: string | null
+          id?: string
+          ifta_account_number?: string | null
+          ifta_decal_number?: string | null
+          ifta_license_expiry?: string | null
+          insurance_expiry?: string | null
+          insurance_policy_number?: string | null
+          insured_value?: number | null
+          irp_account_number?: string | null
+          irp_base_state?: string | null
+          irp_cab_card_expiry?: string | null
+          last_dot_inspection_date?: string | null
+          last_gps_update?: string | null
+          last_location_update?: string | null
+          last_service_date?: string | null
+          last_service_odometer?: number | null
+          license_plate?: string | null
+          license_plate_state?: string | null
+          make?: string
+          mc_number?: string | null
+          model?: string
+          next_dot_inspection_date?: string | null
+          next_service_due_date?: string | null
+          next_service_due_odometer?: number | null
+          notes?: string | null
+          odometer_updated_at?: string | null
+          organization_id?: string
+          ownership_type?: string | null
+          primary_photo_url?: string | null
+          registration_expiry?: string | null
+          requires_cdl?: boolean | null
+          service_interval_miles?: number | null
+          status?: Database["public"]["Enums"]["vehicle_status"]
+          target_mpg?: number | null
+          title_number?: string | null
+          title_state?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
+          vehicle_number?: string
+          vehicle_type?: Database["public"]["Enums"]["vehicle_type"]
+          vin?: string
+          year?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vehicles_current_driver_id_fkey"
+            columns: ["current_driver_id"]
+            isOneToOne: false
+            referencedRelation: "crew_members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_driver_id_fkey"
+            columns: ["current_driver_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_crew"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_driver_id_fkey"
+            columns: ["current_driver_id"]
+            isOneToOne: false
+            referencedRelation: "v_crew_roster"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_driver_id_fkey"
+            columns: ["current_driver_id"]
+            isOneToOne: false
+            referencedRelation: "v_dqf_compliance"
+            referencedColumns: ["driver_id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_driver_id_fkey"
+            columns: ["current_driver_id"]
+            isOneToOne: false
+            referencedRelation: "v_weekly_timesheets"
+            referencedColumns: ["crew_member_id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicles_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
             referencedColumns: ["id"]
           },
         ]
@@ -36297,6 +38144,91 @@ export type Database = {
           },
         ]
       }
+      v_dqf_compliance: {
+        Row: {
+          alert_level: string | null
+          cdl_class: string | null
+          cdl_expiry: string | null
+          cdl_number: string | null
+          cdl_state: string | null
+          clearinghouse_query_date: string | null
+          clearinghouse_status: string | null
+          days_until_cdl_expiry: number | null
+          days_until_medical_expiry: number | null
+          dqf_status: Database["public"]["Enums"]["dqf_status"] | null
+          driver_id: string | null
+          driver_name: string | null
+          employee_id: string | null
+          last_mvr_date: string | null
+          medical_card_expiry: string | null
+          next_mvr_due: string | null
+        }
+        Relationships: []
+      }
+      v_dqf_drug_tests: {
+        Row: {
+          chain_of_custody_number: string | null
+          collection_site: string | null
+          created_at: string | null
+          document_url: string | null
+          dqf_id: string | null
+          driver_id: string | null
+          employee_id: string | null
+          id: string | null
+          is_dot_test: boolean | null
+          lab_name: string | null
+          mro_name: string | null
+          notes: string | null
+          result: string | null
+          result_date: string | null
+          test_date: string | null
+          test_type: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "driver_qualification_files_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: true
+            referencedRelation: "crew_members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "driver_qualification_files_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: true
+            referencedRelation: "v_active_crew"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "driver_qualification_files_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: true
+            referencedRelation: "v_crew_roster"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "driver_qualification_files_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: true
+            referencedRelation: "v_dqf_compliance"
+            referencedColumns: ["driver_id"]
+          },
+          {
+            foreignKeyName: "driver_qualification_files_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: true
+            referencedRelation: "v_weekly_timesheets"
+            referencedColumns: ["crew_member_id"]
+          },
+          {
+            foreignKeyName: "drug_tests_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       v_equipment_fleet_overview: {
         Row: {
           current_engine_hours: number | null
@@ -37778,6 +39710,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_crew_roster"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "time_entries_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
+            referencedRelation: "v_dqf_compliance"
+            referencedColumns: ["driver_id"]
           },
           {
             foreignKeyName: "time_entries_crew_member_id_fkey"
@@ -39694,6 +41633,139 @@ export type Database = {
           },
         ]
       }
+      v_vehicle_fleet_overview: {
+        Row: {
+          current_driver_id: string | null
+          current_latitude: number | null
+          current_longitude: number | null
+          current_odometer: number | null
+          current_project_id: string | null
+          description: string | null
+          dot_status: Database["public"]["Enums"]["dot_status"] | null
+          driver_name: string | null
+          id: string | null
+          ifta_license_expiry: string | null
+          inspection_status: string | null
+          irp_cab_card_expiry: string | null
+          irp_status: string | null
+          last_location_update: string | null
+          license_plate: string | null
+          license_plate_state: string | null
+          make: string | null
+          model: string | null
+          next_dot_inspection_date: string | null
+          project_name: string | null
+          project_number: string | null
+          registration_expiry: string | null
+          registration_status: string | null
+          status: Database["public"]["Enums"]["vehicle_status"] | null
+          target_mpg: number | null
+          vehicle_number: string | null
+          vehicle_type: Database["public"]["Enums"]["vehicle_type"] | null
+          vin: string | null
+          year: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vehicles_current_driver_id_fkey"
+            columns: ["current_driver_id"]
+            isOneToOne: false
+            referencedRelation: "crew_members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_driver_id_fkey"
+            columns: ["current_driver_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_crew"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_driver_id_fkey"
+            columns: ["current_driver_id"]
+            isOneToOne: false
+            referencedRelation: "v_crew_roster"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_driver_id_fkey"
+            columns: ["current_driver_id"]
+            isOneToOne: false
+            referencedRelation: "v_dqf_compliance"
+            referencedColumns: ["driver_id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_driver_id_fkey"
+            columns: ["current_driver_id"]
+            isOneToOne: false
+            referencedRelation: "v_weekly_timesheets"
+            referencedColumns: ["crew_member_id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "vehicles_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
       v_weekly_timesheet_summary: {
         Row: {
           employee_id: string | null
@@ -40443,6 +42515,15 @@ export type Database = {
         Args: { p_alert_id: string }
         Returns: number
       }
+      calculate_ifta_miles: {
+        Args: { p_end_date: string; p_org_id: string; p_start_date: string }
+        Returns: {
+          calculated_mpg: number
+          fuel_gallons: number
+          jurisdiction_state: string
+          total_miles: number
+        }[]
+      }
       calculate_item_assembly_cost: {
         Args: { p_item_assembly_id: string }
         Returns: number
@@ -40708,6 +42789,10 @@ export type Database = {
           p_project_id: string
         }
         Returns: string
+      }
+      generate_dot_audit_packet: {
+        Args: { p_end_date: string; p_org_id: string; p_start_date: string }
+        Returns: Json
       }
       generate_incident_number: {
         Args: { p_organization_id: string }
@@ -42365,6 +44450,8 @@ export type Database = {
         | "TRAFFIC_STUDY"
         | "ADDENDUM"
         | "OTHER"
+      dot_status: "COMPLIANT" | "WARNING" | "NON_COMPLIANT" | "OUT_OF_SERVICE"
+      dqf_status: "COMPLETE" | "INCOMPLETE" | "EXPIRED" | "DISQUALIFIED"
       driver_eligibility:
         | "eligible"
         | "restricted"
@@ -42448,6 +44535,19 @@ export type Database = {
         | "NEUTRAL"
         | "GOOD"
         | "EXCELLENT"
+      fuel_card_provider:
+        | "WEX"
+        | "FUELMAN"
+        | "COMDATA"
+        | "EFS"
+        | "FLEET_ONE"
+        | "OTHER"
+      fuel_transaction_status:
+        | "PENDING"
+        | "APPROVED"
+        | "FLAGGED"
+        | "DISPUTED"
+        | "RECONCILED"
       fulfillment_enum:
         | "SELF_PERFORM"
         | "SUBCONTRACT"
@@ -42924,6 +45024,16 @@ export type Database = {
         | "professional"
         | "apprentice"
         | "other"
+      trailer_type:
+        | "LOWBOY"
+        | "STEP_DECK"
+        | "FLATBED"
+        | "EQUIPMENT_TRAILER"
+        | "UTILITY_TRAILER"
+        | "DUMP_TRAILER"
+        | "WATER_TANK"
+        | "FUEL_TANK"
+        | "OTHER"
       training_session_status:
         | "scheduled"
         | "in_progress"
@@ -42938,6 +45048,52 @@ export type Database = {
         | "failed_missing_data"
         | "manual_override"
         | "reprocessing"
+      vehicle_gps_provider:
+        | "GEOTAB"
+        | "SAMSARA"
+        | "VERIZON_CONNECT"
+        | "GPS_TRACKIT"
+        | "MOTIVE"
+        | "MANUAL"
+      vehicle_inspection_result:
+        | "PASS"
+        | "PASS_WITH_DEFECTS"
+        | "FAIL"
+        | "OUT_OF_SERVICE"
+      vehicle_inspection_type:
+        | "DOT_ANNUAL"
+        | "STATE_SAFETY"
+        | "EMISSIONS"
+        | "PRE_TRIP"
+        | "POST_TRIP"
+        | "ROADSIDE"
+        | "COMPANY_SAFETY"
+        | "OTHER"
+      vehicle_status:
+        | "ACTIVE"
+        | "AVAILABLE"
+        | "IN_MAINTENANCE"
+        | "DOWN"
+        | "IN_TRANSIT"
+        | "OUT_OF_SERVICE"
+        | "SOLD_DISPOSED"
+      vehicle_type:
+        | "DUMP_TRUCK_TANDEM"
+        | "DUMP_TRUCK_TRI_AXLE"
+        | "DUMP_TRUCK_QUAD_AXLE"
+        | "TRACTOR_TRUCK"
+        | "PICKUP_TRUCK"
+        | "SERVICE_TRUCK"
+        | "WATER_TRUCK"
+        | "FUEL_TRUCK"
+        | "FLATBED_TRUCK"
+        | "LOWBOY_TRUCK"
+        | "SIGN_TRUCK"
+        | "CRANE_TRUCK"
+        | "VAN"
+        | "SUV"
+        | "SEDAN"
+        | "OTHER"
       violation_severity:
         | "WILLFUL"
         | "REPEAT"
@@ -43416,6 +45572,8 @@ export const Constants = {
         "ADDENDUM",
         "OTHER",
       ],
+      dot_status: ["COMPLIANT", "WARNING", "NON_COMPLIANT", "OUT_OF_SERVICE"],
+      dqf_status: ["COMPLETE", "INCOMPLETE", "EXPIRED", "DISQUALIFIED"],
       driver_eligibility: [
         "eligible",
         "restricted",
@@ -43509,6 +45667,21 @@ export const Constants = {
         "NEUTRAL",
         "GOOD",
         "EXCELLENT",
+      ],
+      fuel_card_provider: [
+        "WEX",
+        "FUELMAN",
+        "COMDATA",
+        "EFS",
+        "FLEET_ONE",
+        "OTHER",
+      ],
+      fuel_transaction_status: [
+        "PENDING",
+        "APPROVED",
+        "FLAGGED",
+        "DISPUTED",
+        "RECONCILED",
       ],
       fulfillment_enum: [
         "SELF_PERFORM",
@@ -44038,6 +46211,17 @@ export const Constants = {
         "apprentice",
         "other",
       ],
+      trailer_type: [
+        "LOWBOY",
+        "STEP_DECK",
+        "FLATBED",
+        "EQUIPMENT_TRAILER",
+        "UTILITY_TRAILER",
+        "DUMP_TRAILER",
+        "WATER_TANK",
+        "FUEL_TANK",
+        "OTHER",
+      ],
       training_session_status: [
         "scheduled",
         "in_progress",
@@ -44053,6 +46237,57 @@ export const Constants = {
         "failed_missing_data",
         "manual_override",
         "reprocessing",
+      ],
+      vehicle_gps_provider: [
+        "GEOTAB",
+        "SAMSARA",
+        "VERIZON_CONNECT",
+        "GPS_TRACKIT",
+        "MOTIVE",
+        "MANUAL",
+      ],
+      vehicle_inspection_result: [
+        "PASS",
+        "PASS_WITH_DEFECTS",
+        "FAIL",
+        "OUT_OF_SERVICE",
+      ],
+      vehicle_inspection_type: [
+        "DOT_ANNUAL",
+        "STATE_SAFETY",
+        "EMISSIONS",
+        "PRE_TRIP",
+        "POST_TRIP",
+        "ROADSIDE",
+        "COMPANY_SAFETY",
+        "OTHER",
+      ],
+      vehicle_status: [
+        "ACTIVE",
+        "AVAILABLE",
+        "IN_MAINTENANCE",
+        "DOWN",
+        "IN_TRANSIT",
+        "OUT_OF_SERVICE",
+        "SOLD_DISPOSED",
+      ],
+      vehicle_type: [
+        "DUMP_TRUCK_TANDEM",
+        "DUMP_TRUCK_TRI_AXLE",
+        "DUMP_TRUCK_QUAD_AXLE",
+        "TRACTOR_TRUCK",
+        "PICKUP_TRUCK",
+        "SERVICE_TRUCK",
+        "WATER_TRUCK",
+        "FUEL_TRUCK",
+        "FLATBED_TRUCK",
+        "LOWBOY_TRUCK",
+        "SIGN_TRUCK",
+        "CRANE_TRUCK",
+        "VAN",
+        "SUV",
+        "SEDAN",
+        "OTHER",
       ],
       violation_severity: [
         "WILLFUL",
