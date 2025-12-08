@@ -111,14 +111,14 @@ export function VehicleInspections() {
       const now = new Date();
       const thirtyDaysFromNow = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
 
-      const passed = inspectionList.filter(i => i.result === 'passed').length;
-      const failed = inspectionList.filter(i => i.result === 'failed').length;
-      const conditional = inspectionList.filter(i => i.result === 'conditional').length;
+      const passed = inspectionList.filter(i => i.result?.toUpperCase() === 'PASS').length;
+      const failed = inspectionList.filter(i => i.result?.toUpperCase() === 'FAIL').length;
+      const conditional = inspectionList.filter(i => i.result?.toUpperCase() === 'CONDITIONAL').length;
 
       // Get unique vehicles and check their inspection status
       const vehicleInspections = new Map<string, VehicleInspection>();
       inspectionList
-        .filter(i => i.inspection_type === 'dot_annual')
+        .filter(i => i.inspection_type?.toUpperCase() === 'DOT_ANNUAL')
         .forEach(i => {
           const existing = vehicleInspections.get(i.vehicle_id);
           if (!existing || new Date(i.inspection_date) > new Date(existing.inspection_date)) {
@@ -152,21 +152,21 @@ export function VehicleInspections() {
   };
 
   const getResultColor = (result: string) => {
-    switch (result) {
-      case 'passed': return 'result-passed';
-      case 'failed': return 'result-failed';
-      case 'conditional': return 'result-conditional';
+    switch (result?.toUpperCase()) {
+      case 'PASS': return 'result-passed';
+      case 'FAIL': return 'result-failed';
+      case 'CONDITIONAL': return 'result-conditional';
       default: return 'result-unknown';
     }
   };
 
   const getTypeLabel = (type: string) => {
-    switch (type) {
-      case 'dot_annual': return 'DOT Annual';
-      case 'pre_trip': return 'Pre-Trip';
-      case 'post_trip': return 'Post-Trip';
-      case 'roadside': return 'Roadside';
-      case 'periodic': return 'Periodic';
+    switch (type?.toUpperCase()) {
+      case 'DOT_ANNUAL': return 'DOT Annual';
+      case 'PRE_TRIP': return 'Pre-Trip';
+      case 'POST_TRIP': return 'Post-Trip';
+      case 'ROADSIDE': return 'Roadside';
+      case 'PERIODIC': return 'Periodic';
       default: return type;
     }
   };
@@ -274,17 +274,17 @@ export function VehicleInspections() {
           <Filter size={16} />
           <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
             <option value="all">All Types</option>
-            <option value="dot_annual">DOT Annual</option>
-            <option value="pre_trip">Pre-Trip</option>
-            <option value="post_trip">Post-Trip</option>
-            <option value="roadside">Roadside</option>
-            <option value="periodic">Periodic</option>
+            <option value="DOT_ANNUAL">DOT Annual</option>
+            <option value="PRE_TRIP">Pre-Trip</option>
+            <option value="POST_TRIP">Post-Trip</option>
+            <option value="ROADSIDE">Roadside</option>
+            <option value="PERIODIC">Periodic</option>
           </select>
           <select value={resultFilter} onChange={(e) => setResultFilter(e.target.value)}>
             <option value="all">All Results</option>
-            <option value="passed">Passed</option>
-            <option value="failed">Failed</option>
-            <option value="conditional">Conditional</option>
+            <option value="PASS">Passed</option>
+            <option value="FAIL">Failed</option>
+            <option value="CONDITIONAL">Conditional</option>
           </select>
         </div>
         <div className="view-toggle">
@@ -329,9 +329,9 @@ export function VehicleInspections() {
                     <Truck size={14} /> {inspection.vehicle_number}
                   </span>
                   <span className={`result-badge ${getResultColor(inspection.result)}`}>
-                    {inspection.result === 'passed' && <CheckCircle size={14} />}
-                    {inspection.result === 'failed' && <XCircle size={14} />}
-                    {inspection.result === 'conditional' && <AlertOctagon size={14} />}
+                    {inspection.result?.toUpperCase() === 'PASS' && <CheckCircle size={14} />}
+                    {inspection.result?.toUpperCase() === 'FAIL' && <XCircle size={14} />}
+                    {inspection.result?.toUpperCase() === 'CONDITIONAL' && <AlertOctagon size={14} />}
                     {inspection.result}
                   </span>
                   {inspection.out_of_service && (
