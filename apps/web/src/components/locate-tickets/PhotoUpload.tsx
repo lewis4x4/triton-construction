@@ -98,7 +98,6 @@ function parseExifData(buffer: ArrayBuffer): ExifData {
 
     // APP1 marker (EXIF data)
     if (marker === 0xFFE1) {
-      const segmentLength = view.getUint16(offset + 2);
       const exifStart = offset + 4;
 
       // Check for "Exif" string
@@ -161,7 +160,7 @@ function parseExifData(buffer: ArrayBuffer): ExifData {
   return exif;
 }
 
-function readString(view: DataView, tiffStart: number, offset: number, isLittleEndian: boolean): string {
+function readString(view: DataView, tiffStart: number, offset: number, _isLittleEndian: boolean): string {
   const absOffset = tiffStart + offset;
   let str = '';
   for (let i = 0; i < 64 && absOffset + i < view.byteLength; i++) {
@@ -223,6 +222,7 @@ export function PhotoUpload({
 
       for (let i = 0; i < Math.min(selectedFiles.length, maxFiles - files.length); i++) {
         const file = selectedFiles[i];
+        if (!file) continue;
 
         // Validate file type
         if (!file.type.startsWith('image/')) {

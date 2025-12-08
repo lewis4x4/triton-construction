@@ -20,7 +20,7 @@ export interface PhotoCategory {
   promptTrigger?: string; // When to auto-prompt for this photo type
 }
 
-export interface PhotoCategoryGroup {
+export interface PhotoCategoryGroupInfo {
   id: PhotoCategoryGroup;
   label: string;
   description: string;

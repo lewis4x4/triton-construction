@@ -68,8 +68,8 @@ export function DocumentDashboard() {
 
     if (data) {
       setProjects(data);
-      if (data.length > 0) {
-        setSelectedProjectId(data[0].id);
+      if (data.length > 0 && data[0]) {
+        setSelectedProjectId(data[0]!.id);
       }
     }
     setLoading(false);
@@ -92,7 +92,7 @@ export function DocumentDashboard() {
     const { data, error } = await query.limit(100);
 
     if (!error && data) {
-      setDocuments(data);
+      setDocuments(data as unknown as Document[]);
     }
     setLoading(false);
   }
@@ -113,7 +113,7 @@ export function DocumentDashboard() {
     const { data, error } = await query;
 
     if (!error && data) {
-      setFolders(data);
+      setFolders(data as unknown as Folder[]);
     }
   }
 
@@ -126,7 +126,7 @@ export function DocumentDashboard() {
       .order('created_at', { ascending: false });
 
     if (!error && data) {
-      setSubmittals(data);
+      setSubmittals(data as unknown as Submittal[]);
     }
     setLoading(false);
   }
@@ -566,7 +566,7 @@ function UploadDocumentModal({
       if (uploadError) throw uploadError;
 
       // Create document record
-      const { error } = await supabase.from('documents').insert({
+      const { error } = await supabase.from('documents').insert([{
         project_id: projectId,
         folder_id: folderId,
         title: formData.title,
@@ -578,7 +578,7 @@ function UploadDocumentModal({
         mime_type: file.type,
         version: 1,
         status: 'DRAFT',
-      });
+      }] as any);
 
       if (!error) {
         onSave();

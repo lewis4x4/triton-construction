@@ -58,6 +58,16 @@ import { DailySafetyBriefForm } from './components/safety/DailySafetyBriefForm';
 import { StartMyDayScreen } from './components/safety/StartMyDayScreen';
 // Self-Service Module
 import { MyCertifications } from './pages/my/MyCertifications';
+// Equipment & Crew Management Module
+import { EquipmentFleetDashboard, CrewRoster, MaintenanceScheduling, OperatorQualifications } from './pages/equipment';
+// Pay Estimates Module
+import { ValidationDashboard, PayEstimateUpload } from './pages/pay-estimates';
+// Self-Perform Cost Tracking
+import { SelfPerformDashboard } from './pages/self-perform';
+// Platform Core - Alerts, Geofences, Executive Dashboard
+import { PlatformAlertsDashboard } from './pages/alerts/PlatformAlertsDashboard';
+import { GeofenceManagement } from './pages/geofences/GeofenceManagement';
+import { ExecutiveDashboard } from './pages/executive/ExecutiveDashboard';
 import './styles/index.css';
 
 function App() {
@@ -357,6 +367,50 @@ function App() {
             }
           />
 
+          {/* Self-Perform Cost Tracking routes */}
+          <Route
+            path="/self-perform"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <SelfPerformDashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Pay Estimates routes */}
+          <Route
+            path="/pay-estimates"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <ValidationDashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/pay-estimates/upload"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <PayEstimateUpload />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/pay-estimates/validation"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <ValidationDashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
           {/* Subcontractor Management routes */}
           <Route
             path="/subcontractors"
@@ -436,6 +490,80 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <MyCertifications />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Equipment & Crew Management routes */}
+          <Route
+            path="/equipment"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <EquipmentFleetDashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/equipment/crew"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <CrewRoster />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/equipment/maintenance"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <MaintenanceScheduling />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/equipment/qualifications"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <OperatorQualifications />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Platform Core routes */}
+          <Route
+            path="/alerts"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <PlatformAlertsDashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/geofences"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <GeofenceManagement />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/executive"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <ExecutiveDashboard />
                 </Layout>
               </ProtectedRoute>
             }

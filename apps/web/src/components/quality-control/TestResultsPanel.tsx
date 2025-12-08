@@ -50,7 +50,7 @@ export function TestResultsPanel({ projectId, onUpdate }: Props) {
     const { data, error } = await query.limit(50);
 
     if (!error && data) {
-      setResults(data);
+      setResults(data as any);
     }
     setLoading(false);
   }
@@ -260,7 +260,7 @@ function NewTestResultModal({
       tested_by: formData.tested_by || null,
       lab_name: formData.lab_name || null,
       result_status: formData.result_status,
-    });
+    } as any);
 
     if (!error) {
       onSave();

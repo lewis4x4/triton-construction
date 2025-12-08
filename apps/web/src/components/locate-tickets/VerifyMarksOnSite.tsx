@@ -193,10 +193,10 @@ export function VerifyMarksOnSite({
       // Upload photo if captured
       let photoUrl: string | null = null;
       if (photoData) {
-        const base64Data = photoData.split(',')[1];
+        const base64Data = photoData.split(',')[1]!;
         const fileName = `verifications/${ticketId}/${utilityResponseId}_${Date.now()}.jpg`;
 
-        const { data: uploadData, error: uploadError } = await supabase.storage
+        const { error: uploadError } = await supabase.storage
           .from('report-photos')
           .upload(fileName, decode(base64Data), {
             contentType: 'image/jpeg',
@@ -206,7 +206,7 @@ export function VerifyMarksOnSite({
 
         const { data: urlData } = supabase.storage
           .from('report-photos')
-          .getPublicUrl(fileName);
+          .getPublicUrl(fileName!);
 
         photoUrl = urlData.publicUrl;
       }
@@ -486,7 +486,7 @@ function decode(base64: string): Uint8Array {
 // Verified Badge component for display in utility table
 export function VerifiedBadge({
   verifiedAt,
-  verifiedBy,
+  verifiedBy: _verifiedBy,
   verificationStatus,
 }: {
   verifiedAt: string;

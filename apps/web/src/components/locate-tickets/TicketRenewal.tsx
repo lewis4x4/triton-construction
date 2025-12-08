@@ -2,16 +2,13 @@ import { useState, useEffect } from 'react';
 import {
   RefreshCw,
   Calendar,
-  Clock,
   AlertTriangle,
   CheckCircle,
   FileText,
   Link,
-  ChevronRight,
   X,
   Loader2,
   Copy,
-  ExternalLink,
   History,
 } from 'lucide-react';
 import { supabase } from '@triton/supabase-client';
@@ -62,7 +59,6 @@ export function TicketRenewalModal({
   });
   const [newTicketNumber, setNewTicketNumber] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isLoadingChain, setIsLoadingChain] = useState(true);
 
   const expiryDate = new Date(expiresAt);
   const now = new Date();
@@ -75,7 +71,6 @@ export function TicketRenewalModal({
   }, [ticketId]);
 
   const loadTicketChain = async () => {
-    setIsLoadingChain(true);
     try {
       // Get the ticket and its chain
       const { data: currentTicket } = await supabase
@@ -108,8 +103,6 @@ export function TicketRenewalModal({
       }
     } catch (err) {
       console.error('Error loading ticket chain:', err);
-    } finally {
-      setIsLoadingChain(false);
     }
   };
 
@@ -166,7 +159,7 @@ export function TicketRenewalModal({
           renewal_reason: formData.notes || 'Work continuing',
           is_renewal: true,
           renewed_by: userData.user.id,
-        })
+        } as any)
         .select()
         .single();
 
@@ -184,9 +177,9 @@ export function TicketRenewalModal({
           utility_name: resp.utility_name,
           utility_code: resp.utility_code,
           utility_type: resp.utility_type,
-          response_status: 'PENDING', // Reset status for new ticket
+          response_status: 'PENDING' as const, // Reset status for new ticket
           response_window_closes_at: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(),
-        }));
+        } as any));
 
         await supabase.from('wv811_utility_responses').insert(newResponses);
       }
@@ -203,7 +196,7 @@ export function TicketRenewalModal({
       // Mark old ticket as renewed
       await supabase
         .from('wv811_tickets')
-        .update({ status: 'RENEWED', renewed_by_ticket_id: newTicket.id })
+        .update({ status: 'EXPIRED' as any, renewed_by_ticket_id: newTicket.id })
         .eq('id', ticketId);
 
       // Add audit note

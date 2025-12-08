@@ -105,14 +105,15 @@ export const IncidentReportForm: React.FC<IncidentReportFormProps> = ({
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [_employees, _setEmployees] = useState<Employee[]>([]);
   const [project, setProject] = useState<Project | null>(null);
   const [photos, setPhotos] = useState<File[]>([]);
   const [witnessInput, setWitnessInput] = useState('');
 
   const [incident, setIncident] = useState<Incident>({
     project_id: projectId,
-    incident_date: new Date().toISOString().split('T')[0],
+    incident_number: existingIncident?.incident_number || '',
+    incident_date: new Date().toISOString().split('T')[0]!,
     incident_time: new Date().toTimeString().slice(0, 5),
     location_description: '',
     classification: 'near_miss',
@@ -163,7 +164,7 @@ export const IncidentReportForm: React.FC<IncidentReportFormProps> = ({
       ]);
 
       if (projectRes.data) setProject(projectRes.data);
-      if (employeesRes.data) setEmployees(employeesRes.data);
+      if (employeesRes.data) _setEmployees(employeesRes.data);
     } catch (error) {
       console.error('Error loading data:', error);
     } finally {
@@ -214,7 +215,7 @@ export const IncidentReportForm: React.FC<IncidentReportFormProps> = ({
         // Create new
         const { data, error } = await supabase
           .from('incidents')
-          .insert(incident)
+          .insert(incident as any)
           .select('id')
           .single();
         if (error) throw error;

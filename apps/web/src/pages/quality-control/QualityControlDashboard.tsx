@@ -25,7 +25,7 @@ export function QualityControlDashboard() {
     punchListItems: 0,
   });
   const [selectedProjectId, setSelectedProjectId] = useState<string>('');
-  const [projects, setProjects] = useState<any[]>([]);
+  const [projects, setProjects] = useState<{ id: string; name: string; project_number: string }[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export function QualityControlDashboard() {
 
     if (!error && data) {
       setProjects(data);
-      if (data.length > 0) {
+      if (data.length > 0 && data[0]) {
         setSelectedProjectId(data[0].id);
       }
     }
@@ -65,34 +65,34 @@ export function QualityControlDashboard() {
       .from('inspections')
       .select('*', { count: 'exact', head: true })
       .eq('project_id', selectedProjectId)
-      .in('status', ['SCHEDULED', 'IN_PROGRESS']);
+      .in('status', ['scheduled', 'in_progress']);
 
     // Load NCR stats
     const { count: openNCRs } = await supabase
       .from('non_conformances')
       .select('*', { count: 'exact', head: true })
       .eq('project_id', selectedProjectId)
-      .in('status', ['OPEN', 'UNDER_REVIEW', 'PENDING_ACTION']);
+      .in('status', ['open', 'investigation', 'corrective_action', 'verification']);
 
     const { count: criticalNCRs } = await supabase
       .from('non_conformances')
       .select('*', { count: 'exact', head: true })
       .eq('project_id', selectedProjectId)
-      .eq('severity', 'CRITICAL')
-      .in('status', ['OPEN', 'UNDER_REVIEW']);
+      .eq('severity', 'critical')
+      .in('status', ['open', 'investigation']);
 
     // Load test results
     const { count: failedTests } = await supabase
       .from('test_results')
       .select('*', { count: 'exact', head: true })
       .eq('project_id', selectedProjectId)
-      .eq('result_status', 'FAIL');
+      .eq('result_status', 'fail');
 
     // Load punch list
     const { count: punchListItems } = await supabase
       .from('punch_list_items')
       .select('*', { count: 'exact', head: true })
-      .eq('status', 'OPEN');
+      .eq('status', 'open');
 
     setStats({
       totalInspections: totalInspections || 0,

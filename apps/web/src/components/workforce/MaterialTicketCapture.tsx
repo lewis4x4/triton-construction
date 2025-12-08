@@ -9,10 +9,7 @@ import {
   Calendar,
   Clock,
   CheckCircle,
-  AlertTriangle,
   Loader2,
-  X,
-  Image as ImageIcon,
   Scan,
   DollarSign,
 } from 'lucide-react';
@@ -59,7 +56,6 @@ export function MaterialTicketCapture({ projectId, projectName, onTicketCreated 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [isProcessingOCR, setIsProcessingOCR] = useState(false);
   const [extractedData, setExtractedData] = useState<ExtractedData | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Form state for manual entry / corrections
@@ -105,7 +101,7 @@ export function MaterialTicketCapture({ projectId, projectName, onTicketCreated 
     try {
       // Upload image to Supabase storage
       const fileName = `temp-tickets/${Date.now()}-${file.name}`;
-      const { data: uploadData, error: uploadError } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from('wv811-attachments')
         .upload(fileName, file);
 
@@ -151,7 +147,6 @@ export function MaterialTicketCapture({ projectId, projectName, onTicketCreated 
   };
 
   const handleSubmit = async () => {
-    setIsSubmitting(true);
     setStep('submitting');
 
     try {
@@ -205,10 +200,10 @@ export function MaterialTicketCapture({ projectId, projectName, onTicketCreated 
           notes: formData.notes || null,
           ticket_photo_url: ticketPhotoUrl,
           ocr_status: extractedData ? 'completed' : 'manual_entry',
-          status: 'ocr_complete',
+          status: 'ocr_complete' as any,
           received_by: userData.user.id,
           created_by: userData.user.id,
-        })
+        } as any)
         .select()
         .single();
 
@@ -241,8 +236,6 @@ export function MaterialTicketCapture({ projectId, projectName, onTicketCreated 
     } catch (error) {
       console.error('Submit error:', error);
       setStep('review');
-    } finally {
-      setIsSubmitting(false);
     }
   };
 

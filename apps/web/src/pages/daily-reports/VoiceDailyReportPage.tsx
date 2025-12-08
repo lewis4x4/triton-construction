@@ -35,7 +35,7 @@ export function VoiceDailyReportPage() {
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     loadProjects();
@@ -54,7 +54,7 @@ export function VoiceDailyReportPage() {
 
     if (data) {
       setProjects(data);
-      if (data.length > 0) setSelectedProjectId(data[0].id);
+      if (data.length > 0 && data[0]) setSelectedProjectId(data[0].id);
     }
   }
 
@@ -196,7 +196,7 @@ export function VoiceDailyReportPage() {
           work_summary: structuredReport.summary,
           status: 'DRAFT',
           is_working_day: true,
-        })
+        } as any)
         .select()
         .single();
 

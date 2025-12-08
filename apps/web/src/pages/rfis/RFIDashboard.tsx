@@ -48,7 +48,7 @@ export function RFIDashboard() {
 
     if (data) {
       setProjects(data);
-      if (data.length > 0) {
+      if (data.length > 0 && data[0]) {
         setSelectedProjectId(data[0].id);
       }
     }
@@ -66,7 +66,7 @@ export function RFIDashboard() {
     if (filter === 'open') {
       query = query.in('status', ['DRAFT', 'SUBMITTED', 'UNDER_REVIEW']);
     } else if (filter === 'answered') {
-      query = query.in('status', ['ANSWERED', 'CLOSED']);
+      query = query.in('status', ['RESPONDED', 'CLOSED']);
     } else if (filter === 'overdue') {
       query = query
         .in('status', ['DRAFT', 'SUBMITTED', 'UNDER_REVIEW'])
@@ -77,10 +77,24 @@ export function RFIDashboard() {
 
     if (!error && data) {
       // Calculate days open for each RFI
-      const rfisWithDays = data.map(rfi => ({
-        ...rfi,
+      const rfisWithDays: RFI[] = data.map((rfi: any) => ({
+        id: rfi.id,
+        rfi_number: rfi.rfi_number,
+        subject: rfi.subject,
+        question: rfi.question,
+        status: rfi.status,
+        priority: rfi.priority,
+        spec_section: rfi.spec_section || '',
+        drawing_reference: rfi.drawing_reference || '',
+        submitted_date: rfi.submitted_at,
+        required_date: rfi.response_required_by || '',
+        response_date: rfi.responded_at || null,
+        submitted_by_name: '',
+        assigned_to_name: '',
+        cost_impact: rfi.cost_impact,
+        schedule_impact: rfi.schedule_impact,
         days_open: Math.floor(
-          (new Date().getTime() - new Date(rfi.submitted_date).getTime()) / (1000 * 60 * 60 * 24)
+          (new Date().getTime() - new Date(rfi.submitted_at).getTime()) / (1000 * 60 * 60 * 24)
         ),
       }));
       setRfis(rfisWithDays);
@@ -357,13 +371,13 @@ function NewRFIModal({
       question: formData.question,
       spec_section: formData.spec_section || null,
       drawing_reference: formData.drawing_reference || null,
-      priority: formData.priority,
-      required_date: formData.required_date || null,
+      priority: formData.priority as any,
+      response_required_by: formData.required_date || null,
       cost_impact: formData.cost_impact,
       schedule_impact: formData.schedule_impact,
       status: 'DRAFT',
-      submitted_date: new Date().toISOString().split('T')[0],
-    });
+      submitted_at: new Date().toISOString(),
+    } as any);
 
     if (!error) {
       onSave();
@@ -519,8 +533,8 @@ function RFIDetailModal({
       .from('rfis')
       .update({
         response: response,
-        response_date: new Date().toISOString().split('T')[0],
-        status: 'ANSWERED',
+        responded_at: new Date().toISOString(),
+        status: 'RESPONDED' as any,
       })
       .eq('id', rfi.id);
 

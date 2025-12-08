@@ -6,8 +6,8 @@ interface NCR {
   ncr_number: string;
   title: string;
   description: string;
-  severity: 'MINOR' | 'MAJOR' | 'CRITICAL';
-  status: 'OPEN' | 'UNDER_REVIEW' | 'PENDING_ACTION' | 'CLOSED' | 'VOIDED';
+  severity: string;
+  status: string;
   category: string;
   location: string;
   identified_date: string;
@@ -43,41 +43,42 @@ export function NCRTracker({ projectId, onUpdate }: Props) {
       .order('identified_date', { ascending: false });
 
     if (filter === 'open') {
-      query = query.in('status', ['OPEN', 'UNDER_REVIEW', 'PENDING_ACTION']);
+      query = query.in('status', ['open', 'investigation', 'corrective_action', 'verification']);
     } else if (filter === 'closed') {
-      query = query.in('status', ['CLOSED', 'VOIDED']);
+      query = query.in('status', ['closed', 'void']);
     }
 
     const { data, error } = await query.limit(50);
 
     if (!error && data) {
-      setNcrs(data);
+      setNcrs(data as any);
     }
     setLoading(false);
   }
 
   const getSeverityBadge = (severity: string) => {
     const colors: Record<string, string> = {
-      MINOR: 'bg-yellow-100 text-yellow-800',
-      MAJOR: 'bg-orange-100 text-orange-800',
-      CRITICAL: 'bg-red-100 text-red-800 animate-pulse',
+      minor: 'bg-yellow-100 text-yellow-800',
+      major: 'bg-orange-100 text-orange-800',
+      critical: 'bg-red-100 text-red-800 animate-pulse',
     };
-    return colors[severity] || 'bg-gray-100 text-gray-800';
+    return colors[severity?.toLowerCase()] || 'bg-gray-100 text-gray-800';
   };
 
   const getStatusBadge = (status: string) => {
     const colors: Record<string, string> = {
-      OPEN: 'bg-red-100 text-red-800',
-      UNDER_REVIEW: 'bg-yellow-100 text-yellow-800',
-      PENDING_ACTION: 'bg-blue-100 text-blue-800',
-      CLOSED: 'bg-green-100 text-green-800',
-      VOIDED: 'bg-gray-100 text-gray-800',
+      open: 'bg-red-100 text-red-800',
+      investigation: 'bg-yellow-100 text-yellow-800',
+      corrective_action: 'bg-blue-100 text-blue-800',
+      verification: 'bg-purple-100 text-purple-800',
+      closed: 'bg-green-100 text-green-800',
+      void: 'bg-gray-100 text-gray-800',
     };
     return colors[status] || 'bg-gray-100 text-gray-800';
   };
 
   const isOverdue = (ncr: NCR) => {
-    if (!ncr.due_date || ncr.status === 'CLOSED' || ncr.status === 'VOIDED') return false;
+    if (!ncr.due_date || ncr.status === 'closed' || ncr.status === 'void') return false;
     return new Date(ncr.due_date) < new Date();
   };
 
@@ -232,8 +233,8 @@ function NewNCRModal({
       identified_by: formData.identified_by || null,
       responsible_party: formData.responsible_party || null,
       due_date: formData.due_date || null,
-      status: 'OPEN',
-    });
+      status: 'open',
+    } as any);
 
     if (!error) {
       onSave();
@@ -412,8 +413,8 @@ function NCRDetailModal({
       .update({
         root_cause: rootCause,
         corrective_action: correctiveAction,
-        status: 'CLOSED',
-        closed_date: new Date().toISOString().split('T')[0],
+        status: 'closed',
+        closed_at: new Date().toISOString(),
       })
       .eq('id', ncr.id);
 
@@ -427,7 +428,7 @@ function NCRDetailModal({
     setSaving(true);
     const { error } = await supabase
       .from('non_conformances')
-      .update({ status: newStatus })
+      .update({ status: newStatus as any })
       .eq('id', ncr.id);
 
     if (!error) {
@@ -476,7 +477,7 @@ function NCRDetailModal({
             </div>
           </div>
 
-          {ncr.status !== 'CLOSED' && ncr.status !== 'VOIDED' && (
+          {ncr.status !== 'closed' && ncr.status !== 'void' && (
             <>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -505,18 +506,18 @@ function NCRDetailModal({
               </div>
 
               <div className="flex gap-3 pt-4 border-t">
-                {ncr.status === 'OPEN' && (
+                {ncr.status === 'open' && (
                   <button
-                    onClick={() => handleStatusChange('UNDER_REVIEW')}
+                    onClick={() => handleStatusChange('investigation')}
                     disabled={saving}
                     className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 disabled:opacity-50"
                   >
-                    Start Review
+                    Start Investigation
                   </button>
                 )}
-                {ncr.status === 'UNDER_REVIEW' && (
+                {ncr.status === 'investigation' && (
                   <button
-                    onClick={() => handleStatusChange('PENDING_ACTION')}
+                    onClick={() => handleStatusChange('corrective_action')}
                     disabled={saving}
                     className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
                   >
@@ -531,7 +532,7 @@ function NCRDetailModal({
                   {saving ? 'Saving...' : 'Close NCR'}
                 </button>
                 <button
-                  onClick={() => handleStatusChange('VOIDED')}
+                  onClick={() => handleStatusChange('void')}
                   disabled={saving}
                   className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 disabled:opacity-50"
                 >
@@ -541,7 +542,7 @@ function NCRDetailModal({
             </>
           )}
 
-          {(ncr.status === 'CLOSED' || ncr.status === 'VOIDED') && (
+          {(ncr.status === 'closed' || ncr.status === 'void') && (
             <div className="bg-green-50 p-4 rounded-lg">
               <h3 className="font-medium text-green-800 mb-2">Resolution</h3>
               {ncr.root_cause && (

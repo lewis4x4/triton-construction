@@ -57,7 +57,7 @@ export function AIQueryPage() {
     if (data) {
       setProjects(data);
       if (data.length > 0) {
-        setSelectedProjectId(data[0].id);
+        setSelectedProjectId(data[0]!.id);
       }
     }
   }
@@ -70,7 +70,7 @@ export function AIQueryPage() {
       .order('created_at', { ascending: false });
 
     if (data) {
-      setConversations(data);
+      setConversations(data as any);
     }
   }
 
@@ -82,7 +82,7 @@ export function AIQueryPage() {
       .order('created_at', { ascending: true });
 
     if (data) {
-      setMessages(data);
+      setMessages(data as any);
     }
   }
 

@@ -63,7 +63,7 @@ export function PredictiveAnalyticsDashboard() {
 
     if (data) {
       setProjects(data);
-      if (data.length > 0) {
+      if (data.length > 0 && data[0]) {
         setSelectedProjectId(data[0].id);
       }
     }
@@ -95,9 +95,9 @@ export function PredictiveAnalyticsDashboard() {
         .limit(10),
     ]);
 
-    if (predictionsRes.data) setPredictions(predictionsRes.data);
-    if (risksRes.data) setRisks(risksRes.data);
-    if (alertsRes.data) setAlerts(alertsRes.data);
+    if (predictionsRes.data) setPredictions(predictionsRes.data as any);
+    if (risksRes.data) setRisks(risksRes.data as any);
+    if (alertsRes.data) setAlerts(alertsRes.data as any);
 
     setLoading(false);
   }

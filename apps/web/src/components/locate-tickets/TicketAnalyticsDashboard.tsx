@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import {
   BarChart3,
   TrendingUp,
-  TrendingDown,
   Clock,
   CheckCircle,
   AlertTriangle,
@@ -14,7 +13,6 @@ import {
   RefreshCw,
   ChevronRight,
   ArrowUpRight,
-  ArrowDownRight,
 } from 'lucide-react';
 import { supabase } from '@triton/supabase-client';
 import './TicketAnalyticsDashboard.css';
@@ -108,23 +106,23 @@ export function TicketAnalyticsDashboard({ projectId, dateRange = 'month' }: Ana
       const { data: tickets } = await ticketQuery;
 
       if (tickets) {
-        const today = now.toISOString().split('T')[0];
-        const threeDaysOut = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+        const today = now.toISOString().split('T')[0] || '';
+        const threeDaysOut = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] || '';
 
         setStats({
-          totalActive: tickets.filter((t) => t.status === 'ACTIVE').length,
-          expiringToday: tickets.filter((t) => t.ticket_expires_at?.startsWith(today)).length,
+          totalActive: tickets.filter((t) => t.status === 'IN_PROGRESS' || t.status === 'RECEIVED').length,
+          expiringToday: tickets.filter((t) => today && t.ticket_expires_at?.startsWith(today)).length,
           expiringSoon: tickets.filter((t) => {
             const exp = t.ticket_expires_at?.split('T')[0];
-            return exp && exp > today && exp <= threeDaysOut;
+            return exp && today && threeDaysOut && exp > today && exp <= threeDaysOut;
           }).length,
           expired: tickets.filter((t) => t.status === 'EXPIRED').length,
-          clearToDig: tickets.filter((t) => t.status === 'ACTIVE').length, // Simplified
+          clearToDig: tickets.filter((t) => t.status === 'CLEAR').length,
           pendingResponse: tickets.filter((t) => t.status === 'PENDING').length,
           conflicts: 0, // Will be fetched separately
           renewalsDue: tickets.filter((t) => {
             const exp = t.ticket_expires_at?.split('T')[0];
-            return exp && exp > today && exp <= threeDaysOut && t.status === 'ACTIVE';
+            return exp && today && threeDaysOut && exp > today && exp <= threeDaysOut && (t.status === 'IN_PROGRESS' || t.status === 'RECEIVED');
           }).length,
         });
       }
@@ -223,7 +221,7 @@ export function TicketAnalyticsDashboard({ projectId, dateRange = 'month' }: Ana
     }
   };
 
-  const generateTrendData = (range: string, tickets: Array<{ status: string; ticket_expires_at: string }>): TrendData[] => {
+  const generateTrendData = (range: string, _tickets: Array<{ status: string; ticket_expires_at: string }>): TrendData[] => {
     // Simplified trend generation - would use actual data grouping
     const periods = range === 'week' ? 7 : range === 'month' ? 4 : range === 'quarter' ? 12 : 12;
     const data: TrendData[] = [];

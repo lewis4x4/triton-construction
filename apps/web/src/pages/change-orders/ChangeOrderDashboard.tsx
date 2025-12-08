@@ -55,11 +55,11 @@ export function ChangeOrderDashboard() {
 
     if (data) {
       setProjects(data);
-      if (data.length > 0) {
+      if (data.length > 0 && data[0]) {
         setSelectedProjectId(data[0].id);
         setContractValue({
-          original: data[0].original_contract_value || 0,
-          current: data[0].current_contract_value || 0,
+          original: data[0].original_contract_value ?? 0,
+          current: data[0].current_contract_value ?? 0,
         });
       }
     }
@@ -77,7 +77,7 @@ export function ChangeOrderDashboard() {
         .order('created_at', { ascending: false });
 
       if (!error && data) {
-        setPcrs(data);
+        setPcrs(data as any);
       }
     } else if (activeTab === 'change-orders') {
       const { data, error } = await supabase
@@ -87,7 +87,7 @@ export function ChangeOrderDashboard() {
         .order('change_order_number', { ascending: false });
 
       if (!error && data) {
-        setChangeOrders(data);
+        setChangeOrders(data as any);
       }
     }
 
@@ -455,7 +455,7 @@ function TimeExtensionsPanel({ projectId }: { projectId: string }) {
       .order('request_date', { ascending: false });
 
     if (!error && data) {
-      setExtensions(data);
+      setExtensions(data as any);
     }
     setLoading(false);
   }
@@ -584,8 +584,8 @@ function NewPCRModal({
       estimated_days: parseInt(formData.estimated_days) || 0,
       priority: formData.priority,
       status: 'DRAFT',
-      submitted_date: new Date().toISOString().split('T')[0],
-    });
+      submitted_date: new Date().toISOString().split('T')[0] ?? '',
+    } as any);
 
     if (!error) {
       onSave();

@@ -19,7 +19,6 @@ import {
   Search,
   Filter,
   RefreshCw,
-  BarChart3,
   Building2,
   User,
 } from 'lucide-react';
@@ -153,6 +152,7 @@ export function TrainingDashboard() {
     if (data) {
       setPrograms(data.map(p => ({
         ...p,
+        provider_type: p.provider_type as 'internal' | 'external' | 'hybrid',
         certifications: (p.training_program_certifications || []).map((tpc: any) => ({
           code: tpc.certification_types?.code,
           name: tpc.certification_types?.name,
@@ -232,10 +232,10 @@ export function TrainingDashboard() {
         id: c.id,
         employee_name: (c.employees as any)?.display_name ||
           `${(c.employees as any)?.first_name} ${(c.employees as any)?.last_name}`,
-        certification_name: c.certification_name,
-        expires_at: c.expires_at,
+        certification_name: c.certification_name || '',
+        expires_at: c.expires_at || '',
         days_until_expiry: Math.ceil(
-          (new Date(c.expires_at).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+          (new Date(c.expires_at || '').getTime() - Date.now()) / (1000 * 60 * 60 * 24)
         ),
       })));
     }
@@ -268,10 +268,12 @@ export function TrainingDashboard() {
     });
   };
 
-  const formatTime = (timeStr: string | null) => {
+  const formatTime = (timeStr: string | null | undefined) => {
     if (!timeStr) return '';
-    const [hours, minutes] = timeStr.split(':');
-    const h = parseInt(hours);
+    const parts = timeStr.split(':');
+    const hours = parts[0] || '0';
+    const minutes = parts[1] || '00';
+    const h = parseInt(hours, 10);
     return `${h > 12 ? h - 12 : h}:${minutes} ${h >= 12 ? 'PM' : 'AM'}`;
   };
 

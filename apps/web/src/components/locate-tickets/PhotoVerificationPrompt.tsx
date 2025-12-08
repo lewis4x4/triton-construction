@@ -35,13 +35,13 @@ interface GPSLocation {
 type VerificationType = 'UTILITY_MARKS' | 'NO_MARKS_VISIBLE' | 'OBSTRUCTION';
 type ExceptionReason = 'RAIN' | 'EQUIPMENT_BLOCKING' | 'DARK' | 'UNSAFE' | 'OTHER';
 
-const VERIFICATION_TYPES: { value: VerificationType; label: string; description: string }[] = [
+const _VERIFICATION_TYPES: { value: VerificationType; label: string; description: string }[] = [
   { value: 'UTILITY_MARKS', label: 'Marks Visible', description: 'Utility marks are visible on site' },
   { value: 'NO_MARKS_VISIBLE', label: 'No Marks Found', description: 'No utility markings visible in area' },
   { value: 'OBSTRUCTION', label: 'View Obstructed', description: 'Cannot verify due to obstructions' },
 ];
 
-const EXCEPTION_REASONS: { value: ExceptionReason; label: string }[] = [
+const _EXCEPTION_REASONS: { value: ExceptionReason; label: string }[] = [
   { value: 'RAIN', label: 'Rain/Weather' },
   { value: 'EQUIPMENT_BLOCKING', label: 'Equipment blocking view' },
   { value: 'DARK', label: 'Too dark' },
@@ -289,7 +289,7 @@ export function PhotoVerificationPrompt({
       if (!userProfile?.organization_id) throw new Error('Organization not found');
 
       // Create exception record
-      const { data: verification, error: insertError } = await supabase
+      const { error: insertError } = await supabase
         .from('wv811_photo_verifications')
         .insert({
           organization_id: userProfile.organization_id,
@@ -419,7 +419,7 @@ export function PhotoVerificationPrompt({
       <div className="verification-type-select">
         <label>What did you capture?</label>
         <div className="type-options">
-          {VERIFICATION_TYPES.map((type) => (
+          {_VERIFICATION_TYPES.map((type) => (
             <button
               key={type.value}
               className={`type-option ${verificationType === type.value ? 'selected' : ''}`}
@@ -482,7 +482,7 @@ export function PhotoVerificationPrompt({
       </div>
 
       <div className="exception-reasons">
-        {EXCEPTION_REASONS.map((reason) => (
+        {_EXCEPTION_REASONS.map((reason) => (
           <button
             key={reason.value}
             className={`exception-reason ${exceptionReason === reason.value ? 'selected' : ''}`}

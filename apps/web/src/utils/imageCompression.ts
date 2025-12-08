@@ -212,7 +212,6 @@ export async function extractGpsFromExif(file: File): Promise<{
 
       // APP1 marker (EXIF)
       if (marker === 0xffe1) {
-        const length = view.getUint16(offset + 2);
         // Check for "Exif" identifier
         const exifStr = String.fromCharCode(
           view.getUint8(offset + 4),

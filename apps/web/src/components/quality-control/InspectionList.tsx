@@ -3,13 +3,13 @@ import { supabase } from '@triton/supabase-client';
 
 interface Inspection {
   id: string;
-  inspection_number: string;
-  inspection_type: string;
-  title: string;
-  status: string;
-  scheduled_date: string;
-  location: string;
-  inspector_name: string;
+  inspection_number: string | null;
+  inspection_type: string | null;
+  title: string | null;
+  status: string | null;
+  scheduled_date: string | null;
+  location: string | null;
+  inspector_name: string | null;
   score: number | null;
 }
 
@@ -36,27 +36,27 @@ export function InspectionList({ projectId, onUpdate }: Props) {
       .order('scheduled_date', { ascending: false });
 
     if (filter === 'pending') {
-      query = query.in('status', ['SCHEDULED', 'IN_PROGRESS']);
+      query = query.in('status', ['scheduled', 'in_progress']);
     } else if (filter === 'completed') {
-      query = query.in('status', ['PASSED', 'PASSED_WITH_COMMENTS', 'FAILED']);
+      query = query.in('status', ['passed', 'conditional', 'failed']);
     }
 
     const { data, error } = await query.limit(50);
 
     if (!error && data) {
-      setInspections(data);
+      setInspections(data as any);
     }
     setLoading(false);
   }
 
   const getStatusBadge = (status: string) => {
     const statusColors: Record<string, string> = {
-      SCHEDULED: 'bg-blue-100 text-blue-800',
-      IN_PROGRESS: 'bg-yellow-100 text-yellow-800',
-      PASSED: 'bg-green-100 text-green-800',
-      PASSED_WITH_COMMENTS: 'bg-green-100 text-green-800',
-      FAILED: 'bg-red-100 text-red-800',
-      CANCELLED: 'bg-gray-100 text-gray-800',
+      scheduled: 'bg-blue-100 text-blue-800',
+      in_progress: 'bg-yellow-100 text-yellow-800',
+      passed: 'bg-green-100 text-green-800',
+      conditional: 'bg-green-100 text-green-800',
+      failed: 'bg-red-100 text-red-800',
+      cancelled: 'bg-gray-100 text-gray-800',
     };
     return statusColors[status] || 'bg-gray-100 text-gray-800';
   };
@@ -147,7 +147,7 @@ export function InspectionList({ projectId, onUpdate }: Props) {
                   <td className="px-4 py-3">
                     <span
                       className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusBadge(
-                        inspection.status
+                        inspection.status || ''
                       )}`}
                     >
                       {inspection.status?.replace(/_/g, ' ')}
@@ -223,7 +223,7 @@ function NewInspectionModal({
       project_id: projectId,
       ...formData,
       status: 'SCHEDULED',
-    });
+    } as any);
 
     if (!error) {
       onSave();

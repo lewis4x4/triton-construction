@@ -15,16 +15,11 @@ interface AppModule {
   module_name: string;
   module_path: string;
   module_icon: string | null;
-  module_group: string;
-  sort_order: number;
-  is_system: boolean;
+  module_group: string | null;
+  sort_order: number | null;
+  is_system: boolean | null;
 }
 
-interface RoleModuleAccess {
-  role_id: string;
-  module_id: string;
-  has_access: boolean;
-}
 
 export function RoleAccessControl() {
   const [roles, setRoles] = useState<Role[]>([]);
@@ -68,18 +63,22 @@ export function RoleAccessControl() {
 
       // Build access matrix
       const matrix: Record<string, Record<string, boolean>> = {};
-      for (const role of rolesData || []) {
-        matrix[role.id] = {};
-        for (const mod of modulesData || []) {
-          const access = (accessData || []).find(
+      const rolesList = rolesData ?? [];
+      const modulesList = modulesData ?? [];
+
+      for (const role of rolesList) {
+        const roleMatrix: Record<string, boolean> = {};
+        for (const mod of modulesList) {
+          const access = accessData?.find(
             a => a.role_id === role.id && a.module_id === mod.id
           );
-          matrix[role.id][mod.id] = access?.has_access ?? false;
+          roleMatrix[mod.id] = access?.has_access ?? false;
         }
+        matrix[role.id] = roleMatrix;
       }
 
-      setRoles(rolesData || []);
-      setModules(modulesData || []);
+      setRoles(rolesList);
+      setModules(modulesList as AppModule[]);
       setAccessMatrix(matrix);
       setOriginalMatrix(JSON.parse(JSON.stringify(matrix)));
     } catch (err) {
@@ -103,15 +102,15 @@ export function RoleAccessControl() {
     setAccessMatrix(prev => ({
       ...prev,
       [roleId]: {
-        ...prev[roleId],
-        [moduleId]: !prev[roleId][moduleId]
+        ...(prev[roleId] ?? {}),
+        [moduleId]: !(prev[roleId]?.[moduleId] ?? false)
       }
     }));
     setSuccess(null);
   };
 
   const selectAllForRole = (roleId: string) => {
-    const allSelected = modules.every(mod => accessMatrix[roleId]?.[mod.id]);
+    const allSelected = modules.every(mod => accessMatrix[roleId]?.[mod.id] ?? false);
     setAccessMatrix(prev => ({
       ...prev,
       [roleId]: Object.fromEntries(
@@ -131,12 +130,18 @@ export function RoleAccessControl() {
       const updates: { role_id: string; module_id: string; has_access: boolean }[] = [];
 
       for (const roleId of Object.keys(accessMatrix)) {
-        for (const moduleId of Object.keys(accessMatrix[roleId])) {
-          if (accessMatrix[roleId][moduleId] !== originalMatrix[roleId]?.[moduleId]) {
+        const roleMatrix = accessMatrix[roleId];
+        if (!roleMatrix) continue;
+
+        for (const moduleId of Object.keys(roleMatrix)) {
+          const currentAccess = roleMatrix[moduleId] ?? false;
+          const originalAccess = originalMatrix[roleId]?.[moduleId] ?? false;
+
+          if (currentAccess !== originalAccess) {
             updates.push({
               role_id: roleId,
               module_id: moduleId,
-              has_access: accessMatrix[roleId][moduleId]
+              has_access: currentAccess
             });
           }
         }
@@ -163,10 +168,11 @@ export function RoleAccessControl() {
 
   // Group modules by their group
   const groupedModules = modules.reduce((acc, mod) => {
-    if (!acc[mod.module_group]) {
-      acc[mod.module_group] = [];
+    const group = mod.module_group ?? 'OTHER';
+    if (!acc[group]) {
+      acc[group] = [];
     }
-    acc[mod.module_group].push(mod);
+    acc[group].push(mod);
     return acc;
   }, {} as Record<string, AppModule[]>);
 
@@ -250,7 +256,7 @@ export function RoleAccessControl() {
                       {group}
                     </td>
                   </tr>
-                  {groupedModules[group].map(mod => (
+                  {groupedModules[group]?.map(mod => (
                     <tr key={mod.id} className="module-row">
                       <td className="module-name-cell">
                         <span className="module-icon">{mod.module_icon}</span>

@@ -6,7 +6,6 @@ import {
   Clock,
   AlertTriangle,
   CheckCircle,
-  XCircle,
   Calendar,
   FileText,
   Building2,
@@ -41,18 +40,18 @@ interface ExpiringItem {
 
 interface RecentIncident {
   id: string;
-  incidentNumber: string;
+  incidentNumber: string | null;
   classification: string;
   description: string;
   incidentDate: string;
-  status: string;
+  status: string | null;
 }
 
 interface ActiveOverride {
   id: string;
   overrideType: string;
-  blockedAction: string;
-  expiresAt: string;
+  blockedAction: string | null;
+  expiresAt: string | null;
   requesterName: string;
   projectName: string;
 }
@@ -63,7 +62,6 @@ export function WorkforceComplianceDashboard() {
   const [recentIncidents, setRecentIncidents] = useState<RecentIncident[]>([]);
   const [activeOverrides, setActiveOverrides] = useState<ActiveOverride[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'overview' | 'employees' | 'subcontractors' | 'fleet' | 'safety'>('overview');
 
   useEffect(() => {
     loadDashboardData();
@@ -175,7 +173,6 @@ export function WorkforceComplianceDashboard() {
     const thirtyDaysFromNow = new Date();
     thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30);
     const cutoffDate = thirtyDaysFromNow.toISOString().split('T')[0];
-    const today = new Date().toISOString().split('T')[0];
 
     // Expiring certifications
     const { data: certs } = await supabase
@@ -189,13 +186,13 @@ export function WorkforceComplianceDashboard() {
 
     certs?.forEach(cert => {
       const emp = cert.employees as { first_name: string; last_name: string } | null;
-      const daysUntil = Math.ceil((new Date(cert.expiration_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+      const daysUntil = Math.ceil((new Date(cert.expiration_date ?? '').getTime() - Date.now()) / (1000 * 60 * 60 * 24));
       items.push({
         id: cert.id,
         type: 'certification',
         entityName: emp ? `${emp.first_name} ${emp.last_name}` : 'Unknown',
-        itemName: cert.certification_name,
-        expirationDate: cert.expiration_date,
+        itemName: cert.certification_name ?? 'Unknown Certification',
+        expirationDate: cert.expiration_date ?? '',
         daysUntilExpiry: daysUntil,
         urgency: daysUntil <= 0 ? 'critical' : daysUntil <= 7 ? 'high' : 'medium',
       });
@@ -212,13 +209,13 @@ export function WorkforceComplianceDashboard() {
 
     licenses?.forEach(lic => {
       const emp = lic.employees as { first_name: string; last_name: string } | null;
-      const daysUntil = Math.ceil((new Date(lic.expiration_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+      const daysUntil = Math.ceil((new Date(lic.expiration_date ?? '').getTime() - Date.now()) / (1000 * 60 * 60 * 24));
       items.push({
         id: lic.id,
         type: 'license',
         entityName: emp ? `${emp.first_name} ${emp.last_name}` : 'Unknown',
         itemName: 'Driver License',
-        expirationDate: lic.expiration_date,
+        expirationDate: lic.expiration_date ?? '',
         daysUntilExpiry: daysUntil,
         urgency: daysUntil <= 0 ? 'critical' : daysUntil <= 7 ? 'high' : 'medium',
       });
@@ -233,7 +230,7 @@ export function WorkforceComplianceDashboard() {
     subs?.forEach(sub => {
       ['general_liability_exp', 'workers_comp_exp', 'auto_liability_exp'].forEach(field => {
         const expDate = sub[field as keyof typeof sub] as string | null;
-        if (expDate && expDate <= cutoffDate) {
+        if (expDate && cutoffDate && expDate <= cutoffDate) {
           const daysUntil = Math.ceil((new Date(expDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
           const insuranceType = field.replace('_exp', '').replace(/_/g, ' ');
           items.push({
@@ -457,12 +454,12 @@ export function WorkforceComplianceDashboard() {
                       {incident.classification.replace(/_/g, ' ')}
                     </div>
                     <div className="incident-details">
-                      <div className="incident-number">{incident.incidentNumber}</div>
+                      <div className="incident-number">{incident.incidentNumber ?? 'N/A'}</div>
                       <div className="incident-description">{incident.description}</div>
                       <div className="incident-meta">
                         <Calendar size={12} />
                         {formatDate(incident.incidentDate)}
-                        <span className={`status-badge ${incident.status}`}>{incident.status}</span>
+                        <span className={`status-badge ${incident.status ?? 'unknown'}`}>{incident.status ?? 'unknown'}</span>
                       </div>
                     </div>
                   </div>
@@ -488,11 +485,11 @@ export function WorkforceComplianceDashboard() {
                   <div key={override.id} className="override-item">
                     <div className="override-type">{override.overrideType.replace(/_/g, ' ')}</div>
                     <div className="override-details">
-                      <div className="override-action">{override.blockedAction}</div>
+                      <div className="override-action">{override.blockedAction ?? 'N/A'}</div>
                       <div className="override-meta">
                         <span className="project">{override.projectName}</span>
                         <span className="expires">
-                          Expires in {formatTimeRemaining(override.expiresAt)}
+                          Expires in {override.expiresAt ? formatTimeRemaining(override.expiresAt) : 'N/A'}
                         </span>
                       </div>
                     </div>

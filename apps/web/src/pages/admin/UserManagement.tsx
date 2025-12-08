@@ -54,7 +54,7 @@ export function UserManagement() {
       .order('last_name');
 
     if (!error && data) {
-      setUsers(data);
+      setUsers(data as any);
     }
     setLoading(false);
   }
@@ -67,7 +67,7 @@ export function UserManagement() {
       .order('level');
 
     if (!error && data) {
-      setRoles(data);
+      setRoles(data as any);
     }
     setLoading(false);
   }
@@ -336,7 +336,7 @@ function InviteUserModal({
       .from('roles')
       .select('*')
       .order('level');
-    if (data) setRoles(data);
+    if (data) setRoles(data as any);
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -345,13 +345,13 @@ function InviteUserModal({
 
     // In a real app, this would send an invite email
     // For now, we'll just create the user profile
-    const { error } = await supabase.from('user_profiles').insert({
+    const { error } = await supabase.from('user_profiles').insert([{
       email: formData.email,
       first_name: formData.first_name,
       last_name: formData.last_name,
       phone: formData.phone || null,
-      status: 'PENDING',
-    });
+      status: 'PENDING' as any,
+    }] as any);
 
     if (!error) {
       onSave();
@@ -489,7 +489,7 @@ function UserDetailModal({
       .eq('user_id', user.id);
 
     if (data) {
-      setUserRoles(data);
+      setUserRoles(data as any);
     }
     setLoading(false);
   }

@@ -3,28 +3,28 @@ import { supabase } from '@triton/supabase-client';
 
 interface PunchList {
   id: string;
-  name: string;
-  description: string;
-  status: 'DRAFT' | 'ACTIVE' | 'COMPLETE';
-  area: string;
-  created_at: string;
-  total_items: number;
-  completed_items: number;
-  critical_items: number;
+  name: string | null;
+  description: string | null;
+  status: string | null;
+  area: string | null;
+  created_at: string | null;
+  total_items: number | null;
+  completed_items: number | null;
+  critical_items?: number | null;
 }
 
 interface PunchListItem {
   id: string;
   punch_list_id: string;
-  item_number: number;
-  description: string;
-  location: string;
-  priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
-  status: 'OPEN' | 'IN_PROGRESS' | 'COMPLETE' | 'VERIFIED' | 'NOT_APPLICABLE';
-  assigned_to: string;
+  item_number: number | null;
+  description: string | null;
+  location: string | null;
+  priority: string | null;
+  status: string | null;
+  assigned_to: string | null;
   due_date: string | null;
-  completed_date: string | null;
-  notes: string;
+  completed_at: string | null;
+  notes: string | null;
 }
 
 interface Props {
@@ -58,9 +58,9 @@ export function PunchListManager({ projectId, onUpdate }: Props) {
       .order('created_at', { ascending: false });
 
     if (!error && data) {
-      setPunchLists(data);
+      setPunchLists(data as unknown as PunchList[]);
       if (data.length > 0 && !selectedList) {
-        setSelectedList(data[0]);
+        setSelectedList(data[0] as unknown as PunchList);
       }
     }
     setLoading(false);
@@ -96,17 +96,17 @@ export function PunchListManager({ projectId, onUpdate }: Props) {
     }
   }
 
-  const getPriorityBadge = (priority: string) => {
+  const getPriorityBadge = (priority: string | null) => {
     const colors: Record<string, string> = {
       LOW: 'bg-gray-100 text-gray-800',
       MEDIUM: 'bg-blue-100 text-blue-800',
       HIGH: 'bg-orange-100 text-orange-800',
       CRITICAL: 'bg-red-100 text-red-800',
     };
-    return colors[priority] || 'bg-gray-100 text-gray-800';
+    return colors[priority ?? ''] || 'bg-gray-100 text-gray-800';
   };
 
-  const getStatusBadge = (status: string) => {
+  const getStatusBadge = (status: string | null) => {
     const colors: Record<string, string> = {
       OPEN: 'bg-red-100 text-red-800',
       IN_PROGRESS: 'bg-yellow-100 text-yellow-800',
@@ -114,12 +114,12 @@ export function PunchListManager({ projectId, onUpdate }: Props) {
       VERIFIED: 'bg-green-200 text-green-900',
       NOT_APPLICABLE: 'bg-gray-100 text-gray-800',
     };
-    return colors[status] || 'bg-gray-100 text-gray-800';
+    return colors[status ?? ''] || 'bg-gray-100 text-gray-800';
   };
 
   const getProgressPercentage = (list: PunchList) => {
-    if (list.total_items === 0) return 0;
-    return Math.round((list.completed_items / list.total_items) * 100);
+    if (!list.total_items || list.total_items === 0) return 0;
+    return Math.round(((list.completed_items ?? 0) / list.total_items) * 100);
   };
 
   if (loading) {
@@ -173,9 +173,9 @@ export function PunchListManager({ projectId, onUpdate }: Props) {
                 <p className="text-sm text-gray-600 mb-2">{list.area}</p>
                 <div className="flex justify-between items-center text-sm">
                   <span className="text-gray-500">
-                    {list.completed_items}/{list.total_items} items
+                    {list.completed_items ?? 0}/{list.total_items ?? 0} items
                   </span>
-                  {list.critical_items > 0 && (
+                  {(list.critical_items ?? 0) > 0 && (
                     <span className="text-red-600 font-medium">
                       {list.critical_items} critical
                     </span>
@@ -282,7 +282,7 @@ export function PunchListManager({ projectId, onUpdate }: Props) {
                         </td>
                         <td className="px-4 py-3">
                           <select
-                            value={item.status}
+                            value={item.status ?? 'OPEN'}
                             onChange={(e) => updateItemStatus(item.id, e.target.value)}
                             className="text-sm border border-gray-300 rounded px-2 py-1"
                           >
@@ -361,11 +361,11 @@ function NewPunchListModal({
       name: formData.name,
       description: formData.description || null,
       area: formData.area || null,
-      status: 'DRAFT',
+      status: 'DRAFT' as const,
       total_items: 0,
       completed_items: 0,
       critical_items: 0,
-    });
+    } as any);
 
     if (!error) {
       onSave();
@@ -467,11 +467,11 @@ function NewPunchItemModal({
       description: formData.description,
       location: formData.location || null,
       priority: formData.priority,
-      status: 'OPEN',
+      status: 'OPEN' as const,
       assigned_to: formData.assigned_to || null,
       due_date: formData.due_date || null,
       notes: formData.notes || null,
-    });
+    } as any);
 
     if (!error) {
       onSave();

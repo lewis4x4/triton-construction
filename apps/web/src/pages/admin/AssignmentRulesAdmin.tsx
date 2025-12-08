@@ -22,9 +22,7 @@ import {
   X,
   BookOpen,
   Clock,
-  Users,
   Lock,
-  Unlock,
   Copy,
   Eye,
   EyeOff,
@@ -185,7 +183,7 @@ const EMPTY_FORM: RuleFormData = {
   jurisdiction: 'company',
   regulatory_reference: '',
   penalty_info: '',
-  effective_date: new Date().toISOString().split('T')[0],
+  effective_date: new Date().toISOString().split('T')[0] ?? '',
   expiration_date: '',
   is_active: true,
 };
@@ -237,7 +235,7 @@ export function AssignmentRulesAdmin() {
         .order('rule_name');
 
       if (fetchError) throw fetchError;
-      setRules(data || []);
+      setRules((data || []) as any);
     } catch (err) {
       console.error('Failed to load rules:', err);
       setError('Failed to load validation rules');
@@ -281,7 +279,7 @@ export function AssignmentRulesAdmin() {
     const groups: Record<string, ValidationRule[]> = {};
     for (const rule of filteredRules) {
       if (!groups[rule.work_type]) groups[rule.work_type] = [];
-      groups[rule.work_type].push(rule);
+      groups[rule.work_type]?.push(rule);
     }
     return groups;
   }, [filteredRules]);
@@ -390,7 +388,7 @@ export function AssignmentRulesAdmin() {
         // Update
         const { error: updateError } = await supabase
           .from('assignment_validation_rules')
-          .update(payload)
+          .update(payload as any)
           .eq('id', editingRule.id);
 
         if (updateError) throw updateError;
@@ -398,7 +396,7 @@ export function AssignmentRulesAdmin() {
         // Insert
         const { error: insertError } = await supabase
           .from('assignment_validation_rules')
-          .insert([payload]);
+          .insert([payload as any]);
 
         if (insertError) throw insertError;
       }
@@ -473,7 +471,7 @@ export function AssignmentRulesAdmin() {
       jurisdiction: 'company',
       regulatory_reference: '',
       penalty_info: '',
-      effective_date: new Date().toISOString().split('T')[0],
+      effective_date: new Date().toISOString().split('T')[0] ?? '',
       expiration_date: '',
       is_active: true,
     });

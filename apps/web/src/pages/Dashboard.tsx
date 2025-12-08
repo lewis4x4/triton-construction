@@ -7,10 +7,6 @@ import {
   ArrowRight,
   CheckCircle2,
   TrendingUp,
-  TrendingDown,
-  Users,
-  HardHat,
-  FileText,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './Dashboard.css';

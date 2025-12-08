@@ -16,13 +16,9 @@ import {
   Save,
   X,
   Search,
-  Check,
   CheckCircle,
-  AlertTriangle,
   Award,
   FileText,
-  Play,
-  Square,
   ChevronDown,
   Loader2,
 } from 'lucide-react';
@@ -88,6 +84,21 @@ interface SessionFormData {
   notes: string;
 }
 
+interface TrainingSession {
+  id: string;
+  status: string;
+  session_number?: string;
+  program_id: string;
+  instructor_name: string;
+  instructor_credentials?: string | null;
+  session_date: string;
+  session_time?: string | null;
+  duration_hours?: number | null;
+  location?: string | null;
+  project_id?: string | null;
+  notes?: string | null;
+}
+
 export const TrainingSessionForm: React.FC<TrainingSessionFormProps> = ({
   sessionId,
   onSave,
@@ -107,7 +118,7 @@ export const TrainingSessionForm: React.FC<TrainingSessionFormProps> = ({
     program_id: '',
     instructor_name: '',
     instructor_credentials: '',
-    session_date: new Date().toISOString().split('T')[0],
+    session_date: new Date().toISOString().split('T')[0] || '',
     session_time: '07:00',
     duration_hours: '',
     location: '',
@@ -199,11 +210,11 @@ export const TrainingSessionForm: React.FC<TrainingSessionFormProps> = ({
       .from('training_sessions')
       .select('*')
       .eq('id', id)
-      .single();
+      .single() as { data: TrainingSession | null };
 
     if (session) {
       setSessionStatus(session.status);
-      setSessionNumber(session.session_number);
+      setSessionNumber(session.session_number || '');
       setFormData({
         program_id: session.program_id,
         instructor_name: session.instructor_name,
@@ -372,8 +383,8 @@ export const TrainingSessionForm: React.FC<TrainingSessionFormProps> = ({
             location: formData.location || null,
             project_id: formData.project_id || null,
             notes: formData.notes || null,
-            status: 'scheduled',
-          })
+            status: 'scheduled' as any,
+          } as any)
           .select('id')
           .single();
 

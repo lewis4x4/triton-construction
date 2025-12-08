@@ -72,13 +72,13 @@ export function AlertAcknowledgementBanner({ onAcknowledge, onDismiss }: AlertAc
 
       if (error) throw error;
 
-      const alerts: PendingAlert[] = (data || []).map((ack) => ({
+      const alerts: PendingAlert[] = (data || []).map((ack: any) => ({
         id: ack.id,
         alert_id: ack.alert_id,
         ticket_id: ack.wv811_ticket_alerts.ticket_id,
         ticket_number: ack.wv811_ticket_alerts.wv811_tickets?.ticket_number || '',
         alert_type: ack.wv811_ticket_alerts.alert_type,
-        message: ack.wv811_ticket_alerts.message,
+        message: ack.wv811_ticket_alerts.message || '',
         priority: ack.wv811_ticket_alerts.priority,
         sent_at: ack.sent_at,
         ack_deadline: ack.ack_deadline,
@@ -123,7 +123,6 @@ export function AlertAcknowledgementBanner({ onAcknowledge, onDismiss }: AlertAc
   if (isLoading || pendingAlerts.length === 0) return null;
 
   const criticalAlerts = pendingAlerts.filter((a) => a.priority === 'CRITICAL');
-  const _warningAlerts = pendingAlerts.filter((a) => a.priority === 'WARNING');
 
   return (
     <>
@@ -142,7 +141,10 @@ export function AlertAcknowledgementBanner({ onAcknowledge, onDismiss }: AlertAc
               : 'Please review and acknowledge these alerts'}
           </div>
         </div>
-        <button className="banner-action" onClick={() => openAckModal(pendingAlerts[0])}>
+        <button className="banner-action" onClick={() => {
+          const firstAlert = pendingAlerts[0];
+          if (firstAlert) openAckModal(firstAlert);
+        }}>
           Review Now
           <ChevronRight size={18} />
         </button>

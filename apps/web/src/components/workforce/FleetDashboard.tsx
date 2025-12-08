@@ -15,10 +15,8 @@ import {
   Clock,
   FileText,
   Shield,
-  Calendar,
   ChevronRight,
   Search,
-  Filter,
   RefreshCw,
   AlertCircle,
   CreditCard,
@@ -149,7 +147,7 @@ export const FleetDashboard: React.FC = () => {
           ...d,
           first_name: (d.employees as any)?.first_name || '',
           last_name: (d.employees as any)?.last_name || '',
-        })));
+        })) as any);
       }
 
       if (vehiclesRes.data) {
@@ -171,7 +169,7 @@ export const FleetDashboard: React.FC = () => {
       }
 
       if (policyRes.data) {
-        setPolicyRules(policyRes.data);
+        setPolicyRules(policyRes.data as any);
       }
     } catch (error) {
       console.error('Error loading fleet data:', error);
@@ -188,7 +186,7 @@ export const FleetDashboard: React.FC = () => {
       .order('violation_date', { ascending: false });
 
     if (data) {
-      setDriverViolations(data);
+      setDriverViolations(data as any);
     }
   };
 

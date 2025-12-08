@@ -4,7 +4,6 @@ import {
   ArrowLeft,
   MapPin,
   Calendar,
-  Clock,
   Building2,
   User,
   Phone,
@@ -119,7 +118,7 @@ export function TicketDetail() {
         .single();
 
       if (ticketError) throw ticketError;
-      setTicket(ticketData);
+      setTicket(ticketData as unknown as TicketDetailData);
 
       // Fetch utility responses
       const { data: utilityData, error: utilityError } = await supabase
@@ -129,7 +128,7 @@ export function TicketDetail() {
         .order('utility_name');
 
       if (utilityError) throw utilityError;
-      setUtilities(utilityData || []);
+      setUtilities((utilityData || []) as unknown as UtilityResponse[]);
 
       // Fetch notes (without join - user_profiles uses same id as auth.users)
       const { data: notesData, error: notesError } = await supabase
@@ -153,7 +152,7 @@ export function TicketDetail() {
           const notesWithProfiles = notesData.map((note) => ({
             ...note,
             user_profiles: profileMap.get(note.user_id) || null,
-          }));
+          })) as unknown as TicketNote[];
           setNotes(notesWithProfiles);
         } else {
           setNotes(notesData);
@@ -350,7 +349,7 @@ export function TicketDetail() {
                         <td>{utility.utility_type || '-'}</td>
                         <td>
                           <ResponseStatusBadge
-                            status={utility.response_status}
+                            status={utility.response_status || null}
                             showIcon={true}
                             windowClosesAt={utility.response_window_closes_at}
                           />

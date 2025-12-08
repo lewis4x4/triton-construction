@@ -8,8 +8,6 @@ import {
   MapPin,
   Calendar,
   Building2,
-  User,
-  Phone,
   Wrench,
   CheckCircle,
   AlertCircle,
@@ -199,7 +197,7 @@ export function NewTicketModal({ isOpen, onClose, onSuccess }: NewTicketModalPro
           excavator_name: parsedData.excavator_name,
           excavator_phone: parsedData.excavator_phone,
           excavator_email: parsedData.excavator_email,
-          work_type: parsedData.work_type?.toUpperCase() as any,
+          work_type: (parsedData.work_type?.toUpperCase() as any) || 'OTHER',
           work_description: parsedData.work_description,
           depth_in_inches: parsedData.depth_in_inches,
           ticket_created_at: ticketCreatedAt,
@@ -207,7 +205,7 @@ export function NewTicketModal({ isOpen, onClose, onSuccess }: NewTicketModalPro
           ticket_expires_at: parsedData.ticket_expires_at || new Date().toISOString().split('T')[0],
           status: 'PENDING',
           created_by: userData.user.id,
-        })
+        } as any)
         .select()
         .single();
 

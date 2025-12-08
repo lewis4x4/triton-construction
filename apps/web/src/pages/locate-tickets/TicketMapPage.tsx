@@ -52,9 +52,10 @@ export function TicketMapPage() {
         if (t.dig_site_location) {
           try {
             // If it's a GeoJSON point: { type: "Point", coordinates: [lng, lat] }
-            if (typeof t.dig_site_location === 'object' && t.dig_site_location.coordinates) {
-              longitude = t.dig_site_location.coordinates[0];
-              latitude = t.dig_site_location.coordinates[1];
+            const location = t.dig_site_location as any;
+            if (typeof location === 'object' && location.coordinates) {
+              longitude = location.coordinates[0];
+              latitude = location.coordinates[1];
             }
           } catch {
             // Ignore parsing errors

@@ -7227,6 +7227,13 @@ export type Database = {
             referencedRelation: "v_crew_roster"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "certified_payroll_lines_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
+            referencedRelation: "v_weekly_timesheets"
+            referencedColumns: ["crew_member_id"]
+          },
         ]
       }
       certified_payrolls: {
@@ -9531,6 +9538,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "crew_certifications_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
+            referencedRelation: "v_weekly_timesheets"
+            referencedColumns: ["crew_member_id"]
+          },
+          {
             foreignKeyName: "crew_certifications_updated_by_fkey"
             columns: ["updated_by"]
             isOneToOne: false
@@ -9577,7 +9591,7 @@ export type Database = {
           emergency_contact_name: string | null
           emergency_contact_phone: string | null
           employee_id: string
-          employment_type: string
+          employment_type: Database["public"]["Enums"]["employment_type"]
           equipment_certifications: Json | null
           first_name: string
           hire_date: string | null
@@ -9596,7 +9610,7 @@ export type Database = {
           photo_url: string | null
           secondary_classifications: string[] | null
           termination_date: string | null
-          trade_classification: string
+          trade_classification: Database["public"]["Enums"]["trade_classification"]
           trade_classification_detail: string | null
           union_affiliation: string | null
           union_local: string | null
@@ -9635,7 +9649,7 @@ export type Database = {
           emergency_contact_name?: string | null
           emergency_contact_phone?: string | null
           employee_id: string
-          employment_type?: string
+          employment_type?: Database["public"]["Enums"]["employment_type"]
           equipment_certifications?: Json | null
           first_name: string
           hire_date?: string | null
@@ -9654,7 +9668,7 @@ export type Database = {
           photo_url?: string | null
           secondary_classifications?: string[] | null
           termination_date?: string | null
-          trade_classification: string
+          trade_classification: Database["public"]["Enums"]["trade_classification"]
           trade_classification_detail?: string | null
           union_affiliation?: string | null
           union_local?: string | null
@@ -9693,7 +9707,7 @@ export type Database = {
           emergency_contact_name?: string | null
           emergency_contact_phone?: string | null
           employee_id?: string
-          employment_type?: string
+          employment_type?: Database["public"]["Enums"]["employment_type"]
           equipment_certifications?: Json | null
           first_name?: string
           hire_date?: string | null
@@ -9712,7 +9726,7 @@ export type Database = {
           photo_url?: string | null
           secondary_classifications?: string[] | null
           termination_date?: string | null
-          trade_classification?: string
+          trade_classification?: Database["public"]["Enums"]["trade_classification"]
           trade_classification_detail?: string | null
           union_affiliation?: string | null
           union_local?: string | null
@@ -9812,6 +9826,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_crew_roster"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crew_members_current_supervisor_id_fkey"
+            columns: ["current_supervisor_id"]
+            isOneToOne: false
+            referencedRelation: "v_weekly_timesheets"
+            referencedColumns: ["crew_member_id"]
           },
           {
             foreignKeyName: "crew_members_default_cost_code_id_fkey"
@@ -10616,6 +10637,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_crew_roster"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_manpower_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
+            referencedRelation: "v_weekly_timesheets"
+            referencedColumns: ["crew_member_id"]
           },
           {
             foreignKeyName: "daily_manpower_daily_report_id_fkey"
@@ -18767,6 +18795,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "operator_qualifications_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
+            referencedRelation: "v_weekly_timesheets"
+            referencedColumns: ["crew_member_id"]
+          },
+          {
             foreignKeyName: "operator_qualifications_specific_equipment_id_fkey"
             columns: ["specific_equipment_id"]
             isOneToOne: false
@@ -25304,6 +25339,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "self_perform_labor_entries_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
+            referencedRelation: "v_weekly_timesheets"
+            referencedColumns: ["crew_member_id"]
+          },
+          {
             foreignKeyName: "self_perform_labor_entries_daily_report_id_fkey"
             columns: ["daily_report_id"]
             isOneToOne: false
@@ -30062,6 +30104,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_crew_roster"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "time_entries_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
+            referencedRelation: "v_weekly_timesheets"
+            referencedColumns: ["crew_member_id"]
           },
           {
             foreignKeyName: "time_entries_daily_report_id_fkey"
@@ -35863,63 +35912,63 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "crew_members_default_project_id_fkey"
+            foreignKeyName: "crew_members_current_project_id_fkey"
             columns: ["current_project_id"]
             isOneToOne: false
             referencedRelation: "projects"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "crew_members_default_project_id_fkey"
+            foreignKeyName: "crew_members_current_project_id_fkey"
             columns: ["current_project_id"]
             isOneToOne: false
             referencedRelation: "v_cost_detail_report"
             referencedColumns: ["project_id"]
           },
           {
-            foreignKeyName: "crew_members_default_project_id_fkey"
+            foreignKeyName: "crew_members_current_project_id_fkey"
             columns: ["current_project_id"]
             isOneToOne: false
             referencedRelation: "v_daily_cost_summary"
             referencedColumns: ["project_id"]
           },
           {
-            foreignKeyName: "crew_members_default_project_id_fkey"
+            foreignKeyName: "crew_members_current_project_id_fkey"
             columns: ["current_project_id"]
             isOneToOne: false
             referencedRelation: "v_item_quantity_tracking"
             referencedColumns: ["project_id"]
           },
           {
-            foreignKeyName: "crew_members_default_project_id_fkey"
+            foreignKeyName: "crew_members_current_project_id_fkey"
             columns: ["current_project_id"]
             isOneToOne: false
             referencedRelation: "v_project_change_order_summary"
             referencedColumns: ["project_id"]
           },
           {
-            foreignKeyName: "crew_members_default_project_id_fkey"
+            foreignKeyName: "crew_members_current_project_id_fkey"
             columns: ["current_project_id"]
             isOneToOne: false
             referencedRelation: "v_project_dbe_summary"
             referencedColumns: ["project_id"]
           },
           {
-            foreignKeyName: "crew_members_default_project_id_fkey"
+            foreignKeyName: "crew_members_current_project_id_fkey"
             columns: ["current_project_id"]
             isOneToOne: false
             referencedRelation: "v_project_health_dashboard"
             referencedColumns: ["project_id"]
           },
           {
-            foreignKeyName: "crew_members_default_project_id_fkey"
+            foreignKeyName: "crew_members_current_project_id_fkey"
             columns: ["current_project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
             referencedColumns: ["project_id"]
           },
           {
-            foreignKeyName: "crew_members_default_project_id_fkey"
+            foreignKeyName: "crew_members_current_project_id_fkey"
             columns: ["current_project_id"]
             isOneToOne: false
             referencedRelation: "v_validation_summary"
@@ -37692,9 +37741,8 @@ export type Database = {
       }
       v_pending_time_approvals: {
         Row: {
-          cost_code: string | null
           crew_member_id: string | null
-          entered_by_name: string | null
+          double_time_hours: number | null
           entered_by_user_id: string | null
           id: string | null
           overtime_hours: number | null
@@ -37730,6 +37778,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_crew_roster"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "time_entries_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
+            referencedRelation: "v_weekly_timesheets"
+            referencedColumns: ["crew_member_id"]
           },
           {
             foreignKeyName: "time_entries_entered_by_user_id_fkey"
@@ -39745,28 +39800,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "time_entries_crew_member_id_fkey"
-            columns: ["crew_member_id"]
-            isOneToOne: false
-            referencedRelation: "crew_members"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "time_entries_crew_member_id_fkey"
-            columns: ["crew_member_id"]
-            isOneToOne: false
-            referencedRelation: "v_active_crew"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "time_entries_crew_member_id_fkey"
-            columns: ["crew_member_id"]
-            isOneToOne: false
-            referencedRelation: "v_crew_roster"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "time_entries_organization_id_fkey"
+            foreignKeyName: "crew_members_organization_id_fkey"
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "organizations"

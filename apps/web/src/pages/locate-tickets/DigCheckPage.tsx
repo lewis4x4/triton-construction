@@ -59,34 +59,36 @@ export function DigCheckPage() {
       const { data, error: fnError } = await supabase.rpc('check_dig_status', {
         p_organization_id: profile.organization_id,
         p_location: location.trim(),
-        p_check_date: checkDate,
-        p_check_time: checkTime || null,
+        p_check_date: checkDate || new Date().toISOString().split('T')[0] || '',
+        p_check_time: checkTime ?? undefined,
       });
 
       if (fnError) throw fnError;
 
       if (data && data.length > 0) {
         const checkResult = data[0];
-        setResult({
-          result: checkResult.result as 'PASS' | 'FAIL' | 'WARNING',
-          result_message: checkResult.result_message,
-          ticket_id: checkResult.ticket_id,
-          ticket_number: checkResult.ticket_number,
-          issues: Array.isArray(checkResult.issues) ? checkResult.issues : [],
-        });
+        if (checkResult) {
+          setResult({
+            result: checkResult.result as 'PASS' | 'FAIL' | 'WARNING',
+            result_message: checkResult.result_message,
+            ticket_id: checkResult.ticket_id,
+            ticket_number: checkResult.ticket_number,
+            issues: Array.isArray(checkResult.issues) ? (checkResult.issues as string[]) : [],
+          });
 
-        // Log the check for audit
-        await supabase.from('wv811_dig_checks').insert({
-          organization_id: profile.organization_id,
-          location_query: location.trim(),
-          check_date: checkDate,
-          check_time: checkTime || null,
-          result: checkResult.result,
-          result_message: checkResult.result_message,
-          ticket_id: checkResult.ticket_id,
-          issues: checkResult.issues,
-          checked_by: userData.user.id,
-        });
+          // Log the check for audit
+          await supabase.from('wv811_dig_checks').insert({
+            organization_id: profile.organization_id,
+            location_query: location.trim(),
+            check_date: checkDate || new Date().toISOString().split('T')[0] || '',
+            check_time: checkTime || null,
+            result: String(checkResult.result),
+            result_message: String(checkResult.result_message),
+            ticket_id: checkResult.ticket_id as string | null,
+            issues: checkResult.issues,
+            checked_by: userData.user.id,
+          });
+        }
       } else {
         setResult({
           result: 'FAIL',

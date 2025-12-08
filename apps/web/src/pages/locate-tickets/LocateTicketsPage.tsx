@@ -75,7 +75,7 @@ export function LocateTicketsPage() {
         throw fetchError;
       }
 
-      setTickets(data || []);
+      setTickets((data as any) || []);
 
       // Calculate stats
       const allTickets = data || [];
@@ -104,6 +104,7 @@ export function LocateTicketsPage() {
 
   useEffect(() => {
     fetchTickets();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter, sortBy]);
 
   // Set up realtime subscription

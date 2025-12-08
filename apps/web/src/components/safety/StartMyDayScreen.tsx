@@ -12,21 +12,18 @@ import {
   AlertTriangle,
   CheckCircle,
   XCircle,
-  Clock,
   ChevronRight,
   Camera,
   AlertOctagon,
   Phone,
   ClipboardCheck,
   HardHat,
-  Wrench,
-  Calendar,
   MapPin,
   RefreshCw,
   Play,
   Award,
-  FileText,
   Loader2,
+  Calendar,
 } from 'lucide-react';
 import { supabase } from '@triton/supabase-client';
 import { DailySafetyBriefForm } from './DailySafetyBriefForm';
@@ -107,7 +104,7 @@ export const StartMyDayScreen: React.FC<StartMyDayScreenProps> = ({
     // Get today's crew assignment
     const today = new Date().toISOString().split('T')[0];
 
-    const { data: assignment } = await supabase
+    const { data: assignment, error: assignmentError } = await supabase
       .from('crew_assignments')
       .select(`
         id,
@@ -121,9 +118,13 @@ export const StartMyDayScreen: React.FC<StartMyDayScreenProps> = ({
           )
         )
       `)
-      .eq('project_id', projectId)
-      .eq('work_date', today)
-      .single();
+      .eq('project_id', projectId as any)
+      .eq('work_date', today as any)
+      .maybeSingle();
+
+    if (assignmentError) {
+      console.error('Error loading crew assignment:', assignmentError);
+    }
 
     if (assignment?.crew_assignment_members) {
       const members: CrewMember[] = assignment.crew_assignment_members.map((m: any) => {
@@ -189,17 +190,25 @@ export const StartMyDayScreen: React.FC<StartMyDayScreenProps> = ({
   const loadBriefStatus = async () => {
     const today = new Date().toISOString().split('T')[0];
 
-    const { data: brief } = await supabase
+    const { data: brief, error: briefError } = await supabase
       .from('daily_safety_briefs')
       .select('id, completed_at, all_required_complete')
-      .eq('project_id', projectId)
-      .eq('brief_date', today)
-      .single();
+      .eq('project_id', projectId as any)
+      .eq('brief_date', today as any)
+      .maybeSingle();
+
+    if (briefError) {
+      console.error('Error loading brief status:', briefError);
+    }
 
     if (brief) {
       setStats(prev => ({
-        ...prev!,
-        briefCompleted: brief.all_required_complete,
+        crewTotal: prev?.crewTotal ?? 0,
+        crewReady: prev?.crewReady ?? 0,
+        crewWarnings: prev?.crewWarnings ?? 0,
+        crewBlocked: prev?.crewBlocked ?? 0,
+        weatherCondition: prev?.weatherCondition ?? 'clear',
+        briefCompleted: brief.all_required_complete ?? false,
         briefTime: brief.completed_at
           ? new Date(brief.completed_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
           : undefined,
@@ -212,7 +221,7 @@ export const StartMyDayScreen: React.FC<StartMyDayScreenProps> = ({
     const today = new Date().toISOString().split('T')[0];
 
     // Check for expired/missing certifications for today's crew
-    const { data: assignment } = await supabase
+    const { data: assignment, error: assignmentError } = await supabase
       .from('crew_assignments')
       .select(`
         work_type,
@@ -221,9 +230,13 @@ export const StartMyDayScreen: React.FC<StartMyDayScreenProps> = ({
           employees (first_name, last_name, display_name)
         )
       `)
-      .eq('project_id', projectId)
-      .eq('work_date', today)
-      .single();
+      .eq('project_id', projectId as any)
+      .eq('work_date', today as any)
+      .maybeSingle();
+
+    if (assignmentError) {
+      console.error('Error loading crew assignment for blocking issues:', assignmentError);
+    }
 
     if (assignment) {
       // Check competent person for work type
@@ -236,7 +249,7 @@ export const StartMyDayScreen: React.FC<StartMyDayScreenProps> = ({
 
       if (rules && rules.length > 0) {
         for (const rule of rules) {
-          if (rule.required_competent_person_types?.length > 0) {
+          if (rule.required_competent_person_types && rule.required_competent_person_types.length > 0) {
             const { count } = await supabase
               .from('competent_person_designations')
               .select('*', { count: 'exact', head: true })
@@ -250,7 +263,7 @@ export const StartMyDayScreen: React.FC<StartMyDayScreenProps> = ({
                 type: 'competent_person',
                 severity: 'critical',
                 message: `No competent person designated for ${rule.required_competent_person_types.join(', ')}`,
-                entityName: rule.rule_name,
+                entityName: rule.rule_name ?? 'Unknown Rule',
               });
             }
           }
@@ -289,7 +302,7 @@ export const StartMyDayScreen: React.FC<StartMyDayScreenProps> = ({
     setBlockingIssues(issues);
   };
 
-  const handleBriefComplete = (briefId: string) => {
+  const handleBriefComplete = (_briefId: string) => {
     setShowBriefForm(false);
     loadDayData();
   };

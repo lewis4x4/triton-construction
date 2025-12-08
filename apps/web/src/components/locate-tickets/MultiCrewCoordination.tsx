@@ -88,7 +88,7 @@ export function MultiCrewCoordination({
       if (!userProfile) return;
 
       // Get active time entries (crews currently on the clock)
-      const today = new Date().toISOString().split('T')[0];
+      const today = new Date().toISOString().split('T')[0]!;
       const { data: timeEntries } = await supabase
         .from('time_entries')
         .select(`
@@ -97,13 +97,13 @@ export function MultiCrewCoordination({
           crew_member_id,
           clock_in_location,
           projects:project_id (name, project_number),
-          crew_members:crew_member_id (display_name, phone_number)
+          crew_members:crew_member_id (display_name)
         `)
         .eq('work_date', today)
         .is('clock_out_time', null);
 
       // Get tickets for their projects
-      const projectIds = [...new Set(timeEntries?.map((te) => te.project_id) || [])];
+      const projectIds = [...new Set(timeEntries?.map((te) => te.project_id).filter((id): id is string => !!id) || [])].filter((id): id is string => typeof id === 'string');
 
       const { data: projectTickets } = await supabase
         .from('wv811_project_tickets')
@@ -143,8 +143,8 @@ export function MultiCrewCoordination({
 
         const crew: CrewLocation = {
           id: entry.id,
-          crewLeadName: (entry.crew_members as { display_name: string })?.display_name || 'Unknown',
-          crewLeadPhone: (entry.crew_members as { phone_number?: string })?.phone_number,
+          crewLeadName: (entry.crew_members as { display_name: string } | null)?.display_name || 'Unknown',
+          crewLeadPhone: undefined, // phone_number not available in crew_members
           projectName: (entry.projects as { name: string })?.name || 'Unknown Project',
           ticketNumber: ticket.ticket_number,
           ticketId: ticket.id,
@@ -244,23 +244,26 @@ export function MultiCrewCoordination({
     // Check for crews within 100m of each other on different tickets
     for (let i = 0; i < crews.length; i++) {
       for (let j = i + 1; j < crews.length; j++) {
-        if (crews[i].ticketNumber === crews[j].ticketNumber) continue;
+        const crewI = crews[i];
+        const crewJ = crews[j];
+        if (!crewI || !crewJ) continue;
+        if (crewI.ticketNumber === crewJ.ticketNumber) continue;
 
         const distance = calculateDistance(
-          crews[i].location.latitude,
-          crews[i].location.longitude,
-          crews[j].location.latitude,
-          crews[j].location.longitude
+          crewI.location.latitude,
+          crewI.location.longitude,
+          crewJ.location.latitude,
+          crewJ.location.longitude
         );
 
         if (distance < 100) {
           alerts.push({
-            id: `nearby-${crews[i].id}-${crews[j].id}`,
+            id: `nearby-${crewI.id}-${crewJ.id}`,
             type: 'NEARBY',
             severity: 'INFO',
             message: `Crews within ${Math.round(distance)}m of each other`,
-            crews: [crews[i].crewLeadName, crews[j].crewLeadName],
-            ticketNumbers: [crews[i].ticketNumber, crews[j].ticketNumber],
+            crews: [crewI.crewLeadName, crewJ.crewLeadName],
+            ticketNumbers: [crewI.ticketNumber, crewJ.ticketNumber],
             createdAt: new Date().toISOString(),
             acknowledged: false,
           });
@@ -277,13 +280,16 @@ export function MultiCrewCoordination({
     setIsSending(true);
     try {
       // In a real implementation, this would send an SMS or push notification
+      const userData = await supabase.auth.getUser();
+      const userId = userData.data.user?.id;
+      if (!userId) throw new Error('User not authenticated');
+
       await supabase.from('wv811_crew_messages').insert({
-        from_user_id: (await supabase.auth.getUser()).data.user?.id,
-        to_phone: selectedCrew.crewLeadPhone,
-        message: message,
+        sender_id: userId,
+        recipient_phone: selectedCrew.crewLeadPhone,
+        message_text: message,
         ticket_id: selectedCrew.ticketId,
-        sent_at: new Date().toISOString(),
-      });
+      } as any);
 
       setShowMessageModal(false);
       setMessage('');
@@ -301,10 +307,11 @@ export function MultiCrewCoordination({
     return `${(meters / 1000).toFixed(1)}km`;
   };
 
-  const formatTime = (dateString: string): string => {
-    const date = new Date(dateString);
-    return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-  };
+  // formatTime helper available for future use if needed
+  // const formatTime = (dateString: string): string => {
+  //   const date = new Date(dateString);
+  //   return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  // };
 
   return (
     <div className="multi-crew-container">
@@ -489,7 +496,8 @@ export function MultiCrewCoordination({
 // Compact version for sidebar/widget use
 export function NearbyCrewsWidget({ onExpand }: { onExpand?: () => void }) {
   const [count, setCount] = useState(0);
-  const [hasAlerts, setHasAlerts] = useState(false);
+  const [hasAlerts] = useState(false);
+  // hasAlerts state will be used when real-time alert checking is implemented
 
   useEffect(() => {
     // Quick check for nearby crews
@@ -497,14 +505,14 @@ export function NearbyCrewsWidget({ onExpand }: { onExpand?: () => void }) {
       const { data: userData } = await supabase.auth.getUser();
       if (!userData.user) return;
 
-      const today = new Date().toISOString().split('T')[0];
-      const { count } = await supabase
+      const today = new Date().toISOString().split('T')[0]!;
+      const { count: crewCount } = await supabase
         .from('time_entries')
         .select('*', { count: 'exact', head: true })
         .eq('work_date', today)
         .is('clock_out_time', null);
 
-      setCount(count || 0);
+      setCount(crewCount || 0);
     };
 
     checkCrews();

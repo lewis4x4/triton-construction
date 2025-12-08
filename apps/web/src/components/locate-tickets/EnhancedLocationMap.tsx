@@ -105,7 +105,9 @@ function createBufferPolygon(
 /**
  * Alternative buffer using perpendicular offset at each edge midpoint
  * This creates a more uniform buffer around the polygon edges
+ * Note: Currently unused but kept for potential future use
  */
+/*
 function _createEdgeBufferPolygon(
   coordinates: [number, number][],
   bufferMeters: number = DEFAULT_BUFFER_DISTANCE
@@ -122,6 +124,9 @@ function _createEdgeBufferPolygon(
     const prev = coordinates[(i - 1 + n) % n];
     const curr = coordinates[i];
     const next = coordinates[(i + 1) % n];
+
+    // Skip if any coordinate is undefined
+    if (!curr || !prev || !next) continue;
 
     // Calculate normals for both edges meeting at this vertex
     const dx1 = curr[0] - prev[0];
@@ -154,6 +159,7 @@ function _createEdgeBufferPolygon(
 
   return buffered;
 }
+*/
 
 interface PhotoPin {
   id: string;
@@ -554,14 +560,19 @@ export function EnhancedLocationMap({
   };
 
   // Check if point is inside safe zone
+  // Note: Currently unused but kept for potential future use
+  /*
   const _checkPointInSafeZone = useCallback((lat: number, lng: number) => {
     // Simple ray casting algorithm for point in polygon
     for (const zone of safeZones) {
       const poly = zone.coordinates;
       let inside = false;
       for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
-        const xi = poly[i][0], yi = poly[i][1];
-        const xj = poly[j][0], yj = poly[j][1];
+        const pi = poly[i];
+        const pj = poly[j];
+        if (!pi || !pj) continue;
+        const xi = pi[0], yi = pi[1];
+        const xj = pj[0], yj = pj[1];
         if (((yi > lat) !== (yj > lat)) && (lng < (xj - xi) * (lat - yi) / (yj - yi) + xi)) {
           inside = !inside;
         }
@@ -570,6 +581,7 @@ export function EnhancedLocationMap({
     }
     return { inside: false, zone: null };
   }, [safeZones]);
+  */
 
   if (isGeocoding) {
     return (

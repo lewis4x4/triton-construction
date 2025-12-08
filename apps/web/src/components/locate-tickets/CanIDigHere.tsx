@@ -198,6 +198,19 @@ export function CanIDigHere({ projectId, onTicketSelect }: CanIDigHereProps) {
 
       // Use the closest ticket
       const ticket = nearbyTickets[0];
+      if (!ticket) {
+        setCheckResult({
+          status: 'NO_TICKET',
+          message: 'No Active Ticket Found',
+          details: ['No locate ticket covers this location.'],
+          ticket: null,
+          utilities: [],
+          isOffline: !isOnline,
+          dataAge,
+        });
+        setIsChecking(false);
+        return;
+      }
       const utilities = await offlineStorage.getUtilitiesForTicket(ticket.id);
 
       // Map risk level to status

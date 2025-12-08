@@ -119,8 +119,6 @@ const COLORS = {
   cyan: '#06b6d4',
 };
 
-const PIE_COLORS = [COLORS.green, COLORS.yellow, COLORS.red];
-
 export function AnalyticsDashboard() {
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -157,15 +155,15 @@ export function AnalyticsDashboard() {
 
       // Fetch photos with categories
       const { data: photos, error: photosError } = await supabase
-        .from('wv811_ticket_photos')
-        .select('ticket_id, category, ai_categories');
+        .from('wv811_ticket_attachments')
+        .select('ticket_id, photo_category, ai_keywords');
 
       if (photosError) throw photosError;
 
       // Fetch utility responses
       const { data: utilities, error: utilitiesError } = await supabase
-        .from('wv811_ticket_utilities')
-        .select('ticket_id, utility_name, response_status, response_date, created_at');
+        .from('wv811_utility_responses')
+        .select('ticket_id, utility_name, response_status, responded_at, created_at');
 
       if (utilitiesError) throw utilitiesError;
 
@@ -198,7 +196,7 @@ export function AnalyticsDashboard() {
         } else {
           // Check for evidence photos (white lines, paint marks)
           const categories = ticketPhotos.flatMap(p =>
-            p.ai_categories || [p.category]
+            p.ai_keywords || [p.photo_category]
           ).filter(Boolean);
 
           const hasWhiteLines = categories.some(c =>
@@ -241,7 +239,7 @@ export function AnalyticsDashboard() {
       // 3. PHOTO BREAKDOWN
       const categoryCount = new Map<string, number>();
       allPhotos.forEach(photo => {
-        const categories = photo.ai_categories || [photo.category || 'Uncategorized'];
+        const categories = photo.ai_keywords || [photo.photo_category || 'Uncategorized'];
         categories.forEach((cat: string) => {
           categoryCount.set(cat, (categoryCount.get(cat) || 0) + 1);
         });
@@ -272,7 +270,7 @@ export function AnalyticsDashboard() {
           project_name: t.done_for || 'Unknown Project',
           dig_site_address: t.dig_site_address,
           status: t.status,
-          scheduled_start: t.work_date,
+          scheduled_start: t.work_date || '',
           reason: t.status === 'PENDING' ? 'Awaiting Utility Response'
                 : t.status === 'CONFLICT' ? 'Utility Conflict'
                 : 'Not Yet Cleared',
@@ -288,8 +286,8 @@ export function AnalyticsDashboard() {
           );
           const ticketPhotos = photosByTicket.get(t.id) || [];
           const hasRestoration = ticketPhotos.some(p =>
-            p.category?.toLowerCase().includes('restoration') ||
-            p.ai_categories?.some((c: string) => c?.toLowerCase().includes('restoration'))
+            p.photo_category?.toLowerCase().includes('restoration') ||
+            p.ai_keywords?.some((c: string) => c?.toLowerCase().includes('restoration'))
           );
           return {
             ticketNumber: t.ticket_number,
@@ -309,13 +307,14 @@ export function AnalyticsDashboard() {
         .filter(t => t.cleared_at && t.county)
         .forEach(t => {
           const created = new Date(t.created_at).getTime();
-          const cleared = new Date(t.cleared_at).getTime();
+          const cleared = new Date(t.cleared_at!).getTime();
           const hours = (cleared - created) / (1000 * 60 * 60);
 
-          const existing = countyTimes.get(t.county) || { total: 0, count: 0 };
+          const county = t.county!;
+          const existing = countyTimes.get(county) || { total: 0, count: 0 };
           existing.total += hours;
           existing.count++;
-          countyTimes.set(t.county, existing);
+          countyTimes.set(county, existing);
         });
 
       const timeToGreen: TimeToGreen[] = Array.from(countyTimes.entries())
@@ -344,8 +343,8 @@ export function AnalyticsDashboard() {
         existing.total++;
         if (u.response_status === 'CONFLICT') existing.conflicts++;
 
-        if (u.response_date && u.created_at) {
-          const responseTime = (new Date(u.response_date).getTime() - new Date(u.created_at).getTime()) / (1000 * 60 * 60);
+        if (u.responded_at && u.created_at) {
+          const responseTime = (new Date(u.responded_at).getTime() - new Date(u.created_at).getTime()) / (1000 * 60 * 60);
           if (responseTime > 0 && responseTime < 720) { // Less than 30 days
             existing.responseTimes.push(responseTime);
           }
@@ -385,23 +384,27 @@ export function AnalyticsDashboard() {
       for (let i = 7; i >= 0; i--) {
         const weekStart = new Date(now);
         weekStart.setDate(weekStart.getDate() - (i * 7));
-        const weekKey = weekStart.toISOString().split('T')[0];
-        weeks[weekKey] = { tickets: 0, resolved: 0 };
+        const weekKey = weekStart.toISOString().split('T')[0] || '';
+        if (weekKey) {
+          weeks[weekKey] = { tickets: 0, resolved: 0 };
+        }
       }
 
       allTickets.forEach(t => {
-        const createdWeek = new Date(t.created_at).toISOString().split('T')[0].slice(0, 10);
+        const createdWeek = new Date(t.created_at).toISOString().split('T')[0]?.slice(0, 10) || '';
         const weekKeys = Object.keys(weeks);
         const matchingWeek = weekKeys.find(wk => createdWeek >= wk);
-        if (matchingWeek && weeks[matchingWeek]) {
-          weeks[matchingWeek].tickets++;
+        if (matchingWeek) {
+          const weekData = weeks[matchingWeek];
+          if (weekData) weekData.tickets++;
         }
 
         if (t.cleared_at) {
-          const clearedWeek = new Date(t.cleared_at).toISOString().split('T')[0].slice(0, 10);
+          const clearedWeek = new Date(t.cleared_at).toISOString().split('T')[0]?.slice(0, 10) || '';
           const matchingClearedWeek = weekKeys.find(wk => clearedWeek >= wk);
-          if (matchingClearedWeek && weeks[matchingClearedWeek]) {
-            weeks[matchingClearedWeek].resolved++;
+          if (matchingClearedWeek) {
+            const weekData = weeks[matchingClearedWeek];
+            if (weekData) weekData.resolved++;
           }
         }
       });
@@ -486,7 +489,7 @@ export function AnalyticsDashboard() {
                     innerRadius={50}
                     outerRadius={80}
                     dataKey="value"
-                    label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                    label={({ name, percent }) => `${name}: ${((percent ?? 0) * 100).toFixed(0)}%`}
                   >
                     {pieData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />

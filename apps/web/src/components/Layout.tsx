@@ -14,6 +14,10 @@ import {
   Shield,
   LogOut,
   MapPin,
+  DollarSign,
+  Bell,
+  Map,
+  BarChart3,
 } from 'lucide-react';
 
 interface LayoutProps {
@@ -36,6 +40,7 @@ const navGroups: NavGroup[] = [
     label: 'Main',
     items: [
       { path: '/', label: 'Dashboard', icon: <LayoutDashboard size={20} strokeWidth={1.5} /> },
+      { path: '/executive', label: 'Executive View', icon: <BarChart3 size={20} strokeWidth={1.5} /> },
       { path: '/bids', label: 'Bid Packages', icon: <FileText size={20} strokeWidth={1.5} /> },
       { path: '/specs', label: 'Specifications', icon: <BookOpen size={20} strokeWidth={1.5} /> },
     ],
@@ -47,6 +52,9 @@ const navGroups: NavGroup[] = [
       { path: '/locate-tickets', label: 'Locate Tickets', icon: <MapPin size={20} strokeWidth={1.5} /> },
       { path: '/reports', label: 'Daily Reports', icon: <ClipboardList size={20} strokeWidth={1.5} /> },
       { path: '/time', label: 'Time Tracking', icon: <Clock size={20} strokeWidth={1.5} /> },
+      { path: '/pay-estimates', label: 'Pay Estimates', icon: <DollarSign size={20} strokeWidth={1.5} /> },
+      { path: '/alerts', label: 'Alerts', icon: <Bell size={20} strokeWidth={1.5} /> },
+      { path: '/geofences', label: 'Geofences', icon: <Map size={20} strokeWidth={1.5} /> },
     ],
   },
   {

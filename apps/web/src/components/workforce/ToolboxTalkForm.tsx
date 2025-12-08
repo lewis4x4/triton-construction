@@ -16,7 +16,6 @@ import {
   Search,
   Save,
   X,
-  ChevronDown,
   AlertTriangle,
   Shield,
 } from 'lucide-react';
@@ -131,8 +130,10 @@ export const ToolboxTalkForm: React.FC<ToolboxTalkFormProps> = ({
 
       if (empData) {
         setEmployees(empData.map(e => ({
-          ...e,
-          trade: e.trade_classification,
+          id: e.id,
+          first_name: e.first_name,
+          last_name: e.last_name,
+          trade: e.trade_classification || undefined,
           type: 'employee' as const,
         })));
       }
@@ -213,7 +214,7 @@ export const ToolboxTalkForm: React.FC<ToolboxTalkFormProps> = ({
           presenter_name: formData.presenter_name,
           total_attendees: attendees.length,
           acknowledged_count: attendees.filter(a => a.acknowledged).length,
-        })
+        } as any)
         .select('id')
         .single();
 
@@ -243,7 +244,6 @@ export const ToolboxTalkForm: React.FC<ToolboxTalkFormProps> = ({
     }
   };
 
-  const selectedTopic = TOPICS.find(t => t.id === formData.topic);
   const acknowledgedCount = attendees.filter(a => a.acknowledged).length;
 
   if (loading) {

@@ -74,19 +74,19 @@ export function DailyRadarPage() {
 
       if (fetchError) throw fetchError;
 
-      const allTickets = (tickets || []) as TicketSummary[];
+      const allTickets = (tickets || []) as unknown as TicketSummary[];
 
       // Categorize tickets
       const workingToday = allTickets.filter(
-        (t) => t.work_date && t.work_date.startsWith(today)
+        (t) => t.work_date && t.work_date.startsWith(today || '')
       );
 
       const expiringToday = allTickets.filter(
-        (t) => t.ticket_expires_at && t.ticket_expires_at <= tomorrow
+        (t) => t.ticket_expires_at && t.ticket_expires_at <= (tomorrow || '')
       );
 
       const updateDueToday = allTickets.filter(
-        (t) => t.update_by_date && t.update_by_date.startsWith(today)
+        (t) => t.update_by_date && t.update_by_date.startsWith(today || '')
       );
 
       const pendingResponses = allTickets.filter(

@@ -73,9 +73,9 @@ export function MyCertifications() {
       if (historyResult.error) throw historyResult.error;
       if (upcomingResult.error) throw upcomingResult.error;
 
-      setCertifications(certsResult.data || []);
-      setTrainingHistory(historyResult.data || []);
-      setUpcomingTraining(upcomingResult.data || []);
+      setCertifications(certsResult.data as any || []);
+      setTrainingHistory(historyResult.data as any || []);
+      setUpcomingTraining(upcomingResult.data as any || []);
     } catch (err) {
       console.error('Error fetching data:', err);
       setError('Unable to load your certification data. Your employee record may not be linked to your account.');

@@ -38,25 +38,6 @@ interface AlertSubscription {
   is_active: boolean;
 }
 
-const DEFAULT_SUBSCRIPTION: Omit<AlertSubscription, 'id' | 'user_id' | 'organization_id'> = {
-  scope_type: 'ALL',
-  project_id: null,
-  alert_48_hour: true,
-  alert_24_hour: true,
-  alert_same_day: true,
-  alert_overdue: true,
-  alert_response_received: true,
-  alert_conflict: true,
-  alert_new_ticket: true,
-  channel_email: true,
-  channel_sms: false,
-  channel_push: true,
-  channel_in_app: true,
-  email_address: null,
-  phone_number: null,
-  is_active: true,
-};
-
 export function AlertSettingsPage() {
   const { user, profile } = useAuth();
   const [subscription, setSubscription] = useState<AlertSubscription | null>(null);

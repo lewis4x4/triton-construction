@@ -43,7 +43,8 @@ export function OfflineSyncStatus({
   const [isUploading, setIsUploading] = useState(false);
   const [stats, setStats] = useState<SyncStats | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [showDetails, setShowDetails] = useState(false);
+  const [_showDetails, _setShowDetails] = useState(false);
+  // _showDetails and _setShowDetails reserved for future expanded details panel
   const [pendingActions, setPendingActions] = useState<PendingAction[]>([]);
 
   // Monitor online status
@@ -126,13 +127,19 @@ export function OfflineSyncStatus({
         // Process each action type
         switch (action.type) {
           case 'VERIFICATION':
-            await supabase.from('wv811_utility_responses').update(action.data).eq('id', action.utilityId);
+            if (action.utilityId) {
+              await supabase.from('wv811_utility_responses').update(action.data).eq('id', action.utilityId);
+            }
             break;
           case 'CONFLICT':
-            await supabase.from('wv811_utility_responses').update(action.data).eq('id', action.utilityId);
+            if (action.utilityId) {
+              await supabase.from('wv811_utility_responses').update(action.data).eq('id', action.utilityId);
+            }
             break;
           case 'ACKNOWLEDGEMENT':
-            await supabase.from('wv811_alert_acknowledgements').update(action.data).eq('id', action.data.alertId);
+            if (action.data?.alertId) {
+              await supabase.from('wv811_alert_acknowledgements').update(action.data).eq('id', action.data.alertId as string);
+            }
             break;
           case 'PHOTO':
             // Handle photo uploads
@@ -180,7 +187,7 @@ export function OfflineSyncStatus({
 
   if (compact) {
     return (
-      <div className={`sync-status-compact ${getSyncStatusColor()}`} onClick={() => setShowDetails(true)}>
+      <div className={`sync-status-compact ${getSyncStatusColor()}`} onClick={() => _setShowDetails(true)}>
         {isOnline ? <Cloud size={16} /> : <CloudOff size={16} />}
         <span>{getTimeAgo(stats?.lastSyncAt || null)}</span>
         {(stats?.pendingActions ?? 0) > 0 && (

@@ -17,7 +17,6 @@ import {
   Wrench,
   MapPin,
   CheckCircle2,
-  XCircle,
   Loader2,
   ChevronDown,
   Search,
@@ -203,7 +202,7 @@ export const DailySafetyBriefForm: React.FC<DailySafetyBriefFormProps> = ({
         .order('last_name');
 
       if (data) {
-        setEmployees(data);
+        setEmployees(data as any);
       }
     } catch (error) {
       console.error('Error loading employees:', error);

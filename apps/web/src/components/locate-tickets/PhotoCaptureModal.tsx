@@ -31,11 +31,9 @@ import {
   Siren,
   CheckCircle2,
   Droplets,
-  Image as ImageIcon,
 } from 'lucide-react';
 import { supabase } from '@triton/supabase-client';
 import {
-  PHOTO_CATEGORIES,
   PHOTO_CATEGORY_GROUPS,
   QUICK_CAPTURE_CATEGORIES,
   getCategoriesByGroup,
@@ -45,8 +43,8 @@ import {
 } from './photoCategories';
 import './PhotoCaptureModal.css';
 
-// Icon mapping
-const ICONS: Record<string, React.ComponentType<{ size?: number }>> = {
+// Icon mapping - using LucideProps compatible type
+const ICONS: Record<string, React.ComponentType<{ size?: string | number }>> = {
   MapPin,
   FileText,
   Camera,
@@ -154,7 +152,7 @@ export function PhotoCaptureModal({
 
     for (let i = 0; i < selectedFiles.length; i++) {
       const file = selectedFiles[i];
-      if (!file.type.startsWith('image/')) continue;
+      if (!file || !file.type.startsWith('image/')) continue;
 
       newFiles.push({
         id: crypto.randomUUID(),

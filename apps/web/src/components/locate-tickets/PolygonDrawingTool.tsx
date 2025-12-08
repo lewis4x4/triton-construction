@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   Pencil,
   Trash2,
@@ -12,7 +12,6 @@ import {
   Ruler,
   MapPin,
   Download,
-  Upload,
   ZoomIn,
   ZoomOut,
   Crosshair,
@@ -49,14 +48,16 @@ type DrawMode = 'select' | 'polygon' | 'rectangle' | 'circle' | 'freehand';
 
 export function PolygonDrawingTool({
   initialPolygons = [],
-  mapCenter,
-  mapZoom = 15,
+  mapCenter: _mapCenter,
+  mapZoom: _mapZoom = 15,
   onPolygonComplete,
   onPolygonsChange,
-  backgroundImage,
+  backgroundImage: _backgroundImage,
   ticketLocation,
   readonly = false,
 }: PolygonDrawingToolProps) {
+  // Note: _mapCenter, _mapZoom, _backgroundImage are intentionally unused for now
+  // Future implementation: Integrate with actual map tiles
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -185,11 +186,15 @@ export function PolygonDrawingTool({
       y: p.y * scale + offset.y,
     }));
 
+    const firstPt = transformedPoints[0];
+    if (!firstPt) return;
+
     ctx.beginPath();
-    ctx.moveTo(transformedPoints[0].x, transformedPoints[0].y);
+    ctx.moveTo(firstPt.x, firstPt.y);
 
     for (let i = 1; i < transformedPoints.length; i++) {
-      ctx.lineTo(transformedPoints[i].x, transformedPoints[i].y);
+      const pt = transformedPoints[i];
+      if (pt) ctx.lineTo(pt.x, pt.y);
     }
 
     if (polygon.closed) {
@@ -250,11 +255,15 @@ export function PolygonDrawingTool({
 
     if (transformedPoints.length === 0) return;
 
+    const startPt = transformedPoints[0];
+    if (!startPt) return;
+
     ctx.beginPath();
-    ctx.moveTo(transformedPoints[0].x, transformedPoints[0].y);
+    ctx.moveTo(startPt.x, startPt.y);
 
     for (let i = 1; i < transformedPoints.length; i++) {
-      ctx.lineTo(transformedPoints[i].x, transformedPoints[i].y);
+      const pt = transformedPoints[i];
+      if (pt) ctx.lineTo(pt.x, pt.y);
     }
 
     ctx.strokeStyle = '#3b82f6';
@@ -277,10 +286,12 @@ export function PolygonDrawingTool({
     // Show "click first point to close" hint
     if (transformedPoints.length >= 3) {
       const firstPoint = transformedPoints[0];
-      ctx.font = '11px sans-serif';
-      ctx.fillStyle = '#10b981';
-      ctx.textAlign = 'center';
-      ctx.fillText('Click to close', firstPoint.x, firstPoint.y - 15);
+      if (firstPoint) {
+        ctx.font = '11px sans-serif';
+        ctx.fillStyle = '#10b981';
+        ctx.textAlign = 'center';
+        ctx.fillText('Click to close', firstPoint.x, firstPoint.y - 15);
+      }
     }
   };
 
@@ -290,8 +301,12 @@ export function PolygonDrawingTool({
     let area = 0;
     for (let i = 0; i < points.length; i++) {
       const j = (i + 1) % points.length;
-      area += points[i].x * points[j].y;
-      area -= points[j].x * points[i].y;
+      const pi = points[i];
+      const pj = points[j];
+      if (pi && pj) {
+        area += pi.x * pj.y;
+        area -= pj.x * pi.y;
+      }
     }
 
     // Convert to square feet (assuming 1 pixel = 0.5 feet at current scale)
@@ -333,6 +348,7 @@ export function PolygonDrawingTool({
       // Check if clicking near first point to close polygon
       if (currentPolygon.length >= 3) {
         const firstPoint = currentPolygon[0];
+        if (!firstPoint) return;
         const distance = Math.sqrt(
           Math.pow(point.x - firstPoint.x, 2) + Math.pow(point.y - firstPoint.y, 2)
         );
@@ -349,6 +365,7 @@ export function PolygonDrawingTool({
         setIsDrawing(true);
       } else {
         const startPoint = currentPolygon[0];
+        if (!startPoint) return;
         const rectPoints: Point[] = [
           startPoint,
           { x: point.x, y: startPoint.y },
@@ -365,6 +382,7 @@ export function PolygonDrawingTool({
         setIsDrawing(true);
       } else {
         const center = currentPolygon[0];
+        if (!center) return;
         const radius = Math.sqrt(
           Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2)
         );
@@ -415,8 +433,11 @@ export function PolygonDrawingTool({
   const isPointInPolygon = (point: Point, polygonPoints: Point[]): boolean => {
     let inside = false;
     for (let i = 0, j = polygonPoints.length - 1; i < polygonPoints.length; j = i++) {
-      const xi = polygonPoints[i].x, yi = polygonPoints[i].y;
-      const xj = polygonPoints[j].x, yj = polygonPoints[j].y;
+      const pi = polygonPoints[i];
+      const pj = polygonPoints[j];
+      if (!pi || !pj) continue;
+      const xi = pi.x, yi = pi.y;
+      const xj = pj.x, yj = pj.y;
 
       if (((yi > point.y) !== (yj > point.y)) &&
           (point.x < (xj - xi) * (point.y - yi) / (yj - yi) + xi)) {
@@ -431,7 +452,7 @@ export function PolygonDrawingTool({
       id: `polygon-${Date.now()}`,
       points,
       closed: true,
-      color: polygonColors[polygons.length % polygonColors.length],
+      color: polygonColors[polygons.length % polygonColors.length] || '#3b82f6',
     };
 
     const updatedPolygons = [...polygons, newPolygon];

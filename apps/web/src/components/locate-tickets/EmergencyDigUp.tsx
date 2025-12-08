@@ -39,7 +39,7 @@ interface GPSLocation {
 type IncidentSeverity = 'MINOR' | 'MODERATE' | 'SEVERE' | 'CRITICAL';
 type UtilityType = 'GAS' | 'ELECTRIC' | 'WATER' | 'TELECOM' | 'SEWER' | 'FIBER' | 'OTHER';
 
-const UTILITY_TYPES: { value: UtilityType; label: string; icon: string }[] = [
+const _UTILITY_TYPES: { value: UtilityType; label: string; icon: string }[] = [
   { value: 'GAS', label: 'Gas', icon: '🔥' },
   { value: 'ELECTRIC', label: 'Electric', icon: '⚡' },
   { value: 'WATER', label: 'Water', icon: '💧' },
@@ -49,7 +49,7 @@ const UTILITY_TYPES: { value: UtilityType; label: string; icon: string }[] = [
   { value: 'OTHER', label: 'Other', icon: '❓' },
 ];
 
-const SEVERITY_LEVELS: { value: IncidentSeverity; label: string; description: string }[] = [
+const _SEVERITY_LEVELS: { value: IncidentSeverity; label: string; description: string }[] = [
   { value: 'MINOR', label: 'Minor', description: 'Small scrape, no damage' },
   { value: 'MODERATE', label: 'Moderate', description: 'Visible damage, no leak/outage' },
   { value: 'SEVERE', label: 'Severe', description: 'Active leak or service disruption' },
@@ -140,11 +140,14 @@ export function EmergencyDigUp({
       if (timeEntries) {
         const crew: CrewMember[] = timeEntries
           .filter((te) => te.crew_members)
-          .map((te) => ({
-            id: te.crew_members.id,
-            name: te.crew_members.display_name,
-            role: te.crew_members.trade_classification || 'Worker',
-          }));
+          .map((te) => {
+            const member = te.crew_members as { id: string; display_name: string | null; trade_classification: string | null };
+            return {
+              id: member.id,
+              name: member.display_name || 'Unknown',
+              role: member.trade_classification || 'Worker',
+            };
+          });
         setCrewOnSite(crew);
       }
     } catch (err) {
@@ -192,12 +195,12 @@ export function EmergencyDigUp({
           project_id: projectId || null,
           reported_by: userData.user.id,
           reporter_phone: reporterPhone || null,
-          crew_on_site: crewOnSite,
+          crew_on_site: JSON.parse(JSON.stringify(crewOnSite)) as unknown as null,
           description: description || `Emergency dig up - ${utilityType} utility struck`,
           utility_type: utilityType,
           severity: severity,
           status: 'OPEN',
-        })
+        } as any)
         .select()
         .single();
 
@@ -309,7 +312,7 @@ export function EmergencyDigUp({
           What utility was struck? <span className="required">*</span>
         </label>
         <div className="utility-type-grid">
-          {UTILITY_TYPES.map((type) => (
+          {_UTILITY_TYPES.map((type) => (
             <button
               key={type.value}
               className={`utility-type-btn ${utilityType === type.value ? 'selected' : ''}`}
@@ -326,7 +329,7 @@ export function EmergencyDigUp({
       <div className="form-group">
         <label>Severity Level</label>
         <div className="severity-options">
-          {SEVERITY_LEVELS.map((level) => (
+          {_SEVERITY_LEVELS.map((level) => (
             <label
               key={level.value}
               className={`severity-option ${severity === level.value ? 'selected' : ''}`}

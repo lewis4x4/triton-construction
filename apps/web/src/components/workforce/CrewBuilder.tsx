@@ -141,11 +141,11 @@ export function CrewBuilder({ projectId, projectName, onAssignmentCreated }: Cre
           firstName: e.first_name,
           lastName: e.last_name,
           jobTitle: e.job_title || '',
-          complianceStatus: e.compliance_status,
+          complianceStatus: e.compliance_status || 'pending',
           competentPersonTypes: (e.competent_person_designations as Array<{ competent_person_type: string }> || [])
             .map(cp => cp.competent_person_type),
           hasCertifications: true, // Would check actual certs
-        }))
+        })) as any
       );
     }
 
@@ -165,10 +165,10 @@ export function CrewBuilder({ projectId, projectName, onAssignmentCreated }: Cre
           firstName: sw.first_name,
           lastName: sw.last_name,
           companyName: (sw.subcontractors as { company_name: string })?.company_name || '',
-          hasOsha10: sw.has_osha_10,
-          isCompetentPerson: sw.is_competent_person,
+          hasOsha10: sw.has_osha_10 || false,
+          isCompetentPerson: sw.is_competent_person || false,
           competentPersonTypes: sw.competent_person_types || [],
-        }))
+        })) as any
       );
     }
   };
@@ -235,7 +235,7 @@ export function CrewBuilder({ projectId, projectName, onAssignmentCreated }: Cre
     await createAssignment();
   };
 
-  const createAssignment = async (withOverride = false) => {
+  const createAssignment = async (_withOverride = false) => {
     setIsSubmitting(true);
     try {
       const { data: userData } = await supabase.auth.getUser();
@@ -250,13 +250,13 @@ export function CrewBuilder({ projectId, projectName, onAssignmentCreated }: Cre
           shift,
           work_type: workType,
           work_location: workLocation,
-          status: 'scheduled',
+          status: 'scheduled' as any,
           compliance_checked_at: new Date().toISOString(),
           compliance_passed: validationResult?.passed ?? false,
           compliance_issues: validationResult?.blocking_issues.map(i => i.message) || [],
           foreman_employee_id: crewMembers.find(m => m.role.toLowerCase().includes('foreman'))?.id,
           created_by: userData.user.id,
-        })
+        } as any)
         .select()
         .single();
 
@@ -271,7 +271,7 @@ export function CrewBuilder({ projectId, projectName, onAssignmentCreated }: Cre
         compliance_status_at_assignment: m.complianceStatus,
       }));
 
-      await supabase.from('crew_assignment_members').insert(memberInserts);
+      await supabase.from('crew_assignment_members').insert(memberInserts as any);
 
       onAssignmentCreated?.(assignment.id);
 

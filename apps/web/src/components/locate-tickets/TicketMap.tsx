@@ -232,14 +232,14 @@ export function TicketMap({ tickets, onTicketClick, center, zoom = 10 }: TicketM
         if (!map.current) return;
         const features = map.current.queryRenderedFeatures(e.point, { layers: ['clusters'] });
         const clusterId = features[0]?.properties?.cluster_id;
-        if (!clusterId) return;
+        if (!clusterId || !features[0]) return;
 
         (map.current.getSource('tickets') as mapboxgl.GeoJSONSource).getClusterExpansionZoom(
           clusterId,
           (err, zoomLevel) => {
-            if (err || !map.current) return;
+            if (err || !map.current || zoomLevel == null) return;
             map.current.easeTo({
-              center: (features[0].geometry as GeoJSON.Point).coordinates as [number, number],
+              center: (features[0]!.geometry as GeoJSON.Point).coordinates as [number, number],
               zoom: zoomLevel,
             });
           }
@@ -350,8 +350,8 @@ export function TicketMap({ tickets, onTicketClick, center, zoom = 10 }: TicketM
       });
       map.current.fitBounds(bounds, { padding: 60, maxZoom: 14 });
     } else if (ticketsWithCoords.length === 1) {
-      const t = ticketsWithCoords[0];
-      if (t.longitude != null && t.latitude != null) {
+      const t = ticketsWithCoords[0]!;
+      if (t && t.longitude != null && t.latitude != null) {
         map.current.flyTo({ center: [t.longitude, t.latitude], zoom: 14 });
       }
     }

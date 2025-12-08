@@ -4,28 +4,34 @@ import { supabase } from '@triton/supabase-client';
 interface Subcontractor {
   id: string;
   company_name: string;
-  trade_specialty: string;
-  contact_name: string;
-  phone: string;
-  email: string;
-  is_dbe_certified: boolean;
+  primary_trade: string;
+  secondary_trades: string[] | null;
+  primary_contact_name: string | null;
+  primary_contact_phone: string | null;
+  primary_contact_email: string | null;
+  office_phone: string | null;
+  is_dbe_certified: boolean | null;
   dbe_certification_number: string | null;
-  dbe_expiration_date: string | null;
-  insurance_expiration: string | null;
+  dbe_certification_expiration: string | null;
+  prequalification_expiration: string | null;
   status: string;
-  rating: number | null;
+  performance_rating: number | null;
+  city: string | null;
+  state: string | null;
 }
 
 interface SubcontractAgreement {
   id: string;
   agreement_number: string;
+  title: string;
   subcontractor_id: string;
   project_id: string;
   scope_of_work: string;
-  contract_value: number;
+  original_value: number;
+  current_value: number;
   status: string;
   start_date: string;
-  end_date: string | null;
+  completion_date: string;
   subcontractors?: { company_name: string };
   projects?: { name: string; project_number: string };
 }
@@ -79,7 +85,7 @@ export function SubcontractorDashboard() {
 
   const filteredSubcontractors = subcontractors.filter(sub =>
     sub.company_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    sub.trade_specialty?.toLowerCase().includes(searchTerm.toLowerCase())
+    sub.primary_trade?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const isExpiringSoon = (date: string | null) => {
@@ -134,15 +140,15 @@ export function SubcontractorDashboard() {
           </div>
         </div>
         <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
-          <div className="text-sm text-yellow-600">Insurance Expiring</div>
+          <div className="text-sm text-yellow-600">Prequalification Expiring</div>
           <div className="text-2xl font-bold text-yellow-700">
-            {subcontractors.filter(s => isExpiringSoon(s.insurance_expiration)).length}
+            {subcontractors.filter(s => isExpiringSoon(s.prequalification_expiration)).length}
           </div>
         </div>
         <div className="bg-red-50 p-4 rounded-lg border border-red-200">
-          <div className="text-sm text-red-600">Compliance Issues</div>
+          <div className="text-sm text-red-600">DBE Cert Expired</div>
           <div className="text-2xl font-bold text-red-700">
-            {subcontractors.filter(s => isExpired(s.insurance_expiration)).length}
+            {subcontractors.filter(s => s.is_dbe_certified && isExpired(s.dbe_certification_expiration)).length}
           </div>
         </div>
       </div>
@@ -258,7 +264,7 @@ function SubcontractorDirectory({
                 DBE
               </th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Insurance
+                Prequalified
               </th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                 Rating
@@ -280,11 +286,11 @@ function SubcontractorDirectory({
                     <div className="font-medium text-gray-900">{sub.company_name}</div>
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-600">
-                    {sub.trade_specialty || '-'}
+                    {sub.primary_trade || '-'}
                   </td>
                   <td className="px-4 py-3">
-                    <div className="text-sm text-gray-900">{sub.contact_name}</div>
-                    <div className="text-sm text-gray-500">{sub.phone}</div>
+                    <div className="text-sm text-gray-900">{sub.primary_contact_name || '-'}</div>
+                    <div className="text-sm text-gray-500">{sub.primary_contact_phone || sub.office_phone || '-'}</div>
                   </td>
                   <td className="px-4 py-3">
                     {sub.is_dbe_certified ? (
@@ -296,26 +302,26 @@ function SubcontractorDirectory({
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    {sub.insurance_expiration ? (
+                    {sub.prequalification_expiration ? (
                       <span
                         className={`text-sm ${
-                          new Date(sub.insurance_expiration) < new Date()
+                          new Date(sub.prequalification_expiration) < new Date()
                             ? 'text-red-600 font-medium'
-                            : new Date(sub.insurance_expiration) < new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+                            : new Date(sub.prequalification_expiration) < new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
                             ? 'text-yellow-600'
                             : 'text-gray-600'
                         }`}
                       >
-                        {sub.insurance_expiration}
+                        {new Date(sub.prequalification_expiration).toLocaleDateString()}
                       </span>
                     ) : (
                       '-'
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    {sub.rating !== null ? (
+                    {sub.performance_rating !== null ? (
                       <div className="flex items-center">
-                        <span className="font-medium text-gray-900">{sub.rating.toFixed(1)}</span>
+                        <span className="font-medium text-gray-900">{sub.performance_rating.toFixed(1)}</span>
                         <span className="ml-1 text-yellow-400">★</span>
                       </div>
                     ) : (
@@ -348,9 +354,12 @@ function AgreementsList({
     const colors: Record<string, string> = {
       DRAFT: 'bg-gray-100 text-gray-800',
       PENDING_APPROVAL: 'bg-yellow-100 text-yellow-800',
-      ACTIVE: 'bg-green-100 text-green-800',
-      COMPLETED: 'bg-blue-100 text-blue-800',
+      APPROVED: 'bg-blue-100 text-blue-800',
+      EXECUTED: 'bg-green-100 text-green-800',
+      IN_PROGRESS: 'bg-green-100 text-green-800',
+      COMPLETE: 'bg-blue-100 text-blue-800',
       TERMINATED: 'bg-red-100 text-red-800',
+      SUSPENDED: 'bg-orange-100 text-orange-800',
     };
     return colors[status] || 'bg-gray-100 text-gray-800';
   };
@@ -401,7 +410,7 @@ function AgreementsList({
                   {agreement.projects?.project_number} - {agreement.projects?.name}
                 </td>
                 <td className="px-4 py-3 text-sm font-medium text-gray-900">
-                  ${agreement.contract_value?.toLocaleString()}
+                  ${agreement.current_value?.toLocaleString()}
                 </td>
                 <td className="px-4 py-3">
                   <span
@@ -413,7 +422,7 @@ function AgreementsList({
                   </span>
                 </td>
                 <td className="px-4 py-3 text-sm text-gray-600">
-                  {agreement.start_date} - {agreement.end_date || 'Ongoing'}
+                  {agreement.start_date} - {agreement.completion_date}
                 </td>
                 <td className="px-4 py-3 text-right">
                   <button className="text-blue-600 hover:text-blue-800 text-sm">
@@ -493,12 +502,12 @@ function DBETrackingPanel({ subcontractors }: { subcontractors: Subcontractor[] 
               dbeSubcontractors.map((sub) => (
                 <tr key={sub.id} className="hover:bg-gray-50">
                   <td className="px-4 py-3 font-medium text-gray-900">{sub.company_name}</td>
-                  <td className="px-4 py-3 text-sm text-gray-600">{sub.trade_specialty}</td>
+                  <td className="px-4 py-3 text-sm text-gray-600">{sub.primary_trade}</td>
                   <td className="px-4 py-3 text-sm text-gray-600">
                     {sub.dbe_certification_number || '-'}
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-600">
-                    {sub.dbe_expiration_date || '-'}
+                    {sub.dbe_certification_expiration ? new Date(sub.dbe_certification_expiration).toLocaleDateString() : '-'}
                   </td>
                 </tr>
               ))
@@ -519,17 +528,17 @@ function NewSubcontractorModal({
 }) {
   const [formData, setFormData] = useState({
     company_name: '',
-    trade_specialty: '',
-    contact_name: '',
-    phone: '',
-    email: '',
+    primary_trade: '',
+    primary_contact_name: '',
+    primary_contact_phone: '',
+    primary_contact_email: '',
     address: '',
     city: '',
     state: 'WV',
     zip_code: '',
     is_dbe_certified: false,
     dbe_certification_number: '',
-    dbe_expiration_date: '',
+    dbe_certification_expiration: '',
   });
   const [saving, setSaving] = useState(false);
 
@@ -537,19 +546,32 @@ function NewSubcontractorModal({
     e.preventDefault();
     setSaving(true);
 
+    // Get organization ID
+    const { data: orgData } = await supabase
+      .from('organizations')
+      .select('id')
+      .limit(1)
+      .single();
+
+    if (!orgData?.id) {
+      setSaving(false);
+      return;
+    }
+
     const { error } = await supabase.from('subcontractors').insert({
+      organization_id: orgData.id,
       company_name: formData.company_name,
-      trade_specialty: formData.trade_specialty || null,
-      contact_name: formData.contact_name || null,
-      phone: formData.phone || null,
-      email: formData.email || null,
+      primary_trade: formData.primary_trade || 'OTHER',
+      primary_contact_name: formData.primary_contact_name || null,
+      primary_contact_phone: formData.primary_contact_phone || null,
+      primary_contact_email: formData.primary_contact_email || null,
       address_line1: formData.address || null,
       city: formData.city || null,
       state: formData.state || null,
       zip_code: formData.zip_code || null,
       is_dbe_certified: formData.is_dbe_certified,
       dbe_certification_number: formData.dbe_certification_number || null,
-      dbe_expiration_date: formData.dbe_expiration_date || null,
+      dbe_certification_expiration: formData.dbe_certification_expiration || null,
       status: 'ACTIVE',
     });
 
@@ -579,12 +601,13 @@ function NewSubcontractorModal({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Trade Specialty
+              Primary Trade *
             </label>
             <select
-              value={formData.trade_specialty}
-              onChange={(e) => setFormData({ ...formData, trade_specialty: e.target.value })}
+              value={formData.primary_trade}
+              onChange={(e) => setFormData({ ...formData, primary_trade: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+              required
             >
               <option value="">Select trade...</option>
               <option value="EARTHWORK">Earthwork</option>
@@ -615,8 +638,8 @@ function NewSubcontractorModal({
               </label>
               <input
                 type="text"
-                value={formData.contact_name}
-                onChange={(e) => setFormData({ ...formData, contact_name: e.target.value })}
+                value={formData.primary_contact_name}
+                onChange={(e) => setFormData({ ...formData, primary_contact_name: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg"
               />
             </div>
@@ -626,8 +649,8 @@ function NewSubcontractorModal({
               </label>
               <input
                 type="tel"
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                value={formData.primary_contact_phone}
+                onChange={(e) => setFormData({ ...formData, primary_contact_phone: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg"
               />
             </div>
@@ -639,8 +662,8 @@ function NewSubcontractorModal({
             </label>
             <input
               type="email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              value={formData.primary_contact_email}
+              onChange={(e) => setFormData({ ...formData, primary_contact_email: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg"
             />
           </div>
@@ -677,9 +700,9 @@ function NewSubcontractorModal({
                   </label>
                   <input
                     type="date"
-                    value={formData.dbe_expiration_date}
+                    value={formData.dbe_certification_expiration}
                     onChange={(e) =>
-                      setFormData({ ...formData, dbe_expiration_date: e.target.value })
+                      setFormData({ ...formData, dbe_certification_expiration: e.target.value })
                     }
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                   />
@@ -723,10 +746,11 @@ function NewAgreementModal({
   const [formData, setFormData] = useState({
     subcontractor_id: '',
     project_id: '',
+    title: '',
     scope_of_work: '',
-    contract_value: '',
+    original_value: '',
     start_date: new Date().toISOString().split('T')[0],
-    end_date: '',
+    completion_date: '',
   });
   const [saving, setSaving] = useState(false);
 
@@ -750,15 +774,36 @@ function NewAgreementModal({
     e.preventDefault();
     setSaving(true);
 
+    // Get organization ID from user context (assuming first org for now)
+    const { data: orgData } = await supabase
+      .from('organizations')
+      .select('id')
+      .limit(1)
+      .single();
+
+    if (!orgData?.id) {
+      setSaving(false);
+      return;
+    }
+
+    // Get project number for agreement number generation
+    const selectedProject = projects.find(p => p.id === formData.project_id);
+    const agreementNumber = `${selectedProject?.project_number || 'PROJ'}-SUB-${Date.now().toString().slice(-6)}`;
+
+    const originalValue = parseFloat(formData.original_value);
     const { error } = await supabase.from('subcontract_agreements').insert({
+      organization_id: orgData.id,
       subcontractor_id: formData.subcontractor_id,
       project_id: formData.project_id,
+      agreement_number: agreementNumber,
+      title: formData.title,
       scope_of_work: formData.scope_of_work,
-      contract_value: parseFloat(formData.contract_value),
+      original_value: originalValue,
+      current_value: originalValue,
       start_date: formData.start_date,
-      end_date: formData.end_date || null,
+      completion_date: formData.completion_date,
       status: 'DRAFT',
-    });
+    } as any);
 
     if (!error) {
       onSave();
@@ -811,6 +856,20 @@ function NewAgreementModal({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
+              Title *
+            </label>
+            <input
+              type="text"
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+              placeholder="e.g., Concrete Work Phase 1"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Scope of Work *
             </label>
             <textarea
@@ -829,8 +888,8 @@ function NewAgreementModal({
             <input
               type="number"
               step="0.01"
-              value={formData.contract_value}
-              onChange={(e) => setFormData({ ...formData, contract_value: e.target.value })}
+              value={formData.original_value}
+              onChange={(e) => setFormData({ ...formData, original_value: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg"
               required
             />
@@ -839,24 +898,26 @@ function NewAgreementModal({
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Start Date
+                Start Date *
               </label>
               <input
                 type="date"
                 value={formData.start_date}
                 onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                required
               />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                End Date
+                Completion Date *
               </label>
               <input
                 type="date"
-                value={formData.end_date}
-                onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
+                value={formData.completion_date}
+                onChange={(e) => setFormData({ ...formData, completion_date: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                required
               />
             </div>
           </div>
