@@ -59,7 +59,17 @@ import { StartMyDayScreen } from './components/safety/StartMyDayScreen';
 // Self-Service Module
 import { MyCertifications } from './pages/my/MyCertifications';
 // Equipment & Crew Management Module
-import { EquipmentFleetDashboard, CrewRoster, MaintenanceScheduling, OperatorQualifications } from './pages/equipment';
+import {
+  EquipmentFleetDashboard,
+  CrewRoster,
+  MaintenanceScheduling,
+  OperatorQualifications,
+  VehicleDetails,
+  FuelManagement,
+  VehicleInspections,
+  DQFManagement,
+  IFTAReporting
+} from './pages/equipment';
 // Pay Estimates Module
 import { ValidationDashboard, PayEstimateUpload } from './pages/pay-estimates';
 // Self-Perform Cost Tracking
@@ -532,6 +542,56 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <OperatorQualifications />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/equipment/vehicles"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <VehicleDetails />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/equipment/fuel"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <FuelManagement />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/equipment/inspections"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <VehicleInspections />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/equipment/dqf"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <DQFManagement />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/equipment/ifta"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <IFTAReporting />
                 </Layout>
               </ProtectedRoute>
             }

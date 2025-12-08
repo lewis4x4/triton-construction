@@ -2,3 +2,8 @@ export { EquipmentFleetDashboard } from './EquipmentFleetDashboard';
 export { CrewRoster } from './CrewRoster';
 export { MaintenanceScheduling } from './MaintenanceScheduling';
 export { OperatorQualifications } from './OperatorQualifications';
+export { VehicleDetails } from './VehicleDetails';
+export { FuelManagement } from './FuelManagement';
+export { VehicleInspections } from './VehicleInspections';
+export { DQFManagement } from './DQFManagement';
+export { IFTAReporting } from './IFTAReporting';
