@@ -32,6 +32,8 @@ import {
   UserCheck,
   Car,
   Receipt,
+  Package,
+  AlertTriangle,
 } from 'lucide-react';
 
 interface LayoutProps {
@@ -77,7 +79,8 @@ const navGroups: NavGroup[] = [
   {
     label: 'Safety & Quality',
     items: [
-      { path: '/workforce', label: 'Safety & Compliance', icon: <HardHat size={20} strokeWidth={1.5} /> },
+      { path: '/safety', label: 'Safety Dashboard', icon: <AlertTriangle size={20} strokeWidth={1.5} /> },
+      { path: '/workforce', label: 'Workforce Compliance', icon: <HardHat size={20} strokeWidth={1.5} /> },
       { path: '/quality-control', label: 'Quality Control', icon: <CheckSquare size={20} strokeWidth={1.5} /> },
       { path: '/training', label: 'Training', icon: <GraduationCap size={20} strokeWidth={1.5} /> },
     ],
@@ -92,6 +95,7 @@ const navGroups: NavGroup[] = [
       { path: '/equipment/dqf', label: 'Driver Files (DQF)', icon: <UserCheck size={20} strokeWidth={1.5} /> },
       { path: '/equipment/ifta', label: 'IFTA Reports', icon: <Receipt size={20} strokeWidth={1.5} /> },
       { path: '/equipment/crew', label: 'Crew Roster', icon: <Users size={20} strokeWidth={1.5} /> },
+      { path: '/materials', label: 'Materials', icon: <Package size={20} strokeWidth={1.5} /> },
       { path: '/subcontractors', label: 'Subcontractors', icon: <Building2 size={20} strokeWidth={1.5} /> },
     ],
   },

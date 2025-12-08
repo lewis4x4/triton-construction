@@ -78,6 +78,9 @@ import { SelfPerformDashboard } from './pages/self-perform';
 import { PlatformAlertsDashboard } from './pages/alerts/PlatformAlertsDashboard';
 import { GeofenceManagement } from './pages/geofences/GeofenceManagement';
 import { ExecutiveDashboard } from './pages/executive/ExecutiveDashboard';
+// Safety & Materials Modules
+import { SafetyDashboard } from './pages/safety';
+import { MaterialsDashboard } from './pages/materials';
 import './styles/index.css';
 
 function App() {
@@ -325,6 +328,16 @@ function App() {
 
           {/* Safety routes */}
           <Route
+            path="/safety"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <SafetyDashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/safety/start-my-day"
             element={
               <ProtectedRoute>
@@ -348,6 +361,18 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <QualityControlDashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Materials routes */}
+          <Route
+            path="/materials"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <MaterialsDashboard />
                 </Layout>
               </ProtectedRoute>
             }
