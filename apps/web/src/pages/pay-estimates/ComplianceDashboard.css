@@ -1,0 +1,513 @@
+.compliance-dashboard {
+  padding: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.compliance-dashboard.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 1rem;
+}
+
+.compliance-dashboard.loading svg {
+  color: #3b82f6;
+}
+
+/* Header */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.header-content h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 0.25rem 0;
+}
+
+.header-content p {
+  color: #6b7280;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.btn-secondary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-secondary:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+/* Demo Banner */
+.demo-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: #fef3c7;
+  border: 1px solid #fde047;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+  color: #92400e;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.stat-card.overdue .stat-icon {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.stat-card.urgent .stat-icon {
+  background: #fed7aa;
+  color: #ea580c;
+}
+
+.stat-card.warning .stat-icon {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.stat-card.on-track .stat-icon {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.stat-card.total .stat-icon {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+  line-height: 1.2;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.125rem;
+}
+
+/* Escalations Section */
+.escalations-section {
+  margin-bottom: 2rem;
+}
+
+.escalations-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 1rem 0;
+}
+
+.escalations-section h2 svg {
+  color: #dc2626;
+}
+
+.escalation-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.escalation-card {
+  background: white;
+  border-radius: 10px;
+  border-left: 4px solid;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.escalation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.escalation-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 9999px;
+}
+
+.escalation-date {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.escalation-message {
+  font-size: 0.875rem;
+  color: #374151;
+  margin: 0 0 0.75rem 0;
+  line-height: 1.5;
+}
+
+.escalation-meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-bottom: 0.75rem;
+}
+
+.escalation-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.link-action {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.link-action:hover {
+  text-decoration: underline;
+}
+
+.btn-acknowledge {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #374151;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-acknowledge:hover {
+  background: #e5e7eb;
+}
+
+/* Timeline Section */
+.timeline-section {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-section > h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 1.5rem 0;
+}
+
+.timeline-section > h2 svg {
+  color: #6b7280;
+}
+
+.timeline-group {
+  margin-bottom: 1.5rem;
+}
+
+.timeline-group:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-group h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+}
+
+.timeline-group.overdue h3 {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.timeline-group.urgent h3 {
+  background: #fed7aa;
+  color: #c2410c;
+}
+
+.timeline-group.warning h3 {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.timeline-group.on-track h3 {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.deadline-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Deadline Card */
+.deadline-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.15s;
+}
+
+.deadline-card:hover {
+  background: white;
+  border-color: #3b82f6;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+}
+
+.deadline-progress {
+  flex-shrink: 0;
+}
+
+.progress-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  text-align: center;
+}
+
+.progress-indicator .days {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.progress-indicator .label {
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.progress-indicator.overdue {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.progress-indicator.urgent {
+  background: #fed7aa;
+  color: #ea580c;
+}
+
+.progress-indicator.warning {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.progress-indicator.on-track {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.deadline-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.deadline-project {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.deadline-project svg {
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.deadline-project .project-name {
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.deadline-project .contract {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.deadline-details {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.8125rem;
+  color: #6b7280;
+}
+
+.deadline-amount {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.deadline-amount .amount {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+  font-family: 'SF Mono', 'Menlo', monospace;
+}
+
+.deadline-amount .sub-status {
+  display: block;
+  font-size: 0.75rem;
+  color: #d97706;
+  margin-top: 0.25rem;
+}
+
+.deadline-card .chevron {
+  color: #9ca3af;
+  flex-shrink: 0;
+  transition: transform 0.15s;
+}
+
+.deadline-card:hover .chevron {
+  color: #3b82f6;
+  transform: translateX(2px);
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem;
+  text-align: center;
+}
+
+.empty-state svg {
+  color: #10b981;
+  margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 0.5rem 0;
+}
+
+.empty-state p {
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Animation */
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .compliance-dashboard {
+    padding: 1rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .deadline-card {
+    flex-wrap: wrap;
+  }
+
+  .deadline-amount {
+    width: 100%;
+    text-align: left;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #e5e7eb;
+  }
+}

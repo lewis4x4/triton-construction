@@ -29,8 +29,6 @@ import { MaterialTicketCapture } from './components/workforce/MaterialTicketCapt
 import { IncidentReportForm } from './components/workforce/IncidentReportForm';
 import { ToolboxTalkForm } from './components/workforce/ToolboxTalkForm';
 import { FleetDashboard } from './components/workforce/FleetDashboard';
-// Quality Control Module
-import { QualityControlDashboard } from './pages/quality-control/QualityControlDashboard';
 // Daily Reports
 import { VoiceDailyReportPage } from './pages/daily-reports/VoiceDailyReportPage';
 // Project Management
@@ -56,6 +54,11 @@ import { TrainingDashboard } from './pages/training/TrainingDashboard';
 // Safety Module
 import { DailySafetyBriefForm } from './components/safety/DailySafetyBriefForm';
 import { StartMyDayScreen } from './components/safety/StartMyDayScreen';
+import { SafetyDashboard, IncidentReportPage, JSAManagement, ToolboxTalkLog } from './pages/safety';
+// Materials Module
+import { MaterialsDashboard, POManagement, MaterialTicketViewer } from './pages/materials';
+// Quality Control Module Sub-pages
+import { QualityControlDashboard, InspectionManagement, NCRTracker, PunchListManager } from './pages/quality-control';
 // Self-Service Module
 import { MyCertifications } from './pages/my/MyCertifications';
 // Equipment & Crew Management Module
@@ -71,16 +74,22 @@ import {
   IFTAReporting
 } from './pages/equipment';
 // Pay Estimates Module
-import { ValidationDashboard, PayEstimateUpload } from './pages/pay-estimates';
+import {
+  ValidationDashboard,
+  PayEstimateUpload,
+  PayEstimateDashboard,
+  PayPeriodDetail,
+  SubcontractorWorksheet,
+  ComplianceDashboard as PayEstimateComplianceDashboard,
+} from './pages/pay-estimates';
 // Self-Perform Cost Tracking
 import { SelfPerformDashboard } from './pages/self-perform';
 // Platform Core - Alerts, Geofences, Executive Dashboard
 import { PlatformAlertsDashboard } from './pages/alerts/PlatformAlertsDashboard';
 import { GeofenceManagement } from './pages/geofences/GeofenceManagement';
 import { ExecutiveDashboard } from './pages/executive/ExecutiveDashboard';
-// Safety & Materials Modules
-import { SafetyDashboard } from './pages/safety';
-import { MaterialsDashboard } from './pages/materials';
+// Time Tracking Module
+import { TimeTrackingDashboard, TimeEntryPage, TimesheetApproval, WeeklyTimesheet } from './pages/time-tracking';
 import './styles/index.css';
 
 function App() {
@@ -353,6 +362,36 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/safety/incidents"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <IncidentReportPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/safety/jsa"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <JSAManagement />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/safety/toolbox-talks"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <ToolboxTalkLog />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
 
           {/* Quality Control routes */}
           <Route
@@ -365,6 +404,36 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/quality-control/inspections"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <InspectionManagement />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/quality-control/ncr"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <NCRTracker />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/quality-control/punch-list"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <PunchListManager />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
 
           {/* Materials routes */}
           <Route
@@ -373,6 +442,68 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <MaterialsDashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/materials/po"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <POManagement />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/materials/tickets"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <MaterialTicketViewer />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Time Tracking routes */}
+          <Route
+            path="/time-tracking"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <TimeTrackingDashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/time-tracking/entry"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <TimeEntryPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/time-tracking/approval"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <TimesheetApproval />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/time-tracking/timesheet"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <WeeklyTimesheet />
                 </Layout>
               </ProtectedRoute>
             }
@@ -420,7 +551,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <ValidationDashboard />
+                  <PayEstimateDashboard />
                 </Layout>
               </ProtectedRoute>
             }
@@ -441,6 +572,36 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <ValidationDashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/pay-estimates/compliance"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <PayEstimateComplianceDashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/pay-estimates/subcontractor"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <SubcontractorWorksheet />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/pay-estimates/:id"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <PayPeriodDetail />
                 </Layout>
               </ProtectedRoute>
             }
