@@ -63,8 +63,22 @@ export type Database = {
             foreignKeyName: "ai_context_snapshots_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "ai_context_snapshots_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "ai_context_snapshots_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "ai_context_snapshots_project_id_fkey"
@@ -92,6 +106,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "ai_context_snapshots_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -167,8 +188,22 @@ export type Database = {
             foreignKeyName: "ai_conversations_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "ai_conversations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "ai_conversations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "ai_conversations_project_id_fkey"
@@ -196,6 +231,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "ai_conversations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -493,8 +535,22 @@ export type Database = {
             foreignKeyName: "ai_saved_reports_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "ai_saved_reports_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "ai_saved_reports_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "ai_saved_reports_project_id_fkey"
@@ -522,6 +578,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "ai_saved_reports_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -700,6 +763,132 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      asphalt_delivery_details: {
+        Row: {
+          air_voids_pct: number | null
+          arrival_temp_f: number | null
+          asphalt_content_pct: number | null
+          core_sample_ids: string[] | null
+          core_samples_taken: number | null
+          created_at: string | null
+          final_density_pct: number | null
+          gross_weight_tons: number | null
+          id: string
+          initial_density_pct: number | null
+          lane: string | null
+          laydown_temp_f: number | null
+          lift_number: number | null
+          lift_thickness_in: number | null
+          material_ticket_id: string
+          mix_design_number: string
+          mix_producer: string | null
+          mix_type: string
+          net_weight_tons: number | null
+          pggrade: string | null
+          placement_station_end: string | null
+          placement_station_start: string | null
+          plant_name: string
+          plant_number: string | null
+          plant_temp_f: number | null
+          production_date: string | null
+          production_time: string | null
+          rejected: boolean | null
+          rejection_reason: string | null
+          roller_passes: number | null
+          silo_number: string | null
+          tare_weight_tons: number | null
+          vfa_pct: number | null
+          vma_pct: number | null
+        }
+        Insert: {
+          air_voids_pct?: number | null
+          arrival_temp_f?: number | null
+          asphalt_content_pct?: number | null
+          core_sample_ids?: string[] | null
+          core_samples_taken?: number | null
+          created_at?: string | null
+          final_density_pct?: number | null
+          gross_weight_tons?: number | null
+          id?: string
+          initial_density_pct?: number | null
+          lane?: string | null
+          laydown_temp_f?: number | null
+          lift_number?: number | null
+          lift_thickness_in?: number | null
+          material_ticket_id: string
+          mix_design_number: string
+          mix_producer?: string | null
+          mix_type: string
+          net_weight_tons?: number | null
+          pggrade?: string | null
+          placement_station_end?: string | null
+          placement_station_start?: string | null
+          plant_name: string
+          plant_number?: string | null
+          plant_temp_f?: number | null
+          production_date?: string | null
+          production_time?: string | null
+          rejected?: boolean | null
+          rejection_reason?: string | null
+          roller_passes?: number | null
+          silo_number?: string | null
+          tare_weight_tons?: number | null
+          vfa_pct?: number | null
+          vma_pct?: number | null
+        }
+        Update: {
+          air_voids_pct?: number | null
+          arrival_temp_f?: number | null
+          asphalt_content_pct?: number | null
+          core_sample_ids?: string[] | null
+          core_samples_taken?: number | null
+          created_at?: string | null
+          final_density_pct?: number | null
+          gross_weight_tons?: number | null
+          id?: string
+          initial_density_pct?: number | null
+          lane?: string | null
+          laydown_temp_f?: number | null
+          lift_number?: number | null
+          lift_thickness_in?: number | null
+          material_ticket_id?: string
+          mix_design_number?: string
+          mix_producer?: string | null
+          mix_type?: string
+          net_weight_tons?: number | null
+          pggrade?: string | null
+          placement_station_end?: string | null
+          placement_station_start?: string | null
+          plant_name?: string
+          plant_number?: string | null
+          plant_temp_f?: number | null
+          production_date?: string | null
+          production_time?: string | null
+          rejected?: boolean | null
+          rejection_reason?: string | null
+          roller_passes?: number | null
+          silo_number?: string | null
+          tare_weight_tons?: number | null
+          vfa_pct?: number | null
+          vma_pct?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "asphalt_delivery_details_material_ticket_id_fkey"
+            columns: ["material_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "material_tickets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "asphalt_delivery_details_material_ticket_id_fkey"
+            columns: ["material_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_tickets_pending_verification"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       assembly_template_lines: {
         Row: {
@@ -936,6 +1125,94 @@ export type Database = {
             columns: ["updated_by"]
             isOneToOne: false
             referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      audit_findings: {
+        Row: {
+          area: string | null
+          audit_id: string
+          car_id: string | null
+          closed_at: string | null
+          closed_by: string | null
+          closure_notes: string | null
+          created_at: string | null
+          defect_category_id: string | null
+          finding_description: string
+          finding_number: number
+          finding_type: string | null
+          id: string
+          objective_evidence: string | null
+          requirement_reference: string | null
+          response_date: string | null
+          response_due_date: string | null
+          response_required: boolean | null
+          response_text: string | null
+          status: string | null
+        }
+        Insert: {
+          area?: string | null
+          audit_id: string
+          car_id?: string | null
+          closed_at?: string | null
+          closed_by?: string | null
+          closure_notes?: string | null
+          created_at?: string | null
+          defect_category_id?: string | null
+          finding_description: string
+          finding_number: number
+          finding_type?: string | null
+          id?: string
+          objective_evidence?: string | null
+          requirement_reference?: string | null
+          response_date?: string | null
+          response_due_date?: string | null
+          response_required?: boolean | null
+          response_text?: string | null
+          status?: string | null
+        }
+        Update: {
+          area?: string | null
+          audit_id?: string
+          car_id?: string | null
+          closed_at?: string | null
+          closed_by?: string | null
+          closure_notes?: string | null
+          created_at?: string | null
+          defect_category_id?: string | null
+          finding_description?: string
+          finding_number?: number
+          finding_type?: string | null
+          id?: string
+          objective_evidence?: string | null
+          requirement_reference?: string | null
+          response_date?: string | null
+          response_due_date?: string | null
+          response_required?: boolean | null
+          response_text?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_findings_audit_id_fkey"
+            columns: ["audit_id"]
+            isOneToOne: false
+            referencedRelation: "quality_audits"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "audit_findings_car_id_fkey"
+            columns: ["car_id"]
+            isOneToOne: false
+            referencedRelation: "corrective_action_requests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "audit_findings_defect_category_id_fkey"
+            columns: ["defect_category_id"]
+            isOneToOne: false
+            referencedRelation: "defect_categories"
             referencedColumns: ["id"]
           },
         ]
@@ -3074,6 +3351,192 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_bid_scenario_comparison"
             referencedColumns: ["line_item_id"]
+          },
+        ]
+      }
+      bid_issues: {
+        Row: {
+          bid_item_ids: string[] | null
+          bid_project_id: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string
+          id: string
+          issue_type: Database["public"]["Enums"]["issue_type"]
+          organization_id: string
+          plan_sheet: string | null
+          project_id: string | null
+          resolution_notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string | null
+          spec_section: string | null
+          status: string | null
+          title: string
+          updated_at: string | null
+          visible_to_field: boolean | null
+        }
+        Insert: {
+          bid_item_ids?: string[] | null
+          bid_project_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description: string
+          id?: string
+          issue_type: Database["public"]["Enums"]["issue_type"]
+          organization_id: string
+          plan_sheet?: string | null
+          project_id?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string | null
+          spec_section?: string | null
+          status?: string | null
+          title: string
+          updated_at?: string | null
+          visible_to_field?: boolean | null
+        }
+        Update: {
+          bid_item_ids?: string[] | null
+          bid_project_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string
+          id?: string
+          issue_type?: Database["public"]["Enums"]["issue_type"]
+          organization_id?: string
+          plan_sheet?: string | null
+          project_id?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string | null
+          spec_section?: string | null
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+          visible_to_field?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bid_issues_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "bid_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bid_issues_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_environmental_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_issues_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_pricing_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_issues_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_project_dashboard"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_issues_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_projects_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bid_issues_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_questions_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_issues_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_risk_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_issues_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bid_issues_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bid_issues_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "bid_issues_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "bid_issues_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "bid_issues_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "bid_issues_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "bid_issues_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "bid_issues_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "bid_issues_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
           },
         ]
       }
@@ -5573,8 +6036,22 @@ export type Database = {
             foreignKeyName: "bid_projects_active_project_id_fkey"
             columns: ["active_project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "bid_projects_active_project_id_fkey"
+            columns: ["active_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "bid_projects_active_project_id_fkey"
+            columns: ["active_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "bid_projects_active_project_id_fkey"
@@ -5602,6 +6079,13 @@ export type Database = {
             columns: ["active_project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "bid_projects_active_project_id_fkey"
+            columns: ["active_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -6240,6 +6724,160 @@ export type Database = {
           },
         ]
       }
+      budget_alerts: {
+        Row: {
+          acknowledged_at: string | null
+          acknowledged_by: string | null
+          action_taken: string | null
+          alert_type: string
+          budget_amount: number | null
+          confidence_level: string | null
+          created_at: string | null
+          current_paid: number | null
+          id: string
+          is_acknowledged: boolean | null
+          message: string
+          organization_id: string
+          percent_used: number | null
+          project_id: string
+          projected_final_cost: number | null
+          projected_overage: number | null
+          projection_basis: string | null
+          severity: Database["public"]["Enums"]["alert_severity"]
+          subcontract_budget_id: string | null
+          title: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          action_taken?: string | null
+          alert_type: string
+          budget_amount?: number | null
+          confidence_level?: string | null
+          created_at?: string | null
+          current_paid?: number | null
+          id?: string
+          is_acknowledged?: boolean | null
+          message: string
+          organization_id: string
+          percent_used?: number | null
+          project_id: string
+          projected_final_cost?: number | null
+          projected_overage?: number | null
+          projection_basis?: string | null
+          severity: Database["public"]["Enums"]["alert_severity"]
+          subcontract_budget_id?: string | null
+          title: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          action_taken?: string | null
+          alert_type?: string
+          budget_amount?: number | null
+          confidence_level?: string | null
+          created_at?: string | null
+          current_paid?: number | null
+          id?: string
+          is_acknowledged?: boolean | null
+          message?: string
+          organization_id?: string
+          percent_used?: number | null
+          project_id?: string
+          projected_final_cost?: number | null
+          projected_overage?: number | null
+          projection_basis?: string | null
+          severity?: Database["public"]["Enums"]["alert_severity"]
+          subcontract_budget_id?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "budget_alerts_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "budget_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "budget_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "budget_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "budget_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "budget_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "budget_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "budget_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "budget_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "budget_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "budget_alerts_subcontract_budget_id_fkey"
+            columns: ["subcontract_budget_id"]
+            isOneToOne: false
+            referencedRelation: "subcontract_budgets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "budget_alerts_subcontract_budget_id_fkey"
+            columns: ["subcontract_budget_id"]
+            isOneToOne: false
+            referencedRelation: "v_subcontract_budget_dashboard"
+            referencedColumns: ["budget_id"]
+          },
+        ]
+      }
       cash_flow_projections: {
         Row: {
           actual_collections: number | null
@@ -6335,8 +6973,22 @@ export type Database = {
             foreignKeyName: "cash_flow_projections_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "cash_flow_projections_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "cash_flow_projections_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "cash_flow_projections_project_id_fkey"
@@ -6364,6 +7016,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "cash_flow_projections_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -6561,6 +7220,13 @@ export type Database = {
             referencedRelation: "v_active_crew"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "certified_payroll_lines_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
+            referencedRelation: "v_crew_roster"
+            referencedColumns: ["id"]
+          },
         ]
       }
       certified_payrolls: {
@@ -6689,13 +7355,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "certified_payrolls_pay_period_id_fkey"
-            columns: ["pay_period_id"]
-            isOneToOne: false
-            referencedRelation: "pay_periods"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "certified_payrolls_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
@@ -6706,8 +7365,22 @@ export type Database = {
             foreignKeyName: "certified_payrolls_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "certified_payrolls_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "certified_payrolls_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "certified_payrolls_project_id_fkey"
@@ -6735,6 +7408,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "certified_payrolls_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -7027,8 +7707,22 @@ export type Database = {
             foreignKeyName: "change_order_requests_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "change_order_requests_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "change_order_requests_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "change_order_requests_project_id_fkey"
@@ -7056,6 +7750,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "change_order_requests_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -7222,8 +7923,22 @@ export type Database = {
             foreignKeyName: "change_orders_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "change_orders_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "change_orders_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "change_orders_project_id_fkey"
@@ -7251,6 +7966,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "change_orders_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -7320,6 +8042,189 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "inspection_checklists"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      co_opportunities: {
+        Row: {
+          actual_value: number | null
+          bid_item_ids: string[] | null
+          bid_project_id: string | null
+          change_order_id: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string
+          estimated_value_high: number | null
+          estimated_value_low: number | null
+          id: string
+          organization_id: string
+          plan_sheet_reference: string | null
+          project_id: string | null
+          spec_reference: string | null
+          status: Database["public"]["Enums"]["co_opportunity_status"] | null
+          title: string
+          updated_at: string | null
+          visible_to_field: boolean | null
+        }
+        Insert: {
+          actual_value?: number | null
+          bid_item_ids?: string[] | null
+          bid_project_id?: string | null
+          change_order_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description: string
+          estimated_value_high?: number | null
+          estimated_value_low?: number | null
+          id?: string
+          organization_id: string
+          plan_sheet_reference?: string | null
+          project_id?: string | null
+          spec_reference?: string | null
+          status?: Database["public"]["Enums"]["co_opportunity_status"] | null
+          title: string
+          updated_at?: string | null
+          visible_to_field?: boolean | null
+        }
+        Update: {
+          actual_value?: number | null
+          bid_item_ids?: string[] | null
+          bid_project_id?: string | null
+          change_order_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string
+          estimated_value_high?: number | null
+          estimated_value_low?: number | null
+          id?: string
+          organization_id?: string
+          plan_sheet_reference?: string | null
+          project_id?: string | null
+          spec_reference?: string | null
+          status?: Database["public"]["Enums"]["co_opportunity_status"] | null
+          title?: string
+          updated_at?: string | null
+          visible_to_field?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "co_opportunities_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "bid_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "co_opportunities_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_environmental_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "co_opportunities_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_pricing_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "co_opportunities_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_project_dashboard"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "co_opportunities_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_projects_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "co_opportunities_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_questions_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "co_opportunities_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_risk_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "co_opportunities_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "co_opportunities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "co_opportunities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "co_opportunities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "co_opportunities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "co_opportunities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "co_opportunities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "co_opportunities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "co_opportunities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "co_opportunities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
           },
         ]
       }
@@ -7402,10 +8307,101 @@ export type Database = {
           },
         ]
       }
+      compliance_escalations: {
+        Row: {
+          controller_notified_at: string | null
+          created_at: string | null
+          days_remaining: number | null
+          escalation_level: Database["public"]["Enums"]["escalation_level"]
+          escalation_reason: string
+          executive_notified_at: string | null
+          id: string
+          is_resolved: boolean | null
+          organization_id: string
+          pay_period_id: string
+          pm_notified_at: string | null
+          resolution_notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          vp_notified_at: string | null
+        }
+        Insert: {
+          controller_notified_at?: string | null
+          created_at?: string | null
+          days_remaining?: number | null
+          escalation_level: Database["public"]["Enums"]["escalation_level"]
+          escalation_reason: string
+          executive_notified_at?: string | null
+          id?: string
+          is_resolved?: boolean | null
+          organization_id: string
+          pay_period_id: string
+          pm_notified_at?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          vp_notified_at?: string | null
+        }
+        Update: {
+          controller_notified_at?: string | null
+          created_at?: string | null
+          days_remaining?: number | null
+          escalation_level?: Database["public"]["Enums"]["escalation_level"]
+          escalation_reason?: string
+          executive_notified_at?: string | null
+          id?: string
+          is_resolved?: boolean | null
+          organization_id?: string
+          pay_period_id?: string
+          pm_notified_at?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          vp_notified_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "compliance_escalations_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "compliance_escalations_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "pay_periods"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "compliance_escalations_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pay_period_dashboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "compliance_escalations_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_payment_deadline_summary"
+            referencedColumns: ["pay_period_id"]
+          },
+          {
+            foreignKeyName: "compliance_escalations_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_validations"
+            referencedColumns: ["pay_period_id"]
+          },
+        ]
+      }
       compliance_overrides: {
         Row: {
           approved_by: string | null
           approved_by_role: string | null
+          blocked_action: string | null
           created_at: string | null
           digital_signature: string
           documentation: string | null
@@ -7417,6 +8413,7 @@ export type Database = {
           justification: string
           notification_sent_at: string | null
           organization_id: string
+          override_expires: string | null
           override_type: string
           photo_url: string | null
           project_id: string | null
@@ -7432,6 +8429,7 @@ export type Database = {
         Insert: {
           approved_by?: string | null
           approved_by_role?: string | null
+          blocked_action?: string | null
           created_at?: string | null
           digital_signature: string
           documentation?: string | null
@@ -7443,6 +8441,7 @@ export type Database = {
           justification: string
           notification_sent_at?: string | null
           organization_id: string
+          override_expires?: string | null
           override_type: string
           photo_url?: string | null
           project_id?: string | null
@@ -7458,6 +8457,7 @@ export type Database = {
         Update: {
           approved_by?: string | null
           approved_by_role?: string | null
+          blocked_action?: string | null
           created_at?: string | null
           digital_signature?: string
           documentation?: string | null
@@ -7469,6 +8469,7 @@ export type Database = {
           justification?: string
           notification_sent_at?: string | null
           organization_id?: string
+          override_expires?: string | null
           override_type?: string
           photo_url?: string | null
           project_id?: string | null
@@ -7500,8 +8501,22 @@ export type Database = {
             foreignKeyName: "compliance_overrides_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "compliance_overrides_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "compliance_overrides_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "compliance_overrides_project_id_fkey"
@@ -7532,6 +8547,13 @@ export type Database = {
             referencedColumns: ["project_id"]
           },
           {
+            foreignKeyName: "compliance_overrides_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
             foreignKeyName: "compliance_overrides_rule_id_fkey"
             columns: ["rule_id"]
             isOneToOne: false
@@ -7543,6 +8565,150 @@ export type Database = {
             columns: ["rule_id"]
             isOneToOne: false
             referencedRelation: "v_active_validation_rules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      concrete_batch_details: {
+        Row: {
+          admixtures: Json | null
+          air_content: number | null
+          ambient_temp_f: number | null
+          arrival_time: string | null
+          batch_number: string
+          batch_time: string
+          cement_weight: number | null
+          coarse_aggregate_weight: number | null
+          concrete_temp_f: number | null
+          created_at: string | null
+          cylinder_set_ids: string[] | null
+          cylinders_made: number | null
+          departure_time: string | null
+          drum_revolutions: number | null
+          fine_aggregate_weight: number | null
+          fly_ash_weight: number | null
+          id: string
+          inspector_approved: boolean | null
+          inspector_name: string | null
+          load_size_cy: number
+          material_ticket_id: string
+          max_water_cement_ratio: number | null
+          mix_description: string | null
+          mix_design_number: string
+          placement_element: string | null
+          placement_location: string | null
+          placement_method: string | null
+          plant_location: string | null
+          plant_name: string
+          plant_number: string | null
+          pour_complete_time: string | null
+          pour_start_time: string | null
+          rejected: boolean | null
+          rejection_reason: string | null
+          slag_weight: number | null
+          slump_at_site: number | null
+          specified_slump: number | null
+          specified_strength_psi: number | null
+          water_added_gal: number | null
+          water_weight: number | null
+        }
+        Insert: {
+          admixtures?: Json | null
+          air_content?: number | null
+          ambient_temp_f?: number | null
+          arrival_time?: string | null
+          batch_number: string
+          batch_time: string
+          cement_weight?: number | null
+          coarse_aggregate_weight?: number | null
+          concrete_temp_f?: number | null
+          created_at?: string | null
+          cylinder_set_ids?: string[] | null
+          cylinders_made?: number | null
+          departure_time?: string | null
+          drum_revolutions?: number | null
+          fine_aggregate_weight?: number | null
+          fly_ash_weight?: number | null
+          id?: string
+          inspector_approved?: boolean | null
+          inspector_name?: string | null
+          load_size_cy: number
+          material_ticket_id: string
+          max_water_cement_ratio?: number | null
+          mix_description?: string | null
+          mix_design_number: string
+          placement_element?: string | null
+          placement_location?: string | null
+          placement_method?: string | null
+          plant_location?: string | null
+          plant_name: string
+          plant_number?: string | null
+          pour_complete_time?: string | null
+          pour_start_time?: string | null
+          rejected?: boolean | null
+          rejection_reason?: string | null
+          slag_weight?: number | null
+          slump_at_site?: number | null
+          specified_slump?: number | null
+          specified_strength_psi?: number | null
+          water_added_gal?: number | null
+          water_weight?: number | null
+        }
+        Update: {
+          admixtures?: Json | null
+          air_content?: number | null
+          ambient_temp_f?: number | null
+          arrival_time?: string | null
+          batch_number?: string
+          batch_time?: string
+          cement_weight?: number | null
+          coarse_aggregate_weight?: number | null
+          concrete_temp_f?: number | null
+          created_at?: string | null
+          cylinder_set_ids?: string[] | null
+          cylinders_made?: number | null
+          departure_time?: string | null
+          drum_revolutions?: number | null
+          fine_aggregate_weight?: number | null
+          fly_ash_weight?: number | null
+          id?: string
+          inspector_approved?: boolean | null
+          inspector_name?: string | null
+          load_size_cy?: number
+          material_ticket_id?: string
+          max_water_cement_ratio?: number | null
+          mix_description?: string | null
+          mix_design_number?: string
+          placement_element?: string | null
+          placement_location?: string | null
+          placement_method?: string | null
+          plant_location?: string | null
+          plant_name?: string
+          plant_number?: string | null
+          pour_complete_time?: string | null
+          pour_start_time?: string | null
+          rejected?: boolean | null
+          rejection_reason?: string | null
+          slag_weight?: number | null
+          slump_at_site?: number | null
+          specified_slump?: number | null
+          specified_strength_psi?: number | null
+          water_added_gal?: number | null
+          water_weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "concrete_batch_details_material_ticket_id_fkey"
+            columns: ["material_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "material_tickets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "concrete_batch_details_material_ticket_id_fkey"
+            columns: ["material_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_tickets_pending_verification"
             referencedColumns: ["id"]
           },
         ]
@@ -7616,8 +8782,22 @@ export type Database = {
             foreignKeyName: "contract_value_history_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "contract_value_history_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "contract_value_history_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "contract_value_history_project_id_fkey"
@@ -7645,6 +8825,198 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "contract_value_history_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      corrective_action_requests: {
+        Row: {
+          car_number: string
+          closed_at: string | null
+          closed_by: string | null
+          contributing_factors: string[] | null
+          corrective_action: string | null
+          corrective_action_completed: string | null
+          corrective_action_due: string | null
+          corrective_action_owner: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string
+          documents: string[] | null
+          effectiveness_rating: number | null
+          id: string
+          issue_category: string | null
+          organization_id: string
+          preventive_action: string | null
+          preventive_action_completed: string | null
+          preventive_action_due: string | null
+          preventive_action_owner: string | null
+          priority: string | null
+          project_id: string | null
+          root_cause_analysis: string | null
+          root_cause_method: string | null
+          source_audit_id: string | null
+          source_ncr_ids: string[] | null
+          source_type: string | null
+          status: Database["public"]["Enums"]["car_status"] | null
+          title: string
+          updated_at: string | null
+          verification_criteria: string | null
+          verification_effective: boolean | null
+          verification_method: string | null
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          car_number: string
+          closed_at?: string | null
+          closed_by?: string | null
+          contributing_factors?: string[] | null
+          corrective_action?: string | null
+          corrective_action_completed?: string | null
+          corrective_action_due?: string | null
+          corrective_action_owner?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description: string
+          documents?: string[] | null
+          effectiveness_rating?: number | null
+          id?: string
+          issue_category?: string | null
+          organization_id: string
+          preventive_action?: string | null
+          preventive_action_completed?: string | null
+          preventive_action_due?: string | null
+          preventive_action_owner?: string | null
+          priority?: string | null
+          project_id?: string | null
+          root_cause_analysis?: string | null
+          root_cause_method?: string | null
+          source_audit_id?: string | null
+          source_ncr_ids?: string[] | null
+          source_type?: string | null
+          status?: Database["public"]["Enums"]["car_status"] | null
+          title: string
+          updated_at?: string | null
+          verification_criteria?: string | null
+          verification_effective?: boolean | null
+          verification_method?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          car_number?: string
+          closed_at?: string | null
+          closed_by?: string | null
+          contributing_factors?: string[] | null
+          corrective_action?: string | null
+          corrective_action_completed?: string | null
+          corrective_action_due?: string | null
+          corrective_action_owner?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string
+          documents?: string[] | null
+          effectiveness_rating?: number | null
+          id?: string
+          issue_category?: string | null
+          organization_id?: string
+          preventive_action?: string | null
+          preventive_action_completed?: string | null
+          preventive_action_due?: string | null
+          preventive_action_owner?: string | null
+          priority?: string | null
+          project_id?: string | null
+          root_cause_analysis?: string | null
+          root_cause_method?: string | null
+          source_audit_id?: string | null
+          source_ncr_ids?: string[] | null
+          source_type?: string | null
+          status?: Database["public"]["Enums"]["car_status"] | null
+          title?: string
+          updated_at?: string | null
+          verification_criteria?: string | null
+          verification_effective?: boolean | null
+          verification_method?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "corrective_action_requests_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "corrective_action_requests_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "corrective_action_requests_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "corrective_action_requests_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "corrective_action_requests_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "corrective_action_requests_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "corrective_action_requests_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "corrective_action_requests_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "corrective_action_requests_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "corrective_action_requests_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -7749,8 +9121,22 @@ export type Database = {
             foreignKeyName: "cost_codes_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "cost_codes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "cost_codes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "cost_codes_project_id_fkey"
@@ -7778,6 +9164,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "cost_codes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -7992,8 +9385,22 @@ export type Database = {
             foreignKeyName: "crew_assignments_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_assignments_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_assignments_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "crew_assignments_project_id_fkey"
@@ -8021,6 +9428,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_assignments_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -8110,6 +9524,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "crew_certifications_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
+            referencedRelation: "v_crew_roster"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "crew_certifications_updated_by_fkey"
             columns: ["updated_by"]
             isOneToOne: false
@@ -8128,14 +9549,24 @@ export type Database = {
       crew_members: {
         Row: {
           base_hourly_rate: number | null
+          can_operate_equipment: boolean | null
+          cdl_class: string | null
+          cdl_endorsements: string[] | null
+          cdl_expiry: string | null
+          cdl_number: string | null
+          cdl_state: string | null
           certifications: Json | null
           created_at: string
           created_by: string | null
+          current_project_id: string | null
+          current_supervisor_id: string | null
           default_cost_code_id: string | null
           default_project_id: string | null
           deleted_at: string | null
           deleted_by: string | null
+          department: string | null
           display_name: string | null
+          dot_medical_expiry: string | null
           double_time_rate: number | null
           drug_test_status: string | null
           eeo_disability_status: boolean | null
@@ -8147,33 +9578,53 @@ export type Database = {
           emergency_contact_phone: string | null
           employee_id: string
           employment_type: string
+          equipment_certifications: Json | null
           first_name: string
           hire_date: string | null
           id: string
           is_active: boolean | null
+          is_cdl_driver: boolean | null
+          is_dbe_employee: boolean | null
           last_drug_test_date: string | null
           last_name: string
+          notes: string | null
           organization_id: string
           overtime_rate: number | null
+          pay_type: string | null
           per_diem_rate: number | null
           phone: string | null
+          photo_url: string | null
+          secondary_classifications: string[] | null
           termination_date: string | null
           trade_classification: string
           trade_classification_detail: string | null
+          union_affiliation: string | null
+          union_local: string | null
+          union_member_number: string | null
           updated_at: string
           updated_by: string | null
           user_id: string | null
         }
         Insert: {
           base_hourly_rate?: number | null
+          can_operate_equipment?: boolean | null
+          cdl_class?: string | null
+          cdl_endorsements?: string[] | null
+          cdl_expiry?: string | null
+          cdl_number?: string | null
+          cdl_state?: string | null
           certifications?: Json | null
           created_at?: string
           created_by?: string | null
+          current_project_id?: string | null
+          current_supervisor_id?: string | null
           default_cost_code_id?: string | null
           default_project_id?: string | null
           deleted_at?: string | null
           deleted_by?: string | null
+          department?: string | null
           display_name?: string | null
+          dot_medical_expiry?: string | null
           double_time_rate?: number | null
           drug_test_status?: string | null
           eeo_disability_status?: boolean | null
@@ -8185,33 +9636,53 @@ export type Database = {
           emergency_contact_phone?: string | null
           employee_id: string
           employment_type?: string
+          equipment_certifications?: Json | null
           first_name: string
           hire_date?: string | null
           id?: string
           is_active?: boolean | null
+          is_cdl_driver?: boolean | null
+          is_dbe_employee?: boolean | null
           last_drug_test_date?: string | null
           last_name: string
+          notes?: string | null
           organization_id: string
           overtime_rate?: number | null
+          pay_type?: string | null
           per_diem_rate?: number | null
           phone?: string | null
+          photo_url?: string | null
+          secondary_classifications?: string[] | null
           termination_date?: string | null
           trade_classification: string
           trade_classification_detail?: string | null
+          union_affiliation?: string | null
+          union_local?: string | null
+          union_member_number?: string | null
           updated_at?: string
           updated_by?: string | null
           user_id?: string | null
         }
         Update: {
           base_hourly_rate?: number | null
+          can_operate_equipment?: boolean | null
+          cdl_class?: string | null
+          cdl_endorsements?: string[] | null
+          cdl_expiry?: string | null
+          cdl_number?: string | null
+          cdl_state?: string | null
           certifications?: Json | null
           created_at?: string
           created_by?: string | null
+          current_project_id?: string | null
+          current_supervisor_id?: string | null
           default_cost_code_id?: string | null
           default_project_id?: string | null
           deleted_at?: string | null
           deleted_by?: string | null
+          department?: string | null
           display_name?: string | null
+          dot_medical_expiry?: string | null
           double_time_rate?: number | null
           drug_test_status?: string | null
           eeo_disability_status?: boolean | null
@@ -8223,19 +9694,29 @@ export type Database = {
           emergency_contact_phone?: string | null
           employee_id?: string
           employment_type?: string
+          equipment_certifications?: Json | null
           first_name?: string
           hire_date?: string | null
           id?: string
           is_active?: boolean | null
+          is_cdl_driver?: boolean | null
+          is_dbe_employee?: boolean | null
           last_drug_test_date?: string | null
           last_name?: string
+          notes?: string | null
           organization_id?: string
           overtime_rate?: number | null
+          pay_type?: string | null
           per_diem_rate?: number | null
           phone?: string | null
+          photo_url?: string | null
+          secondary_classifications?: string[] | null
           termination_date?: string | null
           trade_classification?: string
           trade_classification_detail?: string | null
+          union_affiliation?: string | null
+          union_local?: string | null
+          union_member_number?: string | null
           updated_at?: string
           updated_by?: string | null
           user_id?: string | null
@@ -8246,6 +9727,90 @@ export type Database = {
             columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crew_members_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crew_members_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_members_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_members_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_members_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_members_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_members_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_members_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_members_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_members_current_supervisor_id_fkey"
+            columns: ["current_supervisor_id"]
+            isOneToOne: false
+            referencedRelation: "crew_members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crew_members_current_supervisor_id_fkey"
+            columns: ["current_supervisor_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_crew"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crew_members_current_supervisor_id_fkey"
+            columns: ["current_supervisor_id"]
+            isOneToOne: false
+            referencedRelation: "v_crew_roster"
             referencedColumns: ["id"]
           },
           {
@@ -8266,8 +9831,22 @@ export type Database = {
             foreignKeyName: "crew_members_default_project_id_fkey"
             columns: ["default_project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_members_default_project_id_fkey"
+            columns: ["default_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_members_default_project_id_fkey"
+            columns: ["default_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "crew_members_default_project_id_fkey"
@@ -8295,6 +9874,13 @@ export type Database = {
             columns: ["default_project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_members_default_project_id_fkey"
+            columns: ["default_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -8389,6 +9975,383 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "organizations"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      crl_export_history: {
+        Row: {
+          created_at: string | null
+          crl_submission_id: string
+          download_count: number | null
+          export_format: Database["public"]["Enums"]["crl_export_format"]
+          export_timestamp: string | null
+          exported_by: string | null
+          file_name: string
+          file_path: string
+          file_size_bytes: number | null
+          id: string
+          last_downloaded_at: string | null
+          last_downloaded_by: string | null
+          validation_errors: Json | null
+          validation_passed: boolean | null
+        }
+        Insert: {
+          created_at?: string | null
+          crl_submission_id: string
+          download_count?: number | null
+          export_format: Database["public"]["Enums"]["crl_export_format"]
+          export_timestamp?: string | null
+          exported_by?: string | null
+          file_name: string
+          file_path: string
+          file_size_bytes?: number | null
+          id?: string
+          last_downloaded_at?: string | null
+          last_downloaded_by?: string | null
+          validation_errors?: Json | null
+          validation_passed?: boolean | null
+        }
+        Update: {
+          created_at?: string | null
+          crl_submission_id?: string
+          download_count?: number | null
+          export_format?: Database["public"]["Enums"]["crl_export_format"]
+          export_timestamp?: string | null
+          exported_by?: string | null
+          file_name?: string
+          file_path?: string
+          file_size_bytes?: number | null
+          id?: string
+          last_downloaded_at?: string | null
+          last_downloaded_by?: string | null
+          validation_errors?: Json | null
+          validation_passed?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crl_export_history_crl_submission_id_fkey"
+            columns: ["crl_submission_id"]
+            isOneToOne: false
+            referencedRelation: "crl_submissions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crl_export_history_crl_submission_id_fkey"
+            columns: ["crl_submission_id"]
+            isOneToOne: false
+            referencedRelation: "v_crl_export_ready"
+            referencedColumns: ["crl_id"]
+          },
+        ]
+      }
+      crl_line_items: {
+        Row: {
+          begin_station: string | null
+          contract_qty: number | null
+          created_at: string | null
+          crl_submission_id: string
+          current_amount: number | null
+          current_qty: number
+          description: string
+          end_station: string | null
+          id: string
+          is_overrun: boolean | null
+          is_validated: boolean | null
+          item_number: string
+          line_number: number
+          location_description: string | null
+          notes: string | null
+          overrun_qty: number | null
+          previous_qty: number
+          source_date: string | null
+          source_reference_id: string | null
+          source_type: string | null
+          total_to_date_amount: number | null
+          total_to_date_qty: number | null
+          unit: string
+          unit_price: number
+          updated_at: string | null
+          validation_notes: string | null
+        }
+        Insert: {
+          begin_station?: string | null
+          contract_qty?: number | null
+          created_at?: string | null
+          crl_submission_id: string
+          current_amount?: number | null
+          current_qty: number
+          description: string
+          end_station?: string | null
+          id?: string
+          is_overrun?: boolean | null
+          is_validated?: boolean | null
+          item_number: string
+          line_number: number
+          location_description?: string | null
+          notes?: string | null
+          overrun_qty?: number | null
+          previous_qty: number
+          source_date?: string | null
+          source_reference_id?: string | null
+          source_type?: string | null
+          total_to_date_amount?: number | null
+          total_to_date_qty?: number | null
+          unit: string
+          unit_price: number
+          updated_at?: string | null
+          validation_notes?: string | null
+        }
+        Update: {
+          begin_station?: string | null
+          contract_qty?: number | null
+          created_at?: string | null
+          crl_submission_id?: string
+          current_amount?: number | null
+          current_qty?: number
+          description?: string
+          end_station?: string | null
+          id?: string
+          is_overrun?: boolean | null
+          is_validated?: boolean | null
+          item_number?: string
+          line_number?: number
+          location_description?: string | null
+          notes?: string | null
+          overrun_qty?: number | null
+          previous_qty?: number
+          source_date?: string | null
+          source_reference_id?: string | null
+          source_type?: string | null
+          total_to_date_amount?: number | null
+          total_to_date_qty?: number | null
+          unit?: string
+          unit_price?: number
+          updated_at?: string | null
+          validation_notes?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crl_line_items_crl_submission_id_fkey"
+            columns: ["crl_submission_id"]
+            isOneToOne: false
+            referencedRelation: "crl_submissions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crl_line_items_crl_submission_id_fkey"
+            columns: ["crl_submission_id"]
+            isOneToOne: false
+            referencedRelation: "v_crl_export_ready"
+            referencedColumns: ["crl_id"]
+          },
+        ]
+      }
+      crl_submissions: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          contract_number: string
+          created_at: string | null
+          created_by: string | null
+          crl_number: number
+          federal_aid_number: string | null
+          id: string
+          notes: string | null
+          organization_id: string
+          pay_period_id: string | null
+          prepared_at: string | null
+          prepared_by: string | null
+          project_id: string
+          rejection_reason: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          revision_of: string | null
+          status: Database["public"]["Enums"]["crl_status"] | null
+          submission_period_end: string
+          submission_period_start: string
+          submitted_by: string | null
+          submitted_to_wvdoh_at: string | null
+          total_amount: number | null
+          total_line_items: number | null
+          updated_at: string | null
+          wvdoh_confirmation_number: string | null
+          wvdoh_response_date: string | null
+          wvdoh_response_status: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          contract_number: string
+          created_at?: string | null
+          created_by?: string | null
+          crl_number: number
+          federal_aid_number?: string | null
+          id?: string
+          notes?: string | null
+          organization_id: string
+          pay_period_id?: string | null
+          prepared_at?: string | null
+          prepared_by?: string | null
+          project_id: string
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          revision_of?: string | null
+          status?: Database["public"]["Enums"]["crl_status"] | null
+          submission_period_end: string
+          submission_period_start: string
+          submitted_by?: string | null
+          submitted_to_wvdoh_at?: string | null
+          total_amount?: number | null
+          total_line_items?: number | null
+          updated_at?: string | null
+          wvdoh_confirmation_number?: string | null
+          wvdoh_response_date?: string | null
+          wvdoh_response_status?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          contract_number?: string
+          created_at?: string | null
+          created_by?: string | null
+          crl_number?: number
+          federal_aid_number?: string | null
+          id?: string
+          notes?: string | null
+          organization_id?: string
+          pay_period_id?: string | null
+          prepared_at?: string | null
+          prepared_by?: string | null
+          project_id?: string
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          revision_of?: string | null
+          status?: Database["public"]["Enums"]["crl_status"] | null
+          submission_period_end?: string
+          submission_period_start?: string
+          submitted_by?: string | null
+          submitted_to_wvdoh_at?: string | null
+          total_amount?: number | null
+          total_line_items?: number | null
+          updated_at?: string | null
+          wvdoh_confirmation_number?: string | null
+          wvdoh_response_date?: string | null
+          wvdoh_response_status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crl_submissions_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crl_submissions_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "pay_periods"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crl_submissions_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pay_period_dashboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crl_submissions_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_payment_deadline_summary"
+            referencedColumns: ["pay_period_id"]
+          },
+          {
+            foreignKeyName: "crl_submissions_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_validations"
+            referencedColumns: ["pay_period_id"]
+          },
+          {
+            foreignKeyName: "crl_submissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crl_submissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crl_submissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crl_submissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crl_submissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crl_submissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crl_submissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crl_submissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crl_submissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crl_submissions_revision_of_fkey"
+            columns: ["revision_of"]
+            isOneToOne: false
+            referencedRelation: "crl_submissions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crl_submissions_revision_of_fkey"
+            columns: ["revision_of"]
+            isOneToOne: false
+            referencedRelation: "v_crl_export_ready"
+            referencedColumns: ["crl_id"]
           },
         ]
       }
@@ -8524,6 +10487,13 @@ export type Database = {
             foreignKeyName: "daily_equipment_log_equipment_id_fkey"
             columns: ["equipment_id"]
             isOneToOne: false
+            referencedRelation: "v_equipment_fleet_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_equipment_log_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
             referencedRelation: "v_equipment_health_overview"
             referencedColumns: ["equipment_id"]
           },
@@ -8533,6 +10503,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_equipment_status"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_equipment_log_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_utilization"
+            referencedColumns: ["equipment_id"]
           },
           {
             foreignKeyName: "daily_equipment_log_updated_by_fkey"
@@ -8634,6 +10611,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "daily_manpower_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
+            referencedRelation: "v_crew_roster"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "daily_manpower_daily_report_id_fkey"
             columns: ["daily_report_id"]
             isOneToOne: false
@@ -8732,8 +10716,22 @@ export type Database = {
             foreignKeyName: "daily_material_summary_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_material_summary_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_material_summary_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "daily_material_summary_project_id_fkey"
@@ -8763,6 +10761,13 @@ export type Database = {
             referencedRelation: "v_project_rfi_stats"
             referencedColumns: ["project_id"]
           },
+          {
+            foreignKeyName: "daily_material_summary_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
         ]
       }
       daily_report_entries: {
@@ -8785,8 +10790,11 @@ export type Database = {
           inspection_result: string | null
           inspection_type: string | null
           inspector_name: string | null
+          item_number: string | null
           location_description: string | null
           quantity: number | null
+          quantity_unit: string | null
+          quantity_value: number | null
           sort_order: number | null
           source: string | null
           start_time: string | null
@@ -8822,8 +10830,11 @@ export type Database = {
           inspection_result?: string | null
           inspection_type?: string | null
           inspector_name?: string | null
+          item_number?: string | null
           location_description?: string | null
           quantity?: number | null
+          quantity_unit?: string | null
+          quantity_value?: number | null
           sort_order?: number | null
           source?: string | null
           start_time?: string | null
@@ -8859,8 +10870,11 @@ export type Database = {
           inspection_result?: string | null
           inspection_type?: string | null
           inspector_name?: string | null
+          item_number?: string | null
           location_description?: string | null
           quantity?: number | null
+          quantity_unit?: string | null
+          quantity_value?: number | null
           sort_order?: number | null
           source?: string | null
           start_time?: string | null
@@ -8919,6 +10933,235 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "user_profiles"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      daily_report_quantities: {
+        Row: {
+          begin_station: string | null
+          calculated_amount: number | null
+          created_at: string | null
+          created_by: string | null
+          crew_size: number | null
+          daily_report_id: string
+          description: string
+          dispute_reason: string | null
+          end_station: string | null
+          equipment_used: string[] | null
+          foreman_notes: string | null
+          gps_latitude: number | null
+          gps_longitude: number | null
+          id: string
+          is_disputed: boolean | null
+          is_reconciled: boolean | null
+          item_number: string
+          location_description: string | null
+          organization_id: string
+          pay_line_item_id: string | null
+          pay_period_id: string | null
+          project_id: string
+          quantity_installed: number
+          reconciled_at: string | null
+          reconciled_by: string | null
+          reconciliation_variance: number | null
+          report_date: string
+          superintendent_notes: string | null
+          unit: string
+          unit_price: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          begin_station?: string | null
+          calculated_amount?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          crew_size?: number | null
+          daily_report_id: string
+          description: string
+          dispute_reason?: string | null
+          end_station?: string | null
+          equipment_used?: string[] | null
+          foreman_notes?: string | null
+          gps_latitude?: number | null
+          gps_longitude?: number | null
+          id?: string
+          is_disputed?: boolean | null
+          is_reconciled?: boolean | null
+          item_number: string
+          location_description?: string | null
+          organization_id: string
+          pay_line_item_id?: string | null
+          pay_period_id?: string | null
+          project_id: string
+          quantity_installed: number
+          reconciled_at?: string | null
+          reconciled_by?: string | null
+          reconciliation_variance?: number | null
+          report_date: string
+          superintendent_notes?: string | null
+          unit: string
+          unit_price?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          begin_station?: string | null
+          calculated_amount?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          crew_size?: number | null
+          daily_report_id?: string
+          description?: string
+          dispute_reason?: string | null
+          end_station?: string | null
+          equipment_used?: string[] | null
+          foreman_notes?: string | null
+          gps_latitude?: number | null
+          gps_longitude?: number | null
+          id?: string
+          is_disputed?: boolean | null
+          is_reconciled?: boolean | null
+          item_number?: string
+          location_description?: string | null
+          organization_id?: string
+          pay_line_item_id?: string | null
+          pay_period_id?: string | null
+          project_id?: string
+          quantity_installed?: number
+          reconciled_at?: string | null
+          reconciled_by?: string | null
+          reconciliation_variance?: number | null
+          report_date?: string
+          superintendent_notes?: string | null
+          unit?: string
+          unit_price?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "daily_report_quantities_daily_report_id_fkey"
+            columns: ["daily_report_id"]
+            isOneToOne: false
+            referencedRelation: "daily_reports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_daily_report_id_fkey"
+            columns: ["daily_report_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_report_approvals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_daily_report_id_fkey"
+            columns: ["daily_report_id"]
+            isOneToOne: false
+            referencedRelation: "v_recent_daily_reports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_pay_line_item_id_fkey"
+            columns: ["pay_line_item_id"]
+            isOneToOne: false
+            referencedRelation: "pay_period_line_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "pay_periods"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pay_period_dashboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_payment_deadline_summary"
+            referencedColumns: ["pay_period_id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_validations"
+            referencedColumns: ["pay_period_id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
           },
         ]
       }
@@ -9191,8 +11434,22 @@ export type Database = {
             foreignKeyName: "daily_reports_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_reports_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_reports_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "daily_reports_project_id_fkey"
@@ -9220,6 +11477,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_reports_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -9364,8 +11628,22 @@ export type Database = {
             foreignKeyName: "daily_safety_briefs_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_safety_briefs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_safety_briefs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "daily_safety_briefs_project_id_fkey"
@@ -9396,10 +11674,76 @@ export type Database = {
             referencedColumns: ["project_id"]
           },
           {
+            foreignKeyName: "daily_safety_briefs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
             foreignKeyName: "daily_safety_briefs_supervisor_id_fkey"
             columns: ["supervisor_id"]
             isOneToOne: false
             referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dashboard_configs: {
+        Row: {
+          auto_refresh_enabled: boolean | null
+          auto_refresh_seconds: number | null
+          created_at: string | null
+          dashboard_name: string
+          dashboard_type: string
+          default_date_range: string | null
+          default_equipment_categories: string[] | null
+          default_project_ids: string[] | null
+          id: string
+          is_default: boolean | null
+          organization_id: string
+          updated_at: string | null
+          user_id: string
+          widgets: Json
+        }
+        Insert: {
+          auto_refresh_enabled?: boolean | null
+          auto_refresh_seconds?: number | null
+          created_at?: string | null
+          dashboard_name?: string
+          dashboard_type?: string
+          default_date_range?: string | null
+          default_equipment_categories?: string[] | null
+          default_project_ids?: string[] | null
+          id?: string
+          is_default?: boolean | null
+          organization_id: string
+          updated_at?: string | null
+          user_id: string
+          widgets?: Json
+        }
+        Update: {
+          auto_refresh_enabled?: boolean | null
+          auto_refresh_seconds?: number | null
+          created_at?: string | null
+          dashboard_name?: string
+          dashboard_type?: string
+          default_date_range?: string | null
+          default_equipment_categories?: string[] | null
+          default_project_ids?: string[] | null
+          id?: string
+          is_default?: boolean | null
+          organization_id?: string
+          updated_at?: string | null
+          user_id?: string
+          widgets?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dashboard_configs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
             referencedColumns: ["id"]
           },
         ]
@@ -9494,8 +11838,22 @@ export type Database = {
             foreignKeyName: "dbe_participation_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "dbe_participation_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "dbe_participation_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "dbe_participation_project_id_fkey"
@@ -9523,6 +11881,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "dbe_participation_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -9628,8 +11993,22 @@ export type Database = {
             foreignKeyName: "dbe_utilization_records_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "dbe_utilization_records_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "dbe_utilization_records_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "dbe_utilization_records_project_id_fkey"
@@ -9660,6 +12039,13 @@ export type Database = {
             referencedColumns: ["project_id"]
           },
           {
+            foreignKeyName: "dbe_utilization_records_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
             foreignKeyName: "dbe_utilization_records_subcontract_id_fkey"
             columns: ["subcontract_id"]
             isOneToOne: false
@@ -9678,6 +12064,50 @@ export type Database = {
             columns: ["subcontractor_id"]
             isOneToOne: false
             referencedRelation: "subcontractors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      defect_categories: {
+        Row: {
+          category_type: string | null
+          code: string
+          created_at: string | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          organization_id: string
+          severity_default: Database["public"]["Enums"]["ncr_severity"] | null
+        }
+        Insert: {
+          category_type?: string | null
+          code: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          organization_id: string
+          severity_default?: Database["public"]["Enums"]["ncr_severity"] | null
+        }
+        Update: {
+          category_type?: string | null
+          code?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          organization_id?: string
+          severity_default?: Database["public"]["Enums"]["ncr_severity"] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "defect_categories_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
             referencedColumns: ["id"]
           },
         ]
@@ -9816,8 +12246,22 @@ export type Database = {
             foreignKeyName: "document_folders_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "document_folders_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "document_folders_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "document_folders_project_id_fkey"
@@ -9845,6 +12289,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "document_folders_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -10083,8 +12534,22 @@ export type Database = {
             foreignKeyName: "documents_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "documents_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "documents_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "documents_project_id_fkey"
@@ -10114,6 +12579,13 @@ export type Database = {
             referencedRelation: "v_project_rfi_stats"
             referencedColumns: ["project_id"]
           },
+          {
+            foreignKeyName: "documents_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
         ]
       }
       driver_licenses: {
@@ -10124,6 +12596,7 @@ export type Database = {
           eligibility_status: string | null
           employee_id: string
           endorsements: string[] | null
+          expiration_date: string | null
           id: string
           is_cdl: boolean | null
           last_mvr_date: string | null
@@ -10146,6 +12619,7 @@ export type Database = {
           eligibility_status?: string | null
           employee_id: string
           endorsements?: string[] | null
+          expiration_date?: string | null
           id?: string
           is_cdl?: boolean | null
           last_mvr_date?: string | null
@@ -10168,6 +12642,7 @@ export type Database = {
           eligibility_status?: string | null
           employee_id?: string
           endorsements?: string[] | null
+          expiration_date?: string | null
           id?: string
           is_cdl?: boolean | null
           last_mvr_date?: string | null
@@ -10343,14 +12818,21 @@ export type Database = {
           document_url: string | null
           employee_id: string
           expiration_date: string | null
+          expires_at: string | null
           id: string
           issue_date: string | null
           issuing_authority: string | null
           notes: string | null
+          paid_by: string | null
+          renewal_reminder_sent: boolean | null
+          renewal_required: boolean | null
           source: string | null
           status: string | null
+          training_cost: number | null
           training_session_id: string | null
           updated_at: string | null
+          verification_method: string | null
+          verification_reference: string | null
           verification_status: string | null
           verified_at: string | null
           verified_by: string | null
@@ -10364,14 +12846,21 @@ export type Database = {
           document_url?: string | null
           employee_id: string
           expiration_date?: string | null
+          expires_at?: string | null
           id?: string
           issue_date?: string | null
           issuing_authority?: string | null
           notes?: string | null
+          paid_by?: string | null
+          renewal_reminder_sent?: boolean | null
+          renewal_required?: boolean | null
           source?: string | null
           status?: string | null
+          training_cost?: number | null
           training_session_id?: string | null
           updated_at?: string | null
+          verification_method?: string | null
+          verification_reference?: string | null
           verification_status?: string | null
           verified_at?: string | null
           verified_by?: string | null
@@ -10385,14 +12874,21 @@ export type Database = {
           document_url?: string | null
           employee_id?: string
           expiration_date?: string | null
+          expires_at?: string | null
           id?: string
           issue_date?: string | null
           issuing_authority?: string | null
           notes?: string | null
+          paid_by?: string | null
+          renewal_reminder_sent?: boolean | null
+          renewal_required?: boolean | null
           source?: string | null
           status?: string | null
+          training_cost?: number | null
           training_session_id?: string | null
           updated_at?: string | null
+          verification_method?: string | null
+          verification_reference?: string | null
           verification_status?: string | null
           verified_at?: string | null
           verified_by?: string | null
@@ -10452,10 +12948,13 @@ export type Database = {
           created_at: string | null
           created_by: string | null
           date_of_birth: string | null
+          deleted_at: string | null
+          display_name: string | null
           email: string | null
           emergency_contact_name: string | null
           emergency_contact_phone: string | null
           employee_number: string | null
+          employment_status: string | null
           first_name: string
           fringe_rate: number | null
           hire_date: string | null
@@ -10463,6 +12962,7 @@ export type Database = {
           id: string
           is_competent_person: boolean | null
           is_union_member: boolean | null
+          job_title: string | null
           last_name: string
           metadata: Json | null
           middle_name: string | null
@@ -10491,10 +12991,13 @@ export type Database = {
           created_at?: string | null
           created_by?: string | null
           date_of_birth?: string | null
+          deleted_at?: string | null
+          display_name?: string | null
           email?: string | null
           emergency_contact_name?: string | null
           emergency_contact_phone?: string | null
           employee_number?: string | null
+          employment_status?: string | null
           first_name: string
           fringe_rate?: number | null
           hire_date?: string | null
@@ -10502,6 +13005,7 @@ export type Database = {
           id?: string
           is_competent_person?: boolean | null
           is_union_member?: boolean | null
+          job_title?: string | null
           last_name: string
           metadata?: Json | null
           middle_name?: string | null
@@ -10530,10 +13034,13 @@ export type Database = {
           created_at?: string | null
           created_by?: string | null
           date_of_birth?: string | null
+          deleted_at?: string | null
+          display_name?: string | null
           email?: string | null
           emergency_contact_name?: string | null
           emergency_contact_phone?: string | null
           employee_number?: string | null
+          employment_status?: string | null
           first_name?: string
           fringe_rate?: number | null
           hire_date?: string | null
@@ -10541,6 +13048,7 @@ export type Database = {
           id?: string
           is_competent_person?: boolean | null
           is_union_member?: boolean | null
+          job_title?: string | null
           last_name?: string
           metadata?: Json | null
           middle_name?: string | null
@@ -10572,23 +13080,43 @@ export type Database = {
       }
       equipment: {
         Row: {
+          acquisition_cost: number | null
+          acquisition_date: string | null
+          assigned_at: string | null
+          assigned_to_employee_id: string | null
+          bucket_capacity_cy: number | null
           capacity: string | null
           created_at: string
           created_by: string | null
+          current_book_value: number | null
+          current_engine_hours: number | null
           current_hours: number | null
           current_latitude: number | null
           current_location_updated_at: string | null
           current_longitude: number | null
           current_miles: number | null
+          current_operator_id: string | null
           current_project_id: string | null
+          daily_rate: number | null
           deleted_at: string | null
           deleted_by: string | null
           depreciation_method: string | null
           description: string | null
+          dot_inspection_due: string | null
           equipment_category: string
+          equipment_category_typed:
+            | Database["public"]["Enums"]["equipment_category_enum"]
+            | null
           equipment_number: string
+          equipment_status:
+            | Database["public"]["Enums"]["equipment_status"]
+            | null
           equipment_type: string
+          home_location: string | null
           horsepower: number | null
+          hourly_operating_cost: number | null
+          hourly_owning_cost: number | null
+          hourly_rate: number | null
           hours_updated_at: string | null
           id: string
           insurance_expiration: string | null
@@ -10597,60 +13125,108 @@ export type Database = {
           internal_daily_rate: number | null
           internal_hourly_rate: number | null
           internal_monthly_rate: number | null
+          internal_rental_rate: number | null
           internal_weekly_rate: number | null
           is_active: boolean | null
+          last_annual_inspection: string | null
+          last_location_update: string | null
           last_service_date: string | null
           last_service_hours: number | null
+          last_telematics_update: string | null
           license_plate: string | null
+          lift_capacity_lbs: number | null
+          location_conflict_flagged: boolean | null
+          location_conflict_notes: string | null
+          location_source:
+            | Database["public"]["Enums"]["location_source_priority"]
+            | null
           maintenance_interval_days: number | null
           maintenance_interval_hours: number | null
           make: string | null
           miles_updated_at: string | null
           model: string | null
+          monthly_rate: number | null
           name: string
+          next_annual_inspection: string | null
+          next_service_date: string | null
           next_service_due_date: string | null
           next_service_due_hours: number | null
+          next_service_hours: number | null
           notes: string | null
+          operating_weight_lbs: number | null
           organization_id: string
           ownership_type: string
+          primary_photo_url: string | null
           purchase_date: string | null
           purchase_price: number | null
+          reach_ft: number | null
           rental_company: string | null
+          rental_daily_rate: number | null
           rental_end_date: string | null
+          rental_monthly_rate: number | null
           rental_rate: number | null
           rental_rate_period: string | null
           rental_start_date: string | null
+          rental_weekly_rate: number | null
           salvage_value: number | null
           serial_number: string | null
+          service_interval_hours: number | null
           status: string
+          subcategory: string | null
+          target_monthly_hours: number | null
+          target_utilization_percent: number | null
           telematics_device_id: string | null
           telematics_last_sync: string | null
           telematics_provider: string | null
+          telematics_provider_typed:
+            | Database["public"]["Enums"]["telematics_provider"]
+            | null
           updated_at: string
           updated_by: string | null
+          useful_life_hours: number | null
           useful_life_years: number | null
           vin: string | null
           weight_lbs: number | null
           year: number | null
         }
         Insert: {
+          acquisition_cost?: number | null
+          acquisition_date?: string | null
+          assigned_at?: string | null
+          assigned_to_employee_id?: string | null
+          bucket_capacity_cy?: number | null
           capacity?: string | null
           created_at?: string
           created_by?: string | null
+          current_book_value?: number | null
+          current_engine_hours?: number | null
           current_hours?: number | null
           current_latitude?: number | null
           current_location_updated_at?: string | null
           current_longitude?: number | null
           current_miles?: number | null
+          current_operator_id?: string | null
           current_project_id?: string | null
+          daily_rate?: number | null
           deleted_at?: string | null
           deleted_by?: string | null
           depreciation_method?: string | null
           description?: string | null
+          dot_inspection_due?: string | null
           equipment_category: string
+          equipment_category_typed?:
+            | Database["public"]["Enums"]["equipment_category_enum"]
+            | null
           equipment_number: string
+          equipment_status?:
+            | Database["public"]["Enums"]["equipment_status"]
+            | null
           equipment_type: string
+          home_location?: string | null
           horsepower?: number | null
+          hourly_operating_cost?: number | null
+          hourly_owning_cost?: number | null
+          hourly_rate?: number | null
           hours_updated_at?: string | null
           id?: string
           insurance_expiration?: string | null
@@ -10659,60 +13235,108 @@ export type Database = {
           internal_daily_rate?: number | null
           internal_hourly_rate?: number | null
           internal_monthly_rate?: number | null
+          internal_rental_rate?: number | null
           internal_weekly_rate?: number | null
           is_active?: boolean | null
+          last_annual_inspection?: string | null
+          last_location_update?: string | null
           last_service_date?: string | null
           last_service_hours?: number | null
+          last_telematics_update?: string | null
           license_plate?: string | null
+          lift_capacity_lbs?: number | null
+          location_conflict_flagged?: boolean | null
+          location_conflict_notes?: string | null
+          location_source?:
+            | Database["public"]["Enums"]["location_source_priority"]
+            | null
           maintenance_interval_days?: number | null
           maintenance_interval_hours?: number | null
           make?: string | null
           miles_updated_at?: string | null
           model?: string | null
+          monthly_rate?: number | null
           name: string
+          next_annual_inspection?: string | null
+          next_service_date?: string | null
           next_service_due_date?: string | null
           next_service_due_hours?: number | null
+          next_service_hours?: number | null
           notes?: string | null
+          operating_weight_lbs?: number | null
           organization_id: string
           ownership_type?: string
+          primary_photo_url?: string | null
           purchase_date?: string | null
           purchase_price?: number | null
+          reach_ft?: number | null
           rental_company?: string | null
+          rental_daily_rate?: number | null
           rental_end_date?: string | null
+          rental_monthly_rate?: number | null
           rental_rate?: number | null
           rental_rate_period?: string | null
           rental_start_date?: string | null
+          rental_weekly_rate?: number | null
           salvage_value?: number | null
           serial_number?: string | null
+          service_interval_hours?: number | null
           status?: string
+          subcategory?: string | null
+          target_monthly_hours?: number | null
+          target_utilization_percent?: number | null
           telematics_device_id?: string | null
           telematics_last_sync?: string | null
           telematics_provider?: string | null
+          telematics_provider_typed?:
+            | Database["public"]["Enums"]["telematics_provider"]
+            | null
           updated_at?: string
           updated_by?: string | null
+          useful_life_hours?: number | null
           useful_life_years?: number | null
           vin?: string | null
           weight_lbs?: number | null
           year?: number | null
         }
         Update: {
+          acquisition_cost?: number | null
+          acquisition_date?: string | null
+          assigned_at?: string | null
+          assigned_to_employee_id?: string | null
+          bucket_capacity_cy?: number | null
           capacity?: string | null
           created_at?: string
           created_by?: string | null
+          current_book_value?: number | null
+          current_engine_hours?: number | null
           current_hours?: number | null
           current_latitude?: number | null
           current_location_updated_at?: string | null
           current_longitude?: number | null
           current_miles?: number | null
+          current_operator_id?: string | null
           current_project_id?: string | null
+          daily_rate?: number | null
           deleted_at?: string | null
           deleted_by?: string | null
           depreciation_method?: string | null
           description?: string | null
+          dot_inspection_due?: string | null
           equipment_category?: string
+          equipment_category_typed?:
+            | Database["public"]["Enums"]["equipment_category_enum"]
+            | null
           equipment_number?: string
+          equipment_status?:
+            | Database["public"]["Enums"]["equipment_status"]
+            | null
           equipment_type?: string
+          home_location?: string | null
           horsepower?: number | null
+          hourly_operating_cost?: number | null
+          hourly_owning_cost?: number | null
+          hourly_rate?: number | null
           hours_updated_at?: string | null
           id?: string
           insurance_expiration?: string | null
@@ -10721,43 +13345,78 @@ export type Database = {
           internal_daily_rate?: number | null
           internal_hourly_rate?: number | null
           internal_monthly_rate?: number | null
+          internal_rental_rate?: number | null
           internal_weekly_rate?: number | null
           is_active?: boolean | null
+          last_annual_inspection?: string | null
+          last_location_update?: string | null
           last_service_date?: string | null
           last_service_hours?: number | null
+          last_telematics_update?: string | null
           license_plate?: string | null
+          lift_capacity_lbs?: number | null
+          location_conflict_flagged?: boolean | null
+          location_conflict_notes?: string | null
+          location_source?:
+            | Database["public"]["Enums"]["location_source_priority"]
+            | null
           maintenance_interval_days?: number | null
           maintenance_interval_hours?: number | null
           make?: string | null
           miles_updated_at?: string | null
           model?: string | null
+          monthly_rate?: number | null
           name?: string
+          next_annual_inspection?: string | null
+          next_service_date?: string | null
           next_service_due_date?: string | null
           next_service_due_hours?: number | null
+          next_service_hours?: number | null
           notes?: string | null
+          operating_weight_lbs?: number | null
           organization_id?: string
           ownership_type?: string
+          primary_photo_url?: string | null
           purchase_date?: string | null
           purchase_price?: number | null
+          reach_ft?: number | null
           rental_company?: string | null
+          rental_daily_rate?: number | null
           rental_end_date?: string | null
+          rental_monthly_rate?: number | null
           rental_rate?: number | null
           rental_rate_period?: string | null
           rental_start_date?: string | null
+          rental_weekly_rate?: number | null
           salvage_value?: number | null
           serial_number?: string | null
+          service_interval_hours?: number | null
           status?: string
+          subcategory?: string | null
+          target_monthly_hours?: number | null
+          target_utilization_percent?: number | null
           telematics_device_id?: string | null
           telematics_last_sync?: string | null
           telematics_provider?: string | null
+          telematics_provider_typed?:
+            | Database["public"]["Enums"]["telematics_provider"]
+            | null
           updated_at?: string
           updated_by?: string | null
+          useful_life_hours?: number | null
           useful_life_years?: number | null
           vin?: string | null
           weight_lbs?: number | null
           year?: number | null
         }
         Relationships: [
+          {
+            foreignKeyName: "equipment_assigned_to_employee_id_fkey"
+            columns: ["assigned_to_employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "equipment_created_by_fkey"
             columns: ["created_by"]
@@ -10776,8 +13435,22 @@ export type Database = {
             foreignKeyName: "equipment_current_project_id_fkey"
             columns: ["current_project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "equipment_current_project_id_fkey"
@@ -10805,6 +13478,13 @@ export type Database = {
             columns: ["current_project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -10917,6 +13597,13 @@ export type Database = {
             foreignKeyName: "equipment_assignments_equipment_id_fkey"
             columns: ["equipment_id"]
             isOneToOne: false
+            referencedRelation: "v_equipment_fleet_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "equipment_assignments_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
             referencedRelation: "v_equipment_health_overview"
             referencedColumns: ["equipment_id"]
           },
@@ -10926,6 +13613,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_equipment_status"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "equipment_assignments_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_utilization"
+            referencedColumns: ["equipment_id"]
           },
           {
             foreignKeyName: "equipment_assignments_project_id_fkey"
@@ -10938,8 +13632,22 @@ export type Database = {
             foreignKeyName: "equipment_assignments_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_assignments_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_assignments_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "equipment_assignments_project_id_fkey"
@@ -10970,6 +13678,13 @@ export type Database = {
             referencedColumns: ["project_id"]
           },
           {
+            foreignKeyName: "equipment_assignments_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
             foreignKeyName: "equipment_assignments_released_by_fkey"
             columns: ["released_by"]
             isOneToOne: false
@@ -10982,6 +13697,227 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "user_profiles"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      equipment_daily_logs: {
+        Row: {
+          available_hours: number | null
+          cost_code_id: string | null
+          created_at: string | null
+          created_by: string | null
+          end_hours: number | null
+          equipment_id: string
+          fuel_added_gallons: number | null
+          fuel_cost: number | null
+          id: string
+          idle_hours: number | null
+          issues_reported: string | null
+          latitude: number | null
+          local_id: string | null
+          log_date: string
+          longitude: number | null
+          maintenance_needed: boolean | null
+          maintenance_notes: string | null
+          operator_id: string | null
+          operator_name: string | null
+          project_id: string
+          scheduled_hours: number | null
+          source: string | null
+          start_hours: number | null
+          sync_status: string | null
+          updated_at: string | null
+          verified: boolean | null
+          verified_at: string | null
+          verified_by: string | null
+          weather_delay_hours: number | null
+          weather_notes: string | null
+          work_location: string | null
+          work_performed: string | null
+          working_hours: number | null
+        }
+        Insert: {
+          available_hours?: number | null
+          cost_code_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          end_hours?: number | null
+          equipment_id: string
+          fuel_added_gallons?: number | null
+          fuel_cost?: number | null
+          id?: string
+          idle_hours?: number | null
+          issues_reported?: string | null
+          latitude?: number | null
+          local_id?: string | null
+          log_date: string
+          longitude?: number | null
+          maintenance_needed?: boolean | null
+          maintenance_notes?: string | null
+          operator_id?: string | null
+          operator_name?: string | null
+          project_id: string
+          scheduled_hours?: number | null
+          source?: string | null
+          start_hours?: number | null
+          sync_status?: string | null
+          updated_at?: string | null
+          verified?: boolean | null
+          verified_at?: string | null
+          verified_by?: string | null
+          weather_delay_hours?: number | null
+          weather_notes?: string | null
+          work_location?: string | null
+          work_performed?: string | null
+          working_hours?: number | null
+        }
+        Update: {
+          available_hours?: number | null
+          cost_code_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          end_hours?: number | null
+          equipment_id?: string
+          fuel_added_gallons?: number | null
+          fuel_cost?: number | null
+          id?: string
+          idle_hours?: number | null
+          issues_reported?: string | null
+          latitude?: number | null
+          local_id?: string | null
+          log_date?: string
+          longitude?: number | null
+          maintenance_needed?: boolean | null
+          maintenance_notes?: string | null
+          operator_id?: string | null
+          operator_name?: string | null
+          project_id?: string
+          scheduled_hours?: number | null
+          source?: string | null
+          start_hours?: number | null
+          sync_status?: string | null
+          updated_at?: string | null
+          verified?: boolean | null
+          verified_at?: string | null
+          verified_by?: string | null
+          weather_delay_hours?: number | null
+          weather_notes?: string | null
+          work_location?: string | null
+          work_performed?: string | null
+          working_hours?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "equipment_daily_logs_cost_code_id_fkey"
+            columns: ["cost_code_id"]
+            isOneToOne: false
+            referencedRelation: "cost_codes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "equipment_daily_logs_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "equipment"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "equipment_daily_logs_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_fleet_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "equipment_daily_logs_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_health_overview"
+            referencedColumns: ["equipment_id"]
+          },
+          {
+            foreignKeyName: "equipment_daily_logs_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_status"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "equipment_daily_logs_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_utilization"
+            referencedColumns: ["equipment_id"]
+          },
+          {
+            foreignKeyName: "equipment_daily_logs_operator_id_fkey"
+            columns: ["operator_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "equipment_daily_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "equipment_daily_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_daily_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_daily_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_daily_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_daily_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_daily_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_daily_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_daily_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
           },
         ]
       }
@@ -11049,6 +13985,13 @@ export type Database = {
             foreignKeyName: "equipment_health_predictions_equipment_id_fkey"
             columns: ["equipment_id"]
             isOneToOne: false
+            referencedRelation: "v_equipment_fleet_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "equipment_health_predictions_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
             referencedRelation: "v_equipment_health_overview"
             referencedColumns: ["equipment_id"]
           },
@@ -11060,11 +14003,392 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "equipment_health_predictions_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_utilization"
+            referencedColumns: ["equipment_id"]
+          },
+          {
             foreignKeyName: "equipment_health_predictions_organization_id_fkey"
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "organizations"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      equipment_locations: {
+        Row: {
+          accuracy_meters: number | null
+          address: string | null
+          altitude_ft: number | null
+          created_at: string | null
+          engine_hours: number | null
+          engine_running: boolean | null
+          equipment_id: string
+          geofence_id: string | null
+          heading_degrees: number | null
+          id: string
+          latitude: number
+          longitude: number
+          project_id: string | null
+          recorded_at: string
+          source: Database["public"]["Enums"]["location_source_priority"]
+          source_device_id: string | null
+          speed_mph: number | null
+        }
+        Insert: {
+          accuracy_meters?: number | null
+          address?: string | null
+          altitude_ft?: number | null
+          created_at?: string | null
+          engine_hours?: number | null
+          engine_running?: boolean | null
+          equipment_id: string
+          geofence_id?: string | null
+          heading_degrees?: number | null
+          id?: string
+          latitude: number
+          longitude: number
+          project_id?: string | null
+          recorded_at: string
+          source: Database["public"]["Enums"]["location_source_priority"]
+          source_device_id?: string | null
+          speed_mph?: number | null
+        }
+        Update: {
+          accuracy_meters?: number | null
+          address?: string | null
+          altitude_ft?: number | null
+          created_at?: string | null
+          engine_hours?: number | null
+          engine_running?: boolean | null
+          equipment_id?: string
+          geofence_id?: string | null
+          heading_degrees?: number | null
+          id?: string
+          latitude?: number
+          longitude?: number
+          project_id?: string | null
+          recorded_at?: string
+          source?: Database["public"]["Enums"]["location_source_priority"]
+          source_device_id?: string | null
+          speed_mph?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "equipment_locations_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "equipment"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "equipment_locations_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_fleet_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "equipment_locations_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_health_overview"
+            referencedColumns: ["equipment_id"]
+          },
+          {
+            foreignKeyName: "equipment_locations_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_status"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "equipment_locations_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_utilization"
+            referencedColumns: ["equipment_id"]
+          },
+          {
+            foreignKeyName: "equipment_locations_geofence_id_fkey"
+            columns: ["geofence_id"]
+            isOneToOne: false
+            referencedRelation: "geofences"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "equipment_locations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "equipment_locations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_locations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_locations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_locations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_locations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_locations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_locations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_locations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      estimating_notes: {
+        Row: {
+          bid_item_id: string | null
+          bid_project_id: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string
+          id: string
+          note_type: Database["public"]["Enums"]["note_type"]
+          organization_id: string
+          plan_sheet: string | null
+          priority: string | null
+          spec_section: string | null
+          title: string
+          updated_at: string | null
+          visible_to_field: boolean | null
+        }
+        Insert: {
+          bid_item_id?: string | null
+          bid_project_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description: string
+          id?: string
+          note_type: Database["public"]["Enums"]["note_type"]
+          organization_id: string
+          plan_sheet?: string | null
+          priority?: string | null
+          spec_section?: string | null
+          title: string
+          updated_at?: string | null
+          visible_to_field?: boolean | null
+        }
+        Update: {
+          bid_item_id?: string | null
+          bid_project_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string
+          id?: string
+          note_type?: Database["public"]["Enums"]["note_type"]
+          organization_id?: string
+          plan_sheet?: string | null
+          priority?: string | null
+          spec_section?: string | null
+          title?: string
+          updated_at?: string | null
+          visible_to_field?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "estimating_notes_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "bid_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "estimating_notes_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_environmental_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "estimating_notes_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_pricing_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "estimating_notes_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_project_dashboard"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "estimating_notes_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_projects_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "estimating_notes_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_questions_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "estimating_notes_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_risk_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "estimating_notes_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      financial_access_log: {
+        Row: {
+          access_type: string
+          accessed_record_id: string | null
+          accessed_table: string
+          created_at: string | null
+          id: string
+          ip_address: unknown
+          project_id: string
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          access_type: string
+          accessed_record_id?: string | null
+          accessed_table: string
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown
+          project_id: string
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          access_type?: string
+          accessed_record_id?: string | null
+          accessed_table?: string
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown
+          project_id?: string
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "financial_access_log_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financial_access_log_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "financial_access_log_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "financial_access_log_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "financial_access_log_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "financial_access_log_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "financial_access_log_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "financial_access_log_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "financial_access_log_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
           },
         ]
       }
@@ -11192,6 +14516,269 @@ export type Database = {
           },
         ]
       }
+      geofence_events: {
+        Row: {
+          alert_id: string | null
+          alert_sent: boolean | null
+          created_at: string | null
+          dwell_duration_minutes: number | null
+          entity_id: string
+          entity_identifier: string | null
+          entity_type: string
+          event_at: string
+          event_type: Database["public"]["Enums"]["geofence_event_type"]
+          geofence_id: string
+          heading: number | null
+          id: string
+          latitude: number
+          location_source: Database["public"]["Enums"]["location_source"] | null
+          longitude: number
+          metadata: Json | null
+          organization_id: string
+          paired_event_id: string | null
+          speed_mph: number | null
+        }
+        Insert: {
+          alert_id?: string | null
+          alert_sent?: boolean | null
+          created_at?: string | null
+          dwell_duration_minutes?: number | null
+          entity_id: string
+          entity_identifier?: string | null
+          entity_type: string
+          event_at: string
+          event_type: Database["public"]["Enums"]["geofence_event_type"]
+          geofence_id: string
+          heading?: number | null
+          id?: string
+          latitude: number
+          location_source?:
+            | Database["public"]["Enums"]["location_source"]
+            | null
+          longitude: number
+          metadata?: Json | null
+          organization_id: string
+          paired_event_id?: string | null
+          speed_mph?: number | null
+        }
+        Update: {
+          alert_id?: string | null
+          alert_sent?: boolean | null
+          created_at?: string | null
+          dwell_duration_minutes?: number | null
+          entity_id?: string
+          entity_identifier?: string | null
+          entity_type?: string
+          event_at?: string
+          event_type?: Database["public"]["Enums"]["geofence_event_type"]
+          geofence_id?: string
+          heading?: number | null
+          id?: string
+          latitude?: number
+          location_source?:
+            | Database["public"]["Enums"]["location_source"]
+            | null
+          longitude?: number
+          metadata?: Json | null
+          organization_id?: string
+          paired_event_id?: string | null
+          speed_mph?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "geofence_events_geofence_id_fkey"
+            columns: ["geofence_id"]
+            isOneToOne: false
+            referencedRelation: "geofences"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "geofence_events_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "geofence_events_paired_event_id_fkey"
+            columns: ["paired_event_id"]
+            isOneToOne: false
+            referencedRelation: "geofence_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "geofence_events_paired_event_id_fkey"
+            columns: ["paired_event_id"]
+            isOneToOne: false
+            referencedRelation: "v_geofence_activity"
+            referencedColumns: ["event_id"]
+          },
+        ]
+      }
+      geofences: {
+        Row: {
+          active_days: number[] | null
+          active_end_time: string | null
+          active_start_time: string | null
+          alert_on_dwell: boolean | null
+          alert_on_enter: boolean | null
+          alert_on_exit: boolean | null
+          alert_on_speeding: boolean | null
+          center_latitude: number
+          center_longitude: number
+          color: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          dwell_threshold_minutes: number | null
+          geofence_type: Database["public"]["Enums"]["geofence_type"]
+          id: string
+          is_active: boolean | null
+          is_always_active: boolean | null
+          name: string
+          notify_on_first_entry_only: boolean | null
+          notify_user_ids: string[] | null
+          organization_id: string
+          polygon_geojson: Json | null
+          project_id: string | null
+          radius_meters: number
+          speed_limit_mph: number | null
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          active_days?: number[] | null
+          active_end_time?: string | null
+          active_start_time?: string | null
+          alert_on_dwell?: boolean | null
+          alert_on_enter?: boolean | null
+          alert_on_exit?: boolean | null
+          alert_on_speeding?: boolean | null
+          center_latitude: number
+          center_longitude: number
+          color?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          dwell_threshold_minutes?: number | null
+          geofence_type: Database["public"]["Enums"]["geofence_type"]
+          id?: string
+          is_active?: boolean | null
+          is_always_active?: boolean | null
+          name: string
+          notify_on_first_entry_only?: boolean | null
+          notify_user_ids?: string[] | null
+          organization_id: string
+          polygon_geojson?: Json | null
+          project_id?: string | null
+          radius_meters?: number
+          speed_limit_mph?: number | null
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          active_days?: number[] | null
+          active_end_time?: string | null
+          active_start_time?: string | null
+          alert_on_dwell?: boolean | null
+          alert_on_enter?: boolean | null
+          alert_on_exit?: boolean | null
+          alert_on_speeding?: boolean | null
+          center_latitude?: number
+          center_longitude?: number
+          color?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          dwell_threshold_minutes?: number | null
+          geofence_type?: Database["public"]["Enums"]["geofence_type"]
+          id?: string
+          is_active?: boolean | null
+          is_always_active?: boolean | null
+          name?: string
+          notify_on_first_entry_only?: boolean | null
+          notify_user_ids?: string[] | null
+          organization_id?: string
+          polygon_geojson?: Json | null
+          project_id?: string | null
+          radius_meters?: number
+          speed_limit_mph?: number | null
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "geofences_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "geofences_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "geofences_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "geofences_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "geofences_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "geofences_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "geofences_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "geofences_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "geofences_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "geofences_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
       hold_points: {
         Row: {
           activity_description: string
@@ -11309,8 +14896,22 @@ export type Database = {
             foreignKeyName: "hold_points_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "hold_points_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "hold_points_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "hold_points_project_id_fkey"
@@ -11339,6 +14940,120 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
             referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "hold_points_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      imr_items: {
+        Row: {
+          amount_remaining: number | null
+          amount_withheld: number | null
+          contract_line_number: string | null
+          created_at: string | null
+          deficiency_description: string | null
+          deficiency_type: Database["public"]["Enums"]["imr_deficiency_type"]
+          dmir_number: string
+          id: string
+          item_description: string | null
+          item_number: string
+          material_set_item: string | null
+          pay_period_id: string
+          qty_paid_to_date: number | null
+          qty_posted_to_date: number | null
+          qty_remaining: number | null
+          qty_withheld: number | null
+          resolution_document_url: string | null
+          resolution_notes: string | null
+          resolution_status:
+            | Database["public"]["Enums"]["imr_resolution_status"]
+            | null
+          resolved_at: string | null
+          resolved_by: string | null
+        }
+        Insert: {
+          amount_remaining?: number | null
+          amount_withheld?: number | null
+          contract_line_number?: string | null
+          created_at?: string | null
+          deficiency_description?: string | null
+          deficiency_type: Database["public"]["Enums"]["imr_deficiency_type"]
+          dmir_number: string
+          id?: string
+          item_description?: string | null
+          item_number: string
+          material_set_item?: string | null
+          pay_period_id: string
+          qty_paid_to_date?: number | null
+          qty_posted_to_date?: number | null
+          qty_remaining?: number | null
+          qty_withheld?: number | null
+          resolution_document_url?: string | null
+          resolution_notes?: string | null
+          resolution_status?:
+            | Database["public"]["Enums"]["imr_resolution_status"]
+            | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+        }
+        Update: {
+          amount_remaining?: number | null
+          amount_withheld?: number | null
+          contract_line_number?: string | null
+          created_at?: string | null
+          deficiency_description?: string | null
+          deficiency_type?: Database["public"]["Enums"]["imr_deficiency_type"]
+          dmir_number?: string
+          id?: string
+          item_description?: string | null
+          item_number?: string
+          material_set_item?: string | null
+          pay_period_id?: string
+          qty_paid_to_date?: number | null
+          qty_posted_to_date?: number | null
+          qty_remaining?: number | null
+          qty_withheld?: number | null
+          resolution_document_url?: string | null
+          resolution_notes?: string | null
+          resolution_status?:
+            | Database["public"]["Enums"]["imr_resolution_status"]
+            | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "imr_items_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "pay_periods"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "imr_items_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pay_period_dashboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "imr_items_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_payment_deadline_summary"
+            referencedColumns: ["pay_period_id"]
+          },
+          {
+            foreignKeyName: "imr_items_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_validations"
+            referencedColumns: ["pay_period_id"]
           },
         ]
       }
@@ -11470,8 +15185,22 @@ export type Database = {
             foreignKeyName: "incidents_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "incidents_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "incidents_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "incidents_project_id_fkey"
@@ -11499,6 +15228,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "incidents_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -11892,8 +15628,22 @@ export type Database = {
             foreignKeyName: "inspections_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "inspections_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "inspections_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "inspections_project_id_fkey"
@@ -11921,6 +15671,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "inspections_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -12024,6 +15781,932 @@ export type Database = {
           },
         ]
       }
+      itp_template_items: {
+        Row: {
+          acceptance_criteria: string | null
+          activity: string
+          advance_notice_days: number | null
+          checklist_ids: string[] | null
+          created_at: string | null
+          description: string | null
+          documentation_required: boolean | null
+          hold_type: string | null
+          id: string
+          inspection_required: boolean | null
+          item_number: number
+          notify_owner: boolean | null
+          notify_wvdoh: boolean | null
+          sort_order: number | null
+          specification_reference: string | null
+          template_id: string
+          test_required: boolean | null
+          test_type_ids: string[] | null
+        }
+        Insert: {
+          acceptance_criteria?: string | null
+          activity: string
+          advance_notice_days?: number | null
+          checklist_ids?: string[] | null
+          created_at?: string | null
+          description?: string | null
+          documentation_required?: boolean | null
+          hold_type?: string | null
+          id?: string
+          inspection_required?: boolean | null
+          item_number: number
+          notify_owner?: boolean | null
+          notify_wvdoh?: boolean | null
+          sort_order?: number | null
+          specification_reference?: string | null
+          template_id: string
+          test_required?: boolean | null
+          test_type_ids?: string[] | null
+        }
+        Update: {
+          acceptance_criteria?: string | null
+          activity?: string
+          advance_notice_days?: number | null
+          checklist_ids?: string[] | null
+          created_at?: string | null
+          description?: string | null
+          documentation_required?: boolean | null
+          hold_type?: string | null
+          id?: string
+          inspection_required?: boolean | null
+          item_number?: number
+          notify_owner?: boolean | null
+          notify_wvdoh?: boolean | null
+          sort_order?: number | null
+          specification_reference?: string | null
+          template_id?: string
+          test_required?: boolean | null
+          test_type_ids?: string[] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "itp_template_items_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "itp_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      itp_templates: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          effective_date: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          organization_id: string
+          revision_date: string | null
+          specification_section: string | null
+          template_code: string
+          updated_at: string | null
+          version: number | null
+          work_type: string
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          effective_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          organization_id: string
+          revision_date?: string | null
+          specification_section?: string | null
+          template_code: string
+          updated_at?: string | null
+          version?: number | null
+          work_type: string
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          effective_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          organization_id?: string
+          revision_date?: string | null
+          specification_section?: string | null
+          template_code?: string
+          updated_at?: string | null
+          version?: number | null
+          work_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "itp_templates_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      job_safety_analysis: {
+        Row: {
+          ai_generated: boolean | null
+          ai_generation_source: string | null
+          approved_at: string | null
+          approved_by: string | null
+          competent_person_required: string[] | null
+          created_at: string | null
+          effective_date: string | null
+          equipment_required: string[] | null
+          expiration_date: string | null
+          id: string
+          job_description: string
+          job_steps: Json
+          job_title: string
+          jsa_number: string
+          last_used_at: string | null
+          materials_involved: string[] | null
+          minimum_crew_size: number | null
+          organization_id: string
+          prepared_at: string | null
+          prepared_by: string | null
+          project_id: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          revision_number: number | null
+          status: Database["public"]["Enums"]["jsa_status"] | null
+          supersedes_id: string | null
+          times_used: number | null
+          training_required: string[] | null
+          updated_at: string | null
+          work_location: string | null
+          work_type: string | null
+        }
+        Insert: {
+          ai_generated?: boolean | null
+          ai_generation_source?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
+          competent_person_required?: string[] | null
+          created_at?: string | null
+          effective_date?: string | null
+          equipment_required?: string[] | null
+          expiration_date?: string | null
+          id?: string
+          job_description: string
+          job_steps: Json
+          job_title: string
+          jsa_number: string
+          last_used_at?: string | null
+          materials_involved?: string[] | null
+          minimum_crew_size?: number | null
+          organization_id: string
+          prepared_at?: string | null
+          prepared_by?: string | null
+          project_id?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          revision_number?: number | null
+          status?: Database["public"]["Enums"]["jsa_status"] | null
+          supersedes_id?: string | null
+          times_used?: number | null
+          training_required?: string[] | null
+          updated_at?: string | null
+          work_location?: string | null
+          work_type?: string | null
+        }
+        Update: {
+          ai_generated?: boolean | null
+          ai_generation_source?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
+          competent_person_required?: string[] | null
+          created_at?: string | null
+          effective_date?: string | null
+          equipment_required?: string[] | null
+          expiration_date?: string | null
+          id?: string
+          job_description?: string
+          job_steps?: Json
+          job_title?: string
+          jsa_number?: string
+          last_used_at?: string | null
+          materials_involved?: string[] | null
+          minimum_crew_size?: number | null
+          organization_id?: string
+          prepared_at?: string | null
+          prepared_by?: string | null
+          project_id?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          revision_number?: number | null
+          status?: Database["public"]["Enums"]["jsa_status"] | null
+          supersedes_id?: string | null
+          times_used?: number | null
+          training_required?: string[] | null
+          updated_at?: string | null
+          work_location?: string | null
+          work_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_safety_analysis_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_safety_analysis_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_safety_analysis_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "job_safety_analysis_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "job_safety_analysis_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "job_safety_analysis_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "job_safety_analysis_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "job_safety_analysis_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "job_safety_analysis_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "job_safety_analysis_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "job_safety_analysis_supersedes_id_fkey"
+            columns: ["supersedes_id"]
+            isOneToOne: false
+            referencedRelation: "job_safety_analysis"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_safety_analysis_supersedes_id_fkey"
+            columns: ["supersedes_id"]
+            isOneToOne: false
+            referencedRelation: "v_jsa_summary"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      jsa_hazard_controls: {
+        Row: {
+          control_description: string
+          control_hierarchy: Database["public"]["Enums"]["control_hierarchy"]
+          control_responsible: string | null
+          created_at: string | null
+          hazard_description: string
+          id: string
+          jsa_id: string
+          potential_consequence: string | null
+          risk_level: string | null
+          step_number: number
+          verification_method: string | null
+        }
+        Insert: {
+          control_description: string
+          control_hierarchy: Database["public"]["Enums"]["control_hierarchy"]
+          control_responsible?: string | null
+          created_at?: string | null
+          hazard_description: string
+          id?: string
+          jsa_id: string
+          potential_consequence?: string | null
+          risk_level?: string | null
+          step_number: number
+          verification_method?: string | null
+        }
+        Update: {
+          control_description?: string
+          control_hierarchy?: Database["public"]["Enums"]["control_hierarchy"]
+          control_responsible?: string | null
+          created_at?: string | null
+          hazard_description?: string
+          id?: string
+          jsa_id?: string
+          potential_consequence?: string | null
+          risk_level?: string | null
+          step_number?: number
+          verification_method?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "jsa_hazard_controls_jsa_id_fkey"
+            columns: ["jsa_id"]
+            isOneToOne: false
+            referencedRelation: "job_safety_analysis"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "jsa_hazard_controls_jsa_id_fkey"
+            columns: ["jsa_id"]
+            isOneToOne: false
+            referencedRelation: "v_jsa_summary"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      jsa_ppe_requirements: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_mandatory: boolean | null
+          jsa_id: string
+          notes: string | null
+          ppe_type: string
+          specification: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_mandatory?: boolean | null
+          jsa_id: string
+          notes?: string | null
+          ppe_type: string
+          specification?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_mandatory?: boolean | null
+          jsa_id?: string
+          notes?: string | null
+          ppe_type?: string
+          specification?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "jsa_ppe_requirements_jsa_id_fkey"
+            columns: ["jsa_id"]
+            isOneToOne: false
+            referencedRelation: "job_safety_analysis"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "jsa_ppe_requirements_jsa_id_fkey"
+            columns: ["jsa_id"]
+            isOneToOne: false
+            referencedRelation: "v_jsa_summary"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      kpi_snapshots: {
+        Row: {
+          alerts_avg_resolution_hours: number | null
+          alerts_critical_open: number | null
+          alerts_high_open: number | null
+          alerts_medium_open: number | null
+          alerts_resolved_today: number | null
+          compliance_score_percent: number | null
+          created_at: string | null
+          crew_active: number | null
+          crew_certs_compliant_percent: number | null
+          crew_certs_expired: number | null
+          crew_certs_expiring_30d: number | null
+          crew_total: number | null
+          crew_training_hours_mtd: number | null
+          dart_rate: number | null
+          days_since_recordable: number | null
+          documents_expired: number | null
+          documents_expiring_30d: number | null
+          equipment_active: number | null
+          equipment_avg_age_years: number | null
+          equipment_hours_mtd: number | null
+          equipment_maintenance_due_7d: number | null
+          equipment_maintenance_overdue: number | null
+          equipment_total: number | null
+          equipment_utilization_percent: number | null
+          fleet_cost_mtd: number | null
+          fleet_revenue_mtd: number | null
+          fuel_cost_mtd: number | null
+          fuel_gallons_mtd: number | null
+          id: string
+          labor_cost_mtd: number | null
+          maintenance_cost_mtd: number | null
+          notes: string | null
+          organization_id: string
+          period_type: string
+          projects_active: number | null
+          projects_avg_health_score: number | null
+          projects_behind_schedule: number | null
+          projects_over_budget: number | null
+          safety_incidents_mtd: number | null
+          safety_near_misses_mtd: number | null
+          safety_observations_mtd: number | null
+          snapshot_date: string
+          trir: number | null
+          vehicles_active: number | null
+          vehicles_dot_compliant: number | null
+          vehicles_dot_expiring_30d: number | null
+          vehicles_miles_mtd: number | null
+          vehicles_mpg_avg: number | null
+          vehicles_total: number | null
+        }
+        Insert: {
+          alerts_avg_resolution_hours?: number | null
+          alerts_critical_open?: number | null
+          alerts_high_open?: number | null
+          alerts_medium_open?: number | null
+          alerts_resolved_today?: number | null
+          compliance_score_percent?: number | null
+          created_at?: string | null
+          crew_active?: number | null
+          crew_certs_compliant_percent?: number | null
+          crew_certs_expired?: number | null
+          crew_certs_expiring_30d?: number | null
+          crew_total?: number | null
+          crew_training_hours_mtd?: number | null
+          dart_rate?: number | null
+          days_since_recordable?: number | null
+          documents_expired?: number | null
+          documents_expiring_30d?: number | null
+          equipment_active?: number | null
+          equipment_avg_age_years?: number | null
+          equipment_hours_mtd?: number | null
+          equipment_maintenance_due_7d?: number | null
+          equipment_maintenance_overdue?: number | null
+          equipment_total?: number | null
+          equipment_utilization_percent?: number | null
+          fleet_cost_mtd?: number | null
+          fleet_revenue_mtd?: number | null
+          fuel_cost_mtd?: number | null
+          fuel_gallons_mtd?: number | null
+          id?: string
+          labor_cost_mtd?: number | null
+          maintenance_cost_mtd?: number | null
+          notes?: string | null
+          organization_id: string
+          period_type: string
+          projects_active?: number | null
+          projects_avg_health_score?: number | null
+          projects_behind_schedule?: number | null
+          projects_over_budget?: number | null
+          safety_incidents_mtd?: number | null
+          safety_near_misses_mtd?: number | null
+          safety_observations_mtd?: number | null
+          snapshot_date: string
+          trir?: number | null
+          vehicles_active?: number | null
+          vehicles_dot_compliant?: number | null
+          vehicles_dot_expiring_30d?: number | null
+          vehicles_miles_mtd?: number | null
+          vehicles_mpg_avg?: number | null
+          vehicles_total?: number | null
+        }
+        Update: {
+          alerts_avg_resolution_hours?: number | null
+          alerts_critical_open?: number | null
+          alerts_high_open?: number | null
+          alerts_medium_open?: number | null
+          alerts_resolved_today?: number | null
+          compliance_score_percent?: number | null
+          created_at?: string | null
+          crew_active?: number | null
+          crew_certs_compliant_percent?: number | null
+          crew_certs_expired?: number | null
+          crew_certs_expiring_30d?: number | null
+          crew_total?: number | null
+          crew_training_hours_mtd?: number | null
+          dart_rate?: number | null
+          days_since_recordable?: number | null
+          documents_expired?: number | null
+          documents_expiring_30d?: number | null
+          equipment_active?: number | null
+          equipment_avg_age_years?: number | null
+          equipment_hours_mtd?: number | null
+          equipment_maintenance_due_7d?: number | null
+          equipment_maintenance_overdue?: number | null
+          equipment_total?: number | null
+          equipment_utilization_percent?: number | null
+          fleet_cost_mtd?: number | null
+          fleet_revenue_mtd?: number | null
+          fuel_cost_mtd?: number | null
+          fuel_gallons_mtd?: number | null
+          id?: string
+          labor_cost_mtd?: number | null
+          maintenance_cost_mtd?: number | null
+          notes?: string | null
+          organization_id?: string
+          period_type?: string
+          projects_active?: number | null
+          projects_avg_health_score?: number | null
+          projects_behind_schedule?: number | null
+          projects_over_budget?: number | null
+          safety_incidents_mtd?: number | null
+          safety_near_misses_mtd?: number | null
+          safety_observations_mtd?: number | null
+          snapshot_date?: string
+          trir?: number | null
+          vehicles_active?: number | null
+          vehicles_dot_compliant?: number | null
+          vehicles_dot_expiring_30d?: number | null
+          vehicles_miles_mtd?: number | null
+          vehicles_mpg_avg?: number | null
+          vehicles_total?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kpi_snapshots_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      labs: {
+        Row: {
+          aashto_accredited: boolean | null
+          aashto_expiration: string | null
+          aashto_number: string | null
+          address_line1: string | null
+          address_line2: string | null
+          avg_turnaround_days: number | null
+          ccrl_accredited: boolean | null
+          ccrl_number: string | null
+          city: string | null
+          created_at: string | null
+          created_by: string | null
+          email: string | null
+          id: string
+          is_active: boolean | null
+          lab_code: string | null
+          lab_name: string
+          lab_type: Database["public"]["Enums"]["lab_type"]
+          material_categories: string[] | null
+          organization_id: string
+          other_accreditations: Json | null
+          phone: string | null
+          primary_contact: string | null
+          quality_rating: number | null
+          state: string | null
+          test_capabilities: string[] | null
+          updated_at: string | null
+          wvdoh_approval_expiration: string | null
+          wvdoh_approval_number: string | null
+          wvdoh_approved: boolean | null
+          zip_code: string | null
+        }
+        Insert: {
+          aashto_accredited?: boolean | null
+          aashto_expiration?: string | null
+          aashto_number?: string | null
+          address_line1?: string | null
+          address_line2?: string | null
+          avg_turnaround_days?: number | null
+          ccrl_accredited?: boolean | null
+          ccrl_number?: string | null
+          city?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          email?: string | null
+          id?: string
+          is_active?: boolean | null
+          lab_code?: string | null
+          lab_name: string
+          lab_type: Database["public"]["Enums"]["lab_type"]
+          material_categories?: string[] | null
+          organization_id: string
+          other_accreditations?: Json | null
+          phone?: string | null
+          primary_contact?: string | null
+          quality_rating?: number | null
+          state?: string | null
+          test_capabilities?: string[] | null
+          updated_at?: string | null
+          wvdoh_approval_expiration?: string | null
+          wvdoh_approval_number?: string | null
+          wvdoh_approved?: boolean | null
+          zip_code?: string | null
+        }
+        Update: {
+          aashto_accredited?: boolean | null
+          aashto_expiration?: string | null
+          aashto_number?: string | null
+          address_line1?: string | null
+          address_line2?: string | null
+          avg_turnaround_days?: number | null
+          ccrl_accredited?: boolean | null
+          ccrl_number?: string | null
+          city?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          email?: string | null
+          id?: string
+          is_active?: boolean | null
+          lab_code?: string | null
+          lab_name?: string
+          lab_type?: Database["public"]["Enums"]["lab_type"]
+          material_categories?: string[] | null
+          organization_id?: string
+          other_accreditations?: Json | null
+          phone?: string | null
+          primary_contact?: string | null
+          quality_rating?: number | null
+          state?: string | null
+          test_capabilities?: string[] | null
+          updated_at?: string | null
+          wvdoh_approval_expiration?: string | null
+          wvdoh_approval_number?: string | null
+          wvdoh_approved?: boolean | null
+          zip_code?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "labs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      maintenance_records: {
+        Row: {
+          approved_by: string | null
+          completed_at: string | null
+          completed_by: string | null
+          cost_code_id: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          document_urls: string[] | null
+          equipment_id: string
+          hours_at_service: number | null
+          id: string
+          invoice_number: string | null
+          is_warranty: boolean | null
+          labor_cost: number | null
+          labor_hours: number | null
+          maintenance_type: Database["public"]["Enums"]["maintenance_type"]
+          next_service_date: string | null
+          next_service_hours: number | null
+          organization_id: string
+          outside_service_cost: number | null
+          parts_cost: number | null
+          parts_used: Json | null
+          photo_urls: string[] | null
+          priority: Database["public"]["Enums"]["maintenance_priority"]
+          project_id: string | null
+          requested_by: string | null
+          scheduled_date: string | null
+          service_location: string | null
+          started_at: string | null
+          status: string
+          title: string
+          total_cost: number | null
+          updated_at: string | null
+          updated_by: string | null
+          vendor_name: string | null
+          warranty_claim_number: string | null
+          work_order_number: string | null
+          work_performed: string | null
+        }
+        Insert: {
+          approved_by?: string | null
+          completed_at?: string | null
+          completed_by?: string | null
+          cost_code_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          document_urls?: string[] | null
+          equipment_id: string
+          hours_at_service?: number | null
+          id?: string
+          invoice_number?: string | null
+          is_warranty?: boolean | null
+          labor_cost?: number | null
+          labor_hours?: number | null
+          maintenance_type: Database["public"]["Enums"]["maintenance_type"]
+          next_service_date?: string | null
+          next_service_hours?: number | null
+          organization_id: string
+          outside_service_cost?: number | null
+          parts_cost?: number | null
+          parts_used?: Json | null
+          photo_urls?: string[] | null
+          priority?: Database["public"]["Enums"]["maintenance_priority"]
+          project_id?: string | null
+          requested_by?: string | null
+          scheduled_date?: string | null
+          service_location?: string | null
+          started_at?: string | null
+          status?: string
+          title: string
+          total_cost?: number | null
+          updated_at?: string | null
+          updated_by?: string | null
+          vendor_name?: string | null
+          warranty_claim_number?: string | null
+          work_order_number?: string | null
+          work_performed?: string | null
+        }
+        Update: {
+          approved_by?: string | null
+          completed_at?: string | null
+          completed_by?: string | null
+          cost_code_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          document_urls?: string[] | null
+          equipment_id?: string
+          hours_at_service?: number | null
+          id?: string
+          invoice_number?: string | null
+          is_warranty?: boolean | null
+          labor_cost?: number | null
+          labor_hours?: number | null
+          maintenance_type?: Database["public"]["Enums"]["maintenance_type"]
+          next_service_date?: string | null
+          next_service_hours?: number | null
+          organization_id?: string
+          outside_service_cost?: number | null
+          parts_cost?: number | null
+          parts_used?: Json | null
+          photo_urls?: string[] | null
+          priority?: Database["public"]["Enums"]["maintenance_priority"]
+          project_id?: string | null
+          requested_by?: string | null
+          scheduled_date?: string | null
+          service_location?: string | null
+          started_at?: string | null
+          status?: string
+          title?: string
+          total_cost?: number | null
+          updated_at?: string | null
+          updated_by?: string | null
+          vendor_name?: string | null
+          warranty_claim_number?: string | null
+          work_order_number?: string | null
+          work_performed?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "maintenance_records_cost_code_id_fkey"
+            columns: ["cost_code_id"]
+            isOneToOne: false
+            referencedRelation: "cost_codes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "maintenance_records_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "equipment"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "maintenance_records_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_fleet_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "maintenance_records_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_health_overview"
+            referencedColumns: ["equipment_id"]
+          },
+          {
+            foreignKeyName: "maintenance_records_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_status"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "maintenance_records_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_utilization"
+            referencedColumns: ["equipment_id"]
+          },
+          {
+            foreignKeyName: "maintenance_records_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "maintenance_records_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "maintenance_records_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "maintenance_records_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "maintenance_records_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "maintenance_records_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "maintenance_records_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "maintenance_records_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "maintenance_records_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "maintenance_records_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
       master_wvdoh_items: {
         Row: {
           common_risk_factors: string[] | null
@@ -12101,6 +16784,665 @@ export type Database = {
           work_category?: string | null
         }
         Relationships: []
+      }
+      material_certifications: {
+        Row: {
+          cert_date: string | null
+          cert_number: string | null
+          cert_type: Database["public"]["Enums"]["cert_type"]
+          country_of_origin: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string
+          document_pages: number | null
+          document_url: string | null
+          domestic_content_pct: number | null
+          expiration_date: string | null
+          heat_number: string | null
+          id: string
+          inventory_id: string | null
+          is_buy_america: boolean | null
+          lot_number: string | null
+          manufacturer: string | null
+          manufacturing_location: string | null
+          material_description: string | null
+          material_ticket_id: string | null
+          melting_location: string | null
+          organization_id: string
+          po_id: string | null
+          project_id: string
+          received_date: string | null
+          specification_reference: string | null
+          status: string | null
+          supplier_id: string | null
+          verification_notes: string | null
+          verified: boolean | null
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          cert_date?: string | null
+          cert_number?: string | null
+          cert_type: Database["public"]["Enums"]["cert_type"]
+          country_of_origin?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description: string
+          document_pages?: number | null
+          document_url?: string | null
+          domestic_content_pct?: number | null
+          expiration_date?: string | null
+          heat_number?: string | null
+          id?: string
+          inventory_id?: string | null
+          is_buy_america?: boolean | null
+          lot_number?: string | null
+          manufacturer?: string | null
+          manufacturing_location?: string | null
+          material_description?: string | null
+          material_ticket_id?: string | null
+          melting_location?: string | null
+          organization_id: string
+          po_id?: string | null
+          project_id: string
+          received_date?: string | null
+          specification_reference?: string | null
+          status?: string | null
+          supplier_id?: string | null
+          verification_notes?: string | null
+          verified?: boolean | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          cert_date?: string | null
+          cert_number?: string | null
+          cert_type?: Database["public"]["Enums"]["cert_type"]
+          country_of_origin?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string
+          document_pages?: number | null
+          document_url?: string | null
+          domestic_content_pct?: number | null
+          expiration_date?: string | null
+          heat_number?: string | null
+          id?: string
+          inventory_id?: string | null
+          is_buy_america?: boolean | null
+          lot_number?: string | null
+          manufacturer?: string | null
+          manufacturing_location?: string | null
+          material_description?: string | null
+          material_ticket_id?: string | null
+          melting_location?: string | null
+          organization_id?: string
+          po_id?: string | null
+          project_id?: string
+          received_date?: string | null
+          specification_reference?: string | null
+          status?: string | null
+          supplier_id?: string | null
+          verification_notes?: string | null
+          verified?: boolean | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "material_certifications_inventory_id_fkey"
+            columns: ["inventory_id"]
+            isOneToOne: false
+            referencedRelation: "material_inventory"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_certifications_inventory_id_fkey"
+            columns: ["inventory_id"]
+            isOneToOne: false
+            referencedRelation: "v_material_inventory_status"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_certifications_material_ticket_id_fkey"
+            columns: ["material_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "material_tickets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_certifications_material_ticket_id_fkey"
+            columns: ["material_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_tickets_pending_verification"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_certifications_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_certifications_po_id_fkey"
+            columns: ["po_id"]
+            isOneToOne: false
+            referencedRelation: "purchase_orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_certifications_po_id_fkey"
+            columns: ["po_id"]
+            isOneToOne: false
+            referencedRelation: "v_purchase_order_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_certifications_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_certifications_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_certifications_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_certifications_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_certifications_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_certifications_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_certifications_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_certifications_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_certifications_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_certifications_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_certifications_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "v_supplier_quality_dashboard"
+            referencedColumns: ["supplier_id"]
+          },
+        ]
+      }
+      material_inventory: {
+        Row: {
+          bin_number: string | null
+          costing_method: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string
+          id: string
+          is_active: boolean | null
+          last_count_date: string | null
+          last_count_quantity: number | null
+          lead_time_days: number | null
+          material_category:
+            | Database["public"]["Enums"]["material_category"]
+            | null
+          material_code: string
+          max_stock_level: number | null
+          min_stock_level: number | null
+          organization_id: string
+          primary_supplier_id: string | null
+          project_id: string
+          quantity_available: number | null
+          quantity_on_hand: number | null
+          quantity_reserved: number | null
+          reorder_point: number | null
+          specification: string | null
+          storage_location: string | null
+          total_value: number | null
+          unit_cost: number | null
+          unit_of_measure: string
+          updated_at: string | null
+        }
+        Insert: {
+          bin_number?: string | null
+          costing_method?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description: string
+          id?: string
+          is_active?: boolean | null
+          last_count_date?: string | null
+          last_count_quantity?: number | null
+          lead_time_days?: number | null
+          material_category?:
+            | Database["public"]["Enums"]["material_category"]
+            | null
+          material_code: string
+          max_stock_level?: number | null
+          min_stock_level?: number | null
+          organization_id: string
+          primary_supplier_id?: string | null
+          project_id: string
+          quantity_available?: number | null
+          quantity_on_hand?: number | null
+          quantity_reserved?: number | null
+          reorder_point?: number | null
+          specification?: string | null
+          storage_location?: string | null
+          total_value?: number | null
+          unit_cost?: number | null
+          unit_of_measure: string
+          updated_at?: string | null
+        }
+        Update: {
+          bin_number?: string | null
+          costing_method?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string
+          id?: string
+          is_active?: boolean | null
+          last_count_date?: string | null
+          last_count_quantity?: number | null
+          lead_time_days?: number | null
+          material_category?:
+            | Database["public"]["Enums"]["material_category"]
+            | null
+          material_code?: string
+          max_stock_level?: number | null
+          min_stock_level?: number | null
+          organization_id?: string
+          primary_supplier_id?: string | null
+          project_id?: string
+          quantity_available?: number | null
+          quantity_on_hand?: number | null
+          quantity_reserved?: number | null
+          reorder_point?: number | null
+          specification?: string | null
+          storage_location?: string | null
+          total_value?: number | null
+          unit_cost?: number | null
+          unit_of_measure?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "material_inventory_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_inventory_primary_supplier_id_fkey"
+            columns: ["primary_supplier_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_inventory_primary_supplier_id_fkey"
+            columns: ["primary_supplier_id"]
+            isOneToOne: false
+            referencedRelation: "v_supplier_quality_dashboard"
+            referencedColumns: ["supplier_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_inventory_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      material_inventory_transactions: {
+        Row: {
+          balance_after: number
+          cost_code: string | null
+          created_at: string | null
+          created_by: string | null
+          daily_report_id: string | null
+          id: string
+          inventory_id: string
+          material_ticket_id: string | null
+          notes: string | null
+          organization_id: string
+          project_id: string
+          quantity: number
+          reference_number: string | null
+          total_cost: number | null
+          transaction_date: string
+          transaction_type: Database["public"]["Enums"]["inventory_transaction_type"]
+          transfer_to_project_id: string | null
+          unit_cost: number | null
+        }
+        Insert: {
+          balance_after: number
+          cost_code?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          daily_report_id?: string | null
+          id?: string
+          inventory_id: string
+          material_ticket_id?: string | null
+          notes?: string | null
+          organization_id: string
+          project_id: string
+          quantity: number
+          reference_number?: string | null
+          total_cost?: number | null
+          transaction_date?: string
+          transaction_type: Database["public"]["Enums"]["inventory_transaction_type"]
+          transfer_to_project_id?: string | null
+          unit_cost?: number | null
+        }
+        Update: {
+          balance_after?: number
+          cost_code?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          daily_report_id?: string | null
+          id?: string
+          inventory_id?: string
+          material_ticket_id?: string | null
+          notes?: string | null
+          organization_id?: string
+          project_id?: string
+          quantity?: number
+          reference_number?: string | null
+          total_cost?: number | null
+          transaction_date?: string
+          transaction_type?: Database["public"]["Enums"]["inventory_transaction_type"]
+          transfer_to_project_id?: string | null
+          unit_cost?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "material_inventory_transactions_daily_report_id_fkey"
+            columns: ["daily_report_id"]
+            isOneToOne: false
+            referencedRelation: "daily_reports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_daily_report_id_fkey"
+            columns: ["daily_report_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_report_approvals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_daily_report_id_fkey"
+            columns: ["daily_report_id"]
+            isOneToOne: false
+            referencedRelation: "v_recent_daily_reports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_inventory_id_fkey"
+            columns: ["inventory_id"]
+            isOneToOne: false
+            referencedRelation: "material_inventory"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_inventory_id_fkey"
+            columns: ["inventory_id"]
+            isOneToOne: false
+            referencedRelation: "v_material_inventory_status"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_material_ticket_id_fkey"
+            columns: ["material_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "material_tickets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_material_ticket_id_fkey"
+            columns: ["material_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_tickets_pending_verification"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_transfer_to_project_id_fkey"
+            columns: ["transfer_to_project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_transfer_to_project_id_fkey"
+            columns: ["transfer_to_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_transfer_to_project_id_fkey"
+            columns: ["transfer_to_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_transfer_to_project_id_fkey"
+            columns: ["transfer_to_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_transfer_to_project_id_fkey"
+            columns: ["transfer_to_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_transfer_to_project_id_fkey"
+            columns: ["transfer_to_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_transfer_to_project_id_fkey"
+            columns: ["transfer_to_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_transfer_to_project_id_fkey"
+            columns: ["transfer_to_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_transactions_transfer_to_project_id_fkey"
+            columns: ["transfer_to_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
       }
       material_reconciliation: {
         Row: {
@@ -12200,8 +17542,22 @@ export type Database = {
             foreignKeyName: "material_reconciliation_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_reconciliation_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_reconciliation_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "material_reconciliation_project_id_fkey"
@@ -12230,6 +17586,98 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
             referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_reconciliation_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      material_ticket_line_items: {
+        Row: {
+          cost_code: string | null
+          created_at: string | null
+          description: string
+          extended_amount: number | null
+          id: string
+          line_number: number
+          manufacturer: string | null
+          matched_po_line_id: string | null
+          material_category:
+            | Database["public"]["Enums"]["material_category"]
+            | null
+          material_ticket_id: string
+          notes: string | null
+          part_number: string | null
+          quantity: number
+          specification: string | null
+          unit_of_measure: string
+          unit_price: number | null
+        }
+        Insert: {
+          cost_code?: string | null
+          created_at?: string | null
+          description: string
+          extended_amount?: number | null
+          id?: string
+          line_number: number
+          manufacturer?: string | null
+          matched_po_line_id?: string | null
+          material_category?:
+            | Database["public"]["Enums"]["material_category"]
+            | null
+          material_ticket_id: string
+          notes?: string | null
+          part_number?: string | null
+          quantity: number
+          specification?: string | null
+          unit_of_measure: string
+          unit_price?: number | null
+        }
+        Update: {
+          cost_code?: string | null
+          created_at?: string | null
+          description?: string
+          extended_amount?: number | null
+          id?: string
+          line_number?: number
+          manufacturer?: string | null
+          matched_po_line_id?: string | null
+          material_category?:
+            | Database["public"]["Enums"]["material_category"]
+            | null
+          material_ticket_id?: string
+          notes?: string | null
+          part_number?: string | null
+          quantity?: number
+          specification?: string | null
+          unit_of_measure?: string
+          unit_price?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "material_ticket_line_items_matched_po_line_id_fkey"
+            columns: ["matched_po_line_id"]
+            isOneToOne: false
+            referencedRelation: "po_line_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_ticket_line_items_material_ticket_id_fkey"
+            columns: ["material_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "material_tickets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_ticket_line_items_material_ticket_id_fkey"
+            columns: ["material_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_tickets_pending_verification"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -12454,8 +17902,22 @@ export type Database = {
             foreignKeyName: "material_tickets_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_tickets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_tickets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "material_tickets_project_id_fkey"
@@ -12486,11 +17948,25 @@ export type Database = {
             referencedColumns: ["project_id"]
           },
           {
+            foreignKeyName: "material_tickets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
             foreignKeyName: "material_tickets_supplier_id_fkey"
             columns: ["supplier_id"]
             isOneToOne: false
             referencedRelation: "suppliers"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_tickets_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "v_supplier_quality_dashboard"
+            referencedColumns: ["supplier_id"]
           },
         ]
       }
@@ -12676,8 +18152,22 @@ export type Database = {
             foreignKeyName: "meeting_minutes_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "meeting_minutes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "meeting_minutes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "meeting_minutes_project_id_fkey"
@@ -12707,6 +18197,13 @@ export type Database = {
             referencedRelation: "v_project_rfi_stats"
             referencedColumns: ["project_id"]
           },
+          {
+            foreignKeyName: "meeting_minutes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
         ]
       }
       mvr_records: {
@@ -12717,6 +18214,7 @@ export type Database = {
           description: string | null
           document_url: string | null
           driver_id: string
+          employee_id: string | null
           fine_amount: number | null
           id: string
           is_serious_violation: boolean | null
@@ -12737,6 +18235,7 @@ export type Database = {
           description?: string | null
           document_url?: string | null
           driver_id: string
+          employee_id?: string | null
           fine_amount?: number | null
           id?: string
           is_serious_violation?: boolean | null
@@ -12757,6 +18256,7 @@ export type Database = {
           description?: string | null
           document_url?: string | null
           driver_id?: string
+          employee_id?: string | null
           fine_amount?: number | null
           id?: string
           is_serious_violation?: boolean | null
@@ -12776,6 +18276,13 @@ export type Database = {
             columns: ["driver_id"]
             isOneToOne: false
             referencedRelation: "driver_licenses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mvr_records_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
             referencedColumns: ["id"]
           },
         ]
@@ -12960,8 +18467,22 @@ export type Database = {
             foreignKeyName: "non_conformances_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "non_conformances_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "non_conformances_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "non_conformances_project_id_fkey"
@@ -12989,6 +18510,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "non_conformances_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -13125,6 +18653,156 @@ export type Database = {
           },
         ]
       }
+      operator_qualifications: {
+        Row: {
+          certificate_url: string | null
+          certification_number: string | null
+          certifying_body: string | null
+          created_at: string | null
+          created_by: string | null
+          crew_member_id: string
+          equipment_category:
+            | Database["public"]["Enums"]["equipment_category_enum"]
+            | null
+          equipment_make: string | null
+          equipment_model: string | null
+          expiry_date: string | null
+          id: string
+          is_active: boolean | null
+          proficiency_level:
+            | Database["public"]["Enums"]["proficiency_level"]
+            | null
+          qualification_type: string
+          qualified_date: string
+          restrictions: string | null
+          specific_equipment_id: string | null
+          training_hours: number | null
+          updated_at: string | null
+          updated_by: string | null
+          verification_method: string | null
+          verified: boolean | null
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          certificate_url?: string | null
+          certification_number?: string | null
+          certifying_body?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          crew_member_id: string
+          equipment_category?:
+            | Database["public"]["Enums"]["equipment_category_enum"]
+            | null
+          equipment_make?: string | null
+          equipment_model?: string | null
+          expiry_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          proficiency_level?:
+            | Database["public"]["Enums"]["proficiency_level"]
+            | null
+          qualification_type: string
+          qualified_date: string
+          restrictions?: string | null
+          specific_equipment_id?: string | null
+          training_hours?: number | null
+          updated_at?: string | null
+          updated_by?: string | null
+          verification_method?: string | null
+          verified?: boolean | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          certificate_url?: string | null
+          certification_number?: string | null
+          certifying_body?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          crew_member_id?: string
+          equipment_category?:
+            | Database["public"]["Enums"]["equipment_category_enum"]
+            | null
+          equipment_make?: string | null
+          equipment_model?: string | null
+          expiry_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          proficiency_level?:
+            | Database["public"]["Enums"]["proficiency_level"]
+            | null
+          qualification_type?: string
+          qualified_date?: string
+          restrictions?: string | null
+          specific_equipment_id?: string | null
+          training_hours?: number | null
+          updated_at?: string | null
+          updated_by?: string | null
+          verification_method?: string | null
+          verified?: boolean | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "operator_qualifications_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
+            referencedRelation: "crew_members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "operator_qualifications_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_crew"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "operator_qualifications_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
+            referencedRelation: "v_crew_roster"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "operator_qualifications_specific_equipment_id_fkey"
+            columns: ["specific_equipment_id"]
+            isOneToOne: false
+            referencedRelation: "equipment"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "operator_qualifications_specific_equipment_id_fkey"
+            columns: ["specific_equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_fleet_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "operator_qualifications_specific_equipment_id_fkey"
+            columns: ["specific_equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_health_overview"
+            referencedColumns: ["equipment_id"]
+          },
+          {
+            foreignKeyName: "operator_qualifications_specific_equipment_id_fkey"
+            columns: ["specific_equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_status"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "operator_qualifications_specific_equipment_id_fkey"
+            columns: ["specific_equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_utilization"
+            referencedColumns: ["equipment_id"]
+          },
+        ]
+      }
       organizations: {
         Row: {
           address_line1: string | null
@@ -13135,17 +18813,22 @@ export type Database = {
           dbe_certification_number: string | null
           dbe_certified: boolean | null
           dbe_expiration_date: string | null
+          default_timezone: string | null
           deleted_at: string | null
           deleted_by: string | null
           email: string | null
+          fiscal_year_start_month: number | null
           id: string
           is_active: boolean | null
+          kpi_snapshot_enabled: boolean | null
           legal_name: string | null
           name: string
           phone: string | null
           settings: Json | null
           slug: string
           state: string | null
+          subscription_expires: string | null
+          subscription_tier: string | null
           tax_id: string | null
           updated_at: string
           updated_by: string | null
@@ -13162,17 +18845,22 @@ export type Database = {
           dbe_certification_number?: string | null
           dbe_certified?: boolean | null
           dbe_expiration_date?: string | null
+          default_timezone?: string | null
           deleted_at?: string | null
           deleted_by?: string | null
           email?: string | null
+          fiscal_year_start_month?: number | null
           id?: string
           is_active?: boolean | null
+          kpi_snapshot_enabled?: boolean | null
           legal_name?: string | null
           name: string
           phone?: string | null
           settings?: Json | null
           slug: string
           state?: string | null
+          subscription_expires?: string | null
+          subscription_tier?: string | null
           tax_id?: string | null
           updated_at?: string
           updated_by?: string | null
@@ -13189,17 +18877,22 @@ export type Database = {
           dbe_certification_number?: string | null
           dbe_certified?: boolean | null
           dbe_expiration_date?: string | null
+          default_timezone?: string | null
           deleted_at?: string | null
           deleted_by?: string | null
           email?: string | null
+          fiscal_year_start_month?: number | null
           id?: string
           is_active?: boolean | null
+          kpi_snapshot_enabled?: boolean | null
           legal_name?: string | null
           name?: string
           phone?: string | null
           settings?: Json | null
           slug?: string
           state?: string | null
+          subscription_expires?: string | null
+          subscription_tier?: string | null
           tax_id?: string | null
           updated_at?: string
           updated_by?: string | null
@@ -13209,82 +18902,637 @@ export type Database = {
         }
         Relationships: []
       }
-      pay_periods: {
+      osha_300_logs: {
         Row: {
-          closed_at: string | null
-          closed_by: string | null
-          created_at: string
-          created_by: string | null
-          end_date: string
+          case_number: string
+          city: string | null
+          created_at: string | null
+          date_of_injury: string
+          days_away_count: number | null
+          days_job_transfer_count: number | null
+          describe_injury: string
+          employee_name: string
+          entered_at: string | null
+          entered_by: string | null
+          establishment_address: string | null
+          establishment_name: string
           id: string
+          incident_id: string | null
+          is_days_away: boolean | null
+          is_death: boolean | null
+          is_job_transfer_restriction: boolean | null
+          is_other_recordable: boolean | null
+          is_privacy_case: boolean | null
+          job_title: string | null
+          log_year: number
           organization_id: string
-          pay_date: string | null
-          period_number: number
-          period_year: number
-          start_date: string
-          status: string
-          total_double_time_hours: number | null
-          total_gross_pay: number | null
-          total_overtime_hours: number | null
-          total_regular_hours: number | null
-          updated_at: string
-          updated_by: string | null
+          state: string | null
+          type_all_other: boolean | null
+          type_hearing_loss: boolean | null
+          type_injury: boolean | null
+          type_poisoning: boolean | null
+          type_respiratory: boolean | null
+          type_skin_disorder: boolean | null
+          updated_at: string | null
+          where_occurred: string | null
+          zip: string | null
         }
         Insert: {
-          closed_at?: string | null
-          closed_by?: string | null
-          created_at?: string
-          created_by?: string | null
-          end_date: string
+          case_number: string
+          city?: string | null
+          created_at?: string | null
+          date_of_injury: string
+          days_away_count?: number | null
+          days_job_transfer_count?: number | null
+          describe_injury: string
+          employee_name: string
+          entered_at?: string | null
+          entered_by?: string | null
+          establishment_address?: string | null
+          establishment_name: string
           id?: string
+          incident_id?: string | null
+          is_days_away?: boolean | null
+          is_death?: boolean | null
+          is_job_transfer_restriction?: boolean | null
+          is_other_recordable?: boolean | null
+          is_privacy_case?: boolean | null
+          job_title?: string | null
+          log_year: number
           organization_id: string
-          pay_date?: string | null
-          period_number: number
-          period_year: number
-          start_date: string
-          status?: string
-          total_double_time_hours?: number | null
-          total_gross_pay?: number | null
-          total_overtime_hours?: number | null
-          total_regular_hours?: number | null
-          updated_at?: string
-          updated_by?: string | null
+          state?: string | null
+          type_all_other?: boolean | null
+          type_hearing_loss?: boolean | null
+          type_injury?: boolean | null
+          type_poisoning?: boolean | null
+          type_respiratory?: boolean | null
+          type_skin_disorder?: boolean | null
+          updated_at?: string | null
+          where_occurred?: string | null
+          zip?: string | null
         }
         Update: {
-          closed_at?: string | null
-          closed_by?: string | null
-          created_at?: string
-          created_by?: string | null
-          end_date?: string
+          case_number?: string
+          city?: string | null
+          created_at?: string | null
+          date_of_injury?: string
+          days_away_count?: number | null
+          days_job_transfer_count?: number | null
+          describe_injury?: string
+          employee_name?: string
+          entered_at?: string | null
+          entered_by?: string | null
+          establishment_address?: string | null
+          establishment_name?: string
           id?: string
+          incident_id?: string | null
+          is_days_away?: boolean | null
+          is_death?: boolean | null
+          is_job_transfer_restriction?: boolean | null
+          is_other_recordable?: boolean | null
+          is_privacy_case?: boolean | null
+          job_title?: string | null
+          log_year?: number
           organization_id?: string
-          pay_date?: string | null
-          period_number?: number
-          period_year?: number
-          start_date?: string
-          status?: string
-          total_double_time_hours?: number | null
-          total_gross_pay?: number | null
-          total_overtime_hours?: number | null
-          total_regular_hours?: number | null
-          updated_at?: string
-          updated_by?: string | null
+          state?: string | null
+          type_all_other?: boolean | null
+          type_hearing_loss?: boolean | null
+          type_injury?: boolean | null
+          type_poisoning?: boolean | null
+          type_respiratory?: boolean | null
+          type_skin_disorder?: boolean | null
+          updated_at?: string | null
+          where_occurred?: string | null
+          zip?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "pay_periods_closed_by_fkey"
-            columns: ["closed_by"]
+            foreignKeyName: "osha_300_logs_incident_id_fkey"
+            columns: ["incident_id"]
             isOneToOne: false
-            referencedRelation: "user_profiles"
+            referencedRelation: "incidents"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "pay_periods_created_by_fkey"
-            columns: ["created_by"]
+            foreignKeyName: "osha_300_logs_organization_id_fkey"
+            columns: ["organization_id"]
             isOneToOne: false
-            referencedRelation: "user_profiles"
+            referencedRelation: "organizations"
             referencedColumns: ["id"]
           },
+        ]
+      }
+      osha_301_forms: {
+        Row: {
+          body_part_affected: string | null
+          completed_by_name: string | null
+          completed_by_phone: string | null
+          completed_by_title: string | null
+          completion_date: string | null
+          created_at: string | null
+          date_hired: string | null
+          date_of_death: string | null
+          date_of_injury: string
+          did_employee_die: boolean | null
+          emergency_facility_address: string | null
+          emergency_facility_name: string | null
+          employee_address: string | null
+          employee_city: string | null
+          employee_dob: string | null
+          employee_gender: string | null
+          employee_name: string
+          employee_state: string | null
+          employee_zip: string | null
+          form_number: string
+          hospitalization_days: number | null
+          id: string
+          incident_id: string | null
+          injury_description: string
+          log_year: number
+          organization_id: string
+          osha_300_log_id: string | null
+          physician_address: string | null
+          physician_name: string | null
+          physician_phone: string | null
+          time_employee_began_work: string | null
+          time_of_event: string | null
+          updated_at: string | null
+          was_hospitalized: boolean | null
+          was_treated_emergency: boolean | null
+          what_happened: string | null
+          what_object_substance: string | null
+          what_was_employee_doing: string | null
+        }
+        Insert: {
+          body_part_affected?: string | null
+          completed_by_name?: string | null
+          completed_by_phone?: string | null
+          completed_by_title?: string | null
+          completion_date?: string | null
+          created_at?: string | null
+          date_hired?: string | null
+          date_of_death?: string | null
+          date_of_injury: string
+          did_employee_die?: boolean | null
+          emergency_facility_address?: string | null
+          emergency_facility_name?: string | null
+          employee_address?: string | null
+          employee_city?: string | null
+          employee_dob?: string | null
+          employee_gender?: string | null
+          employee_name: string
+          employee_state?: string | null
+          employee_zip?: string | null
+          form_number: string
+          hospitalization_days?: number | null
+          id?: string
+          incident_id?: string | null
+          injury_description: string
+          log_year: number
+          organization_id: string
+          osha_300_log_id?: string | null
+          physician_address?: string | null
+          physician_name?: string | null
+          physician_phone?: string | null
+          time_employee_began_work?: string | null
+          time_of_event?: string | null
+          updated_at?: string | null
+          was_hospitalized?: boolean | null
+          was_treated_emergency?: boolean | null
+          what_happened?: string | null
+          what_object_substance?: string | null
+          what_was_employee_doing?: string | null
+        }
+        Update: {
+          body_part_affected?: string | null
+          completed_by_name?: string | null
+          completed_by_phone?: string | null
+          completed_by_title?: string | null
+          completion_date?: string | null
+          created_at?: string | null
+          date_hired?: string | null
+          date_of_death?: string | null
+          date_of_injury?: string
+          did_employee_die?: boolean | null
+          emergency_facility_address?: string | null
+          emergency_facility_name?: string | null
+          employee_address?: string | null
+          employee_city?: string | null
+          employee_dob?: string | null
+          employee_gender?: string | null
+          employee_name?: string
+          employee_state?: string | null
+          employee_zip?: string | null
+          form_number?: string
+          hospitalization_days?: number | null
+          id?: string
+          incident_id?: string | null
+          injury_description?: string
+          log_year?: number
+          organization_id?: string
+          osha_300_log_id?: string | null
+          physician_address?: string | null
+          physician_name?: string | null
+          physician_phone?: string | null
+          time_employee_began_work?: string | null
+          time_of_event?: string | null
+          updated_at?: string | null
+          was_hospitalized?: boolean | null
+          was_treated_emergency?: boolean | null
+          what_happened?: string | null
+          what_object_substance?: string | null
+          what_was_employee_doing?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "osha_301_forms_incident_id_fkey"
+            columns: ["incident_id"]
+            isOneToOne: false
+            referencedRelation: "incidents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "osha_301_forms_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "osha_301_forms_osha_300_log_id_fkey"
+            columns: ["osha_300_log_id"]
+            isOneToOne: false
+            referencedRelation: "osha_300_logs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pay_period_line_items: {
+        Row: {
+          created_at: string | null
+          description: string
+          field_reported_qty: number | null
+          field_reports_count: number | null
+          field_variance: number | null
+          id: string
+          is_overrun: boolean | null
+          item_number: string
+          line_number: string
+          pay_period_id: string
+          plan_qty: number | null
+          previous_qty: number | null
+          remaining_qty: number | null
+          this_estimate_amount: number | null
+          this_estimate_qty: number | null
+          total_to_date_amount: number | null
+          total_to_date_qty: number | null
+          unit: string
+          unit_price: number
+        }
+        Insert: {
+          created_at?: string | null
+          description: string
+          field_reported_qty?: number | null
+          field_reports_count?: number | null
+          field_variance?: number | null
+          id?: string
+          is_overrun?: boolean | null
+          item_number: string
+          line_number: string
+          pay_period_id: string
+          plan_qty?: number | null
+          previous_qty?: number | null
+          remaining_qty?: number | null
+          this_estimate_amount?: number | null
+          this_estimate_qty?: number | null
+          total_to_date_amount?: number | null
+          total_to_date_qty?: number | null
+          unit: string
+          unit_price: number
+        }
+        Update: {
+          created_at?: string | null
+          description?: string
+          field_reported_qty?: number | null
+          field_reports_count?: number | null
+          field_variance?: number | null
+          id?: string
+          is_overrun?: boolean | null
+          item_number?: string
+          line_number?: string
+          pay_period_id?: string
+          plan_qty?: number | null
+          previous_qty?: number | null
+          remaining_qty?: number | null
+          this_estimate_amount?: number | null
+          this_estimate_qty?: number | null
+          total_to_date_amount?: number | null
+          total_to_date_qty?: number | null
+          unit?: string
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pay_period_line_items_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "pay_periods"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pay_period_line_items_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pay_period_dashboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pay_period_line_items_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_payment_deadline_summary"
+            referencedColumns: ["pay_period_id"]
+          },
+          {
+            foreignKeyName: "pay_period_line_items_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_validations"
+            referencedColumns: ["pay_period_id"]
+          },
+        ]
+      }
+      pay_period_validations: {
+        Row: {
+          all_line_calcs_valid: boolean | null
+          attempt_number: number
+          created_at: string | null
+          created_by: string | null
+          error_messages: string[] | null
+          extracted_line_item_sum: number | null
+          extracted_net_pay: number | null
+          extracted_previous_sum: number | null
+          extracted_previous_total: number | null
+          extracted_stockpile_current: number | null
+          extracted_stockpile_previous: number | null
+          extracted_summary_total: number | null
+          extracted_to_date_sum: number | null
+          extracted_to_date_total: number | null
+          extraction_method: string | null
+          failed_line_items: Json | null
+          id: string
+          line_item_discrepancy: number | null
+          line_item_sum_valid: boolean | null
+          net_calculation_valid: boolean | null
+          net_discrepancy: number | null
+          overall_status: Database["public"]["Enums"]["validation_status"]
+          pay_period_id: string | null
+          previous_discrepancy: number | null
+          previous_sum_valid: boolean | null
+          raw_extraction: Json | null
+          source_document_url: string | null
+          stockpile_delta_valid: boolean | null
+          to_date_discrepancy: number | null
+          to_date_sum_valid: boolean | null
+          warning_messages: string[] | null
+        }
+        Insert: {
+          all_line_calcs_valid?: boolean | null
+          attempt_number?: number
+          created_at?: string | null
+          created_by?: string | null
+          error_messages?: string[] | null
+          extracted_line_item_sum?: number | null
+          extracted_net_pay?: number | null
+          extracted_previous_sum?: number | null
+          extracted_previous_total?: number | null
+          extracted_stockpile_current?: number | null
+          extracted_stockpile_previous?: number | null
+          extracted_summary_total?: number | null
+          extracted_to_date_sum?: number | null
+          extracted_to_date_total?: number | null
+          extraction_method?: string | null
+          failed_line_items?: Json | null
+          id?: string
+          line_item_discrepancy?: number | null
+          line_item_sum_valid?: boolean | null
+          net_calculation_valid?: boolean | null
+          net_discrepancy?: number | null
+          overall_status: Database["public"]["Enums"]["validation_status"]
+          pay_period_id?: string | null
+          previous_discrepancy?: number | null
+          previous_sum_valid?: boolean | null
+          raw_extraction?: Json | null
+          source_document_url?: string | null
+          stockpile_delta_valid?: boolean | null
+          to_date_discrepancy?: number | null
+          to_date_sum_valid?: boolean | null
+          warning_messages?: string[] | null
+        }
+        Update: {
+          all_line_calcs_valid?: boolean | null
+          attempt_number?: number
+          created_at?: string | null
+          created_by?: string | null
+          error_messages?: string[] | null
+          extracted_line_item_sum?: number | null
+          extracted_net_pay?: number | null
+          extracted_previous_sum?: number | null
+          extracted_previous_total?: number | null
+          extracted_stockpile_current?: number | null
+          extracted_stockpile_previous?: number | null
+          extracted_summary_total?: number | null
+          extracted_to_date_sum?: number | null
+          extracted_to_date_total?: number | null
+          extraction_method?: string | null
+          failed_line_items?: Json | null
+          id?: string
+          line_item_discrepancy?: number | null
+          line_item_sum_valid?: boolean | null
+          net_calculation_valid?: boolean | null
+          net_discrepancy?: number | null
+          overall_status?: Database["public"]["Enums"]["validation_status"]
+          pay_period_id?: string | null
+          previous_discrepancy?: number | null
+          previous_sum_valid?: boolean | null
+          raw_extraction?: Json | null
+          source_document_url?: string | null
+          stockpile_delta_valid?: boolean | null
+          to_date_discrepancy?: number | null
+          to_date_sum_valid?: boolean | null
+          warning_messages?: string[] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pay_period_validations_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "pay_periods"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pay_period_validations_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pay_period_dashboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pay_period_validations_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_payment_deadline_summary"
+            referencedColumns: ["pay_period_id"]
+          },
+          {
+            foreignKeyName: "pay_period_validations_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_validations"
+            referencedColumns: ["pay_period_id"]
+          },
+        ]
+      }
+      pay_periods: {
+        Row: {
+          asphalt_adjustment: number | null
+          construction_stockpile: number | null
+          created_at: string | null
+          created_by: string | null
+          cumulative_material_credit: number | null
+          cumulative_material_withheld: number | null
+          cumulative_net_pay: number | null
+          cumulative_posted_item_pay: number | null
+          cumulative_stockpile: number | null
+          disincentive: number | null
+          estimate_number: number
+          final_document_url: string | null
+          final_email_id: string | null
+          final_received_at: string | null
+          fuel_adjustment: number | null
+          funds_received_date: string | null
+          gross_item_pay: number | null
+          id: string
+          imr_document_url: string | null
+          incentive: number | null
+          liquidated_damages: number | null
+          material_credit: number | null
+          material_withheld: number | null
+          net_pay_amount: number | null
+          organization_id: string
+          override_reason: string | null
+          payment_deadline_date: string | null
+          period_end_date: string
+          period_start_date: string | null
+          posted_item_pay: number | null
+          preliminary_document_url: string | null
+          preliminary_email_id: string | null
+          preliminary_received_at: string | null
+          project_id: string
+          source_email: string | null
+          status: Database["public"]["Enums"]["pay_period_status"] | null
+          updated_at: string | null
+          updated_by: string | null
+          validated_at: string | null
+          validated_by: string | null
+          validation_errors: Json | null
+          validation_status:
+            | Database["public"]["Enums"]["validation_status"]
+            | null
+        }
+        Insert: {
+          asphalt_adjustment?: number | null
+          construction_stockpile?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          cumulative_material_credit?: number | null
+          cumulative_material_withheld?: number | null
+          cumulative_net_pay?: number | null
+          cumulative_posted_item_pay?: number | null
+          cumulative_stockpile?: number | null
+          disincentive?: number | null
+          estimate_number: number
+          final_document_url?: string | null
+          final_email_id?: string | null
+          final_received_at?: string | null
+          fuel_adjustment?: number | null
+          funds_received_date?: string | null
+          gross_item_pay?: number | null
+          id?: string
+          imr_document_url?: string | null
+          incentive?: number | null
+          liquidated_damages?: number | null
+          material_credit?: number | null
+          material_withheld?: number | null
+          net_pay_amount?: number | null
+          organization_id: string
+          override_reason?: string | null
+          payment_deadline_date?: string | null
+          period_end_date: string
+          period_start_date?: string | null
+          posted_item_pay?: number | null
+          preliminary_document_url?: string | null
+          preliminary_email_id?: string | null
+          preliminary_received_at?: string | null
+          project_id: string
+          source_email?: string | null
+          status?: Database["public"]["Enums"]["pay_period_status"] | null
+          updated_at?: string | null
+          updated_by?: string | null
+          validated_at?: string | null
+          validated_by?: string | null
+          validation_errors?: Json | null
+          validation_status?:
+            | Database["public"]["Enums"]["validation_status"]
+            | null
+        }
+        Update: {
+          asphalt_adjustment?: number | null
+          construction_stockpile?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          cumulative_material_credit?: number | null
+          cumulative_material_withheld?: number | null
+          cumulative_net_pay?: number | null
+          cumulative_posted_item_pay?: number | null
+          cumulative_stockpile?: number | null
+          disincentive?: number | null
+          estimate_number?: number
+          final_document_url?: string | null
+          final_email_id?: string | null
+          final_received_at?: string | null
+          fuel_adjustment?: number | null
+          funds_received_date?: string | null
+          gross_item_pay?: number | null
+          id?: string
+          imr_document_url?: string | null
+          incentive?: number | null
+          liquidated_damages?: number | null
+          material_credit?: number | null
+          material_withheld?: number | null
+          net_pay_amount?: number | null
+          organization_id?: string
+          override_reason?: string | null
+          payment_deadline_date?: string | null
+          period_end_date?: string
+          period_start_date?: string | null
+          posted_item_pay?: number | null
+          preliminary_document_url?: string | null
+          preliminary_email_id?: string | null
+          preliminary_received_at?: string | null
+          project_id?: string
+          source_email?: string | null
+          status?: Database["public"]["Enums"]["pay_period_status"] | null
+          updated_at?: string | null
+          updated_by?: string | null
+          validated_at?: string | null
+          validated_by?: string | null
+          validation_errors?: Json | null
+          validation_status?:
+            | Database["public"]["Enums"]["validation_status"]
+            | null
+        }
+        Relationships: [
           {
             foreignKeyName: "pay_periods_organization_id_fkey"
             columns: ["organization_id"]
@@ -13293,11 +19541,67 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "pay_periods_updated_by_fkey"
-            columns: ["updated_by"]
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "user_profiles"
+            referencedRelation: "projects"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
           },
         ]
       }
@@ -13330,6 +19634,468 @@ export type Database = {
           name?: string
         }
         Relationships: []
+      }
+      platform_alert_notifications: {
+        Row: {
+          alert_id: string
+          clicked_at: string | null
+          created_at: string | null
+          delivered_at: string | null
+          delivery_method: Database["public"]["Enums"]["platform_alert_delivery"]
+          external_id: string | null
+          failed_at: string | null
+          failure_reason: string | null
+          id: string
+          max_retries: number | null
+          next_retry_at: string | null
+          organization_id: string
+          read_at: string | null
+          recipient_address: string | null
+          retry_count: number | null
+          sent_at: string | null
+          user_id: string
+        }
+        Insert: {
+          alert_id: string
+          clicked_at?: string | null
+          created_at?: string | null
+          delivered_at?: string | null
+          delivery_method: Database["public"]["Enums"]["platform_alert_delivery"]
+          external_id?: string | null
+          failed_at?: string | null
+          failure_reason?: string | null
+          id?: string
+          max_retries?: number | null
+          next_retry_at?: string | null
+          organization_id: string
+          read_at?: string | null
+          recipient_address?: string | null
+          retry_count?: number | null
+          sent_at?: string | null
+          user_id: string
+        }
+        Update: {
+          alert_id?: string
+          clicked_at?: string | null
+          created_at?: string | null
+          delivered_at?: string | null
+          delivery_method?: Database["public"]["Enums"]["platform_alert_delivery"]
+          external_id?: string | null
+          failed_at?: string | null
+          failure_reason?: string | null
+          id?: string
+          max_retries?: number | null
+          next_retry_at?: string | null
+          organization_id?: string
+          read_at?: string | null
+          recipient_address?: string | null
+          retry_count?: number | null
+          sent_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_alert_notifications_alert_id_fkey"
+            columns: ["alert_id"]
+            isOneToOne: false
+            referencedRelation: "platform_alerts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "platform_alert_notifications_alert_id_fkey"
+            columns: ["alert_id"]
+            isOneToOne: false
+            referencedRelation: "v_platform_alert_dashboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "platform_alert_notifications_alert_id_fkey"
+            columns: ["alert_id"]
+            isOneToOne: false
+            referencedRelation: "v_user_alert_inbox"
+            referencedColumns: ["alert_id"]
+          },
+          {
+            foreignKeyName: "platform_alert_notifications_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_alerts: {
+        Row: {
+          acknowledged_at: string | null
+          acknowledged_by: string | null
+          acknowledgment_notes: string | null
+          action_required: string | null
+          action_url: string | null
+          alert_type: string
+          assigned_to: string | null
+          auto_resolved: boolean | null
+          category: Database["public"]["Enums"]["platform_alert_category"]
+          created_at: string | null
+          delegated_at: string | null
+          delegated_by: string | null
+          delegated_to: string | null
+          delegation_notes: string | null
+          description: string | null
+          due_date: string | null
+          entity_id: string
+          entity_identifier: string | null
+          entity_type: string
+          expiry_date: string | null
+          id: string
+          is_recurring: boolean | null
+          max_snooze_count: number | null
+          metadata: Json | null
+          organization_id: string
+          parent_alert_id: string | null
+          priority_score: number | null
+          project_id: string | null
+          recurrence_rule: string | null
+          resolution_notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: Database["public"]["Enums"]["platform_alert_severity"]
+          snooze_count: number | null
+          snooze_reason: string | null
+          snoozed_by: string | null
+          snoozed_until: string | null
+          source: string | null
+          source_reference: string | null
+          status: Database["public"]["Enums"]["platform_alert_status"]
+          title: string
+          trigger_date: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          acknowledgment_notes?: string | null
+          action_required?: string | null
+          action_url?: string | null
+          alert_type: string
+          assigned_to?: string | null
+          auto_resolved?: boolean | null
+          category: Database["public"]["Enums"]["platform_alert_category"]
+          created_at?: string | null
+          delegated_at?: string | null
+          delegated_by?: string | null
+          delegated_to?: string | null
+          delegation_notes?: string | null
+          description?: string | null
+          due_date?: string | null
+          entity_id: string
+          entity_identifier?: string | null
+          entity_type: string
+          expiry_date?: string | null
+          id?: string
+          is_recurring?: boolean | null
+          max_snooze_count?: number | null
+          metadata?: Json | null
+          organization_id: string
+          parent_alert_id?: string | null
+          priority_score?: number | null
+          project_id?: string | null
+          recurrence_rule?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity: Database["public"]["Enums"]["platform_alert_severity"]
+          snooze_count?: number | null
+          snooze_reason?: string | null
+          snoozed_by?: string | null
+          snoozed_until?: string | null
+          source?: string | null
+          source_reference?: string | null
+          status?: Database["public"]["Enums"]["platform_alert_status"]
+          title: string
+          trigger_date?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          acknowledgment_notes?: string | null
+          action_required?: string | null
+          action_url?: string | null
+          alert_type?: string
+          assigned_to?: string | null
+          auto_resolved?: boolean | null
+          category?: Database["public"]["Enums"]["platform_alert_category"]
+          created_at?: string | null
+          delegated_at?: string | null
+          delegated_by?: string | null
+          delegated_to?: string | null
+          delegation_notes?: string | null
+          description?: string | null
+          due_date?: string | null
+          entity_id?: string
+          entity_identifier?: string | null
+          entity_type?: string
+          expiry_date?: string | null
+          id?: string
+          is_recurring?: boolean | null
+          max_snooze_count?: number | null
+          metadata?: Json | null
+          organization_id?: string
+          parent_alert_id?: string | null
+          priority_score?: number | null
+          project_id?: string | null
+          recurrence_rule?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: Database["public"]["Enums"]["platform_alert_severity"]
+          snooze_count?: number | null
+          snooze_reason?: string | null
+          snoozed_by?: string | null
+          snoozed_until?: string | null
+          source?: string | null
+          source_reference?: string | null
+          status?: Database["public"]["Enums"]["platform_alert_status"]
+          title?: string
+          trigger_date?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_alerts_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "platform_alerts_parent_alert_id_fkey"
+            columns: ["parent_alert_id"]
+            isOneToOne: false
+            referencedRelation: "platform_alerts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "platform_alerts_parent_alert_id_fkey"
+            columns: ["parent_alert_id"]
+            isOneToOne: false
+            referencedRelation: "v_platform_alert_dashboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "platform_alerts_parent_alert_id_fkey"
+            columns: ["parent_alert_id"]
+            isOneToOne: false
+            referencedRelation: "v_user_alert_inbox"
+            referencedColumns: ["alert_id"]
+          },
+          {
+            foreignKeyName: "platform_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "platform_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "platform_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "platform_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "platform_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "platform_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "platform_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "platform_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "platform_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      platform_user_alert_preferences: {
+        Row: {
+          categories_subscribed:
+            | Database["public"]["Enums"]["platform_alert_category"][]
+            | null
+          created_at: string | null
+          critical_email: boolean | null
+          critical_in_app: boolean | null
+          critical_push: boolean | null
+          critical_sms: boolean | null
+          daily_digest_enabled: boolean | null
+          daily_digest_time: string | null
+          email_override: string | null
+          high_email: boolean | null
+          high_in_app: boolean | null
+          high_push: boolean | null
+          high_sms: boolean | null
+          id: string
+          info_email: boolean | null
+          info_in_app: boolean | null
+          info_push: boolean | null
+          info_sms: boolean | null
+          low_email: boolean | null
+          low_in_app: boolean | null
+          low_push: boolean | null
+          low_sms: boolean | null
+          medium_email: boolean | null
+          medium_in_app: boolean | null
+          medium_push: boolean | null
+          medium_sms: boolean | null
+          organization_id: string
+          phone_override: string | null
+          quiet_hours_allow_critical: boolean | null
+          quiet_hours_enabled: boolean | null
+          quiet_hours_end: string | null
+          quiet_hours_start: string | null
+          updated_at: string | null
+          user_id: string
+          vacation_delegate_to: string | null
+          vacation_end: string | null
+          vacation_mode: boolean | null
+          vacation_start: string | null
+          weekly_digest_day: number | null
+          weekly_digest_enabled: boolean | null
+        }
+        Insert: {
+          categories_subscribed?:
+            | Database["public"]["Enums"]["platform_alert_category"][]
+            | null
+          created_at?: string | null
+          critical_email?: boolean | null
+          critical_in_app?: boolean | null
+          critical_push?: boolean | null
+          critical_sms?: boolean | null
+          daily_digest_enabled?: boolean | null
+          daily_digest_time?: string | null
+          email_override?: string | null
+          high_email?: boolean | null
+          high_in_app?: boolean | null
+          high_push?: boolean | null
+          high_sms?: boolean | null
+          id?: string
+          info_email?: boolean | null
+          info_in_app?: boolean | null
+          info_push?: boolean | null
+          info_sms?: boolean | null
+          low_email?: boolean | null
+          low_in_app?: boolean | null
+          low_push?: boolean | null
+          low_sms?: boolean | null
+          medium_email?: boolean | null
+          medium_in_app?: boolean | null
+          medium_push?: boolean | null
+          medium_sms?: boolean | null
+          organization_id: string
+          phone_override?: string | null
+          quiet_hours_allow_critical?: boolean | null
+          quiet_hours_enabled?: boolean | null
+          quiet_hours_end?: string | null
+          quiet_hours_start?: string | null
+          updated_at?: string | null
+          user_id: string
+          vacation_delegate_to?: string | null
+          vacation_end?: string | null
+          vacation_mode?: boolean | null
+          vacation_start?: string | null
+          weekly_digest_day?: number | null
+          weekly_digest_enabled?: boolean | null
+        }
+        Update: {
+          categories_subscribed?:
+            | Database["public"]["Enums"]["platform_alert_category"][]
+            | null
+          created_at?: string | null
+          critical_email?: boolean | null
+          critical_in_app?: boolean | null
+          critical_push?: boolean | null
+          critical_sms?: boolean | null
+          daily_digest_enabled?: boolean | null
+          daily_digest_time?: string | null
+          email_override?: string | null
+          high_email?: boolean | null
+          high_in_app?: boolean | null
+          high_push?: boolean | null
+          high_sms?: boolean | null
+          id?: string
+          info_email?: boolean | null
+          info_in_app?: boolean | null
+          info_push?: boolean | null
+          info_sms?: boolean | null
+          low_email?: boolean | null
+          low_in_app?: boolean | null
+          low_push?: boolean | null
+          low_sms?: boolean | null
+          medium_email?: boolean | null
+          medium_in_app?: boolean | null
+          medium_push?: boolean | null
+          medium_sms?: boolean | null
+          organization_id?: string
+          phone_override?: string | null
+          quiet_hours_allow_critical?: boolean | null
+          quiet_hours_enabled?: boolean | null
+          quiet_hours_end?: string | null
+          quiet_hours_start?: string | null
+          updated_at?: string | null
+          user_id?: string
+          vacation_delegate_to?: string | null
+          vacation_end?: string | null
+          vacation_mode?: boolean | null
+          vacation_start?: string | null
+          weekly_digest_day?: number | null
+          weekly_digest_enabled?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_user_alert_preferences_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       po_line_items: {
         Row: {
@@ -13512,8 +20278,22 @@ export type Database = {
             foreignKeyName: "predictive_alerts_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "predictive_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "predictive_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "predictive_alerts_project_id_fkey"
@@ -13541,6 +20321,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "predictive_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -13648,8 +20435,22 @@ export type Database = {
             foreignKeyName: "prevailing_wage_rates_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "prevailing_wage_rates_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "prevailing_wage_rates_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "prevailing_wage_rates_project_id_fkey"
@@ -13679,63 +20480,67 @@ export type Database = {
             referencedRelation: "v_project_rfi_stats"
             referencedColumns: ["project_id"]
           },
+          {
+            foreignKeyName: "prevailing_wage_rates_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
         ]
       }
       project_assignments: {
         Row: {
-          assignment_end: string | null
-          assignment_start: string | null
-          created_at: string
-          created_by: string | null
+          access_level: Database["public"]["Enums"]["access_level"] | null
+          assigned_at: string | null
+          assigned_by: string | null
+          created_at: string | null
+          ends_at: string | null
           id: string
           is_active: boolean | null
           is_primary: boolean | null
+          organization_id: string
           project_id: string
-          project_role: string
-          receive_alerts: boolean | null
-          receive_daily_summary: boolean | null
-          updated_at: string
-          updated_by: string | null
+          project_role: Database["public"]["Enums"]["project_role"]
+          updated_at: string | null
           user_id: string
         }
         Insert: {
-          assignment_end?: string | null
-          assignment_start?: string | null
-          created_at?: string
-          created_by?: string | null
+          access_level?: Database["public"]["Enums"]["access_level"] | null
+          assigned_at?: string | null
+          assigned_by?: string | null
+          created_at?: string | null
+          ends_at?: string | null
           id?: string
           is_active?: boolean | null
           is_primary?: boolean | null
+          organization_id: string
           project_id: string
-          project_role: string
-          receive_alerts?: boolean | null
-          receive_daily_summary?: boolean | null
-          updated_at?: string
-          updated_by?: string | null
+          project_role: Database["public"]["Enums"]["project_role"]
+          updated_at?: string | null
           user_id: string
         }
         Update: {
-          assignment_end?: string | null
-          assignment_start?: string | null
-          created_at?: string
-          created_by?: string | null
+          access_level?: Database["public"]["Enums"]["access_level"] | null
+          assigned_at?: string | null
+          assigned_by?: string | null
+          created_at?: string | null
+          ends_at?: string | null
           id?: string
           is_active?: boolean | null
           is_primary?: boolean | null
+          organization_id?: string
           project_id?: string
-          project_role?: string
-          receive_alerts?: boolean | null
-          receive_daily_summary?: boolean | null
-          updated_at?: string
-          updated_by?: string | null
+          project_role?: Database["public"]["Enums"]["project_role"]
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "project_assignments_created_by_fkey"
-            columns: ["created_by"]
+            foreignKeyName: "project_assignments_organization_id_fkey"
+            columns: ["organization_id"]
             isOneToOne: false
-            referencedRelation: "user_profiles"
+            referencedRelation: "organizations"
             referencedColumns: ["id"]
           },
           {
@@ -13749,8 +20554,22 @@ export type Database = {
             foreignKeyName: "project_assignments_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_assignments_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_assignments_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "project_assignments_project_id_fkey"
@@ -13781,18 +20600,11 @@ export type Database = {
             referencedColumns: ["project_id"]
           },
           {
-            foreignKeyName: "project_assignments_updated_by_fkey"
-            columns: ["updated_by"]
+            foreignKeyName: "project_assignments_project_id_fkey"
+            columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "project_assignments_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
           },
         ]
       }
@@ -13867,8 +20679,22 @@ export type Database = {
             foreignKeyName: "project_contacts_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_contacts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_contacts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "project_contacts_project_id_fkey"
@@ -13899,11 +20725,393 @@ export type Database = {
             referencedColumns: ["project_id"]
           },
           {
+            foreignKeyName: "project_contacts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
             foreignKeyName: "project_contacts_updated_by_fkey"
             columns: ["updated_by"]
             isOneToOne: false
             referencedRelation: "user_profiles"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      project_financials: {
+        Row: {
+          as_of_date: string
+          bid_margin_assumed: number | null
+          created_at: string | null
+          created_by: string | null
+          gross_margin: number | null
+          gross_margin_pct: number | null
+          id: string
+          imr_withheld: number | null
+          margin_variance: number | null
+          margin_variance_pct: number | null
+          net_revenue: number | null
+          notes: string | null
+          organization_id: string
+          pay_period_id: string | null
+          project_id: string
+          retainage_held_total: number | null
+          revenue_this_period: number | null
+          self_perform_equipment: number | null
+          self_perform_labor: number | null
+          self_perform_materials: number | null
+          self_perform_total: number | null
+          stockpile_balance: number | null
+          sub_cost_this_period: number | null
+          total_revenue_to_date: number | null
+          total_sub_cost_to_date: number | null
+        }
+        Insert: {
+          as_of_date: string
+          bid_margin_assumed?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          gross_margin?: number | null
+          gross_margin_pct?: number | null
+          id?: string
+          imr_withheld?: number | null
+          margin_variance?: number | null
+          margin_variance_pct?: number | null
+          net_revenue?: number | null
+          notes?: string | null
+          organization_id: string
+          pay_period_id?: string | null
+          project_id: string
+          retainage_held_total?: number | null
+          revenue_this_period?: number | null
+          self_perform_equipment?: number | null
+          self_perform_labor?: number | null
+          self_perform_materials?: number | null
+          self_perform_total?: number | null
+          stockpile_balance?: number | null
+          sub_cost_this_period?: number | null
+          total_revenue_to_date?: number | null
+          total_sub_cost_to_date?: number | null
+        }
+        Update: {
+          as_of_date?: string
+          bid_margin_assumed?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          gross_margin?: number | null
+          gross_margin_pct?: number | null
+          id?: string
+          imr_withheld?: number | null
+          margin_variance?: number | null
+          margin_variance_pct?: number | null
+          net_revenue?: number | null
+          notes?: string | null
+          organization_id?: string
+          pay_period_id?: string | null
+          project_id?: string
+          retainage_held_total?: number | null
+          revenue_this_period?: number | null
+          self_perform_equipment?: number | null
+          self_perform_labor?: number | null
+          self_perform_materials?: number | null
+          self_perform_total?: number | null
+          stockpile_balance?: number | null
+          sub_cost_this_period?: number | null
+          total_revenue_to_date?: number | null
+          total_sub_cost_to_date?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_financials_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_financials_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "pay_periods"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_financials_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pay_period_dashboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_financials_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_payment_deadline_summary"
+            referencedColumns: ["pay_period_id"]
+          },
+          {
+            foreignKeyName: "project_financials_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_validations"
+            referencedColumns: ["pay_period_id"]
+          },
+          {
+            foreignKeyName: "project_financials_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_financials_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_financials_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_financials_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_financials_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_financials_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_financials_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_financials_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_financials_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      project_handoffs: {
+        Row: {
+          assigned_vp_id: string | null
+          bid_project_id: string | null
+          created_at: string | null
+          created_by: string | null
+          general_super_id: string | null
+          handoff_completed_at: string | null
+          handoff_meeting_date: string | null
+          handoff_meeting_location: string | null
+          handoff_meeting_notes: string | null
+          id: string
+          lead_estimator_id: string | null
+          organization_id: string
+          pe_id: string | null
+          pm_id: string | null
+          project_id: string
+          region: string | null
+          status: Database["public"]["Enums"]["handoff_status"] | null
+          team_assigned_at: string | null
+          updated_at: string | null
+          updated_by: string | null
+          vp_assigned_at: string | null
+        }
+        Insert: {
+          assigned_vp_id?: string | null
+          bid_project_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          general_super_id?: string | null
+          handoff_completed_at?: string | null
+          handoff_meeting_date?: string | null
+          handoff_meeting_location?: string | null
+          handoff_meeting_notes?: string | null
+          id?: string
+          lead_estimator_id?: string | null
+          organization_id: string
+          pe_id?: string | null
+          pm_id?: string | null
+          project_id: string
+          region?: string | null
+          status?: Database["public"]["Enums"]["handoff_status"] | null
+          team_assigned_at?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
+          vp_assigned_at?: string | null
+        }
+        Update: {
+          assigned_vp_id?: string | null
+          bid_project_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          general_super_id?: string | null
+          handoff_completed_at?: string | null
+          handoff_meeting_date?: string | null
+          handoff_meeting_location?: string | null
+          handoff_meeting_notes?: string | null
+          id?: string
+          lead_estimator_id?: string | null
+          organization_id?: string
+          pe_id?: string | null
+          pm_id?: string | null
+          project_id?: string
+          region?: string | null
+          status?: Database["public"]["Enums"]["handoff_status"] | null
+          team_assigned_at?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
+          vp_assigned_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_handoffs_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "bid_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_environmental_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_pricing_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_project_dashboard"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_projects_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_questions_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_risk_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
           },
         ]
       }
@@ -13984,8 +21192,22 @@ export type Database = {
             foreignKeyName: "project_locations_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_locations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_locations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "project_locations_project_id_fkey"
@@ -14013,6 +21235,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_locations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -14121,8 +21350,22 @@ export type Database = {
             foreignKeyName: "project_metrics_history_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_metrics_history_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_metrics_history_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "project_metrics_history_project_id_fkey"
@@ -14150,6 +21393,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_metrics_history_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -14231,8 +21481,22 @@ export type Database = {
             foreignKeyName: "project_phases_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_phases_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_phases_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "project_phases_project_id_fkey"
@@ -14260,6 +21524,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_phases_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -14354,8 +21625,22 @@ export type Database = {
             foreignKeyName: "project_predictions_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_predictions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_predictions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "project_predictions_project_id_fkey"
@@ -14385,6 +21670,13 @@ export type Database = {
             referencedRelation: "v_project_rfi_stats"
             referencedColumns: ["project_id"]
           },
+          {
+            foreignKeyName: "project_predictions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
         ]
       }
       projects: {
@@ -14410,11 +21702,13 @@ export type Database = {
           current_working_days: number | null
           davis_bacon_required: boolean | null
           dbe_goal_percentage: number | null
+          default_geofence_id: string | null
           deleted_at: string | null
           deleted_by: string | null
           description: string | null
           estimated_cost: number | null
           federal_aid_number: string | null
+          geofence_radius_meters: number | null
           id: string
           insurance_certificate_expiration: string | null
           is_federal_aid: boolean | null
@@ -14462,11 +21756,13 @@ export type Database = {
           current_working_days?: number | null
           davis_bacon_required?: boolean | null
           dbe_goal_percentage?: number | null
+          default_geofence_id?: string | null
           deleted_at?: string | null
           deleted_by?: string | null
           description?: string | null
           estimated_cost?: number | null
           federal_aid_number?: string | null
+          geofence_radius_meters?: number | null
           id?: string
           insurance_certificate_expiration?: string | null
           is_federal_aid?: boolean | null
@@ -14514,11 +21810,13 @@ export type Database = {
           current_working_days?: number | null
           davis_bacon_required?: boolean | null
           dbe_goal_percentage?: number | null
+          default_geofence_id?: string | null
           deleted_at?: string | null
           deleted_by?: string | null
           description?: string | null
           estimated_cost?: number | null
           federal_aid_number?: string | null
+          geofence_radius_meters?: number | null
           id?: string
           insurance_certificate_expiration?: string | null
           is_federal_aid?: boolean | null
@@ -14550,6 +21848,13 @@ export type Database = {
             columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "projects_default_geofence_id_fkey"
+            columns: ["default_geofence_id"]
+            isOneToOne: false
+            referencedRelation: "geofences"
             referencedColumns: ["id"]
           },
           {
@@ -14862,6 +22167,7 @@ export type Database = {
           contractor_rep_id: string | null
           created_at: string | null
           created_by: string | null
+          critical_items: number | null
           description: string | null
           due_date: string | null
           final_sign_off_url: string | null
@@ -14885,6 +22191,7 @@ export type Database = {
           contractor_rep_id?: string | null
           created_at?: string | null
           created_by?: string | null
+          critical_items?: number | null
           description?: string | null
           due_date?: string | null
           final_sign_off_url?: string | null
@@ -14908,6 +22215,7 @@ export type Database = {
           contractor_rep_id?: string | null
           created_at?: string | null
           created_by?: string | null
+          critical_items?: number | null
           description?: string | null
           due_date?: string | null
           final_sign_off_url?: string | null
@@ -14942,8 +22250,22 @@ export type Database = {
             foreignKeyName: "punch_lists_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "punch_lists_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "punch_lists_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "punch_lists_project_id_fkey"
@@ -14971,6 +22293,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "punch_lists_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -15097,8 +22426,22 @@ export type Database = {
             foreignKeyName: "purchase_orders_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "purchase_orders_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "purchase_orders_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "purchase_orders_project_id_fkey"
@@ -15129,11 +22472,552 @@ export type Database = {
             referencedColumns: ["project_id"]
           },
           {
+            foreignKeyName: "purchase_orders_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
             foreignKeyName: "purchase_orders_supplier_id_fkey"
             columns: ["supplier_id"]
             isOneToOne: false
             referencedRelation: "suppliers"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchase_orders_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "v_supplier_quality_dashboard"
+            referencedColumns: ["supplier_id"]
+          },
+        ]
+      }
+      quality_audits: {
+        Row: {
+          actual_date: string | null
+          areas_audited: string[] | null
+          audit_number: string
+          audit_plan_url: string | null
+          audit_report_url: string | null
+          audit_team: string[] | null
+          audit_type: Database["public"]["Enums"]["audit_type"]
+          auditee_name: string | null
+          auditee_title: string | null
+          auditor_company: string | null
+          checklist_url: string | null
+          created_at: string | null
+          created_by: string | null
+          duration_hours: number | null
+          findings_count: number | null
+          follow_up_completed_date: string | null
+          follow_up_due_date: string | null
+          follow_up_required: boolean | null
+          id: string
+          lead_auditor: string
+          major_findings: number | null
+          minor_findings: number | null
+          observations: number | null
+          organization_id: string
+          overall_rating: string | null
+          project_id: string | null
+          scheduled_date: string | null
+          scope_description: string | null
+          status: string | null
+          strengths: string | null
+          title: string
+          updated_at: string | null
+          weaknesses: string | null
+        }
+        Insert: {
+          actual_date?: string | null
+          areas_audited?: string[] | null
+          audit_number: string
+          audit_plan_url?: string | null
+          audit_report_url?: string | null
+          audit_team?: string[] | null
+          audit_type: Database["public"]["Enums"]["audit_type"]
+          auditee_name?: string | null
+          auditee_title?: string | null
+          auditor_company?: string | null
+          checklist_url?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          duration_hours?: number | null
+          findings_count?: number | null
+          follow_up_completed_date?: string | null
+          follow_up_due_date?: string | null
+          follow_up_required?: boolean | null
+          id?: string
+          lead_auditor: string
+          major_findings?: number | null
+          minor_findings?: number | null
+          observations?: number | null
+          organization_id: string
+          overall_rating?: string | null
+          project_id?: string | null
+          scheduled_date?: string | null
+          scope_description?: string | null
+          status?: string | null
+          strengths?: string | null
+          title: string
+          updated_at?: string | null
+          weaknesses?: string | null
+        }
+        Update: {
+          actual_date?: string | null
+          areas_audited?: string[] | null
+          audit_number?: string
+          audit_plan_url?: string | null
+          audit_report_url?: string | null
+          audit_team?: string[] | null
+          audit_type?: Database["public"]["Enums"]["audit_type"]
+          auditee_name?: string | null
+          auditee_title?: string | null
+          auditor_company?: string | null
+          checklist_url?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          duration_hours?: number | null
+          findings_count?: number | null
+          follow_up_completed_date?: string | null
+          follow_up_due_date?: string | null
+          follow_up_required?: boolean | null
+          id?: string
+          lead_auditor?: string
+          major_findings?: number | null
+          minor_findings?: number | null
+          observations?: number | null
+          organization_id?: string
+          overall_rating?: string | null
+          project_id?: string | null
+          scheduled_date?: string | null
+          scope_description?: string | null
+          status?: string | null
+          strengths?: string | null
+          title?: string
+          updated_at?: string | null
+          weaknesses?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quality_audits_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quality_audits_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quality_audits_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quality_audits_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quality_audits_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quality_audits_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quality_audits_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quality_audits_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quality_audits_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quality_audits_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      quality_metrics: {
+        Row: {
+          avg_ncr_closure_days: number | null
+          avg_punch_closure_days: number | null
+          computed_at: string | null
+          defects_by_category: Json | null
+          defects_by_trade: Json | null
+          ftq_rate: number | null
+          id: string
+          inspection_pass_rate: number | null
+          inspections_failed: number | null
+          inspections_passed: number | null
+          inspections_total: number | null
+          metric_month: number | null
+          metric_quarter: number | null
+          metric_year: number
+          ncr_cost: number | null
+          ncrs_closed: number | null
+          ncrs_opened: number | null
+          ncrs_overdue: number | null
+          organization_id: string
+          project_id: string | null
+          punch_items_closed: number | null
+          punch_items_opened: number | null
+          retest_count: number | null
+          rework_cost: number | null
+          test_pass_rate: number | null
+          testing_cost: number | null
+          tests_failed: number | null
+          tests_passed: number | null
+          tests_total: number | null
+          total_coq: number | null
+        }
+        Insert: {
+          avg_ncr_closure_days?: number | null
+          avg_punch_closure_days?: number | null
+          computed_at?: string | null
+          defects_by_category?: Json | null
+          defects_by_trade?: Json | null
+          ftq_rate?: number | null
+          id?: string
+          inspection_pass_rate?: number | null
+          inspections_failed?: number | null
+          inspections_passed?: number | null
+          inspections_total?: number | null
+          metric_month?: number | null
+          metric_quarter?: number | null
+          metric_year: number
+          ncr_cost?: number | null
+          ncrs_closed?: number | null
+          ncrs_opened?: number | null
+          ncrs_overdue?: number | null
+          organization_id: string
+          project_id?: string | null
+          punch_items_closed?: number | null
+          punch_items_opened?: number | null
+          retest_count?: number | null
+          rework_cost?: number | null
+          test_pass_rate?: number | null
+          testing_cost?: number | null
+          tests_failed?: number | null
+          tests_passed?: number | null
+          tests_total?: number | null
+          total_coq?: number | null
+        }
+        Update: {
+          avg_ncr_closure_days?: number | null
+          avg_punch_closure_days?: number | null
+          computed_at?: string | null
+          defects_by_category?: Json | null
+          defects_by_trade?: Json | null
+          ftq_rate?: number | null
+          id?: string
+          inspection_pass_rate?: number | null
+          inspections_failed?: number | null
+          inspections_passed?: number | null
+          inspections_total?: number | null
+          metric_month?: number | null
+          metric_quarter?: number | null
+          metric_year?: number
+          ncr_cost?: number | null
+          ncrs_closed?: number | null
+          ncrs_opened?: number | null
+          ncrs_overdue?: number | null
+          organization_id?: string
+          project_id?: string | null
+          punch_items_closed?: number | null
+          punch_items_opened?: number | null
+          retest_count?: number | null
+          rework_cost?: number | null
+          test_pass_rate?: number | null
+          testing_cost?: number | null
+          tests_failed?: number | null
+          tests_passed?: number | null
+          tests_total?: number | null
+          total_coq?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quality_metrics_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quality_metrics_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quality_metrics_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quality_metrics_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quality_metrics_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quality_metrics_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quality_metrics_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quality_metrics_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quality_metrics_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quality_metrics_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      quantity_dispute_notes: {
+        Row: {
+          adjustment_reference: string | null
+          communication_log: Json | null
+          created_at: string | null
+          created_by: string | null
+          daily_quantity_id: string | null
+          dispute_status: string | null
+          doh_paid_qty: number
+          field_reported_qty: number
+          final_qty: number | null
+          id: string
+          item_number: string
+          organization_id: string
+          outcome: string | null
+          pay_period_id: string | null
+          project_id: string
+          resolution_notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          updated_at: string | null
+          variance_amount: number | null
+          variance_qty: number | null
+        }
+        Insert: {
+          adjustment_reference?: string | null
+          communication_log?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          daily_quantity_id?: string | null
+          dispute_status?: string | null
+          doh_paid_qty: number
+          field_reported_qty: number
+          final_qty?: number | null
+          id?: string
+          item_number: string
+          organization_id: string
+          outcome?: string | null
+          pay_period_id?: string | null
+          project_id: string
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          updated_at?: string | null
+          variance_amount?: number | null
+          variance_qty?: number | null
+        }
+        Update: {
+          adjustment_reference?: string | null
+          communication_log?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          daily_quantity_id?: string | null
+          dispute_status?: string | null
+          doh_paid_qty?: number
+          field_reported_qty?: number
+          final_qty?: number | null
+          id?: string
+          item_number?: string
+          organization_id?: string
+          outcome?: string | null
+          pay_period_id?: string | null
+          project_id?: string
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          updated_at?: string | null
+          variance_amount?: number | null
+          variance_qty?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quantity_dispute_notes_daily_quantity_id_fkey"
+            columns: ["daily_quantity_id"]
+            isOneToOne: false
+            referencedRelation: "daily_report_quantities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quantity_dispute_notes_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quantity_dispute_notes_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "pay_periods"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quantity_dispute_notes_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pay_period_dashboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quantity_dispute_notes_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_payment_deadline_summary"
+            referencedColumns: ["pay_period_id"]
+          },
+          {
+            foreignKeyName: "quantity_dispute_notes_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_validations"
+            referencedColumns: ["pay_period_id"]
+          },
+          {
+            foreignKeyName: "quantity_dispute_notes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quantity_dispute_notes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quantity_dispute_notes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quantity_dispute_notes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quantity_dispute_notes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quantity_dispute_notes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quantity_dispute_notes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quantity_dispute_notes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quantity_dispute_notes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
           },
         ]
       }
@@ -15400,8 +23284,22 @@ export type Database = {
             foreignKeyName: "report_photos_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "report_photos_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "report_photos_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "report_photos_project_id_fkey"
@@ -15429,6 +23327,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "report_photos_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -15722,8 +23627,22 @@ export type Database = {
             foreignKeyName: "rfi_settings_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: true
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "rfi_settings_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "rfi_settings_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "rfi_settings_project_id_fkey"
@@ -15751,6 +23670,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: true
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "rfi_settings_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -15960,8 +23886,22 @@ export type Database = {
             foreignKeyName: "rfis_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "rfis_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "rfis_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "rfis_project_id_fkey"
@@ -15989,6 +23929,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "rfis_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -16132,8 +24079,22 @@ export type Database = {
             foreignKeyName: "risk_indicators_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "risk_indicators_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "risk_indicators_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "risk_indicators_project_id_fkey"
@@ -16161,6 +24122,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "risk_indicators_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -16302,6 +24270,140 @@ export type Database = {
           },
         ]
       }
+      safety_metrics: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          dart: number | null
+          dart_cases: number | null
+          days_away_from_work: number | null
+          days_job_transfer: number | null
+          days_restricted_duty: number | null
+          emr: number | null
+          emr_effective_date: string | null
+          emr_expiration_date: string | null
+          fatalities: number | null
+          first_aid_cases: number | null
+          hazards_corrected: number | null
+          hazards_identified: number | null
+          hospitalizations: number | null
+          id: string
+          jsas_created: number | null
+          jsas_reviewed: number | null
+          ltir: number | null
+          metric_month: number | null
+          metric_quarter: number | null
+          metric_year: number
+          near_miss_ratio: number | null
+          near_misses_reported: number | null
+          organization_id: string
+          property_damage_incidents: number | null
+          recordable_injuries: number | null
+          safety_observations_atrisk: number | null
+          safety_observations_positive: number | null
+          severity_rate: number | null
+          site_inspections_conducted: number | null
+          toolbox_talk_attendance_pct: number | null
+          toolbox_talks_conducted: number | null
+          total_hours_worked: number
+          training_hours_completed: number | null
+          trir: number | null
+          updated_at: string | null
+          workers_comp_claims: number | null
+          workers_comp_costs: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          dart?: number | null
+          dart_cases?: number | null
+          days_away_from_work?: number | null
+          days_job_transfer?: number | null
+          days_restricted_duty?: number | null
+          emr?: number | null
+          emr_effective_date?: string | null
+          emr_expiration_date?: string | null
+          fatalities?: number | null
+          first_aid_cases?: number | null
+          hazards_corrected?: number | null
+          hazards_identified?: number | null
+          hospitalizations?: number | null
+          id?: string
+          jsas_created?: number | null
+          jsas_reviewed?: number | null
+          ltir?: number | null
+          metric_month?: number | null
+          metric_quarter?: number | null
+          metric_year: number
+          near_miss_ratio?: number | null
+          near_misses_reported?: number | null
+          organization_id: string
+          property_damage_incidents?: number | null
+          recordable_injuries?: number | null
+          safety_observations_atrisk?: number | null
+          safety_observations_positive?: number | null
+          severity_rate?: number | null
+          site_inspections_conducted?: number | null
+          toolbox_talk_attendance_pct?: number | null
+          toolbox_talks_conducted?: number | null
+          total_hours_worked: number
+          training_hours_completed?: number | null
+          trir?: number | null
+          updated_at?: string | null
+          workers_comp_claims?: number | null
+          workers_comp_costs?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          dart?: number | null
+          dart_cases?: number | null
+          days_away_from_work?: number | null
+          days_job_transfer?: number | null
+          days_restricted_duty?: number | null
+          emr?: number | null
+          emr_effective_date?: string | null
+          emr_expiration_date?: string | null
+          fatalities?: number | null
+          first_aid_cases?: number | null
+          hazards_corrected?: number | null
+          hazards_identified?: number | null
+          hospitalizations?: number | null
+          id?: string
+          jsas_created?: number | null
+          jsas_reviewed?: number | null
+          ltir?: number | null
+          metric_month?: number | null
+          metric_quarter?: number | null
+          metric_year?: number
+          near_miss_ratio?: number | null
+          near_misses_reported?: number | null
+          organization_id?: string
+          property_damage_incidents?: number | null
+          recordable_injuries?: number | null
+          safety_observations_atrisk?: number | null
+          safety_observations_positive?: number | null
+          severity_rate?: number | null
+          site_inspections_conducted?: number | null
+          toolbox_talk_attendance_pct?: number | null
+          toolbox_talks_conducted?: number | null
+          total_hours_worked?: number
+          training_hours_completed?: number | null
+          trir?: number | null
+          updated_at?: string | null
+          workers_comp_claims?: number | null
+          workers_comp_costs?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "safety_metrics_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       safety_orientations: {
         Row: {
           acknowledged_at: string | null
@@ -16380,8 +24482,22 @@ export type Database = {
             foreignKeyName: "safety_orientations_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "safety_orientations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "safety_orientations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "safety_orientations_project_id_fkey"
@@ -16412,10 +24528,1125 @@ export type Database = {
             referencedColumns: ["project_id"]
           },
           {
+            foreignKeyName: "safety_orientations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
             foreignKeyName: "safety_orientations_subcontractor_worker_id_fkey"
             columns: ["subcontractor_worker_id"]
             isOneToOne: false
             referencedRelation: "subcontractor_workers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      safety_violation_corrective_actions: {
+        Row: {
+          action_description: string
+          assigned_to: string | null
+          completed_at: string | null
+          completed_by: string | null
+          created_at: string | null
+          due_date: string | null
+          evidence_documents: string[] | null
+          evidence_photos: string[] | null
+          id: string
+          notes: string | null
+          verification_method: string | null
+          verification_required: boolean | null
+          verified_at: string | null
+          verified_by: string | null
+          violation_id: string
+        }
+        Insert: {
+          action_description: string
+          assigned_to?: string | null
+          completed_at?: string | null
+          completed_by?: string | null
+          created_at?: string | null
+          due_date?: string | null
+          evidence_documents?: string[] | null
+          evidence_photos?: string[] | null
+          id?: string
+          notes?: string | null
+          verification_method?: string | null
+          verification_required?: boolean | null
+          verified_at?: string | null
+          verified_by?: string | null
+          violation_id: string
+        }
+        Update: {
+          action_description?: string
+          assigned_to?: string | null
+          completed_at?: string | null
+          completed_by?: string | null
+          created_at?: string | null
+          due_date?: string | null
+          evidence_documents?: string[] | null
+          evidence_photos?: string[] | null
+          id?: string
+          notes?: string | null
+          verification_method?: string | null
+          verification_required?: boolean | null
+          verified_at?: string | null
+          verified_by?: string | null
+          violation_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "safety_violation_corrective_actions_violation_id_fkey"
+            columns: ["violation_id"]
+            isOneToOne: false
+            referencedRelation: "safety_violations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      safety_violations: {
+        Row: {
+          abatement_completed_date: string | null
+          abatement_description: string | null
+          abatement_due_date: string | null
+          abatement_required: boolean | null
+          abatement_verified: boolean | null
+          abatement_verified_by: string | null
+          citation_document_url: string | null
+          citation_number: string
+          closed_date: string | null
+          contest_date: string | null
+          contest_outcome: string | null
+          created_at: string | null
+          created_by: string | null
+          final_penalty: number | null
+          id: string
+          initial_penalty: number | null
+          inspection_number: string | null
+          is_contested: boolean | null
+          issue_date: string
+          issuing_agency: string | null
+          location_description: string | null
+          negotiated_penalty: number | null
+          organization_id: string
+          osha_standard_violated: string | null
+          penalty_paid: boolean | null
+          penalty_paid_date: string | null
+          photos: string[] | null
+          project_id: string | null
+          severity: Database["public"]["Enums"]["violation_severity"]
+          status: string | null
+          updated_at: string | null
+          violation_description: string
+        }
+        Insert: {
+          abatement_completed_date?: string | null
+          abatement_description?: string | null
+          abatement_due_date?: string | null
+          abatement_required?: boolean | null
+          abatement_verified?: boolean | null
+          abatement_verified_by?: string | null
+          citation_document_url?: string | null
+          citation_number: string
+          closed_date?: string | null
+          contest_date?: string | null
+          contest_outcome?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          final_penalty?: number | null
+          id?: string
+          initial_penalty?: number | null
+          inspection_number?: string | null
+          is_contested?: boolean | null
+          issue_date: string
+          issuing_agency?: string | null
+          location_description?: string | null
+          negotiated_penalty?: number | null
+          organization_id: string
+          osha_standard_violated?: string | null
+          penalty_paid?: boolean | null
+          penalty_paid_date?: string | null
+          photos?: string[] | null
+          project_id?: string | null
+          severity: Database["public"]["Enums"]["violation_severity"]
+          status?: string | null
+          updated_at?: string | null
+          violation_description: string
+        }
+        Update: {
+          abatement_completed_date?: string | null
+          abatement_description?: string | null
+          abatement_due_date?: string | null
+          abatement_required?: boolean | null
+          abatement_verified?: boolean | null
+          abatement_verified_by?: string | null
+          citation_document_url?: string | null
+          citation_number?: string
+          closed_date?: string | null
+          contest_date?: string | null
+          contest_outcome?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          final_penalty?: number | null
+          id?: string
+          initial_penalty?: number | null
+          inspection_number?: string | null
+          is_contested?: boolean | null
+          issue_date?: string
+          issuing_agency?: string | null
+          location_description?: string | null
+          negotiated_penalty?: number | null
+          organization_id?: string
+          osha_standard_violated?: string | null
+          penalty_paid?: boolean | null
+          penalty_paid_date?: string | null
+          photos?: string[] | null
+          project_id?: string | null
+          severity?: Database["public"]["Enums"]["violation_severity"]
+          status?: string | null
+          updated_at?: string | null
+          violation_description?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "safety_violations_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "safety_violations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "safety_violations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "safety_violations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "safety_violations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "safety_violations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "safety_violations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "safety_violations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "safety_violations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "safety_violations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      self_perform_cost_codes: {
+        Row: {
+          actual_equipment_cost: number | null
+          actual_labor_cost: number | null
+          actual_material_cost: number | null
+          actual_total_cost: number | null
+          bid_qty: number | null
+          bid_total: number | null
+          bid_unit_price: number | null
+          created_at: string | null
+          created_by: string | null
+          description: string
+          estimated_equipment_pct: number | null
+          estimated_labor_pct: number | null
+          estimated_material_pct: number | null
+          id: string
+          installed_qty: number | null
+          is_active: boolean | null
+          item_number: string
+          organization_id: string
+          project_id: string
+          unit: string
+          updated_at: string | null
+        }
+        Insert: {
+          actual_equipment_cost?: number | null
+          actual_labor_cost?: number | null
+          actual_material_cost?: number | null
+          actual_total_cost?: number | null
+          bid_qty?: number | null
+          bid_total?: number | null
+          bid_unit_price?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          description: string
+          estimated_equipment_pct?: number | null
+          estimated_labor_pct?: number | null
+          estimated_material_pct?: number | null
+          id?: string
+          installed_qty?: number | null
+          is_active?: boolean | null
+          item_number: string
+          organization_id: string
+          project_id: string
+          unit: string
+          updated_at?: string | null
+        }
+        Update: {
+          actual_equipment_cost?: number | null
+          actual_labor_cost?: number | null
+          actual_material_cost?: number | null
+          actual_total_cost?: number | null
+          bid_qty?: number | null
+          bid_total?: number | null
+          bid_unit_price?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string
+          estimated_equipment_pct?: number | null
+          estimated_labor_pct?: number | null
+          estimated_material_pct?: number | null
+          id?: string
+          installed_qty?: number | null
+          is_active?: boolean | null
+          item_number?: string
+          organization_id?: string
+          project_id?: string
+          unit?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "self_perform_cost_codes_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_cost_codes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_cost_codes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_cost_codes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_cost_codes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_cost_codes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_cost_codes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_cost_codes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_cost_codes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_cost_codes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      self_perform_equipment_usage: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          cost_code_id: string
+          created_at: string | null
+          created_by: string | null
+          daily_report_id: string | null
+          end_meter: number | null
+          equipment_code: string | null
+          equipment_id: string | null
+          equipment_name: string
+          fuel_cost: number | null
+          fuel_cost_per_gallon: number | null
+          fuel_gallons: number | null
+          hourly_rate: number
+          hours_idle: number | null
+          hours_operated: number | null
+          id: string
+          idle_cost: number | null
+          idle_rate_pct: number | null
+          notes: string | null
+          operating_cost: number | null
+          organization_id: string
+          project_id: string
+          start_meter: number | null
+          status: Database["public"]["Enums"]["cost_entry_status"] | null
+          submitted_at: string | null
+          submitted_by: string | null
+          total_cost: number | null
+          total_hours: number | null
+          updated_at: string | null
+          work_date: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          cost_code_id: string
+          created_at?: string | null
+          created_by?: string | null
+          daily_report_id?: string | null
+          end_meter?: number | null
+          equipment_code?: string | null
+          equipment_id?: string | null
+          equipment_name: string
+          fuel_cost?: number | null
+          fuel_cost_per_gallon?: number | null
+          fuel_gallons?: number | null
+          hourly_rate: number
+          hours_idle?: number | null
+          hours_operated?: number | null
+          id?: string
+          idle_cost?: number | null
+          idle_rate_pct?: number | null
+          notes?: string | null
+          operating_cost?: number | null
+          organization_id: string
+          project_id: string
+          start_meter?: number | null
+          status?: Database["public"]["Enums"]["cost_entry_status"] | null
+          submitted_at?: string | null
+          submitted_by?: string | null
+          total_cost?: number | null
+          total_hours?: number | null
+          updated_at?: string | null
+          work_date: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          cost_code_id?: string
+          created_at?: string | null
+          created_by?: string | null
+          daily_report_id?: string | null
+          end_meter?: number | null
+          equipment_code?: string | null
+          equipment_id?: string | null
+          equipment_name?: string
+          fuel_cost?: number | null
+          fuel_cost_per_gallon?: number | null
+          fuel_gallons?: number | null
+          hourly_rate?: number
+          hours_idle?: number | null
+          hours_operated?: number | null
+          id?: string
+          idle_cost?: number | null
+          idle_rate_pct?: number | null
+          notes?: string | null
+          operating_cost?: number | null
+          organization_id?: string
+          project_id?: string
+          start_meter?: number | null
+          status?: Database["public"]["Enums"]["cost_entry_status"] | null
+          submitted_at?: string | null
+          submitted_by?: string | null
+          total_cost?: number | null
+          total_hours?: number | null
+          updated_at?: string | null
+          work_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "self_perform_equipment_usage_cost_code_id_fkey"
+            columns: ["cost_code_id"]
+            isOneToOne: false
+            referencedRelation: "self_perform_cost_codes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_equipment_usage_cost_code_id_fkey"
+            columns: ["cost_code_id"]
+            isOneToOne: false
+            referencedRelation: "v_self_perform_summary"
+            referencedColumns: ["cost_code_id"]
+          },
+          {
+            foreignKeyName: "self_perform_equipment_usage_daily_report_id_fkey"
+            columns: ["daily_report_id"]
+            isOneToOne: false
+            referencedRelation: "daily_reports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_equipment_usage_daily_report_id_fkey"
+            columns: ["daily_report_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_report_approvals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_equipment_usage_daily_report_id_fkey"
+            columns: ["daily_report_id"]
+            isOneToOne: false
+            referencedRelation: "v_recent_daily_reports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_equipment_usage_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "equipment"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_equipment_usage_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_fleet_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_equipment_usage_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_health_overview"
+            referencedColumns: ["equipment_id"]
+          },
+          {
+            foreignKeyName: "self_perform_equipment_usage_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_status"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_equipment_usage_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_utilization"
+            referencedColumns: ["equipment_id"]
+          },
+          {
+            foreignKeyName: "self_perform_equipment_usage_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_equipment_usage_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_equipment_usage_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_equipment_usage_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_equipment_usage_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_equipment_usage_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_equipment_usage_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_equipment_usage_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_equipment_usage_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_equipment_usage_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      self_perform_labor_entries: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          base_rate: number
+          burden_cost: number | null
+          burden_rate_pct: number | null
+          cost_code_id: string
+          created_at: string | null
+          created_by: string | null
+          crew_member_id: string | null
+          daily_report_id: string | null
+          dt_multiplier: number | null
+          fringe_rate: number | null
+          hours_double_time: number | null
+          hours_overtime: number | null
+          hours_regular: number | null
+          id: string
+          labor_cost: number | null
+          notes: string | null
+          organization_id: string
+          ot_multiplier: number | null
+          project_id: string
+          qty_installed: number | null
+          status: Database["public"]["Enums"]["cost_entry_status"] | null
+          submitted_at: string | null
+          submitted_by: string | null
+          total_cost: number | null
+          total_hours: number | null
+          trade_classification: string
+          updated_at: string | null
+          work_date: string
+          worker_name: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          base_rate: number
+          burden_cost?: number | null
+          burden_rate_pct?: number | null
+          cost_code_id: string
+          created_at?: string | null
+          created_by?: string | null
+          crew_member_id?: string | null
+          daily_report_id?: string | null
+          dt_multiplier?: number | null
+          fringe_rate?: number | null
+          hours_double_time?: number | null
+          hours_overtime?: number | null
+          hours_regular?: number | null
+          id?: string
+          labor_cost?: number | null
+          notes?: string | null
+          organization_id: string
+          ot_multiplier?: number | null
+          project_id: string
+          qty_installed?: number | null
+          status?: Database["public"]["Enums"]["cost_entry_status"] | null
+          submitted_at?: string | null
+          submitted_by?: string | null
+          total_cost?: number | null
+          total_hours?: number | null
+          trade_classification: string
+          updated_at?: string | null
+          work_date: string
+          worker_name: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          base_rate?: number
+          burden_cost?: number | null
+          burden_rate_pct?: number | null
+          cost_code_id?: string
+          created_at?: string | null
+          created_by?: string | null
+          crew_member_id?: string | null
+          daily_report_id?: string | null
+          dt_multiplier?: number | null
+          fringe_rate?: number | null
+          hours_double_time?: number | null
+          hours_overtime?: number | null
+          hours_regular?: number | null
+          id?: string
+          labor_cost?: number | null
+          notes?: string | null
+          organization_id?: string
+          ot_multiplier?: number | null
+          project_id?: string
+          qty_installed?: number | null
+          status?: Database["public"]["Enums"]["cost_entry_status"] | null
+          submitted_at?: string | null
+          submitted_by?: string | null
+          total_cost?: number | null
+          total_hours?: number | null
+          trade_classification?: string
+          updated_at?: string | null
+          work_date?: string
+          worker_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "self_perform_labor_entries_cost_code_id_fkey"
+            columns: ["cost_code_id"]
+            isOneToOne: false
+            referencedRelation: "self_perform_cost_codes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_labor_entries_cost_code_id_fkey"
+            columns: ["cost_code_id"]
+            isOneToOne: false
+            referencedRelation: "v_self_perform_summary"
+            referencedColumns: ["cost_code_id"]
+          },
+          {
+            foreignKeyName: "self_perform_labor_entries_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
+            referencedRelation: "crew_members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_labor_entries_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
+            referencedRelation: "v_active_crew"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_labor_entries_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
+            referencedRelation: "v_crew_roster"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_labor_entries_daily_report_id_fkey"
+            columns: ["daily_report_id"]
+            isOneToOne: false
+            referencedRelation: "daily_reports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_labor_entries_daily_report_id_fkey"
+            columns: ["daily_report_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_report_approvals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_labor_entries_daily_report_id_fkey"
+            columns: ["daily_report_id"]
+            isOneToOne: false
+            referencedRelation: "v_recent_daily_reports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_labor_entries_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_labor_entries_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_labor_entries_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_labor_entries_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_labor_entries_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_labor_entries_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_labor_entries_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_labor_entries_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_labor_entries_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_labor_entries_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      self_perform_material_usage: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          cost_code_id: string
+          created_at: string | null
+          created_by: string | null
+          daily_report_id: string | null
+          delivery_ticket_id: string | null
+          id: string
+          material_code: string | null
+          material_name: string
+          notes: string | null
+          organization_id: string
+          project_id: string
+          quantity: number
+          status: Database["public"]["Enums"]["cost_entry_status"] | null
+          submitted_at: string | null
+          submitted_by: string | null
+          supplier_name: string | null
+          ticket_number: string | null
+          total_cost: number | null
+          unit: string
+          unit_cost: number
+          updated_at: string | null
+          work_date: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          cost_code_id: string
+          created_at?: string | null
+          created_by?: string | null
+          daily_report_id?: string | null
+          delivery_ticket_id?: string | null
+          id?: string
+          material_code?: string | null
+          material_name: string
+          notes?: string | null
+          organization_id: string
+          project_id: string
+          quantity: number
+          status?: Database["public"]["Enums"]["cost_entry_status"] | null
+          submitted_at?: string | null
+          submitted_by?: string | null
+          supplier_name?: string | null
+          ticket_number?: string | null
+          total_cost?: number | null
+          unit: string
+          unit_cost: number
+          updated_at?: string | null
+          work_date: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          cost_code_id?: string
+          created_at?: string | null
+          created_by?: string | null
+          daily_report_id?: string | null
+          delivery_ticket_id?: string | null
+          id?: string
+          material_code?: string | null
+          material_name?: string
+          notes?: string | null
+          organization_id?: string
+          project_id?: string
+          quantity?: number
+          status?: Database["public"]["Enums"]["cost_entry_status"] | null
+          submitted_at?: string | null
+          submitted_by?: string | null
+          supplier_name?: string | null
+          ticket_number?: string | null
+          total_cost?: number | null
+          unit?: string
+          unit_cost?: number
+          updated_at?: string | null
+          work_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "self_perform_material_usage_cost_code_id_fkey"
+            columns: ["cost_code_id"]
+            isOneToOne: false
+            referencedRelation: "self_perform_cost_codes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_material_usage_cost_code_id_fkey"
+            columns: ["cost_code_id"]
+            isOneToOne: false
+            referencedRelation: "v_self_perform_summary"
+            referencedColumns: ["cost_code_id"]
+          },
+          {
+            foreignKeyName: "self_perform_material_usage_daily_report_id_fkey"
+            columns: ["daily_report_id"]
+            isOneToOne: false
+            referencedRelation: "daily_reports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_material_usage_daily_report_id_fkey"
+            columns: ["daily_report_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_report_approvals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_material_usage_daily_report_id_fkey"
+            columns: ["daily_report_id"]
+            isOneToOne: false
+            referencedRelation: "v_recent_daily_reports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_material_usage_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_material_usage_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_material_usage_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_material_usage_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_material_usage_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_material_usage_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_material_usage_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_material_usage_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_material_usage_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_material_usage_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      sensitive_access_logs: {
+        Row: {
+          access_reason: string | null
+          access_type: string
+          authorization_type: string | null
+          created_at: string | null
+          fields_accessed: string[] | null
+          id: string
+          ip_address: unknown
+          is_authorized: boolean | null
+          organization_id: string
+          record_id: string
+          record_identifier: string | null
+          session_id: string | null
+          table_name: string
+          user_agent: string | null
+          user_email: string
+          user_id: string
+          user_role: string | null
+        }
+        Insert: {
+          access_reason?: string | null
+          access_type: string
+          authorization_type?: string | null
+          created_at?: string | null
+          fields_accessed?: string[] | null
+          id?: string
+          ip_address?: unknown
+          is_authorized?: boolean | null
+          organization_id: string
+          record_id: string
+          record_identifier?: string | null
+          session_id?: string | null
+          table_name: string
+          user_agent?: string | null
+          user_email: string
+          user_id: string
+          user_role?: string | null
+        }
+        Update: {
+          access_reason?: string | null
+          access_type?: string
+          authorization_type?: string | null
+          created_at?: string | null
+          fields_accessed?: string[] | null
+          id?: string
+          ip_address?: unknown
+          is_authorized?: boolean | null
+          organization_id?: string
+          record_id?: string
+          record_identifier?: string | null
+          session_id?: string | null
+          table_name?: string
+          user_agent?: string | null
+          user_email?: string
+          user_id?: string
+          user_role?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sensitive_access_logs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
             referencedColumns: ["id"]
           },
         ]
@@ -16494,8 +25725,22 @@ export type Database = {
             foreignKeyName: "sms_logs_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "sms_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "sms_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "sms_logs_project_id_fkey"
@@ -16523,6 +25768,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "sms_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -17226,6 +26478,482 @@ export type Database = {
           },
         ]
       }
+      specimen_tracking: {
+        Row: {
+          actual_test_date: string | null
+          air_content: number | null
+          batch_number: string | null
+          cast_date: string | null
+          cast_time: string | null
+          chain_of_custody_url: string | null
+          collected_by: string | null
+          collected_date: string
+          collected_time: string | null
+          collection_location: string | null
+          concrete_temp: number | null
+          created_at: string | null
+          created_by: string | null
+          curing_location: string | null
+          curing_method: string | null
+          curing_start_date: string | null
+          cylinder_size: string | null
+          disposed_date: string | null
+          disposition_notes: string | null
+          id: string
+          lab_id: string | null
+          lab_received_date: string | null
+          material_ticket_id: string | null
+          meets_spec: boolean | null
+          mix_design: string | null
+          organization_id: string
+          project_id: string
+          result_unit: string | null
+          result_value: number | null
+          scheduled_test_date: string | null
+          set_number: string | null
+          slump: number | null
+          specimen_id: string
+          specimen_type: Database["public"]["Enums"]["specimen_type"]
+          station: string | null
+          status: Database["public"]["Enums"]["specimen_status"] | null
+          test_age_days: number | null
+          test_result_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          actual_test_date?: string | null
+          air_content?: number | null
+          batch_number?: string | null
+          cast_date?: string | null
+          cast_time?: string | null
+          chain_of_custody_url?: string | null
+          collected_by?: string | null
+          collected_date: string
+          collected_time?: string | null
+          collection_location?: string | null
+          concrete_temp?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          curing_location?: string | null
+          curing_method?: string | null
+          curing_start_date?: string | null
+          cylinder_size?: string | null
+          disposed_date?: string | null
+          disposition_notes?: string | null
+          id?: string
+          lab_id?: string | null
+          lab_received_date?: string | null
+          material_ticket_id?: string | null
+          meets_spec?: boolean | null
+          mix_design?: string | null
+          organization_id: string
+          project_id: string
+          result_unit?: string | null
+          result_value?: number | null
+          scheduled_test_date?: string | null
+          set_number?: string | null
+          slump?: number | null
+          specimen_id: string
+          specimen_type: Database["public"]["Enums"]["specimen_type"]
+          station?: string | null
+          status?: Database["public"]["Enums"]["specimen_status"] | null
+          test_age_days?: number | null
+          test_result_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          actual_test_date?: string | null
+          air_content?: number | null
+          batch_number?: string | null
+          cast_date?: string | null
+          cast_time?: string | null
+          chain_of_custody_url?: string | null
+          collected_by?: string | null
+          collected_date?: string
+          collected_time?: string | null
+          collection_location?: string | null
+          concrete_temp?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          curing_location?: string | null
+          curing_method?: string | null
+          curing_start_date?: string | null
+          cylinder_size?: string | null
+          disposed_date?: string | null
+          disposition_notes?: string | null
+          id?: string
+          lab_id?: string | null
+          lab_received_date?: string | null
+          material_ticket_id?: string | null
+          meets_spec?: boolean | null
+          mix_design?: string | null
+          organization_id?: string
+          project_id?: string
+          result_unit?: string | null
+          result_value?: number | null
+          scheduled_test_date?: string | null
+          set_number?: string | null
+          slump?: number | null
+          specimen_id?: string
+          specimen_type?: Database["public"]["Enums"]["specimen_type"]
+          station?: string | null
+          status?: Database["public"]["Enums"]["specimen_status"] | null
+          test_age_days?: number | null
+          test_result_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "specimen_tracking_lab_id_fkey"
+            columns: ["lab_id"]
+            isOneToOne: false
+            referencedRelation: "labs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "specimen_tracking_material_ticket_id_fkey"
+            columns: ["material_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "material_tickets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "specimen_tracking_material_ticket_id_fkey"
+            columns: ["material_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_tickets_pending_verification"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "specimen_tracking_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "specimen_tracking_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "specimen_tracking_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "specimen_tracking_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "specimen_tracking_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "specimen_tracking_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "specimen_tracking_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "specimen_tracking_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "specimen_tracking_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "specimen_tracking_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "specimen_tracking_test_result_id_fkey"
+            columns: ["test_result_id"]
+            isOneToOne: false
+            referencedRelation: "test_results"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "specimen_tracking_test_result_id_fkey"
+            columns: ["test_result_id"]
+            isOneToOne: false
+            referencedRelation: "v_failed_tests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sub_payment_allocations: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          current_amount: number | null
+          current_qty: number | null
+          id: string
+          is_over_contract: boolean | null
+          over_contract_approved_at: string | null
+          over_contract_approved_by: string | null
+          over_contract_explanation: string | null
+          pay_period_id: string
+          previous_amount: number | null
+          previous_qty: number | null
+          remaining_qty: number | null
+          state_paid_qty_this_period: number | null
+          status: Database["public"]["Enums"]["sub_payment_status"] | null
+          subcontract_line_item_id: string
+          total_to_date_amount: number | null
+          total_to_date_qty: number | null
+          updated_at: string | null
+          updated_by: string | null
+          variance_explanation: string | null
+          variance_from_state: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          current_amount?: number | null
+          current_qty?: number | null
+          id?: string
+          is_over_contract?: boolean | null
+          over_contract_approved_at?: string | null
+          over_contract_approved_by?: string | null
+          over_contract_explanation?: string | null
+          pay_period_id: string
+          previous_amount?: number | null
+          previous_qty?: number | null
+          remaining_qty?: number | null
+          state_paid_qty_this_period?: number | null
+          status?: Database["public"]["Enums"]["sub_payment_status"] | null
+          subcontract_line_item_id: string
+          total_to_date_amount?: number | null
+          total_to_date_qty?: number | null
+          updated_at?: string | null
+          updated_by?: string | null
+          variance_explanation?: string | null
+          variance_from_state?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          current_amount?: number | null
+          current_qty?: number | null
+          id?: string
+          is_over_contract?: boolean | null
+          over_contract_approved_at?: string | null
+          over_contract_approved_by?: string | null
+          over_contract_explanation?: string | null
+          pay_period_id?: string
+          previous_amount?: number | null
+          previous_qty?: number | null
+          remaining_qty?: number | null
+          state_paid_qty_this_period?: number | null
+          status?: Database["public"]["Enums"]["sub_payment_status"] | null
+          subcontract_line_item_id?: string
+          total_to_date_amount?: number | null
+          total_to_date_qty?: number | null
+          updated_at?: string | null
+          updated_by?: string | null
+          variance_explanation?: string | null
+          variance_from_state?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sub_payment_allocations_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "pay_periods"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sub_payment_allocations_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pay_period_dashboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sub_payment_allocations_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_payment_deadline_summary"
+            referencedColumns: ["pay_period_id"]
+          },
+          {
+            foreignKeyName: "sub_payment_allocations_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_validations"
+            referencedColumns: ["pay_period_id"]
+          },
+          {
+            foreignKeyName: "sub_payment_allocations_subcontract_line_item_id_fkey"
+            columns: ["subcontract_line_item_id"]
+            isOneToOne: false
+            referencedRelation: "subcontract_line_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sub_payments: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          check_date: string | null
+          check_number: string | null
+          created_at: string | null
+          created_by: string | null
+          crl_confirmation_number: string | null
+          crl_submitted_at: string | null
+          days_until_deadline: number | null
+          deduction_description: string | null
+          deductions: number | null
+          gross_amount: number
+          id: string
+          is_late: boolean | null
+          net_amount: number
+          notification_method: string | null
+          organization_id: string
+          pay_period_id: string
+          payment_deadline: string | null
+          payment_method: string | null
+          retainage_held: number | null
+          retainage_percent_applied: number | null
+          status: Database["public"]["Enums"]["sub_payment_status"] | null
+          sub_notified_at: string | null
+          subcontractor_id: string
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          check_date?: string | null
+          check_number?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          crl_confirmation_number?: string | null
+          crl_submitted_at?: string | null
+          days_until_deadline?: number | null
+          deduction_description?: string | null
+          deductions?: number | null
+          gross_amount: number
+          id?: string
+          is_late?: boolean | null
+          net_amount: number
+          notification_method?: string | null
+          organization_id: string
+          pay_period_id: string
+          payment_deadline?: string | null
+          payment_method?: string | null
+          retainage_held?: number | null
+          retainage_percent_applied?: number | null
+          status?: Database["public"]["Enums"]["sub_payment_status"] | null
+          sub_notified_at?: string | null
+          subcontractor_id: string
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          check_date?: string | null
+          check_number?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          crl_confirmation_number?: string | null
+          crl_submitted_at?: string | null
+          days_until_deadline?: number | null
+          deduction_description?: string | null
+          deductions?: number | null
+          gross_amount?: number
+          id?: string
+          is_late?: boolean | null
+          net_amount?: number
+          notification_method?: string | null
+          organization_id?: string
+          pay_period_id?: string
+          payment_deadline?: string | null
+          payment_method?: string | null
+          retainage_held?: number | null
+          retainage_percent_applied?: number | null
+          status?: Database["public"]["Enums"]["sub_payment_status"] | null
+          sub_notified_at?: string | null
+          subcontractor_id?: string
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sub_payments_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sub_payments_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "pay_periods"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sub_payments_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pay_period_dashboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sub_payments_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_payment_deadline_summary"
+            referencedColumns: ["pay_period_id"]
+          },
+          {
+            foreignKeyName: "sub_payments_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_validations"
+            referencedColumns: ["pay_period_id"]
+          },
+          {
+            foreignKeyName: "sub_payments_subcontractor_id_fkey"
+            columns: ["subcontractor_id"]
+            isOneToOne: false
+            referencedRelation: "subcontractors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       subcontract_agreements: {
         Row: {
           actual_completion_date: string | null
@@ -17365,8 +27093,22 @@ export type Database = {
             foreignKeyName: "subcontract_agreements_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_agreements_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_agreements_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "subcontract_agreements_project_id_fkey"
@@ -17397,7 +27139,219 @@ export type Database = {
             referencedColumns: ["project_id"]
           },
           {
+            foreignKeyName: "subcontract_agreements_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
             foreignKeyName: "subcontract_agreements_subcontractor_id_fkey"
+            columns: ["subcontractor_id"]
+            isOneToOne: false
+            referencedRelation: "subcontractors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subcontract_budgets: {
+        Row: {
+          award_variance: number | null
+          award_variance_pct: number | null
+          bid_amount: number
+          bid_description: string | null
+          bid_notes: string | null
+          bid_project_id: string | null
+          budget_status: Database["public"]["Enums"]["budget_status"] | null
+          created_at: string | null
+          created_by: string | null
+          critical_threshold_pct: number | null
+          id: string
+          negotiated_amount: number | null
+          negotiated_by: string | null
+          negotiated_date: string | null
+          organization_id: string
+          percent_of_budget: number | null
+          project_id: string
+          subcontract_number: string | null
+          subcontractor_id: string
+          total_paid_to_date: number | null
+          updated_at: string | null
+          updated_by: string | null
+          warning_threshold_pct: number | null
+        }
+        Insert: {
+          award_variance?: number | null
+          award_variance_pct?: number | null
+          bid_amount: number
+          bid_description?: string | null
+          bid_notes?: string | null
+          bid_project_id?: string | null
+          budget_status?: Database["public"]["Enums"]["budget_status"] | null
+          created_at?: string | null
+          created_by?: string | null
+          critical_threshold_pct?: number | null
+          id?: string
+          negotiated_amount?: number | null
+          negotiated_by?: string | null
+          negotiated_date?: string | null
+          organization_id: string
+          percent_of_budget?: number | null
+          project_id: string
+          subcontract_number?: string | null
+          subcontractor_id: string
+          total_paid_to_date?: number | null
+          updated_at?: string | null
+          updated_by?: string | null
+          warning_threshold_pct?: number | null
+        }
+        Update: {
+          award_variance?: number | null
+          award_variance_pct?: number | null
+          bid_amount?: number
+          bid_description?: string | null
+          bid_notes?: string | null
+          bid_project_id?: string | null
+          budget_status?: Database["public"]["Enums"]["budget_status"] | null
+          created_at?: string | null
+          created_by?: string | null
+          critical_threshold_pct?: number | null
+          id?: string
+          negotiated_amount?: number | null
+          negotiated_by?: string | null
+          negotiated_date?: string | null
+          organization_id?: string
+          percent_of_budget?: number | null
+          project_id?: string
+          subcontract_number?: string | null
+          subcontractor_id?: string
+          total_paid_to_date?: number | null
+          updated_at?: string | null
+          updated_by?: string | null
+          warning_threshold_pct?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subcontract_budgets_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "bid_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_environmental_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_pricing_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_project_dashboard"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_projects_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_questions_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_risk_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_subcontractor_id_fkey"
             columns: ["subcontractor_id"]
             isOneToOne: false
             referencedRelation: "subcontractors"
@@ -17507,6 +27461,153 @@ export type Database = {
             columns: ["submitted_by"]
             isOneToOne: false
             referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subcontract_line_items: {
+        Row: {
+          cost_code_id: string | null
+          created_at: string | null
+          created_by: string | null
+          id: string
+          internal_item_number: string
+          is_active: boolean | null
+          item_description: string
+          line_number: number
+          organization_id: string
+          original_amount: number | null
+          original_qty: number
+          project_id: string
+          retainage_percent: number | null
+          sub_number: string
+          subcontractor_id: string
+          unit: string
+          unit_cost: number
+          updated_at: string | null
+          updated_by: string | null
+          wvdoh_item_number: string | null
+        }
+        Insert: {
+          cost_code_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          internal_item_number: string
+          is_active?: boolean | null
+          item_description: string
+          line_number: number
+          organization_id: string
+          original_amount?: number | null
+          original_qty: number
+          project_id: string
+          retainage_percent?: number | null
+          sub_number: string
+          subcontractor_id: string
+          unit: string
+          unit_cost: number
+          updated_at?: string | null
+          updated_by?: string | null
+          wvdoh_item_number?: string | null
+        }
+        Update: {
+          cost_code_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          internal_item_number?: string
+          is_active?: boolean | null
+          item_description?: string
+          line_number?: number
+          organization_id?: string
+          original_amount?: number | null
+          original_qty?: number
+          project_id?: string
+          retainage_percent?: number | null
+          sub_number?: string
+          subcontractor_id?: string
+          unit?: string
+          unit_cost?: number
+          updated_at?: string | null
+          updated_by?: string | null
+          wvdoh_item_number?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subcontract_line_items_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subcontract_line_items_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subcontract_line_items_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_line_items_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_line_items_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_line_items_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_line_items_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_line_items_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_line_items_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_line_items_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_line_items_subcontractor_id_fkey"
+            columns: ["subcontractor_id"]
+            isOneToOne: false
+            referencedRelation: "subcontractors"
             referencedColumns: ["id"]
           },
         ]
@@ -17723,8 +27824,22 @@ export type Database = {
             foreignKeyName: "subcontractor_daily_logs_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontractor_daily_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontractor_daily_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "subcontractor_daily_logs_project_id_fkey"
@@ -17752,6 +27867,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontractor_daily_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -17882,8 +28004,22 @@ export type Database = {
             foreignKeyName: "subcontractor_evaluations_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontractor_evaluations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontractor_evaluations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "subcontractor_evaluations_project_id_fkey"
@@ -17911,6 +28047,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontractor_evaluations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -18253,48 +28396,90 @@ export type Database = {
       }
       subcontractor_workers: {
         Row: {
+          badge_issued_date: string | null
+          badge_number: string | null
+          competent_person_types: string[] | null
           created_at: string | null
           email: string | null
+          first_aid_cpr_exp: string | null
           first_name: string
+          has_first_aid_cpr: boolean | null
+          has_osha_10: boolean | null
+          has_osha_30: boolean | null
           has_site_orientation: boolean | null
           id: string
+          is_active: boolean | null
+          is_competent_person: boolean | null
           last_name: string
           notes: string | null
           orientation_date: string | null
+          osha_10_card_url: string | null
+          osha_10_exp: string | null
+          osha_30_card_url: string | null
+          osha_30_exp: string | null
           phone: string | null
           safety_cert_expires: string | null
+          site_orientation_completed: boolean | null
           status: string | null
           subcontractor_id: string
           trade_classification: string | null
           updated_at: string | null
         }
         Insert: {
+          badge_issued_date?: string | null
+          badge_number?: string | null
+          competent_person_types?: string[] | null
           created_at?: string | null
           email?: string | null
+          first_aid_cpr_exp?: string | null
           first_name: string
+          has_first_aid_cpr?: boolean | null
+          has_osha_10?: boolean | null
+          has_osha_30?: boolean | null
           has_site_orientation?: boolean | null
           id?: string
+          is_active?: boolean | null
+          is_competent_person?: boolean | null
           last_name: string
           notes?: string | null
           orientation_date?: string | null
+          osha_10_card_url?: string | null
+          osha_10_exp?: string | null
+          osha_30_card_url?: string | null
+          osha_30_exp?: string | null
           phone?: string | null
           safety_cert_expires?: string | null
+          site_orientation_completed?: boolean | null
           status?: string | null
           subcontractor_id: string
           trade_classification?: string | null
           updated_at?: string | null
         }
         Update: {
+          badge_issued_date?: string | null
+          badge_number?: string | null
+          competent_person_types?: string[] | null
           created_at?: string | null
           email?: string | null
+          first_aid_cpr_exp?: string | null
           first_name?: string
+          has_first_aid_cpr?: boolean | null
+          has_osha_10?: boolean | null
+          has_osha_30?: boolean | null
           has_site_orientation?: boolean | null
           id?: string
+          is_active?: boolean | null
+          is_competent_person?: boolean | null
           last_name?: string
           notes?: string | null
           orientation_date?: string | null
+          osha_10_card_url?: string | null
+          osha_10_exp?: string | null
+          osha_30_card_url?: string | null
+          osha_30_exp?: string | null
           phone?: string | null
           safety_cert_expires?: string | null
+          site_orientation_completed?: boolean | null
           status?: string | null
           subcontractor_id?: string
           trade_classification?: string | null
@@ -18316,10 +28501,15 @@ export type Database = {
           address_line1: string | null
           address_line2: string | null
           aggregate_limit: number | null
+          auto_liability_exp: string | null
           bonding_company: string | null
           business_type: string | null
           city: string | null
           company_name: string
+          compliance_issues: string[] | null
+          compliance_status:
+            | Database["public"]["Enums"]["compliance_status"]
+            | null
           contractor_license_expiration: string | null
           contractor_license_number: string | null
           contractor_license_state: string | null
@@ -18335,9 +28525,11 @@ export type Database = {
           deleted_by: string | null
           emr_rate: number | null
           emr_year: number | null
+          general_liability_exp: string | null
           id: string
           is_dbe_certified: boolean | null
           is_prequalified: boolean | null
+          last_compliance_check: string | null
           minority_classification: string | null
           notes: string | null
           office_fax: string | null
@@ -18363,6 +28555,7 @@ export type Database = {
           updated_at: string
           updated_by: string | null
           website: string | null
+          workers_comp_exp: string | null
           zip_code: string | null
         }
         Insert: {
@@ -18370,10 +28563,15 @@ export type Database = {
           address_line1?: string | null
           address_line2?: string | null
           aggregate_limit?: number | null
+          auto_liability_exp?: string | null
           bonding_company?: string | null
           business_type?: string | null
           city?: string | null
           company_name: string
+          compliance_issues?: string[] | null
+          compliance_status?:
+            | Database["public"]["Enums"]["compliance_status"]
+            | null
           contractor_license_expiration?: string | null
           contractor_license_number?: string | null
           contractor_license_state?: string | null
@@ -18389,9 +28587,11 @@ export type Database = {
           deleted_by?: string | null
           emr_rate?: number | null
           emr_year?: number | null
+          general_liability_exp?: string | null
           id?: string
           is_dbe_certified?: boolean | null
           is_prequalified?: boolean | null
+          last_compliance_check?: string | null
           minority_classification?: string | null
           notes?: string | null
           office_fax?: string | null
@@ -18417,6 +28617,7 @@ export type Database = {
           updated_at?: string
           updated_by?: string | null
           website?: string | null
+          workers_comp_exp?: string | null
           zip_code?: string | null
         }
         Update: {
@@ -18424,10 +28625,15 @@ export type Database = {
           address_line1?: string | null
           address_line2?: string | null
           aggregate_limit?: number | null
+          auto_liability_exp?: string | null
           bonding_company?: string | null
           business_type?: string | null
           city?: string | null
           company_name?: string
+          compliance_issues?: string[] | null
+          compliance_status?:
+            | Database["public"]["Enums"]["compliance_status"]
+            | null
           contractor_license_expiration?: string | null
           contractor_license_number?: string | null
           contractor_license_state?: string | null
@@ -18443,9 +28649,11 @@ export type Database = {
           deleted_by?: string | null
           emr_rate?: number | null
           emr_year?: number | null
+          general_liability_exp?: string | null
           id?: string
           is_dbe_certified?: boolean | null
           is_prequalified?: boolean | null
+          last_compliance_check?: string | null
           minority_classification?: string | null
           notes?: string | null
           office_fax?: string | null
@@ -18471,6 +28679,7 @@ export type Database = {
           updated_at?: string
           updated_by?: string | null
           website?: string | null
+          workers_comp_exp?: string | null
           zip_code?: string | null
         }
         Relationships: [
@@ -18696,8 +28905,22 @@ export type Database = {
             foreignKeyName: "submittals_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "submittals_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "submittals_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "submittals_project_id_fkey"
@@ -18728,6 +28951,13 @@ export type Database = {
             referencedColumns: ["project_id"]
           },
           {
+            foreignKeyName: "submittals_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
             foreignKeyName: "submittals_reviewed_by_fkey"
             columns: ["reviewed_by"]
             isOneToOne: false
@@ -18754,6 +28984,124 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "subcontractors"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      supplier_quality_scores: {
+        Row: {
+          avg_issue_resolution_days: number | null
+          buy_america_certified: boolean | null
+          certs_current: boolean | null
+          certs_on_file: boolean | null
+          computed_at: string | null
+          dbe_certified: boolean | null
+          delivery_score: number | null
+          disputes_filed: number | null
+          disputes_won: number | null
+          documentation_issues: number | null
+          documentation_score: number | null
+          id: string
+          issues_by_type: Json | null
+          notes: string | null
+          on_time_deliveries: number | null
+          on_time_pct: number | null
+          organization_id: string
+          overall_score: number | null
+          quality_issues: number | null
+          quality_score: number | null
+          rejection_rate_pct: number | null
+          score_quarter: number | null
+          score_year: number
+          supplier_id: string
+          total_deliveries: number | null
+          total_quantity_ordered: number | null
+          total_quantity_received: number | null
+          total_quantity_rejected: number | null
+          variance_issues: number | null
+        }
+        Insert: {
+          avg_issue_resolution_days?: number | null
+          buy_america_certified?: boolean | null
+          certs_current?: boolean | null
+          certs_on_file?: boolean | null
+          computed_at?: string | null
+          dbe_certified?: boolean | null
+          delivery_score?: number | null
+          disputes_filed?: number | null
+          disputes_won?: number | null
+          documentation_issues?: number | null
+          documentation_score?: number | null
+          id?: string
+          issues_by_type?: Json | null
+          notes?: string | null
+          on_time_deliveries?: number | null
+          on_time_pct?: number | null
+          organization_id: string
+          overall_score?: number | null
+          quality_issues?: number | null
+          quality_score?: number | null
+          rejection_rate_pct?: number | null
+          score_quarter?: number | null
+          score_year: number
+          supplier_id: string
+          total_deliveries?: number | null
+          total_quantity_ordered?: number | null
+          total_quantity_received?: number | null
+          total_quantity_rejected?: number | null
+          variance_issues?: number | null
+        }
+        Update: {
+          avg_issue_resolution_days?: number | null
+          buy_america_certified?: boolean | null
+          certs_current?: boolean | null
+          certs_on_file?: boolean | null
+          computed_at?: string | null
+          dbe_certified?: boolean | null
+          delivery_score?: number | null
+          disputes_filed?: number | null
+          disputes_won?: number | null
+          documentation_issues?: number | null
+          documentation_score?: number | null
+          id?: string
+          issues_by_type?: Json | null
+          notes?: string | null
+          on_time_deliveries?: number | null
+          on_time_pct?: number | null
+          organization_id?: string
+          overall_score?: number | null
+          quality_issues?: number | null
+          quality_score?: number | null
+          rejection_rate_pct?: number | null
+          score_quarter?: number | null
+          score_year?: number
+          supplier_id?: string
+          total_deliveries?: number | null
+          total_quantity_ordered?: number | null
+          total_quantity_received?: number | null
+          total_quantity_rejected?: number | null
+          variance_issues?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "supplier_quality_scores_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "supplier_quality_scores_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "supplier_quality_scores_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "v_supplier_quality_dashboard"
+            referencedColumns: ["supplier_id"]
           },
         ]
       }
@@ -19093,6 +29441,13 @@ export type Database = {
             foreignKeyName: "task_logs_equipment_id_fkey"
             columns: ["equipment_id"]
             isOneToOne: false
+            referencedRelation: "v_equipment_fleet_overview"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "task_logs_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
             referencedRelation: "v_equipment_health_overview"
             referencedColumns: ["equipment_id"]
           },
@@ -19102,6 +29457,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_equipment_status"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "task_logs_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "v_equipment_utilization"
+            referencedColumns: ["equipment_id"]
           },
           {
             foreignKeyName: "task_logs_organization_id_fkey"
@@ -19121,8 +29483,22 @@ export type Database = {
             foreignKeyName: "task_logs_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "task_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "task_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "task_logs_project_id_fkey"
@@ -19150,6 +29526,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "task_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -19327,8 +29710,22 @@ export type Database = {
             foreignKeyName: "test_results_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "test_results_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "test_results_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "test_results_project_id_fkey"
@@ -19356,6 +29753,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "test_results_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -19441,8 +29845,10 @@ export type Database = {
           approved_by: string | null
           bonus: number | null
           clock_in_latitude: number | null
+          clock_in_location: Json | null
           clock_in_longitude: number | null
           clock_out_latitude: number | null
+          clock_out_location: Json | null
           clock_out_longitude: number | null
           cost_code: string | null
           cost_code_id: string | null
@@ -19499,8 +29905,10 @@ export type Database = {
           approved_by?: string | null
           bonus?: number | null
           clock_in_latitude?: number | null
+          clock_in_location?: Json | null
           clock_in_longitude?: number | null
           clock_out_latitude?: number | null
+          clock_out_location?: Json | null
           clock_out_longitude?: number | null
           cost_code?: string | null
           cost_code_id?: string | null
@@ -19557,8 +29965,10 @@ export type Database = {
           approved_by?: string | null
           bonus?: number | null
           clock_in_latitude?: number | null
+          clock_in_location?: Json | null
           clock_in_longitude?: number | null
           clock_out_latitude?: number | null
+          clock_out_location?: Json | null
           clock_out_longitude?: number | null
           cost_code?: string | null
           cost_code_id?: string | null
@@ -19647,6 +30057,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "time_entries_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
+            referencedRelation: "v_crew_roster"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "time_entries_daily_report_id_fkey"
             columns: ["daily_report_id"]
             isOneToOne: false
@@ -19689,13 +30106,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "time_entries_pay_period_id_fkey"
-            columns: ["pay_period_id"]
-            isOneToOne: false
-            referencedRelation: "pay_periods"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "time_entries_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
@@ -19706,8 +30116,22 @@ export type Database = {
             foreignKeyName: "time_entries_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "time_entries_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "time_entries_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "time_entries_project_id_fkey"
@@ -19735,6 +30159,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "time_entries_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -19876,8 +30307,22 @@ export type Database = {
             foreignKeyName: "time_extension_requests_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "time_extension_requests_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "time_extension_requests_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "time_extension_requests_project_id_fkey"
@@ -19905,6 +30350,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "time_extension_requests_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -19967,6 +30419,86 @@ export type Database = {
             columns: ["toolbox_talk_id"]
             isOneToOne: false
             referencedRelation: "toolbox_talks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      toolbox_talk_templates: {
+        Row: {
+          applicable_project_types: string[] | null
+          applicable_seasons: string[] | null
+          attachments: Json | null
+          category: string
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          discussion_questions: string[] | null
+          estimated_duration_minutes: number | null
+          hazards_to_review: string[] | null
+          id: string
+          is_active: boolean | null
+          is_project_specific: boolean | null
+          is_seasonal: boolean | null
+          organization_id: string
+          osha_references: string[] | null
+          ppe_requirements: string[] | null
+          source_url: string | null
+          talking_points: string[]
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          applicable_project_types?: string[] | null
+          applicable_seasons?: string[] | null
+          attachments?: Json | null
+          category: string
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          discussion_questions?: string[] | null
+          estimated_duration_minutes?: number | null
+          hazards_to_review?: string[] | null
+          id?: string
+          is_active?: boolean | null
+          is_project_specific?: boolean | null
+          is_seasonal?: boolean | null
+          organization_id: string
+          osha_references?: string[] | null
+          ppe_requirements?: string[] | null
+          source_url?: string | null
+          talking_points: string[]
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          applicable_project_types?: string[] | null
+          applicable_seasons?: string[] | null
+          attachments?: Json | null
+          category?: string
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          discussion_questions?: string[] | null
+          estimated_duration_minutes?: number | null
+          hazards_to_review?: string[] | null
+          id?: string
+          is_active?: boolean | null
+          is_project_specific?: boolean | null
+          is_seasonal?: boolean | null
+          organization_id?: string
+          osha_references?: string[] | null
+          ppe_requirements?: string[] | null
+          source_url?: string | null
+          talking_points?: string[]
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "toolbox_talk_templates_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
             referencedColumns: ["id"]
           },
         ]
@@ -20054,8 +30586,22 @@ export type Database = {
             foreignKeyName: "toolbox_talks_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "toolbox_talks_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "toolbox_talks_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "toolbox_talks_project_id_fkey"
@@ -20083,6 +30629,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "toolbox_talks_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -20435,8 +30988,22 @@ export type Database = {
             foreignKeyName: "training_sessions_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "training_sessions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "training_sessions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "training_sessions_project_id_fkey"
@@ -20464,6 +31031,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "training_sessions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -20632,8 +31206,22 @@ export type Database = {
             foreignKeyName: "transmittals_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "transmittals_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "transmittals_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "transmittals_project_id_fkey"
@@ -20663,6 +31251,13 @@ export type Database = {
             referencedRelation: "v_project_rfi_stats"
             referencedColumns: ["project_id"]
           },
+          {
+            foreignKeyName: "transmittals_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
         ]
       }
       user_profiles: {
@@ -20671,6 +31266,7 @@ export type Database = {
           certifications: Json | null
           created_at: string
           created_by: string | null
+          date_format: string | null
           deactivated_at: string | null
           deactivated_by: string | null
           deactivation_reason: string | null
@@ -20686,8 +31282,10 @@ export type Database = {
           id: string
           is_active: boolean | null
           job_title: string | null
+          last_dashboard_config_id: string | null
           last_login_at: string | null
           last_name: string
+          locale: string | null
           locked_until: string | null
           mfa_enabled: boolean | null
           must_change_password: boolean | null
@@ -20695,6 +31293,7 @@ export type Database = {
           password_changed_at: string | null
           phone: string | null
           preferences: Json | null
+          status: string | null
           timezone: string | null
           updated_at: string
           updated_by: string | null
@@ -20704,6 +31303,7 @@ export type Database = {
           certifications?: Json | null
           created_at?: string
           created_by?: string | null
+          date_format?: string | null
           deactivated_at?: string | null
           deactivated_by?: string | null
           deactivation_reason?: string | null
@@ -20719,8 +31319,10 @@ export type Database = {
           id: string
           is_active?: boolean | null
           job_title?: string | null
+          last_dashboard_config_id?: string | null
           last_login_at?: string | null
           last_name: string
+          locale?: string | null
           locked_until?: string | null
           mfa_enabled?: boolean | null
           must_change_password?: boolean | null
@@ -20728,6 +31330,7 @@ export type Database = {
           password_changed_at?: string | null
           phone?: string | null
           preferences?: Json | null
+          status?: string | null
           timezone?: string | null
           updated_at?: string
           updated_by?: string | null
@@ -20737,6 +31340,7 @@ export type Database = {
           certifications?: Json | null
           created_at?: string
           created_by?: string | null
+          date_format?: string | null
           deactivated_at?: string | null
           deactivated_by?: string | null
           deactivation_reason?: string | null
@@ -20752,8 +31356,10 @@ export type Database = {
           id?: string
           is_active?: boolean | null
           job_title?: string | null
+          last_dashboard_config_id?: string | null
           last_login_at?: string | null
           last_name?: string
+          locale?: string | null
           locked_until?: string | null
           mfa_enabled?: boolean | null
           must_change_password?: boolean | null
@@ -20761,6 +31367,7 @@ export type Database = {
           password_changed_at?: string | null
           phone?: string | null
           preferences?: Json | null
+          status?: string | null
           timezone?: string | null
           updated_at?: string
           updated_by?: string | null
@@ -20827,8 +31434,22 @@ export type Database = {
             foreignKeyName: "user_roles_project_fk"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "user_roles_project_fk"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "user_roles_project_fk"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "user_roles_project_fk"
@@ -20856,6 +31477,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "user_roles_project_fk"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -21002,8 +31630,22 @@ export type Database = {
             foreignKeyName: "voice_recordings_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "voice_recordings_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "voice_recordings_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "voice_recordings_project_id_fkey"
@@ -21031,6 +31673,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "voice_recordings_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -21127,6 +31776,7 @@ export type Database = {
           source: string | null
           source_document_url: string | null
           state: string | null
+          supersedes_rate_id: string | null
           total_hourly_rate: number | null
           trade_classification: string
           trade_sub_classification: string | null
@@ -21153,6 +31803,7 @@ export type Database = {
           source?: string | null
           source_document_url?: string | null
           state?: string | null
+          supersedes_rate_id?: string | null
           total_hourly_rate?: number | null
           trade_classification: string
           trade_sub_classification?: string | null
@@ -21179,6 +31830,7 @@ export type Database = {
           source?: string | null
           source_document_url?: string | null
           state?: string | null
+          supersedes_rate_id?: string | null
           total_hourly_rate?: number | null
           trade_classification?: string
           trade_sub_classification?: string | null
@@ -21213,8 +31865,22 @@ export type Database = {
             foreignKeyName: "wage_rates_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "wage_rates_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "wage_rates_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "wage_rates_project_id_fkey"
@@ -21243,6 +31909,20 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
             referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "wage_rates_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "wage_rates_supersedes_rate_id_fkey"
+            columns: ["supersedes_rate_id"]
+            isOneToOne: false
+            referencedRelation: "wage_rates"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "wage_rates_updated_by_fkey"
@@ -21318,8 +31998,22 @@ export type Database = {
             foreignKeyName: "weather_impact_predictions_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "weather_impact_predictions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "weather_impact_predictions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "weather_impact_predictions_project_id_fkey"
@@ -21347,6 +32041,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "weather_impact_predictions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -21460,8 +32161,22 @@ export type Database = {
             foreignKeyName: "weather_snapshots_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "weather_snapshots_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "weather_snapshots_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "weather_snapshots_project_id_fkey"
@@ -21489,6 +32204,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "weather_snapshots_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -21780,6 +32502,87 @@ export type Database = {
           {
             foreignKeyName: "wv811_audit_packs_ticket_id_fkey"
             columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "wv811_tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wv811_crew_messages: {
+        Row: {
+          created_at: string
+          delivered_at: string | null
+          from_user_id: string
+          id: string
+          message_text: string
+          message_type: string | null
+          organization_id: string
+          read_at: string | null
+          related_ticket_id: string | null
+          sent_at: string
+          to_phone: string
+          to_user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          delivered_at?: string | null
+          from_user_id: string
+          id?: string
+          message_text: string
+          message_type?: string | null
+          organization_id: string
+          read_at?: string | null
+          related_ticket_id?: string | null
+          sent_at?: string
+          to_phone: string
+          to_user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          delivered_at?: string | null
+          from_user_id?: string
+          id?: string
+          message_text?: string
+          message_type?: string | null
+          organization_id?: string
+          read_at?: string | null
+          related_ticket_id?: string | null
+          sent_at?: string
+          to_phone?: string
+          to_user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wv811_crew_messages_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_crew_messages_related_ticket_id_fkey"
+            columns: ["related_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_active_tickets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_crew_messages_related_ticket_id_fkey"
+            columns: ["related_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_expiring_soon"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_crew_messages_related_ticket_id_fkey"
+            columns: ["related_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_tickets_with_coords"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_crew_messages_related_ticket_id_fkey"
+            columns: ["related_ticket_id"]
             isOneToOne: false
             referencedRelation: "wv811_tickets"
             referencedColumns: ["id"]
@@ -22299,8 +33102,22 @@ export type Database = {
             foreignKeyName: "wv811_emergency_incidents_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "wv811_emergency_incidents_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "wv811_emergency_incidents_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "wv811_emergency_incidents_project_id_fkey"
@@ -22328,6 +33145,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "wv811_emergency_incidents_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -22697,6 +33521,9 @@ export type Database = {
       }
       wv811_ticket_alerts: {
         Row: {
+          ack_deadline: string | null
+          acknowledged_at: string | null
+          acknowledged_by: string | null
           alert_type: Database["public"]["Enums"]["wv811_alert_type"]
           body: string | null
           channel: Database["public"]["Enums"]["wv811_alert_channel"]
@@ -22706,8 +33533,10 @@ export type Database = {
           failed_at: string | null
           failure_reason: string | null
           id: string
+          message: string | null
           priority: Database["public"]["Enums"]["wv811_alert_priority"] | null
           read_at: string | null
+          requires_explicit_ack: boolean | null
           sent_at: string | null
           subject: string | null
           subscription_id: string | null
@@ -22715,6 +33544,9 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          ack_deadline?: string | null
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
           alert_type: Database["public"]["Enums"]["wv811_alert_type"]
           body?: string | null
           channel: Database["public"]["Enums"]["wv811_alert_channel"]
@@ -22724,8 +33556,10 @@ export type Database = {
           failed_at?: string | null
           failure_reason?: string | null
           id?: string
+          message?: string | null
           priority?: Database["public"]["Enums"]["wv811_alert_priority"] | null
           read_at?: string | null
+          requires_explicit_ack?: boolean | null
           sent_at?: string | null
           subject?: string | null
           subscription_id?: string | null
@@ -22733,6 +33567,9 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          ack_deadline?: string | null
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
           alert_type?: Database["public"]["Enums"]["wv811_alert_type"]
           body?: string | null
           channel?: Database["public"]["Enums"]["wv811_alert_channel"]
@@ -22742,8 +33579,10 @@ export type Database = {
           failed_at?: string | null
           failure_reason?: string | null
           id?: string
+          message?: string | null
           priority?: Database["public"]["Enums"]["wv811_alert_priority"] | null
           read_at?: string | null
+          requires_explicit_ack?: boolean | null
           sent_at?: string | null
           subject?: string | null
           subscription_id?: string | null
@@ -23042,6 +33881,10 @@ export type Database = {
       wv811_tickets: {
         Row: {
           alert_count: number | null
+          cleared_at: string | null
+          cleared_by: string | null
+          cleared_method: string | null
+          county: string | null
           created_at: string
           created_by: string | null
           cross_street_1: string | null
@@ -23051,7 +33894,9 @@ export type Database = {
           dig_site_address: string
           dig_site_city: string | null
           dig_site_county: string | null
+          dig_site_latitude: number | null
           dig_site_location: unknown
+          dig_site_longitude: number | null
           dig_site_state: string | null
           dig_site_zip: string | null
           done_for: string | null
@@ -23071,6 +33916,7 @@ export type Database = {
           notes: string | null
           organization_id: string
           original_email_id: string | null
+          original_ticket_id: string | null
           parent_ticket_id: string | null
           parsed_at: string | null
           parsing_confidence: number | null
@@ -23078,6 +33924,8 @@ export type Database = {
           portal_url: string | null
           project_id: string | null
           raw_parsed_data: Json | null
+          remark_requested: boolean | null
+          remark_requested_at: string | null
           renewal_requested_at: string | null
           responded_utilities: number | null
           risk_score: number | null
@@ -23100,6 +33948,10 @@ export type Database = {
         }
         Insert: {
           alert_count?: number | null
+          cleared_at?: string | null
+          cleared_by?: string | null
+          cleared_method?: string | null
+          county?: string | null
           created_at?: string
           created_by?: string | null
           cross_street_1?: string | null
@@ -23109,7 +33961,9 @@ export type Database = {
           dig_site_address: string
           dig_site_city?: string | null
           dig_site_county?: string | null
+          dig_site_latitude?: number | null
           dig_site_location?: unknown
+          dig_site_longitude?: number | null
           dig_site_state?: string | null
           dig_site_zip?: string | null
           done_for?: string | null
@@ -23129,6 +33983,7 @@ export type Database = {
           notes?: string | null
           organization_id: string
           original_email_id?: string | null
+          original_ticket_id?: string | null
           parent_ticket_id?: string | null
           parsed_at?: string | null
           parsing_confidence?: number | null
@@ -23136,6 +33991,8 @@ export type Database = {
           portal_url?: string | null
           project_id?: string | null
           raw_parsed_data?: Json | null
+          remark_requested?: boolean | null
+          remark_requested_at?: string | null
           renewal_requested_at?: string | null
           responded_utilities?: number | null
           risk_score?: number | null
@@ -23158,6 +34015,10 @@ export type Database = {
         }
         Update: {
           alert_count?: number | null
+          cleared_at?: string | null
+          cleared_by?: string | null
+          cleared_method?: string | null
+          county?: string | null
           created_at?: string
           created_by?: string | null
           cross_street_1?: string | null
@@ -23167,7 +34028,9 @@ export type Database = {
           dig_site_address?: string
           dig_site_city?: string | null
           dig_site_county?: string | null
+          dig_site_latitude?: number | null
           dig_site_location?: unknown
+          dig_site_longitude?: number | null
           dig_site_state?: string | null
           dig_site_zip?: string | null
           done_for?: string | null
@@ -23187,6 +34050,7 @@ export type Database = {
           notes?: string | null
           organization_id?: string
           original_email_id?: string | null
+          original_ticket_id?: string | null
           parent_ticket_id?: string | null
           parsed_at?: string | null
           parsing_confidence?: number | null
@@ -23194,6 +34058,8 @@ export type Database = {
           portal_url?: string | null
           project_id?: string | null
           raw_parsed_data?: Json | null
+          remark_requested?: boolean | null
+          remark_requested_at?: string | null
           renewal_requested_at?: string | null
           responded_utilities?: number | null
           risk_score?: number | null
@@ -23227,6 +34093,34 @@ export type Database = {
             columns: ["original_email_id"]
             isOneToOne: false
             referencedRelation: "wv811_email_ingests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_tickets_original_ticket_id_fkey"
+            columns: ["original_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_active_tickets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_tickets_original_ticket_id_fkey"
+            columns: ["original_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_expiring_soon"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_tickets_original_ticket_id_fkey"
+            columns: ["original_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "v_wv811_tickets_with_coords"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wv811_tickets_original_ticket_id_fkey"
+            columns: ["original_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "wv811_tickets"
             referencedColumns: ["id"]
           },
           {
@@ -23352,6 +34246,7 @@ export type Database = {
           marked_at: string | null
           marked_by: string | null
           marking_instructions: string | null
+          responded_at: string | null
           response_message: string | null
           response_received_at: string | null
           response_status:
@@ -23385,6 +34280,7 @@ export type Database = {
           marked_at?: string | null
           marked_by?: string | null
           marking_instructions?: string | null
+          responded_at?: string | null
           response_message?: string | null
           response_received_at?: string | null
           response_status?:
@@ -23418,6 +34314,7 @@ export type Database = {
           marked_at?: string | null
           marked_by?: string | null
           marking_instructions?: string | null
+          responded_at?: string | null
           response_message?: string | null
           response_received_at?: string | null
           response_status?:
@@ -23649,8 +34546,22 @@ export type Database = {
             foreignKeyName: "crew_members_default_project_id_fkey"
             columns: ["default_project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_members_default_project_id_fkey"
+            columns: ["default_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_members_default_project_id_fkey"
+            columns: ["default_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "crew_members_default_project_id_fkey"
@@ -23681,6 +34592,13 @@ export type Database = {
             referencedColumns: ["project_id"]
           },
           {
+            foreignKeyName: "crew_members_default_project_id_fkey"
+            columns: ["default_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
             foreignKeyName: "crew_members_organization_id_fkey"
             columns: ["organization_id"]
             isOneToOne: false
@@ -23703,74 +34621,6 @@ export type Database = {
           title: string | null
         }
         Relationships: []
-      }
-      v_active_projects: {
-        Row: {
-          client_name: string | null
-          contract_number: string | null
-          current_completion_date: string | null
-          current_contract_value: number | null
-          current_working_days: number | null
-          id: string | null
-          name: string | null
-          notice_to_proceed_date: string | null
-          organization_id: string | null
-          original_contract_value: number | null
-          percent_complete: number | null
-          project_number: string | null
-          project_type: string | null
-          schedule_percent_used: number | null
-          status: string | null
-          team_count: number | null
-          working_days_used: number | null
-        }
-        Insert: {
-          client_name?: string | null
-          contract_number?: string | null
-          current_completion_date?: string | null
-          current_contract_value?: number | null
-          current_working_days?: number | null
-          id?: string | null
-          name?: string | null
-          notice_to_proceed_date?: string | null
-          organization_id?: string | null
-          original_contract_value?: number | null
-          percent_complete?: number | null
-          project_number?: string | null
-          project_type?: string | null
-          schedule_percent_used?: never
-          status?: string | null
-          team_count?: never
-          working_days_used?: number | null
-        }
-        Update: {
-          client_name?: string | null
-          contract_number?: string | null
-          current_completion_date?: string | null
-          current_contract_value?: number | null
-          current_working_days?: number | null
-          id?: string | null
-          name?: string | null
-          notice_to_proceed_date?: string | null
-          organization_id?: string | null
-          original_contract_value?: number | null
-          percent_complete?: number | null
-          project_number?: string | null
-          project_type?: string | null
-          schedule_percent_used?: never
-          status?: string | null
-          team_count?: never
-          working_days_used?: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "projects_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       v_active_subcontracts: {
         Row: {
@@ -24825,6 +35675,373 @@ export type Database = {
         }
         Relationships: []
       }
+      v_concrete_delivery_summary: {
+        Row: {
+          avg_air: number | null
+          avg_slump: number | null
+          avg_temp: number | null
+          first_delivery: string | null
+          last_delivery: string | null
+          load_count: number | null
+          mix_description: string | null
+          mix_design_number: string | null
+          organization_id: string | null
+          plant_name: string | null
+          project_id: string | null
+          project_name: string | null
+          rejected_loads: number | null
+          total_cy: number | null
+          total_cylinders: number | null
+          total_water_added: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "material_tickets_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_tickets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_tickets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_tickets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_tickets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_tickets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_tickets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_tickets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_tickets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_tickets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      v_cost_detail_report: {
+        Row: {
+          bid_quantity: number | null
+          category: string | null
+          current_working_days: number | null
+          description: string | null
+          equipment_list: string | null
+          estimated_manhours: number | null
+          item_number: string | null
+          material_types: number | null
+          organization_id: string | null
+          percent_complete: number | null
+          project_id: string | null
+          project_name: string | null
+          project_number: string | null
+          project_status: string | null
+          unit: string | null
+          working_days_used: number | null
+        }
+        Insert: {
+          bid_quantity?: never
+          category?: never
+          current_working_days?: number | null
+          description?: never
+          equipment_list?: never
+          estimated_manhours?: never
+          item_number?: never
+          material_types?: never
+          organization_id?: string | null
+          percent_complete?: number | null
+          project_id?: string | null
+          project_name?: string | null
+          project_number?: string | null
+          project_status?: string | null
+          unit?: never
+          working_days_used?: number | null
+        }
+        Update: {
+          bid_quantity?: never
+          category?: never
+          current_working_days?: number | null
+          description?: never
+          equipment_list?: never
+          estimated_manhours?: never
+          item_number?: never
+          material_types?: never
+          organization_id?: string | null
+          percent_complete?: number | null
+          project_id?: string | null
+          project_name?: string | null
+          project_number?: string | null
+          project_status?: string | null
+          unit?: never
+          working_days_used?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "projects_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      v_crew_roster: {
+        Row: {
+          active_cert_count: number | null
+          base_hourly_rate: number | null
+          can_operate_equipment: boolean | null
+          cdl_expiry: string | null
+          certification_status: string | null
+          certifications: Json | null
+          current_project_id: string | null
+          dot_medical_expiry: string | null
+          email: string | null
+          employee_id: string | null
+          employment_type: string | null
+          expired_cert_count: number | null
+          expiring_cert_count: number | null
+          first_name: string | null
+          full_name: string | null
+          hire_date: string | null
+          id: string | null
+          is_active: boolean | null
+          is_cdl_driver: boolean | null
+          last_name: string | null
+          overtime_rate: number | null
+          phone: string | null
+          project_name: string | null
+          project_number: string | null
+          trade_classification: string | null
+          trade_classification_detail: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crew_members_default_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crew_members_default_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_members_default_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_members_default_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_members_default_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_members_default_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_members_default_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_members_default_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_members_default_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      v_crl_export_ready: {
+        Row: {
+          approved_at: string | null
+          approved_by_email: string | null
+          contract_number: string | null
+          crl_id: string | null
+          crl_number: number | null
+          export_count: number | null
+          last_exported_at: string | null
+          organization_id: string | null
+          overrun_amount: number | null
+          overrun_items_count: number | null
+          prepared_at: string | null
+          prepared_by_email: string | null
+          project_id: string | null
+          project_name: string | null
+          status: Database["public"]["Enums"]["crl_status"] | null
+          submission_period_end: string | null
+          submission_period_start: string | null
+          submitted_to_wvdoh_at: string | null
+          total_amount: number | null
+          total_line_items: number | null
+          wvdoh_confirmation_number: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crl_submissions_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crl_submissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crl_submissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crl_submissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crl_submissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crl_submissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crl_submissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crl_submissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crl_submissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crl_submissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      v_daily_cost_summary: {
+        Row: {
+          contract_number: string | null
+          equipment_cost: number | null
+          equipment_entries: number | null
+          equipment_hours: number | null
+          labor_cost: number | null
+          labor_entries: number | null
+          labor_hours: number | null
+          material_cost: number | null
+          material_entries: number | null
+          project_id: string | null
+          project_name: string | null
+          total_daily_cost: number | null
+          work_date: string | null
+        }
+        Relationships: []
+      }
       v_daily_crew_schedule: {
         Row: {
           assignment_date: string | null
@@ -24860,8 +36077,22 @@ export type Database = {
             foreignKeyName: "crew_assignments_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_assignments_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_assignments_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "crew_assignments_project_id_fkey"
@@ -24889,6 +36120,227 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "crew_assignments_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      v_daily_pay_reconciliation: {
+        Row: {
+          contract_number: string | null
+          daily_reports_count: number | null
+          description: string | null
+          disputed_count: number | null
+          estimate_number: number | null
+          first_report_date: string | null
+          fully_reconciled: boolean | null
+          item_number: string | null
+          last_report_date: string | null
+          pay_amount: number | null
+          pay_period_end: string | null
+          pay_period_id: string | null
+          pay_qty: number | null
+          project_id: string | null
+          project_name: string | null
+          qty_variance: number | null
+          total_field_amount: number | null
+          total_field_qty: number | null
+          unit: string | null
+          variance_pct: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "daily_report_quantities_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "pay_periods"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pay_period_dashboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_payment_deadline_summary"
+            referencedColumns: ["pay_period_id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_validations"
+            referencedColumns: ["pay_period_id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_report_quantities_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      v_equipment_fleet_overview: {
+        Row: {
+          current_engine_hours: number | null
+          current_latitude: number | null
+          current_longitude: number | null
+          current_project_id: string | null
+          description: string | null
+          equipment_category: string | null
+          equipment_category_typed:
+            | Database["public"]["Enums"]["equipment_category_enum"]
+            | null
+          equipment_number: string | null
+          equipment_status:
+            | Database["public"]["Enums"]["equipment_status"]
+            | null
+          hourly_total_cost: number | null
+          id: string | null
+          inspection_status: string | null
+          last_location_update: string | null
+          location_conflict_flagged: boolean | null
+          maintenance_status: string | null
+          make: string | null
+          model: string | null
+          next_annual_inspection: string | null
+          next_service_due_date: string | null
+          next_service_due_hours: number | null
+          ownership_type: string | null
+          project_name: string | null
+          project_number: string | null
+          status: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "equipment_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "equipment_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -24936,8 +36388,22 @@ export type Database = {
             foreignKeyName: "equipment_current_project_id_fkey"
             columns: ["current_project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "equipment_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "equipment_current_project_id_fkey"
@@ -24968,6 +36434,13 @@ export type Database = {
             referencedColumns: ["project_id"]
           },
           {
+            foreignKeyName: "equipment_current_project_id_fkey"
+            columns: ["current_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
             foreignKeyName: "equipment_organization_id_fkey"
             columns: ["organization_id"]
             isOneToOne: false
@@ -24975,6 +36448,28 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      v_equipment_utilization: {
+        Row: {
+          available_hours: number | null
+          days_logged: number | null
+          description: string | null
+          efficiency_percent: number | null
+          equipment_category: string | null
+          equipment_category_typed:
+            | Database["public"]["Enums"]["equipment_category_enum"]
+            | null
+          equipment_id: string | null
+          equipment_number: string | null
+          idle_hours: number | null
+          month: string | null
+          scheduled_hours: number | null
+          target_utilization_percent: number | null
+          utilization_percent: number | null
+          utilization_variance: number | null
+          working_hours: number | null
+        }
+        Relationships: []
       }
       v_expiring_certifications: {
         Row: {
@@ -25033,8 +36528,22 @@ export type Database = {
             foreignKeyName: "test_results_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "test_results_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "test_results_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "test_results_project_id_fkey"
@@ -25063,6 +36572,393 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
             referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "test_results_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      v_geofence_activity: {
+        Row: {
+          alert_sent: boolean | null
+          dwell_duration_minutes: number | null
+          entity_id: string | null
+          entity_identifier: string | null
+          entity_type: string | null
+          event_at: string | null
+          event_id: string | null
+          event_type: Database["public"]["Enums"]["geofence_event_type"] | null
+          geofence_name: string | null
+          geofence_type: Database["public"]["Enums"]["geofence_type"] | null
+          latitude: number | null
+          longitude: number | null
+          organization_id: string | null
+          project_id: string | null
+          project_name: string | null
+          project_number: string | null
+          recency: string | null
+          speed_mph: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "geofence_events_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "geofences_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "geofences_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "geofences_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "geofences_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "geofences_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "geofences_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "geofences_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "geofences_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "geofences_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      v_imr_tracking: {
+        Row: {
+          amount_withheld: number | null
+          created_at: string | null
+          days_open: number | null
+          deficiency_description: string | null
+          deficiency_type:
+            | Database["public"]["Enums"]["imr_deficiency_type"]
+            | null
+          dmir_number: string | null
+          estimate_number: number | null
+          id: string | null
+          item_description: string | null
+          item_number: string | null
+          pay_period_id: string | null
+          project_id: string | null
+          project_name: string | null
+          qty_withheld: number | null
+          resolution_notes: string | null
+          resolution_status:
+            | Database["public"]["Enums"]["imr_resolution_status"]
+            | null
+          resolved_at: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "imr_items_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "pay_periods"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "imr_items_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pay_period_dashboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "imr_items_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_payment_deadline_summary"
+            referencedColumns: ["pay_period_id"]
+          },
+          {
+            foreignKeyName: "imr_items_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_validations"
+            referencedColumns: ["pay_period_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      v_item_quantity_tracking: {
+        Row: {
+          contract_number: string | null
+          contract_qty: number | null
+          description: string | null
+          field_complete_pct: number | null
+          field_reported_qty: number | null
+          field_vs_paid_variance: number | null
+          item_number: string | null
+          last_estimate_number: number | null
+          last_report_date: string | null
+          paid_complete_pct: number | null
+          paid_qty: number | null
+          project_id: string | null
+          project_name: string | null
+          remaining_qty: number | null
+          unit: string | null
+        }
+        Relationships: []
+      }
+      v_jsa_summary: {
+        Row: {
+          approved_at: string | null
+          approved_by_email: string | null
+          effective_date: string | null
+          expiration_date: string | null
+          hazard_count: number | null
+          high_risk_hazards: number | null
+          id: string | null
+          job_title: string | null
+          jsa_number: string | null
+          last_used_at: string | null
+          organization_id: string | null
+          ppe_count: number | null
+          prepared_at: string | null
+          prepared_by_email: string | null
+          project_id: string | null
+          project_name: string | null
+          revision_number: number | null
+          status: Database["public"]["Enums"]["jsa_status"] | null
+          times_used: number | null
+          work_type: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_safety_analysis_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_safety_analysis_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_safety_analysis_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "job_safety_analysis_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "job_safety_analysis_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "job_safety_analysis_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "job_safety_analysis_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "job_safety_analysis_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "job_safety_analysis_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "job_safety_analysis_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      v_kpi_trends: {
+        Row: {
+          alerts_critical_open: number | null
+          alerts_high_open: number | null
+          crew_certs_compliant_percent: number | null
+          equipment_utilization_percent: number | null
+          organization_id: string | null
+          prev_crew_compliance: number | null
+          prev_critical_alerts: number | null
+          prev_equipment_util: number | null
+          projects_active: number | null
+          projects_behind_schedule: number | null
+          safety_incidents_mtd: number | null
+          snapshot_date: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kpi_snapshots_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      v_late_payments: {
+        Row: {
+          days_late: number | null
+          estimate_number: number | null
+          gross_amount: number | null
+          net_amount: number | null
+          organization_id: string | null
+          payment_deadline_date: string | null
+          payment_status:
+            | Database["public"]["Enums"]["sub_payment_status"]
+            | null
+          pm_email: string | null
+          pm_id: string | null
+          project_name: string | null
+          project_number: string | null
+          subcontractor_name: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sub_payments_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -25104,6 +37000,103 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_bid_summary"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      v_material_inventory_status: {
+        Row: {
+          description: string | null
+          id: string | null
+          last_count_date: string | null
+          lead_time_days: number | null
+          material_category:
+            | Database["public"]["Enums"]["material_category"]
+            | null
+          material_code: string | null
+          organization_id: string | null
+          project_id: string | null
+          project_name: string | null
+          quantity_available: number | null
+          quantity_on_hand: number | null
+          quantity_reserved: number | null
+          reorder_point: number | null
+          stock_status: string | null
+          storage_location: string | null
+          supplier_name: string | null
+          total_value: number | null
+          unit_cost: number | null
+          unit_of_measure: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "material_inventory_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_inventory_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_inventory_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_inventory_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
           },
         ]
       }
@@ -25199,8 +37192,22 @@ export type Database = {
             foreignKeyName: "non_conformances_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "non_conformances_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "non_conformances_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "non_conformances_project_id_fkey"
@@ -25230,6 +37237,13 @@ export type Database = {
             referencedRelation: "v_project_rfi_stats"
             referencedColumns: ["project_id"]
           },
+          {
+            foreignKeyName: "non_conformances_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
         ]
       }
       v_open_rfis: {
@@ -25250,6 +37264,260 @@ export type Database = {
           submitted_at: string | null
         }
         Relationships: []
+      }
+      v_osha_300_log: {
+        Row: {
+          case_classification: string | null
+          case_number: string | null
+          date_of_injury: string | null
+          days_away_count: number | null
+          days_job_transfer_count: number | null
+          describe_injury: string | null
+          employee_name: string | null
+          establishment_name: string | null
+          injury_type: string | null
+          is_privacy_case: boolean | null
+          job_title: string | null
+          log_year: number | null
+          organization_id: string | null
+          where_occurred: string | null
+        }
+        Insert: {
+          case_classification?: never
+          case_number?: string | null
+          date_of_injury?: string | null
+          days_away_count?: number | null
+          days_job_transfer_count?: number | null
+          describe_injury?: string | null
+          employee_name?: string | null
+          establishment_name?: string | null
+          injury_type?: never
+          is_privacy_case?: boolean | null
+          job_title?: string | null
+          log_year?: number | null
+          organization_id?: string | null
+          where_occurred?: string | null
+        }
+        Update: {
+          case_classification?: never
+          case_number?: string | null
+          date_of_injury?: string | null
+          days_away_count?: number | null
+          days_job_transfer_count?: number | null
+          describe_injury?: string | null
+          employee_name?: string | null
+          establishment_name?: string | null
+          injury_type?: never
+          is_privacy_case?: boolean | null
+          job_title?: string | null
+          log_year?: number | null
+          organization_id?: string | null
+          where_occurred?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "osha_300_logs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      v_pay_period_dashboard: {
+        Row: {
+          active_sub_count: number | null
+          asphalt_adjustment: number | null
+          construction_stockpile: number | null
+          created_at: string | null
+          cumulative_net_pay: number | null
+          days_until_deadline: number | null
+          deadline_status: string | null
+          estimate_number: number | null
+          fuel_adjustment: number | null
+          funds_received_date: string | null
+          id: string | null
+          line_item_count: number | null
+          material_withheld: number | null
+          net_pay_amount: number | null
+          open_imr_amount: number | null
+          open_imr_count: number | null
+          organization_id: string | null
+          paid_sub_count: number | null
+          payment_deadline_date: string | null
+          period_end_date: string | null
+          period_start_date: string | null
+          posted_item_pay: number | null
+          project_id: string | null
+          project_name: string | null
+          project_number: string | null
+          status: Database["public"]["Enums"]["pay_period_status"] | null
+          total_sub_payments: number | null
+          updated_at: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pay_periods_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      v_payment_deadline_summary: {
+        Row: {
+          days_until_deadline: number | null
+          deadline_status: string | null
+          estimate_number: number | null
+          funds_received_date: string | null
+          organization_id: string | null
+          pay_period_id: string | null
+          payment_deadline_date: string | null
+          payments_completed: number | null
+          project_id: string | null
+          project_name: string | null
+          project_number: string | null
+          status: Database["public"]["Enums"]["pay_period_status"] | null
+          subs_paid: number | null
+          subs_pending: number | null
+          total_to_distribute: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pay_periods_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
       }
       v_pending_ai_confirmations: {
         Row: {
@@ -25338,8 +37606,22 @@ export type Database = {
             foreignKeyName: "daily_reports_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_reports_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_reports_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "daily_reports_project_id_fkey"
@@ -25367,6 +37649,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_reports_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -25436,6 +37725,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "time_entries_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
+            referencedRelation: "v_crew_roster"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "time_entries_entered_by_user_id_fkey"
             columns: ["entered_by_user_id"]
             isOneToOne: false
@@ -25453,8 +37749,22 @@ export type Database = {
             foreignKeyName: "time_entries_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "time_entries_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "time_entries_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "time_entries_project_id_fkey"
@@ -25482,6 +37792,200 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "time_entries_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      v_pending_validations: {
+        Row: {
+          attempt_number: number | null
+          contract_number: string | null
+          error_messages: string[] | null
+          estimate_number: number | null
+          failed_line_count: number | null
+          failed_line_items: Json | null
+          line_item_discrepancy: number | null
+          net_pay_amount: number | null
+          organization_id: string | null
+          pay_period_id: string | null
+          pdf_url: string | null
+          period_ending_date: string | null
+          posted_item_pay: number | null
+          project_name: string | null
+          to_date_discrepancy: number | null
+          uploaded_at: string | null
+          uploaded_by_email: string | null
+          uploaded_by_name: string | null
+          validation_errors: Json | null
+          validation_status:
+            | Database["public"]["Enums"]["validation_status"]
+            | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pay_periods_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      v_platform_alert_dashboard: {
+        Row: {
+          acknowledged_at: string | null
+          acknowledged_by: string | null
+          acknowledgment_notes: string | null
+          action_required: string | null
+          action_url: string | null
+          alert_type: string | null
+          assigned_to: string | null
+          assigned_to_email: string | null
+          assigned_to_name: string | null
+          auto_resolved: boolean | null
+          category:
+            | Database["public"]["Enums"]["platform_alert_category"]
+            | null
+          created_at: string | null
+          days_until_due: number | null
+          delegated_at: string | null
+          delegated_by: string | null
+          delegated_to: string | null
+          delegation_notes: string | null
+          description: string | null
+          due_date: string | null
+          entity_id: string | null
+          entity_identifier: string | null
+          entity_type: string | null
+          expiry_date: string | null
+          id: string | null
+          is_recurring: boolean | null
+          max_snooze_count: number | null
+          metadata: Json | null
+          notification_read_count: number | null
+          notification_total_count: number | null
+          organization_id: string | null
+          parent_alert_id: string | null
+          priority_score: number | null
+          project_id: string | null
+          project_name: string | null
+          project_number: string | null
+          recurrence_rule: string | null
+          resolution_notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          severity:
+            | Database["public"]["Enums"]["platform_alert_severity"]
+            | null
+          snooze_count: number | null
+          snooze_reason: string | null
+          snoozed_by: string | null
+          snoozed_until: string | null
+          source: string | null
+          source_reference: string | null
+          status: Database["public"]["Enums"]["platform_alert_status"] | null
+          title: string | null
+          trigger_date: string | null
+          updated_at: string | null
+          urgency: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_alerts_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "platform_alerts_parent_alert_id_fkey"
+            columns: ["parent_alert_id"]
+            isOneToOne: false
+            referencedRelation: "platform_alerts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "platform_alerts_parent_alert_id_fkey"
+            columns: ["parent_alert_id"]
+            isOneToOne: false
+            referencedRelation: "v_platform_alert_dashboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "platform_alerts_parent_alert_id_fkey"
+            columns: ["parent_alert_id"]
+            isOneToOne: false
+            referencedRelation: "v_user_alert_inbox"
+            referencedColumns: ["alert_id"]
+          },
+          {
+            foreignKeyName: "platform_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "platform_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "platform_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "platform_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "platform_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "platform_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "platform_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "platform_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "platform_alerts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -25538,6 +38042,160 @@ export type Database = {
           project_number: string | null
         }
         Relationships: []
+      }
+      v_project_handoff_status: {
+        Row: {
+          assigned_vp_id: string | null
+          bid_project_id: string | null
+          bid_project_name: string | null
+          created_at: string | null
+          estimator_email: string | null
+          general_super_email: string | null
+          general_super_id: string | null
+          handoff_completed_at: string | null
+          handoff_id: string | null
+          handoff_meeting_date: string | null
+          handoff_meeting_location: string | null
+          handoff_status: Database["public"]["Enums"]["handoff_status"] | null
+          lead_estimator_id: string | null
+          note_count: number | null
+          open_issue_count: number | null
+          opportunity_count: number | null
+          organization_id: string | null
+          pe_email: string | null
+          pe_id: string | null
+          pm_email: string | null
+          pm_id: string | null
+          project_id: string | null
+          project_name: string | null
+          project_number: string | null
+          project_status: string | null
+          region: string | null
+          team_assigned_at: string | null
+          vp_assigned_at: string | null
+          vp_email: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_handoffs_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "bid_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_environmental_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_pricing_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_project_dashboard"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_projects_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_questions_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_risk_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_handoffs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
       }
       v_project_health_dashboard: {
         Row: {
@@ -25606,8 +38264,22 @@ export type Database = {
             foreignKeyName: "punch_lists_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "punch_lists_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "punch_lists_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "punch_lists_project_id_fkey"
@@ -25635,6 +38307,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "punch_lists_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -25674,8 +38353,22 @@ export type Database = {
             foreignKeyName: "purchase_orders_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "purchase_orders_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "purchase_orders_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "purchase_orders_project_id_fkey"
@@ -25703,6 +38396,105 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "purchase_orders_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      v_quality_metrics_dashboard: {
+        Row: {
+          computed_at: string | null
+          ftq_rate: number | null
+          inspection_pass_rate: number | null
+          inspections_total: number | null
+          metric_month: number | null
+          metric_quarter: number | null
+          metric_year: number | null
+          ncr_net_change: number | null
+          ncrs_closed: number | null
+          ncrs_opened: number | null
+          organization_id: string | null
+          project_id: string | null
+          project_name: string | null
+          test_pass_rate: number | null
+          tests_total: number | null
+          total_coq: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quality_metrics_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quality_metrics_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quality_metrics_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quality_metrics_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quality_metrics_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quality_metrics_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quality_metrics_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quality_metrics_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quality_metrics_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "quality_metrics_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -25729,8 +38521,22 @@ export type Database = {
             foreignKeyName: "ai_conversations_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "ai_conversations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "ai_conversations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "ai_conversations_project_id_fkey"
@@ -25758,6 +38564,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "ai_conversations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -25814,8 +38627,22 @@ export type Database = {
             foreignKeyName: "daily_reports_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_reports_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_reports_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "daily_reports_project_id_fkey"
@@ -25843,6 +38670,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_reports_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -25884,6 +38718,40 @@ export type Database = {
         }
         Relationships: []
       }
+      v_safety_metrics_dashboard: {
+        Row: {
+          dart: number | null
+          emr: number | null
+          emr_effective_date: string | null
+          hazard_correction_rate: number | null
+          hazards_corrected: number | null
+          hazards_identified: number | null
+          metric_quarter: number | null
+          metric_year: number | null
+          near_miss_ratio: number | null
+          near_misses_reported: number | null
+          organization_id: string | null
+          positive_observation_pct: number | null
+          prev_dart: number | null
+          prev_trir: number | null
+          recordable_injuries: number | null
+          severity_rate: number | null
+          toolbox_talk_attendance_pct: number | null
+          toolbox_talks_conducted: number | null
+          total_hours_worked: number | null
+          total_observations: number | null
+          trir: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "safety_metrics_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       v_section_summary: {
         Row: {
           chunk_count: number | null
@@ -25913,6 +38781,438 @@ export type Database = {
           },
         ]
       }
+      v_self_perform_summary: {
+        Row: {
+          actual_equipment_cost: number | null
+          actual_labor_cost: number | null
+          actual_material_cost: number | null
+          actual_total_cost: number | null
+          actual_unit_cost: number | null
+          bid_qty: number | null
+          bid_total: number | null
+          bid_unit_price: number | null
+          contract_number: string | null
+          cost_code_id: string | null
+          cost_variance_pct: number | null
+          description: string | null
+          equipment_pct: number | null
+          estimated_equipment_pct: number | null
+          estimated_labor_pct: number | null
+          estimated_material_pct: number | null
+          installed_qty: number | null
+          is_active: boolean | null
+          item_number: string | null
+          labor_pct: number | null
+          material_pct: number | null
+          organization_id: string | null
+          project_id: string | null
+          project_name: string | null
+          unit: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "self_perform_cost_codes_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_cost_codes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "self_perform_cost_codes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_cost_codes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_cost_codes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_cost_codes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_cost_codes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_cost_codes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_cost_codes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "self_perform_cost_codes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      v_specimen_status: {
+        Row: {
+          batch_number: string | null
+          collected_date: string | null
+          id: string | null
+          lab_id: string | null
+          lab_name: string | null
+          meets_spec: boolean | null
+          mix_design: string | null
+          organization_id: string | null
+          project_id: string | null
+          project_name: string | null
+          result_value: number | null
+          scheduled_test_date: string | null
+          set_number: string | null
+          specimen_id: string | null
+          specimen_type: Database["public"]["Enums"]["specimen_type"] | null
+          status: Database["public"]["Enums"]["specimen_status"] | null
+          test_age_days: number | null
+          tracking_status: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "specimen_tracking_lab_id_fkey"
+            columns: ["lab_id"]
+            isOneToOne: false
+            referencedRelation: "labs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "specimen_tracking_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "specimen_tracking_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "specimen_tracking_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "specimen_tracking_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "specimen_tracking_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "specimen_tracking_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "specimen_tracking_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "specimen_tracking_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "specimen_tracking_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "specimen_tracking_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
+      }
+      v_sub_worksheet_summary: {
+        Row: {
+          estimate_number: number | null
+          has_over_contract_items: boolean | null
+          is_dbe_certified: boolean | null
+          line_count: number | null
+          over_contract_count: number | null
+          pay_period_id: string | null
+          project_id: string | null
+          project_name: string | null
+          subcontractor_id: string | null
+          subcontractor_name: string | null
+          total_current_amount: number | null
+          total_current_qty: number | null
+          total_previous_amount: number | null
+          total_previous_qty: number | null
+          total_to_date_amount: number | null
+          total_to_date_qty: number | null
+          worksheet_status:
+            | Database["public"]["Enums"]["sub_payment_status"]
+            | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "pay_periods_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "sub_payment_allocations_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "pay_periods"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sub_payment_allocations_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pay_period_dashboard"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sub_payment_allocations_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_payment_deadline_summary"
+            referencedColumns: ["pay_period_id"]
+          },
+          {
+            foreignKeyName: "sub_payment_allocations_pay_period_id_fkey"
+            columns: ["pay_period_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_validations"
+            referencedColumns: ["pay_period_id"]
+          },
+          {
+            foreignKeyName: "subcontract_line_items_subcontractor_id_fkey"
+            columns: ["subcontractor_id"]
+            isOneToOne: false
+            referencedRelation: "subcontractors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      v_subcontract_budget_dashboard: {
+        Row: {
+          award_variance: number | null
+          award_variance_pct: number | null
+          bid_amount: number | null
+          budget_id: string | null
+          budget_status: Database["public"]["Enums"]["budget_status"] | null
+          comparison_amount: number | null
+          confidence: string | null
+          critical_threshold_pct: number | null
+          is_dbe_certified: boolean | null
+          negotiated_amount: number | null
+          organization_id: string | null
+          payment_count: number | null
+          percent_of_budget: number | null
+          project_id: string | null
+          project_name: string | null
+          project_number: string | null
+          projected_final: number | null
+          projected_overage: number | null
+          remaining_budget: number | null
+          subcontractor_id: string | null
+          subcontractor_name: string | null
+          total_paid_to_date: number | null
+          unacked_alert_count: number | null
+          warning_threshold_pct: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subcontract_budgets_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "subcontract_budgets_subcontractor_id_fkey"
+            columns: ["subcontractor_id"]
+            isOneToOne: false
+            referencedRelation: "subcontractors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       v_submittal_log: {
         Row: {
           id: string | null
@@ -25931,6 +39231,124 @@ export type Database = {
           title: string | null
         }
         Relationships: []
+      }
+      v_supplier_quality_dashboard: {
+        Row: {
+          buy_america_certified: boolean | null
+          certs_current: boolean | null
+          dbe_certified: boolean | null
+          on_time_pct: number | null
+          organization_id: string | null
+          overall_score: number | null
+          quality_issues: number | null
+          rating: string | null
+          rejection_rate_pct: number | null
+          score_quarter: number | null
+          score_year: number | null
+          supplier_id: string | null
+          supplier_name: string | null
+          total_deliveries: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "suppliers_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      v_test_trending: {
+        Row: {
+          avg_result: number | null
+          failed: number | null
+          max_result: number | null
+          min_result: number | null
+          month: string | null
+          organization_id: string | null
+          passed: number | null
+          project_id: string | null
+          project_name: string | null
+          spec_max: number | null
+          spec_min: number | null
+          test_category: Database["public"]["Enums"]["test_category"] | null
+          test_count: number | null
+          test_type_code: string | null
+          test_type_name: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "test_results_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "test_results_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "test_results_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "test_results_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "test_results_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "test_results_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_change_order_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "test_results_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_dbe_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "test_results_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_health_dashboard"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "test_results_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "test_results_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
+            referencedColumns: ["project_id"]
+          },
+        ]
       }
       v_tickets_pending_verification: {
         Row: {
@@ -25967,8 +39385,22 @@ export type Database = {
             foreignKeyName: "material_tickets_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_tickets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_tickets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "material_tickets_project_id_fkey"
@@ -25996,6 +39428,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "material_tickets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -26036,8 +39475,22 @@ export type Database = {
             foreignKeyName: "daily_safety_briefs_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_safety_briefs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_safety_briefs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "daily_safety_briefs_project_id_fkey"
@@ -26065,6 +39518,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "daily_safety_briefs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
           {
@@ -26117,6 +39577,68 @@ export type Database = {
         }
         Relationships: []
       }
+      v_user_alert_inbox: {
+        Row: {
+          action_required: string | null
+          action_url: string | null
+          alert_id: string | null
+          alert_type: string | null
+          category:
+            | Database["public"]["Enums"]["platform_alert_category"]
+            | null
+          delivered_at: string | null
+          delivery_method:
+            | Database["public"]["Enums"]["platform_alert_delivery"]
+            | null
+          description: string | null
+          due_date: string | null
+          entity_identifier: string | null
+          entity_type: string | null
+          notification_status: string | null
+          organization_id: string | null
+          priority_score: number | null
+          read_at: string | null
+          sent_at: string | null
+          severity:
+            | Database["public"]["Enums"]["platform_alert_severity"]
+            | null
+          status: Database["public"]["Enums"]["platform_alert_status"] | null
+          title: string | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_alerts_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      v_validation_summary: {
+        Row: {
+          failed_math_count: number | null
+          failed_missing_count: number | null
+          organization_id: string | null
+          override_count: number | null
+          pass_rate_pct: number | null
+          passed_count: number | null
+          pending_count: number | null
+          project_id: string | null
+          project_name: string | null
+          total_count: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pay_periods_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       v_weekly_timesheet_summary: {
         Row: {
           employee_id: string | null
@@ -26152,8 +39674,22 @@ export type Database = {
             foreignKeyName: "task_logs_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "v_active_projects"
-            referencedColumns: ["id"]
+            referencedRelation: "v_cost_detail_report"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "task_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_daily_cost_summary"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "task_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_item_quantity_tracking"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "task_logs_project_id_fkey"
@@ -26181,6 +39717,13 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "v_project_rfi_stats"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "task_logs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "v_validation_summary"
             referencedColumns: ["project_id"]
           },
         ]
@@ -26213,6 +39756,13 @@ export type Database = {
             columns: ["crew_member_id"]
             isOneToOne: false
             referencedRelation: "v_active_crew"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "time_entries_crew_member_id_fkey"
+            columns: ["crew_member_id"]
+            isOneToOne: false
+            referencedRelation: "v_crew_roster"
             referencedColumns: ["id"]
           },
           {
@@ -26836,6 +40386,14 @@ export type Database = {
             }
             Returns: string
           }
+      approve_validation_override: {
+        Args: {
+          p_corrected_line_items?: Json
+          p_override_reason: string
+          p_pay_period_id: string
+        }
+        Returns: undefined
+      }
       auto_expire_tickets: { Args: never; Returns: number }
       auto_match_material_ticket: {
         Args: { p_ticket_id: string }
@@ -26846,6 +40404,10 @@ export type Database = {
           po_id: string
           po_line_id: string
         }[]
+      }
+      calculate_alert_priority_score: {
+        Args: { p_alert_id: string }
+        Returns: number
       }
       calculate_item_assembly_cost: {
         Args: { p_item_assembly_id: string }
@@ -26867,9 +40429,36 @@ export type Database = {
         Args: { p_project_id: string }
         Returns: number
       }
+      calculate_quality_metrics: {
+        Args: {
+          p_month: number
+          p_org_id: string
+          p_project_id: string
+          p_year: number
+        }
+        Returns: string
+      }
       calculate_response_window_close: {
         Args: { ticket_created_at: string }
         Returns: string
+      }
+      calculate_sub_projection: {
+        Args: { p_subcontract_budget_id: string }
+        Returns: {
+          basis: string
+          confidence: string
+          projected_final: number
+          projected_overage: number
+        }[]
+      }
+      calculate_supplier_score: {
+        Args: { p_quarter?: number; p_supplier_id: string; p_year: number }
+        Returns: {
+          delivery_score: number
+          documentation_score: number
+          overall_score: number
+          quality_score: number
+        }[]
       }
       calculate_ticket_expiration: {
         Args: { legal_dig: string }
@@ -26891,6 +40480,7 @@ export type Database = {
         Args: { p_risk_level: string; p_user_id: string }
         Returns: boolean
       }
+      check_budget_alerts: { Args: never; Returns: undefined }
       check_dig_status: {
         Args: {
           p_check_date: string
@@ -26922,6 +40512,7 @@ export type Database = {
           utility_statuses: Json
         }[]
       }
+      check_payment_deadlines: { Args: never; Returns: undefined }
       check_sms_rate_limit: {
         Args: { p_max_per_hour?: number; p_phone: string; p_type: string }
         Returns: boolean
@@ -26969,6 +40560,10 @@ export type Database = {
           p_severity: Database["public"]["Enums"]["alert_severity"]
           p_title: string
         }
+        Returns: string
+      }
+      create_project_financial_snapshot: {
+        Args: { p_pay_period_id?: string; p_project_id: string }
         Returns: string
       }
       disablelongtransactions: { Args: never; Returns: string }
@@ -27039,15 +40634,40 @@ export type Database = {
           ticket_number: string
         }[]
       }
+      find_qualified_operators: {
+        Args: { p_equipment_id: string; p_project_id?: string }
+        Returns: {
+          crew_member_id: string
+          is_on_project: boolean
+          operator_name: string
+          proficiency: Database["public"]["Enums"]["proficiency_level"]
+          qualification_type: string
+        }[]
+      }
       generate_cert_number: {
         Args: { cert_code: string; issue_date: string }
         Returns: string
       }
+      generate_certification_alerts: { Args: never; Returns: number }
       generate_change_order_number: {
         Args: { p_project_id: string }
         Returns: string
       }
       generate_cor_number: { Args: { p_project_id: string }; Returns: string }
+      generate_crl_from_daily_reports: {
+        Args: {
+          p_created_by?: string
+          p_end_date: string
+          p_project_id: string
+          p_start_date: string
+        }
+        Returns: string
+      }
+      generate_crl_xml: { Args: { p_crl_id: string }; Returns: string }
+      generate_daily_kpi_snapshot: {
+        Args: { p_org_id: string }
+        Returns: string
+      }
       generate_document_number: {
         Args: {
           p_doc_type: Database["public"]["Enums"]["document_type"]
@@ -27068,6 +40688,23 @@ export type Database = {
         Args: { p_bid_project_id: string }
         Returns: string
       }
+      generate_osha_300a_summary: {
+        Args: { p_organization_id: string; p_year: number }
+        Returns: {
+          total_all_other: number
+          total_days_away: number
+          total_days_away_cases: number
+          total_days_job_transfer: number
+          total_deaths: number
+          total_hearing_loss: number
+          total_injuries: number
+          total_job_transfer_cases: number
+          total_other_recordable_cases: number
+          total_poisoning: number
+          total_respiratory: number
+          total_skin_disorders: number
+        }[]
+      }
       generate_question_number: {
         Args: { p_bid_project_id: string }
         Returns: string
@@ -27080,6 +40717,19 @@ export type Database = {
       generate_risk_number: {
         Args: { p_bid_project_id: string }
         Returns: string
+      }
+      generate_sub_payment_summary: {
+        Args: { p_pay_period_id: string }
+        Returns: {
+          company_name: string
+          gross_amount: number
+          is_dbe: boolean
+          line_count: number
+          net_amount: number
+          over_contract_count: number
+          retainage_amount: number
+          subcontractor_id: string
+        }[]
       }
       generate_subcontract_number: {
         Args: { p_org_id: string; p_project_id: string }
@@ -27196,6 +40846,18 @@ export type Database = {
           table_name: string
         }[]
       }
+      get_applicable_jsas: {
+        Args: { p_project_id: string; p_work_type?: string }
+        Returns: {
+          hazard_count: number
+          high_risk_count: number
+          job_title: string
+          jsa_id: string
+          jsa_number: string
+          status: Database["public"]["Enums"]["jsa_status"]
+          work_type: string
+        }[]
+      }
       get_applicable_rules: {
         Args: {
           p_conditions?: Json
@@ -27231,6 +40893,20 @@ export type Database = {
       get_bid_project_metrics: {
         Args: { p_bid_project_id: string }
         Returns: Json
+      }
+      get_compliance_dashboard: {
+        Args: { p_organization_id: string }
+        Returns: {
+          due_today: number
+          on_track: number
+          overdue: number
+          total_late_amount: number
+          total_pending_amount: number
+          total_pending_periods: number
+          unacknowledged_alerts: number
+          urgent_3_days: number
+          warning_7_days: number
+        }[]
       }
       get_crew_timesheet_summary: {
         Args: {
@@ -27328,6 +41004,28 @@ export type Database = {
           subsection_title: string
         }[]
       }
+      get_low_stock_materials: {
+        Args: { p_project_id: string }
+        Returns: {
+          description: string
+          inventory_id: string
+          lead_time_days: number
+          material_code: string
+          quantity_on_hand: number
+          reorder_point: number
+          supplier_name: string
+        }[]
+      }
+      get_material_usage_by_cost_code: {
+        Args: { p_end_date: string; p_project_id: string; p_start_date: string }
+        Returns: {
+          cost_code: string
+          material_category: Database["public"]["Enums"]["material_category"]
+          ticket_count: number
+          total_cost: number
+          total_quantity: number
+        }[]
+      }
       get_materials_variance_report: {
         Args: {
           p_end_date?: string
@@ -27352,6 +41050,32 @@ export type Database = {
         Args: { p_project_id: string }
         Returns: number
       }
+      get_pay_period_worksheet: {
+        Args: { p_pay_period_id: string }
+        Returns: {
+          allocations: Json
+          imr_items: Json
+          line_items: Json
+          pay_period: Json
+          payments: Json
+        }[]
+      }
+      get_pending_escalations: {
+        Args: { p_organization_id: string }
+        Returns: {
+          created_at: string
+          days_remaining: number
+          deadline_date: string
+          escalation_id: string
+          escalation_level: Database["public"]["Enums"]["escalation_level"]
+          escalation_reason: string
+          estimate_number: number
+          pm_email: string
+          pm_id: string
+          project_id: string
+          project_name: string
+        }[]
+      }
       get_project_brief_status: {
         Args: { p_date?: string; p_project_id: string }
         Returns: {
@@ -27360,6 +41084,29 @@ export type Database = {
           completed_at: string
           supervisor_id: string
           supervisor_name: string
+        }[]
+      }
+      get_project_data_for_user: {
+        Args: { p_project_id: string; p_user_id: string }
+        Returns: {
+          access_level: Database["public"]["Enums"]["access_level"]
+          can_approve_payments: boolean
+          can_edit_worksheet: boolean
+          can_modify_retainage: boolean
+          can_see_co_opportunities: boolean
+          can_see_costs: boolean
+          can_see_estimating_notes: boolean
+        }[]
+      }
+      get_project_financial_summary: {
+        Args: { p_project_id: string }
+        Returns: {
+          budget_status: Json
+          compliance_status: Json
+          cost_summary: Json
+          margin_summary: Json
+          project_info: Json
+          revenue_summary: Json
         }[]
       }
       get_project_report_summary: {
@@ -27388,9 +41135,35 @@ export type Database = {
         }[]
       }
       get_rfi_response_time: { Args: { p_rfi_id: string }; Returns: number }
+      get_specimens_due_for_testing: {
+        Args: { p_days_ahead?: number; p_project_id: string }
+        Returns: {
+          days_until_test: number
+          lab_name: string
+          scheduled_test_date: string
+          specimen_id: string
+          specimen_type: Database["public"]["Enums"]["specimen_type"]
+          test_age_days: number
+        }[]
+      }
       get_subcontract_completion: {
         Args: { p_subcontract_id: string }
         Returns: number
+      }
+      get_test_trending: {
+        Args: {
+          p_months?: number
+          p_project_id: string
+          p_test_type_id: string
+        }
+        Returns: {
+          avg_result: number
+          failed: number
+          month_year: string
+          pass_rate: number
+          passed: number
+          total_tests: number
+        }[]
       }
       get_ticket_coordinates: {
         Args: { p_ticket_id: string }
@@ -27451,6 +41224,10 @@ export type Database = {
         Args: { p_user_id?: string }
         Returns: string
       }
+      get_user_project_access_level: {
+        Args: { p_project_id: string; p_user_id: string }
+        Returns: Database["public"]["Enums"]["access_level"]
+      }
       get_user_project_role: {
         Args: { p_project_id: string; p_user_id: string }
         Returns: string
@@ -27482,6 +41259,22 @@ export type Database = {
           wage_rate_id: string
         }[]
       }
+      get_wage_rate_as_of: {
+        Args: {
+          p_as_of_date?: string
+          p_classification: string
+          p_county: string
+          p_org_id: string
+          p_state: string
+        }
+        Returns: {
+          base_hourly_rate: number
+          determination_number: string
+          fringe_rate: number
+          rate_id: string
+          total_rate: number
+        }[]
+      }
       get_wage_rate_for_work: {
         Args: {
           p_organization_id: string
@@ -27498,6 +41291,11 @@ export type Database = {
       gettransactionid: { Args: never; Returns: unknown }
       has_completed_daily_brief: {
         Args: { p_date?: string; p_project_id: string; p_supervisor_id: string }
+        Returns: boolean
+      }
+      has_org_wide_access: { Args: { p_user_id: string }; Returns: boolean }
+      is_field_access_only: {
+        Args: { p_project_id: string; p_user_id: string }
         Returns: boolean
       }
       is_within_project_geofence: {
@@ -27526,7 +41324,20 @@ export type Database = {
         }
         Returns: string
       }
+      log_financial_access: {
+        Args: {
+          p_access_type: string
+          p_project_id: string
+          p_record_id: string
+          p_table_name: string
+        }
+        Returns: undefined
+      }
       longtransactionsenabled: { Args: never; Returns: boolean }
+      mark_escalation_notified: {
+        Args: { p_escalation_id: string; p_notification_type: string }
+        Returns: boolean
+      }
       populate_geometry_columns:
         | { Args: { use_typmod?: boolean }; Returns: string }
         | { Args: { tbl_oid: unknown; use_typmod?: boolean }; Returns: number }
@@ -27567,6 +41378,22 @@ export type Database = {
       }
       postgis_version: { Args: never; Returns: string }
       postgis_wagyu_version: { Args: never; Returns: string }
+      reconcile_daily_to_pay_period: {
+        Args: {
+          p_end_date: string
+          p_pay_period_id: string
+          p_project_id: string
+          p_reconciled_by?: string
+          p_start_date: string
+        }
+        Returns: {
+          field_qty: number
+          item_number: string
+          matched: boolean
+          pay_qty: number
+          variance: number
+        }[]
+      }
       record_ai_correction: {
         Args: {
           p_ai_confidence?: number
@@ -27580,6 +41407,18 @@ export type Database = {
           p_original_value: string
         }
         Returns: string
+      }
+      reprocess_pay_period_validation: {
+        Args: { p_pay_period_id: string }
+        Returns: undefined
+      }
+      resolve_escalation: {
+        Args: {
+          p_escalation_id: string
+          p_resolution_notes: string
+          p_resolved_by: string
+        }
+        Returns: boolean
       }
       search_specs: {
         Args: {
@@ -27621,6 +41460,14 @@ export type Database = {
           p_is_conflict?: boolean
           p_is_emergency?: boolean
           p_is_expired?: boolean
+          p_user_id: string
+        }
+        Returns: boolean
+      }
+      should_user_receive_platform_alert: {
+        Args: {
+          p_alert_id: string
+          p_delivery_method: Database["public"]["Enums"]["platform_alert_delivery"]
           p_user_id: string
         }
         Returns: boolean
@@ -28247,7 +42094,12 @@ export type Database = {
         }
         Returns: string
       }
+      upsert_allocations: { Args: { p_allocations: Json }; Returns: number }
       user_belongs_to_org: { Args: { org_id: string }; Returns: boolean }
+      user_has_full_access: {
+        Args: { p_project_id: string; p_user_id: string }
+        Returns: boolean
+      }
       user_has_module_access: {
         Args: { p_module_key: string }
         Returns: boolean
@@ -28268,8 +42120,13 @@ export type Database = {
         Args: { p_project_id: string; p_user_id: string }
         Returns: boolean
       }
+      validate_pay_period: {
+        Args: { p_pay_period_id: string }
+        Returns: Database["public"]["Enums"]["validation_status"]
+      }
     }
     Enums: {
+      access_level: "FULL" | "CONDENSED" | "READ_ONLY" | "NONE"
       alert_severity: "INFO" | "WARNING" | "CRITICAL" | "EMERGENCY"
       assembly_resource_type_enum:
         | "LABOR"
@@ -28284,6 +42141,13 @@ export type Database = {
         | "absent"
         | "excused"
         | "no_show"
+      audit_type:
+        | "INTERNAL"
+        | "EXTERNAL"
+        | "WVDOH"
+        | "OWNER"
+        | "CERTIFICATION"
+        | "SUPPLIER"
       bid_result_enum: "WON" | "LOST" | "NO_BID" | "WITHDRAWN" | "PENDING"
       bid_status_enum:
         | "IDENTIFIED"
@@ -28295,12 +42159,38 @@ export type Database = {
         | "LOST"
         | "NO_BID"
         | "WITHDRAWN"
+        | "REVIEWING"
+        | "ANALYZING"
+        | "READY_FOR_REVIEW"
+        | "IN_REVIEW"
+        | "APPROVED"
+        | "ESTIMATING"
+        | "CANCELLED"
+      budget_status: "ON_TRACK" | "WARNING" | "CRITICAL" | "OVER_BUDGET"
       calculation_method_enum:
         | "ASSEMBLY_SUM"
         | "PERCENT_OF_SUBTOTAL"
         | "PERCENT_OF_TOTAL"
         | "MANUAL_ENTRY"
         | "SUBCONTRACT_QUOTE"
+      car_status:
+        | "DRAFT"
+        | "OPEN"
+        | "INVESTIGATION"
+        | "ACTION_PLANNED"
+        | "IN_PROGRESS"
+        | "VERIFICATION"
+        | "CLOSED"
+        | "VOID"
+      cert_type:
+        | "MILL_CERT"
+        | "BATCH_CERT"
+        | "MIX_DESIGN"
+        | "TEST_REPORT"
+        | "BUY_AMERICA"
+        | "INSPECTION_CERT"
+        | "COC"
+        | "MSDS_SDS"
       change_order_status:
         | "DRAFT"
         | "PENDING_INTERNAL_REVIEW"
@@ -28322,6 +42212,13 @@ export type Database = {
         | "FORCE_MAJEURE"
         | "CORRECTION"
         | "DEDUCTIVE"
+      co_opportunity_status:
+        | "IDENTIFIED"
+        | "PURSUING"
+        | "SUBMITTED"
+        | "APPROVED"
+        | "DENIED"
+        | "WITHDRAWN"
       competent_person_type:
         | "excavation"
         | "scaffolding"
@@ -28342,6 +42239,17 @@ export type Database = {
         | "expired"
         | "pending_review"
         | "suspended"
+      conflict_resolution:
+        | "SERVER_WINS"
+        | "CLIENT_WINS"
+        | "MANUAL_MERGE"
+        | "NEWEST_WINS"
+      control_hierarchy:
+        | "ELIMINATION"
+        | "SUBSTITUTION"
+        | "ENGINEERING"
+        | "ADMINISTRATIVE"
+        | "PPE"
       correction_entity_enum:
         | "LINE_ITEM"
         | "RISK"
@@ -28353,7 +42261,29 @@ export type Database = {
         | "PROJECT_METADATA"
         | "BRIDGE_STRUCTURE"
         | "EXECUTIVE_SNAPSHOT"
+      cost_entry_status:
+        | "DRAFT"
+        | "SUBMITTED"
+        | "APPROVED"
+        | "REJECTED"
+        | "POSTED"
       crew_assignment_status: "scheduled" | "active" | "completed" | "cancelled"
+      crl_export_format: "AASHTOWARE_XML" | "AASHTOWARE_CSV" | "PDF_REPORT"
+      crl_status:
+        | "DRAFT"
+        | "PENDING_REVIEW"
+        | "APPROVED"
+        | "SUBMITTED"
+        | "ACCEPTED"
+        | "REJECTED"
+        | "REVISED"
+      document_retention_class:
+        | "STANDARD"
+        | "FINANCIAL"
+        | "SAFETY"
+        | "MEDICAL"
+        | "LEGAL_HOLD"
+        | "PERMANENT"
       document_status:
         | "DRAFT"
         | "PENDING_REVIEW"
@@ -28406,12 +42336,56 @@ export type Database = {
         | "restricted"
         | "suspended"
         | "pending_review"
+      eeo_gender: "male" | "female" | "non_binary" | "decline_to_state"
+      eeo_race:
+        | "american_indian_alaska_native"
+        | "asian"
+        | "black_african_american"
+        | "hispanic_latino"
+        | "native_hawaiian_pacific_islander"
+        | "white"
+        | "two_or_more"
+        | "decline_to_state"
       employment_status:
         | "active"
         | "inactive"
         | "terminated"
         | "leave_of_absence"
         | "suspended"
+        | "on_leave"
+        | "laid_off"
+        | "retired"
+        | "seasonal_inactive"
+      employment_type:
+        | "full_time"
+        | "part_time"
+        | "seasonal"
+        | "temporary"
+        | "contract"
+      equipment_category_enum:
+        | "earthmoving"
+        | "hauling"
+        | "lifting"
+        | "paving"
+        | "drilling_piling"
+        | "concrete"
+        | "support"
+        | "survey_grade_control"
+        | "other"
+      equipment_status:
+        | "active"
+        | "available"
+        | "in_maintenance"
+        | "down"
+        | "in_transit"
+        | "rented_out"
+        | "winterized"
+        | "sold_disposed"
+      escalation_level:
+        | "LEVEL_1_WARNING"
+        | "LEVEL_2_URGENT"
+        | "LEVEL_3_DEADLINE"
+        | "LEVEL_4_VIOLATION"
       estimation_method_enum:
         | "ASSEMBLY_BASED"
         | "SUBQUOTE"
@@ -28433,6 +42407,7 @@ export type Database = {
         | "LINE_ITEMS_EXCEL"
         | "PREBID_QUESTIONS_PDF"
         | "FULL_BID_PACKAGE_ZIP"
+      fault_severity: "info" | "warning" | "critical" | "shutdown"
       feedback_rating_enum:
         | "VERY_POOR"
         | "POOR"
@@ -28444,6 +42419,48 @@ export type Database = {
         | "SUBCONTRACT"
         | "MATERIAL_BUY"
         | "COMBINATION"
+      geofence_event_type:
+        | "ENTER"
+        | "EXIT"
+        | "SPEEDING"
+        | "DWELL_START"
+        | "DWELL_END"
+      geofence_type:
+        | "PROJECT_SITE"
+        | "COMPANY_YARD"
+        | "FUEL_STATION"
+        | "SUPPLIER"
+        | "CUSTOMER"
+        | "RESTRICTED_AREA"
+        | "PARKING"
+        | "MAINTENANCE_SHOP"
+      handoff_status:
+        | "PENDING_VP_ASSIGNMENT"
+        | "TEAM_ASSIGNED"
+        | "HANDOFF_SCHEDULED"
+        | "HANDOFF_COMPLETE"
+        | "IN_EXECUTION"
+      imr_deficiency_type:
+        | "LAB_QC"
+        | "LAB_QA"
+        | "LAB_QAD"
+        | "FIELD_QC"
+        | "FIELD_QA"
+        | "COMPACTION_QC"
+        | "COMPACTION_QA"
+        | "PWL_CORES_SAMPLES"
+        | "PCC_SIM"
+        | "APL_AS"
+        | "DC_DOC"
+        | "CERT_MISSING"
+        | "OTHER"
+      imr_resolution_status:
+        | "OPEN"
+        | "DOCUMENTATION_SUBMITTED"
+        | "PENDING_STATE_REVIEW"
+        | "RESOLVED_RELEASED"
+        | "ACCEPTED_DEDUCTION"
+        | "DISPUTED"
       incident_classification:
         | "recordable_injury"
         | "first_aid_only"
@@ -28479,6 +42496,14 @@ export type Database = {
         | "special"
         | "wvdoh"
         | "third_party"
+      inventory_transaction_type:
+        | "RECEIVED"
+        | "ISSUED"
+        | "RETURNED"
+        | "TRANSFERRED"
+        | "ADJUSTED"
+        | "WASTE"
+        | "REJECTED"
       invoice_status:
         | "DRAFT"
         | "SUBMITTED"
@@ -28489,6 +42514,44 @@ export type Database = {
         | "DISPUTED"
         | "REJECTED"
         | "VOID"
+      issue_type:
+        | "SPEC_CONFLICT"
+        | "PLAN_ERROR"
+        | "QUANTITY_CONCERN"
+        | "ACCESS"
+        | "UTILITY"
+        | "ENVIRONMENTAL"
+        | "SCHEDULING"
+        | "OTHER"
+      jsa_status:
+        | "DRAFT"
+        | "PENDING_REVIEW"
+        | "APPROVED"
+        | "EXPIRED"
+        | "SUPERSEDED"
+      lab_type: "INTERNAL" | "THIRD_PARTY" | "WVDOH" | "PRODUCER" | "FIELD"
+      labor_type: "REGULAR" | "OVERTIME" | "DOUBLE_TIME" | "PREVAILING_WAGE"
+      location_source:
+        | "TELEMATICS"
+        | "GPS_TRACKER"
+        | "MOBILE_CHECKIN"
+        | "DAILY_LOG"
+        | "MANUAL_ENTRY"
+        | "GEOFENCE_EVENT"
+      location_source_priority:
+        | "telematics"
+        | "gps_manual"
+        | "daily_log"
+        | "manual_override"
+      maintenance_priority: "emergency" | "urgent" | "high" | "normal" | "low"
+      maintenance_type:
+        | "preventive"
+        | "repair"
+        | "inspection"
+        | "warranty"
+        | "recall"
+        | "upgrade"
+        | "damage"
       material_category:
         | "aggregate"
         | "asphalt"
@@ -28508,6 +42571,7 @@ export type Database = {
         | "verification"
         | "closed"
         | "void"
+      note_type: "ASSUMPTION" | "RISK" | "OPPORTUNITY" | "CONFLICT" | "GENERAL"
       ocr_status:
         | "pending"
         | "processing"
@@ -28523,6 +42587,25 @@ export type Database = {
         | "EQUIPMENT_EFFICIENCY"
         | "CREW_OPTIMIZATION"
       overtime_type: "regular" | "overtime" | "double_time"
+      ownership_type:
+        | "owned"
+        | "financed"
+        | "leased"
+        | "rented"
+        | "customer_owned"
+        | "joint_venture"
+      pay_period_status:
+        | "PRELIMINARY_RECEIVED"
+        | "IMR_UNDER_REVIEW"
+        | "DISPUTED_WITH_STATE"
+        | "FINAL_RECEIVED"
+        | "FUNDS_RECEIVED"
+        | "SUB_WS_IN_PROGRESS"
+        | "PENDING_APPROVAL"
+        | "APPROVED"
+        | "CHECKS_CUT"
+        | "CRL_SUBMITTED"
+        | "CLOSED"
       pco_status:
         | "IDENTIFIED"
         | "PRICING"
@@ -28539,6 +42622,23 @@ export type Database = {
         | "NEEDS_IMPROVEMENT"
         | "POOR"
         | "UNACCEPTABLE"
+      platform_alert_category:
+        | "SAFETY"
+        | "COMPLIANCE"
+        | "MAINTENANCE"
+        | "OPERATIONAL"
+        | "FINANCIAL"
+        | "ADMINISTRATIVE"
+      platform_alert_delivery: "IN_APP" | "EMAIL" | "SMS" | "PUSH"
+      platform_alert_severity: "CRITICAL" | "HIGH" | "MEDIUM" | "LOW" | "INFO"
+      platform_alert_status:
+        | "ACTIVE"
+        | "ACKNOWLEDGED"
+        | "SNOOZED"
+        | "DELEGATED"
+        | "RESOLVED"
+        | "AUTO_RESOLVED"
+        | "EXPIRED"
       po_status:
         | "draft"
         | "submitted"
@@ -28573,6 +42673,18 @@ export type Database = {
         | "FAILED"
         | "NEEDS_OCR"
         | "PARTIAL"
+      proficiency_level: "trainee" | "competent" | "expert" | "instructor"
+      project_role:
+        | "VP_OPERATIONS"
+        | "PROJECT_MANAGER"
+        | "GENERAL_SUPERINTENDENT"
+        | "PROJECT_ENGINEER"
+        | "JOB_SUPERINTENDENT"
+        | "FOREMAN"
+        | "FIELD_ENGINEER"
+        | "ESTIMATOR"
+        | "CONTROLLER"
+        | "ADMIN"
       punch_item_priority: "critical" | "high" | "medium" | "low"
       punch_item_status:
         | "open"
@@ -28581,6 +42693,15 @@ export type Database = {
         | "completed"
         | "deferred"
         | "not_applicable"
+      quality_issue_type:
+        | "LATE_DELIVERY"
+        | "WRONG_MATERIAL"
+        | "WRONG_QUANTITY"
+        | "QUALITY_DEFECT"
+        | "DAMAGED"
+        | "MISSING_DOCS"
+        | "OUT_OF_SPEC"
+        | "CONTAMINATED"
       question_status_enum:
         | "AI_SUGGESTED"
         | "APPROVED"
@@ -28659,6 +42780,34 @@ export type Database = {
         | "EMBEDDING"
         | "COMPLETED"
         | "FAILED"
+      specimen_status:
+        | "COLLECTED"
+        | "IN_TRANSIT"
+        | "AT_LAB"
+        | "CURING"
+        | "TESTING"
+        | "TESTED"
+        | "DISPOSED"
+        | "LOST"
+      specimen_type:
+        | "CONCRETE_CYLINDER"
+        | "CONCRETE_BEAM"
+        | "CONCRETE_CORE"
+        | "ASPHALT_CORE"
+        | "SOIL_SAMPLE"
+        | "AGGREGATE_SAMPLE"
+        | "STEEL_COUPON"
+        | "WELD_COUPON"
+        | "COATING_SAMPLE"
+        | "OTHER"
+      sub_payment_status:
+        | "DRAFT"
+        | "FLAGGED_OVER_CONTRACT"
+        | "PENDING_APPROVAL"
+        | "APPROVED"
+        | "CHECK_CUT"
+        | "NOTIFIED"
+        | "CRL_REPORTED"
       subcontract_status:
         | "DRAFT"
         | "PENDING_APPROVAL"
@@ -28678,6 +42827,18 @@ export type Database = {
         | "REJECTED"
         | "FOR_RECORD_ONLY"
         | "VOID"
+      sync_status: "SYNCED" | "PENDING" | "CONFLICT" | "FAILED"
+      telematics_provider:
+        | "cat_visionlink"
+        | "john_deere_jdlink"
+        | "komatsu_komtrax"
+        | "volvo_caretrack"
+        | "hitachi_global_e_service"
+        | "case_sitewatch"
+        | "trimble"
+        | "topcon"
+        | "geotab"
+        | "manual"
       test_category:
         | "concrete"
         | "asphalt"
@@ -28704,6 +42865,31 @@ export type Database = {
         | "variance_flagged"
         | "disputed"
         | "reconciled"
+      trade_classification:
+        | "heo_group_i"
+        | "heo_group_ii"
+        | "heo_group_iii"
+        | "heo_group_iv"
+        | "laborer_group_i"
+        | "laborer_group_ii"
+        | "laborer_group_iii"
+        | "laborer_group_iv"
+        | "carpenter"
+        | "bridge_carpenter"
+        | "pile_buck"
+        | "ironworker_structural"
+        | "ironworker_reinforcing"
+        | "cement_mason"
+        | "teamster"
+        | "mechanic"
+        | "welder"
+        | "foreman"
+        | "superintendent"
+        | "project_manager"
+        | "office_clerical"
+        | "professional"
+        | "apprentice"
+        | "other"
       training_session_status:
         | "scheduled"
         | "in_progress"
@@ -28711,6 +42897,19 @@ export type Database = {
         | "cancelled"
       validation_blocking_behavior: "block" | "warn" | "log"
       validation_risk_level: "low" | "medium" | "high" | "critical"
+      validation_status:
+        | "pending"
+        | "passed"
+        | "failed_math"
+        | "failed_missing_data"
+        | "manual_override"
+        | "reprocessing"
+      violation_severity:
+        | "WILLFUL"
+        | "REPEAT"
+        | "SERIOUS"
+        | "OTHER_THAN_SERIOUS"
+        | "DE_MINIMIS"
       work_category_enum:
         | "MOBILIZATION"
         | "DEMOLITION"
@@ -28772,6 +42971,7 @@ export type Database = {
         | "DAILY_RADAR"
         | "RENEWAL_REMINDER"
         | "UTILITY_FOLLOWUP"
+        | "CONFLICT_RESOLVED"
       wv811_digest_frequency: "NONE" | "DAILY" | "WEEKLY" | "REAL_TIME"
       wv811_email_status:
         | "PENDING"
@@ -28956,6 +43156,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      access_level: ["FULL", "CONDENSED", "READ_ONLY", "NONE"],
       alert_severity: ["INFO", "WARNING", "CRITICAL", "EMERGENCY"],
       assembly_resource_type_enum: [
         "LABOR",
@@ -28972,6 +43173,14 @@ export const Constants = {
         "excused",
         "no_show",
       ],
+      audit_type: [
+        "INTERNAL",
+        "EXTERNAL",
+        "WVDOH",
+        "OWNER",
+        "CERTIFICATION",
+        "SUPPLIER",
+      ],
       bid_result_enum: ["WON", "LOST", "NO_BID", "WITHDRAWN", "PENDING"],
       bid_status_enum: [
         "IDENTIFIED",
@@ -28983,13 +43192,41 @@ export const Constants = {
         "LOST",
         "NO_BID",
         "WITHDRAWN",
+        "REVIEWING",
+        "ANALYZING",
+        "READY_FOR_REVIEW",
+        "IN_REVIEW",
+        "APPROVED",
+        "ESTIMATING",
+        "CANCELLED",
       ],
+      budget_status: ["ON_TRACK", "WARNING", "CRITICAL", "OVER_BUDGET"],
       calculation_method_enum: [
         "ASSEMBLY_SUM",
         "PERCENT_OF_SUBTOTAL",
         "PERCENT_OF_TOTAL",
         "MANUAL_ENTRY",
         "SUBCONTRACT_QUOTE",
+      ],
+      car_status: [
+        "DRAFT",
+        "OPEN",
+        "INVESTIGATION",
+        "ACTION_PLANNED",
+        "IN_PROGRESS",
+        "VERIFICATION",
+        "CLOSED",
+        "VOID",
+      ],
+      cert_type: [
+        "MILL_CERT",
+        "BATCH_CERT",
+        "MIX_DESIGN",
+        "TEST_REPORT",
+        "BUY_AMERICA",
+        "INSPECTION_CERT",
+        "COC",
+        "MSDS_SDS",
       ],
       change_order_status: [
         "DRAFT",
@@ -29014,6 +43251,14 @@ export const Constants = {
         "CORRECTION",
         "DEDUCTIVE",
       ],
+      co_opportunity_status: [
+        "IDENTIFIED",
+        "PURSUING",
+        "SUBMITTED",
+        "APPROVED",
+        "DENIED",
+        "WITHDRAWN",
+      ],
       competent_person_type: [
         "excavation",
         "scaffolding",
@@ -29036,6 +43281,19 @@ export const Constants = {
         "pending_review",
         "suspended",
       ],
+      conflict_resolution: [
+        "SERVER_WINS",
+        "CLIENT_WINS",
+        "MANUAL_MERGE",
+        "NEWEST_WINS",
+      ],
+      control_hierarchy: [
+        "ELIMINATION",
+        "SUBSTITUTION",
+        "ENGINEERING",
+        "ADMINISTRATIVE",
+        "PPE",
+      ],
       correction_entity_enum: [
         "LINE_ITEM",
         "RISK",
@@ -29048,7 +43306,32 @@ export const Constants = {
         "BRIDGE_STRUCTURE",
         "EXECUTIVE_SNAPSHOT",
       ],
+      cost_entry_status: [
+        "DRAFT",
+        "SUBMITTED",
+        "APPROVED",
+        "REJECTED",
+        "POSTED",
+      ],
       crew_assignment_status: ["scheduled", "active", "completed", "cancelled"],
+      crl_export_format: ["AASHTOWARE_XML", "AASHTOWARE_CSV", "PDF_REPORT"],
+      crl_status: [
+        "DRAFT",
+        "PENDING_REVIEW",
+        "APPROVED",
+        "SUBMITTED",
+        "ACCEPTED",
+        "REJECTED",
+        "REVISED",
+      ],
+      document_retention_class: [
+        "STANDARD",
+        "FINANCIAL",
+        "SAFETY",
+        "MEDICAL",
+        "LEGAL_HOLD",
+        "PERMANENT",
+      ],
       document_status: [
         "DRAFT",
         "PENDING_REVIEW",
@@ -29105,12 +43388,61 @@ export const Constants = {
         "suspended",
         "pending_review",
       ],
+      eeo_gender: ["male", "female", "non_binary", "decline_to_state"],
+      eeo_race: [
+        "american_indian_alaska_native",
+        "asian",
+        "black_african_american",
+        "hispanic_latino",
+        "native_hawaiian_pacific_islander",
+        "white",
+        "two_or_more",
+        "decline_to_state",
+      ],
       employment_status: [
         "active",
         "inactive",
         "terminated",
         "leave_of_absence",
         "suspended",
+        "on_leave",
+        "laid_off",
+        "retired",
+        "seasonal_inactive",
+      ],
+      employment_type: [
+        "full_time",
+        "part_time",
+        "seasonal",
+        "temporary",
+        "contract",
+      ],
+      equipment_category_enum: [
+        "earthmoving",
+        "hauling",
+        "lifting",
+        "paving",
+        "drilling_piling",
+        "concrete",
+        "support",
+        "survey_grade_control",
+        "other",
+      ],
+      equipment_status: [
+        "active",
+        "available",
+        "in_maintenance",
+        "down",
+        "in_transit",
+        "rented_out",
+        "winterized",
+        "sold_disposed",
+      ],
+      escalation_level: [
+        "LEVEL_1_WARNING",
+        "LEVEL_2_URGENT",
+        "LEVEL_3_DEADLINE",
+        "LEVEL_4_VIOLATION",
       ],
       estimation_method_enum: [
         "ASSEMBLY_BASED",
@@ -29136,6 +43468,7 @@ export const Constants = {
         "PREBID_QUESTIONS_PDF",
         "FULL_BID_PACKAGE_ZIP",
       ],
+      fault_severity: ["info", "warning", "critical", "shutdown"],
       feedback_rating_enum: [
         "VERY_POOR",
         "POOR",
@@ -29148,6 +43481,53 @@ export const Constants = {
         "SUBCONTRACT",
         "MATERIAL_BUY",
         "COMBINATION",
+      ],
+      geofence_event_type: [
+        "ENTER",
+        "EXIT",
+        "SPEEDING",
+        "DWELL_START",
+        "DWELL_END",
+      ],
+      geofence_type: [
+        "PROJECT_SITE",
+        "COMPANY_YARD",
+        "FUEL_STATION",
+        "SUPPLIER",
+        "CUSTOMER",
+        "RESTRICTED_AREA",
+        "PARKING",
+        "MAINTENANCE_SHOP",
+      ],
+      handoff_status: [
+        "PENDING_VP_ASSIGNMENT",
+        "TEAM_ASSIGNED",
+        "HANDOFF_SCHEDULED",
+        "HANDOFF_COMPLETE",
+        "IN_EXECUTION",
+      ],
+      imr_deficiency_type: [
+        "LAB_QC",
+        "LAB_QA",
+        "LAB_QAD",
+        "FIELD_QC",
+        "FIELD_QA",
+        "COMPACTION_QC",
+        "COMPACTION_QA",
+        "PWL_CORES_SAMPLES",
+        "PCC_SIM",
+        "APL_AS",
+        "DC_DOC",
+        "CERT_MISSING",
+        "OTHER",
+      ],
+      imr_resolution_status: [
+        "OPEN",
+        "DOCUMENTATION_SUBMITTED",
+        "PENDING_STATE_REVIEW",
+        "RESOLVED_RELEASED",
+        "ACCEPTED_DEDUCTION",
+        "DISPUTED",
       ],
       incident_classification: [
         "recordable_injury",
@@ -29188,6 +43568,15 @@ export const Constants = {
         "wvdoh",
         "third_party",
       ],
+      inventory_transaction_type: [
+        "RECEIVED",
+        "ISSUED",
+        "RETURNED",
+        "TRANSFERRED",
+        "ADJUSTED",
+        "WASTE",
+        "REJECTED",
+      ],
       invoice_status: [
         "DRAFT",
         "SUBMITTED",
@@ -29198,6 +43587,49 @@ export const Constants = {
         "DISPUTED",
         "REJECTED",
         "VOID",
+      ],
+      issue_type: [
+        "SPEC_CONFLICT",
+        "PLAN_ERROR",
+        "QUANTITY_CONCERN",
+        "ACCESS",
+        "UTILITY",
+        "ENVIRONMENTAL",
+        "SCHEDULING",
+        "OTHER",
+      ],
+      jsa_status: [
+        "DRAFT",
+        "PENDING_REVIEW",
+        "APPROVED",
+        "EXPIRED",
+        "SUPERSEDED",
+      ],
+      lab_type: ["INTERNAL", "THIRD_PARTY", "WVDOH", "PRODUCER", "FIELD"],
+      labor_type: ["REGULAR", "OVERTIME", "DOUBLE_TIME", "PREVAILING_WAGE"],
+      location_source: [
+        "TELEMATICS",
+        "GPS_TRACKER",
+        "MOBILE_CHECKIN",
+        "DAILY_LOG",
+        "MANUAL_ENTRY",
+        "GEOFENCE_EVENT",
+      ],
+      location_source_priority: [
+        "telematics",
+        "gps_manual",
+        "daily_log",
+        "manual_override",
+      ],
+      maintenance_priority: ["emergency", "urgent", "high", "normal", "low"],
+      maintenance_type: [
+        "preventive",
+        "repair",
+        "inspection",
+        "warranty",
+        "recall",
+        "upgrade",
+        "damage",
       ],
       material_category: [
         "aggregate",
@@ -29220,6 +43652,7 @@ export const Constants = {
         "closed",
         "void",
       ],
+      note_type: ["ASSUMPTION", "RISK", "OPPORTUNITY", "CONFLICT", "GENERAL"],
       ocr_status: [
         "pending",
         "processing",
@@ -29237,6 +43670,27 @@ export const Constants = {
         "CREW_OPTIMIZATION",
       ],
       overtime_type: ["regular", "overtime", "double_time"],
+      ownership_type: [
+        "owned",
+        "financed",
+        "leased",
+        "rented",
+        "customer_owned",
+        "joint_venture",
+      ],
+      pay_period_status: [
+        "PRELIMINARY_RECEIVED",
+        "IMR_UNDER_REVIEW",
+        "DISPUTED_WITH_STATE",
+        "FINAL_RECEIVED",
+        "FUNDS_RECEIVED",
+        "SUB_WS_IN_PROGRESS",
+        "PENDING_APPROVAL",
+        "APPROVED",
+        "CHECKS_CUT",
+        "CRL_SUBMITTED",
+        "CLOSED",
+      ],
       pco_status: [
         "IDENTIFIED",
         "PRICING",
@@ -29254,6 +43708,25 @@ export const Constants = {
         "NEEDS_IMPROVEMENT",
         "POOR",
         "UNACCEPTABLE",
+      ],
+      platform_alert_category: [
+        "SAFETY",
+        "COMPLIANCE",
+        "MAINTENANCE",
+        "OPERATIONAL",
+        "FINANCIAL",
+        "ADMINISTRATIVE",
+      ],
+      platform_alert_delivery: ["IN_APP", "EMAIL", "SMS", "PUSH"],
+      platform_alert_severity: ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO"],
+      platform_alert_status: [
+        "ACTIVE",
+        "ACKNOWLEDGED",
+        "SNOOZED",
+        "DELEGATED",
+        "RESOLVED",
+        "AUTO_RESOLVED",
+        "EXPIRED",
       ],
       po_status: [
         "draft",
@@ -29293,6 +43766,19 @@ export const Constants = {
         "NEEDS_OCR",
         "PARTIAL",
       ],
+      proficiency_level: ["trainee", "competent", "expert", "instructor"],
+      project_role: [
+        "VP_OPERATIONS",
+        "PROJECT_MANAGER",
+        "GENERAL_SUPERINTENDENT",
+        "PROJECT_ENGINEER",
+        "JOB_SUPERINTENDENT",
+        "FOREMAN",
+        "FIELD_ENGINEER",
+        "ESTIMATOR",
+        "CONTROLLER",
+        "ADMIN",
+      ],
       punch_item_priority: ["critical", "high", "medium", "low"],
       punch_item_status: [
         "open",
@@ -29301,6 +43787,16 @@ export const Constants = {
         "completed",
         "deferred",
         "not_applicable",
+      ],
+      quality_issue_type: [
+        "LATE_DELIVERY",
+        "WRONG_MATERIAL",
+        "WRONG_QUANTITY",
+        "QUALITY_DEFECT",
+        "DAMAGED",
+        "MISSING_DOCS",
+        "OUT_OF_SPEC",
+        "CONTAMINATED",
       ],
       question_status_enum: [
         "AI_SUGGESTED",
@@ -29388,6 +43884,37 @@ export const Constants = {
         "COMPLETED",
         "FAILED",
       ],
+      specimen_status: [
+        "COLLECTED",
+        "IN_TRANSIT",
+        "AT_LAB",
+        "CURING",
+        "TESTING",
+        "TESTED",
+        "DISPOSED",
+        "LOST",
+      ],
+      specimen_type: [
+        "CONCRETE_CYLINDER",
+        "CONCRETE_BEAM",
+        "CONCRETE_CORE",
+        "ASPHALT_CORE",
+        "SOIL_SAMPLE",
+        "AGGREGATE_SAMPLE",
+        "STEEL_COUPON",
+        "WELD_COUPON",
+        "COATING_SAMPLE",
+        "OTHER",
+      ],
+      sub_payment_status: [
+        "DRAFT",
+        "FLAGGED_OVER_CONTRACT",
+        "PENDING_APPROVAL",
+        "APPROVED",
+        "CHECK_CUT",
+        "NOTIFIED",
+        "CRL_REPORTED",
+      ],
       subcontract_status: [
         "DRAFT",
         "PENDING_APPROVAL",
@@ -29408,6 +43935,19 @@ export const Constants = {
         "REJECTED",
         "FOR_RECORD_ONLY",
         "VOID",
+      ],
+      sync_status: ["SYNCED", "PENDING", "CONFLICT", "FAILED"],
+      telematics_provider: [
+        "cat_visionlink",
+        "john_deere_jdlink",
+        "komatsu_komtrax",
+        "volvo_caretrack",
+        "hitachi_global_e_service",
+        "case_sitewatch",
+        "trimble",
+        "topcon",
+        "geotab",
+        "manual",
       ],
       test_category: [
         "concrete",
@@ -29438,6 +43978,32 @@ export const Constants = {
         "disputed",
         "reconciled",
       ],
+      trade_classification: [
+        "heo_group_i",
+        "heo_group_ii",
+        "heo_group_iii",
+        "heo_group_iv",
+        "laborer_group_i",
+        "laborer_group_ii",
+        "laborer_group_iii",
+        "laborer_group_iv",
+        "carpenter",
+        "bridge_carpenter",
+        "pile_buck",
+        "ironworker_structural",
+        "ironworker_reinforcing",
+        "cement_mason",
+        "teamster",
+        "mechanic",
+        "welder",
+        "foreman",
+        "superintendent",
+        "project_manager",
+        "office_clerical",
+        "professional",
+        "apprentice",
+        "other",
+      ],
       training_session_status: [
         "scheduled",
         "in_progress",
@@ -29446,6 +44012,21 @@ export const Constants = {
       ],
       validation_blocking_behavior: ["block", "warn", "log"],
       validation_risk_level: ["low", "medium", "high", "critical"],
+      validation_status: [
+        "pending",
+        "passed",
+        "failed_math",
+        "failed_missing_data",
+        "manual_override",
+        "reprocessing",
+      ],
+      violation_severity: [
+        "WILLFUL",
+        "REPEAT",
+        "SERIOUS",
+        "OTHER_THAN_SERIOUS",
+        "DE_MINIMIS",
+      ],
       work_category_enum: [
         "MOBILIZATION",
         "DEMOLITION",
@@ -29510,6 +44091,7 @@ export const Constants = {
         "DAILY_RADAR",
         "RENEWAL_REMINDER",
         "UTILITY_FOLLOWUP",
+        "CONFLICT_RESOLVED",
       ],
       wv811_digest_frequency: ["NONE", "DAILY", "WEEKLY", "REAL_TIME"],
       wv811_email_status: [
