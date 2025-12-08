@@ -1024,6 +1024,7 @@ CREATE TRIGGER trg_update_dqf_status
 -- =============================================================================
 
 -- Create a view that links DQF to existing drug_tests
+-- Note: Uses columns that actually exist in the current drug_tests table
 CREATE OR REPLACE VIEW public.v_dqf_drug_tests AS
 SELECT
     dt.id,
@@ -1035,12 +1036,12 @@ SELECT
     dt.result,
     dt.result_date,
     dt.is_dot_test,
-    dt.specimen_id,
-    dt.chain_of_custody_url,
-    dt.result_document_url,
-    dt.requires_sap_evaluation,
-    dt.return_to_duty_cleared,
-    dt.return_to_duty_date,
+    dt.chain_of_custody_number,
+    dt.lab_name,
+    dt.mro_name,
+    dt.collection_site,
+    dt.document_url,
+    dt.notes,
     dt.created_at
 FROM public.drug_tests dt
 JOIN public.employees e ON dt.employee_id = e.id
