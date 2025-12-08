@@ -65,7 +65,7 @@ export function IFTAReporting() {
   const [reports, setReports] = useState<IFTAReport[]>([]);
   const [stats, setStats] = useState<IFTAStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [yearFilter, setYearFilter] = useState<string>(new Date().getFullYear().toString());
+  const [yearFilter, setYearFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [selectedReport, setSelectedReport] = useState<IFTAReport | null>(null);
 
