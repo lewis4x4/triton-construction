@@ -866,7 +866,7 @@ INSERT INTO public.vehicle_maintenance (
 (
   'f8000000-0000-0000-0000-000000000002',
   'f0000000-0000-0000-0000-000000000004',
-  'corrective', 'high',
+  'repair', 'high',
   'Air Brake System Repair', 'Air brake pressure gauge fluctuating, left turn signal intermittent',
   NULL,
   'in_progress', CURRENT_DATE - INTERVAL '2 days', (CURRENT_DATE - INTERVAL '2 days')::TIMESTAMP + TIME '09:00:00', NULL,
