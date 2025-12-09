@@ -132,9 +132,9 @@ export function CreateBid() {
       return;
     }
 
-    // Validate file size (max 20MB)
-    if (file.size > 20 * 1024 * 1024) {
-      setExtractionError('File size must be less than 20MB');
+    // Validate file size (max 5MB for edge function limits)
+    if (file.size > 5 * 1024 * 1024) {
+      setExtractionError('File size must be less than 5MB. Try uploading just the cover page or first few pages.');
       return;
     }
 
@@ -329,7 +329,7 @@ export function CreateBid() {
                   <strong>Drop bid document here</strong> or click to browse
                 </span>
                 <span className="drop-zone-hint">
-                  Supports PDF and images (PNG, JPEG) up to 20MB
+                  Supports PDF and images (PNG, JPEG) up to 5MB
                 </span>
               </label>
             )}

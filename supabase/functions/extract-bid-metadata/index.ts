@@ -116,6 +116,18 @@ serve(async (req) => {
       );
     }
 
+    // Validate file size (max 5MB to stay within edge function limits)
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+    if (file.size > MAX_FILE_SIZE) {
+      return new Response(
+        JSON.stringify({
+          error: 'File too large for AI processing',
+          message: 'Please upload a file smaller than 5MB. Try uploading just the first few pages of the bid document, or a screenshot of the cover page.',
+        }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Verify user authentication
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
@@ -189,7 +201,7 @@ serve(async (req) => {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-3-5-haiku-20241022',
         max_tokens: 2000,
         system: EXTRACTION_PROMPT,
         messages: [
