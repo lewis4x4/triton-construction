@@ -182,19 +182,20 @@
 }
 
 .ai-header {
-    padding: 1.5rem 2rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 2rem 2rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     gap: 1rem;
-    background: rgba(15, 23, 42, 0.8);
-    backdrop-filter: blur(8px);
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 }
 
 .toggle-sidebar-btn {
     padding: 0.5rem;
-    border-radius: 6px;
-    background: transparent;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: #94a3b8;
     cursor: pointer;
@@ -202,19 +203,21 @@
 }
 
 .toggle-sidebar-btn:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.1);
     color: #e2e8f0;
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .ai-header h1 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #f1f5f9;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary, #e2e8f0);
+    letter-spacing: -0.02em;
     margin: 0;
 }
 
 .ai-header-subtitle {
-    color: #64748b;
+    color: var(--text-secondary, #94a3b8);
     font-size: 0.875rem;
     margin-left: 0.5rem;
 }
