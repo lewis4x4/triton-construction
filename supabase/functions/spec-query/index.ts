@@ -148,7 +148,7 @@ serve(async (req) => {
     // Search for similar chunks using pgvector
     const { data: chunks, error: searchError } = await supabaseAdmin.rpc('search_specs', {
       query_embedding: queryEmbeddingVector,
-      match_threshold: 0.6,
+      match_threshold: 0.4,
       match_count: maxResults,
       filter_section_ids: sectionNumbers ? await getSectionIds(supabaseAdmin, sectionNumbers) : null,
       filter_pay_items: payItemCode ? [payItemCode] : null,
