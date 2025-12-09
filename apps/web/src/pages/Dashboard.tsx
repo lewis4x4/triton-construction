@@ -6,6 +6,10 @@ import {
   AlertCircle,
   ArrowRight,
   TrendingUp,
+  Mic,
+  Truck,
+  Ticket,
+  Users,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './Dashboard.css';
@@ -45,16 +49,16 @@ export function Dashboard() {
     },
   ];
 
-  /* Expanded Quick Actions List */
+  /* Expanded Quick Actions List with Corrected Routes */
   const quickActions = [
     { label: 'Create Bid Package', path: '/bids/create', icon: <FolderKanban size={18} /> },
     { label: 'View Specifications', path: '/specs', icon: <ClipboardList size={18} /> },
-    { label: 'Time Entry', path: '/time', icon: <Clock size={18} /> },
-    { label: 'New Daily Report', path: '/reports/new', icon: <ClipboardList size={18} /> },
-    { label: 'Safety Incident', path: '/safety/incidents/new', icon: <AlertCircle size={18} /> },
-    { label: 'Equipment Check-in', path: '/equipment/check-in', icon: <FolderKanban size={18} /> }, // Using FolderKanban as placeholder if Truck icon not imported
-    { label: 'Material Request', path: '/materials/request', icon: <ClipboardList size={18} /> },
-    { label: 'View Schedule', path: '/schedule', icon: <Clock size={18} /> },
+    { label: 'Time Entry', path: '/time-tracking/entry', icon: <Clock size={18} /> },
+    { label: 'Voice Daily Report', path: '/daily-reports/voice', icon: <Mic size={18} /> },
+    { label: 'Report Incident', path: '/workforce/incident-report', icon: <AlertCircle size={18} /> },
+    { label: 'Vehicle Inspection', path: '/equipment/inspections', icon: <Truck size={18} /> },
+    { label: 'Log Material Ticket', path: '/workforce/material-tickets', icon: <Ticket size={18} /> },
+    { label: 'Crew Builder', path: '/workforce/crew-builder', icon: <Users size={18} /> },
   ];
 
   /* Removed nextSteps array as Getting Started is moved */
