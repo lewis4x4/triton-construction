@@ -1,11 +1,17 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback, Component, ErrorInfo, ReactNode } from 'react';
 import { supabase } from '@triton/supabase-client';
+import { MessageSquare, Send, Menu, Plus, WifiOff, AlertCircle, RefreshCw, X } from 'lucide-react';
+
+// ============================================================================
+// TYPES & INTERFACES
+// ============================================================================
 
 interface Message {
   id: string;
   role: 'user' | 'assistant';
   content: string;
   created_at: string;
+  isOptimistic?: boolean;
 }
 
 interface Conversation {
@@ -13,116 +19,594 @@ interface Conversation {
   title: string;
   project_id: string;
   created_at: string;
-  message_count: number;
+  message_count?: number;
 }
 
-export function AIQueryPage() {
-  const [projects, setProjects] = useState<{ id: string; name: string; project_number: string }[]>([]);
+interface Project {
+  id: string;
+  name: string;
+  project_number: string;
+  organization_id: string;
+}
+
+interface LoadingStates {
+  projects: boolean;
+  conversations: boolean;
+  messages: boolean;
+  sending: boolean;
+}
+
+// ============================================================================
+// CONSTANTS
+// ============================================================================
+
+const MAX_MESSAGE_LENGTH = 10000;
+const RETRY_DELAY_MS = 1000;
+const MAX_RETRIES = 3;
+
+const SUGGESTED_QUERIES = [
+  "What work was completed last week?",
+  "Show me all open RFIs",
+  "What are the current change order totals?",
+  "List subcontractors on site today",
+  "What's the weather forecast for this week?",
+  "Summarize recent safety observations",
+];
+
+// ============================================================================
+// UTILITY FUNCTIONS
+// ============================================================================
+
+/**
+ * Sanitizes text content to prevent XSS attacks
+ * For user messages: strips all HTML
+ * For assistant messages: allows safe markdown-like formatting
+ */
+function sanitizeContent(content: string, _role: 'user' | 'assistant'): string {
+  if (!content) return '';
+
+  // Basic HTML entity encoding
+  const encoded = content
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+
+  // For assistant messages, we could later add markdown parsing
+  // For now, just return sanitized plain text
+  // _role parameter reserved for future role-specific sanitization
+  return encoded;
+}
+
+/**
+ * Validates message input
+ */
+function validateMessage(message: string): { valid: boolean; error?: string } {
+  if (!message.trim()) {
+    return { valid: false, error: 'Message cannot be empty' };
+  }
+  if (message.length > MAX_MESSAGE_LENGTH) {
+    return { valid: false, error: `Message exceeds maximum length of ${MAX_MESSAGE_LENGTH} characters` };
+  }
+  // Check for potential injection patterns (basic protection)
+  const suspiciousPatterns = /<script/i;
+  if (suspiciousPatterns.test(message)) {
+    return { valid: false, error: 'Invalid characters in message' };
+  }
+  return { valid: true };
+}
+
+/**
+ * Hook to track online/offline status
+ */
+function useNetworkStatus() {
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  return isOnline;
+}
+
+/**
+ * Generates a unique optimistic message ID
+ */
+function generateOptimisticId(): string {
+  return `optimistic-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+}
+
+// ============================================================================
+// ERROR BOUNDARY COMPONENT
+// ============================================================================
+
+interface ErrorBoundaryProps {
+  children: ReactNode;
+  onError?: (error: Error, errorInfo: ErrorInfo) => void;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error?: Error;
+}
+
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('AIQueryPage ErrorBoundary caught:', error, errorInfo);
+    this.props.onError?.(error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="h-[calc(100vh-64px)] flex items-center justify-center p-8">
+          <div className="text-center max-w-md">
+            <div className="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
+              <AlertCircle className="w-8 h-8 text-red-600" />
+            </div>
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">
+              Something went wrong
+            </h2>
+            <p className="text-gray-600 mb-4">
+              We encountered an error loading the AI assistant. Please try refreshing the page.
+            </p>
+            <button
+              onClick={() => {
+                this.setState({ hasError: false, error: undefined });
+                window.location.reload();
+              }}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 inline-flex items-center gap-2"
+            >
+              <RefreshCw className="w-4 h-4" />
+              Refresh Page
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+// ============================================================================
+// TOAST NOTIFICATION COMPONENT
+// ============================================================================
+
+interface Toast {
+  id: string;
+  type: 'success' | 'error' | 'warning' | 'info';
+  message: string;
+  action?: { label: string; onClick: () => void };
+}
+
+function ToastContainer({ toasts, onDismiss }: { toasts: Toast[]; onDismiss: (id: string) => void }) {
+  if (toasts.length === 0) return null;
+
+  return (
+    <div className="fixed bottom-4 right-4 z-50 space-y-2" role="alert" aria-live="polite">
+      {toasts.map((toast) => (
+        <div
+          key={toast.id}
+          className={`flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg min-w-[300px] ${
+            toast.type === 'error' ? 'bg-red-50 border border-red-200 text-red-800' :
+            toast.type === 'warning' ? 'bg-yellow-50 border border-yellow-200 text-yellow-800' :
+            toast.type === 'success' ? 'bg-green-50 border border-green-200 text-green-800' :
+            'bg-blue-50 border border-blue-200 text-blue-800'
+          }`}
+        >
+          {toast.type === 'error' && <AlertCircle className="w-5 h-5 flex-shrink-0" />}
+          <div className="flex-1">
+            <p className="text-sm font-medium">{toast.message}</p>
+            {toast.action && (
+              <button
+                onClick={toast.action.onClick}
+                className="text-sm font-medium underline mt-1"
+              >
+                {toast.action.label}
+              </button>
+            )}
+          </div>
+          <button
+            onClick={() => onDismiss(toast.id)}
+            className="p-1 hover:bg-black/5 rounded"
+            aria-label="Dismiss notification"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ============================================================================
+// LOADING SKELETON COMPONENTS
+// ============================================================================
+
+function ConversationSkeleton() {
+  return (
+    <div className="px-4 py-2 animate-pulse">
+      <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
+      <div className="h-3 bg-gray-200 rounded w-1/2" />
+    </div>
+  );
+}
+
+function MessageSkeleton() {
+  return (
+    <div className="flex justify-start animate-pulse">
+      <div className="max-w-[80%] rounded-lg px-4 py-2 bg-gray-100">
+        <div className="h-4 bg-gray-200 rounded w-48 mb-2" />
+        <div className="h-4 bg-gray-200 rounded w-64 mb-2" />
+        <div className="h-3 bg-gray-200 rounded w-24" />
+      </div>
+    </div>
+  );
+}
+
+// ============================================================================
+// OFFLINE BANNER COMPONENT
+// ============================================================================
+
+function OfflineBanner() {
+  return (
+    <div
+      className="bg-yellow-50 border-b border-yellow-200 px-4 py-2 flex items-center gap-2 text-yellow-800"
+      role="alert"
+      aria-live="assertive"
+    >
+      <WifiOff className="w-4 h-4" />
+      <span className="text-sm font-medium">
+        You&apos;re offline. Messages will be queued and sent when you reconnect.
+      </span>
+    </div>
+  );
+}
+
+// ============================================================================
+// MESSAGE CONTENT COMPONENT (with sanitization)
+// ============================================================================
+
+interface MessageContentProps {
+  content: string;
+  role: 'user' | 'assistant';
+}
+
+function MessageContent({ content, role }: MessageContentProps) {
+  const sanitizedContent = useMemo(() => {
+    return sanitizeContent(content, role);
+  }, [content, role]);
+
+  return (
+    <div
+      className="whitespace-pre-wrap break-words"
+      // Using dangerouslySetInnerHTML with sanitized content
+      // In production, consider using a markdown renderer with sanitization
+    >
+      {sanitizedContent}
+    </div>
+  );
+}
+
+// ============================================================================
+// MAIN AI QUERY PAGE COMPONENT
+// ============================================================================
+
+function AIQueryPageContent() {
+  // State
+  const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProjectId, setSelectedProjectId] = useState('');
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [currentConversation, setCurrentConversation] = useState<Conversation | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [optimisticMessages, setOptimisticMessages] = useState<Map<string, Message>>(new Map());
   const [input, setInput] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loadingStates, setLoadingStates] = useState<LoadingStates>({
+    projects: false,
+    conversations: false,
+    messages: false,
+    sending: false,
+  });
+  const [error, setError] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [toasts, setToasts] = useState<Toast[]>([]);
+  const [ariaLiveMessage, setAriaLiveMessage] = useState('');
+  const [pendingMessages, setPendingMessages] = useState<{ id: string; content: string }[]>([]);
 
+  // Refs
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const isMountedRef = useRef(true);
+  const conversationListRef = useRef<HTMLDivElement>(null);
+
+  // Hooks
+  const isOnline = useNetworkStatus();
+
+  // Cleanup on unmount
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
+  // Merge messages with optimistic messages
+  const displayMessages = useMemo(() => {
+    const merged = [...messages];
+    optimisticMessages.forEach((msg) => merged.push(msg));
+    return merged.sort((a, b) =>
+      new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+    );
+  }, [messages, optimisticMessages]);
+
+  // Toast management
+  const addToast = useCallback((toast: Omit<Toast, 'id'>) => {
+    const id = `toast-${Date.now()}`;
+    setToasts((prev) => [...prev, { ...toast, id }]);
+    // Auto-dismiss after 5 seconds
+    setTimeout(() => {
+      if (isMountedRef.current) {
+        setToasts((prev) => prev.filter((t) => t.id !== id));
+      }
+    }, 5000);
+  }, []);
+
+  const dismissToast = useCallback((id: string) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  }, []);
+
+  // Scroll to bottom when messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [displayMessages]);
+
+  // Announce new messages to screen readers
+  useEffect(() => {
+    if (messages.length > 0) {
+      const lastMessage = messages[messages.length - 1];
+      if (lastMessage && lastMessage.role === 'assistant') {
+        const preview = lastMessage.content.substring(0, 100);
+        setAriaLiveMessage(`AI responded: ${preview}${lastMessage.content.length > 100 ? '...' : ''}`);
+        setTimeout(() => setAriaLiveMessage(''), 3000);
+      }
+    }
+  }, [messages]);
+
+  // Load projects on mount
   useEffect(() => {
     loadProjects();
   }, []);
 
+  // Load conversations when project changes
   useEffect(() => {
     if (selectedProjectId) {
       loadConversations();
     }
   }, [selectedProjectId]);
 
+  // Load messages when conversation changes
   useEffect(() => {
     if (currentConversation) {
       loadMessages(currentConversation.id);
     }
   }, [currentConversation]);
 
+  // Process pending messages when coming back online
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  async function loadProjects() {
-    const { data } = await supabase
-      .from('projects')
-      .select('id, name, project_number')
-      .eq('status', 'ACTIVE')
-      .order('name');
-
-    if (data) {
-      setProjects(data);
-      if (data.length > 0) {
-        setSelectedProjectId(data[0]!.id);
-      }
+    if (isOnline && pendingMessages.length > 0) {
+      addToast({
+        type: 'info',
+        message: `Sending ${pendingMessages.length} queued message(s)...`,
+      });
+      // Process pending messages
+      pendingMessages.forEach((pending) => {
+        handleSendMessage(pending.content);
+      });
+      setPendingMessages([]);
     }
-  }
+  }, [isOnline, pendingMessages]);
 
-  async function loadConversations() {
-    const { data } = await supabase
-      .from('ai_conversations')
-      .select('*')
-      .eq('project_id', selectedProjectId)
-      .order('created_at', { ascending: false });
+  // ============================================================================
+  // DATA LOADING FUNCTIONS
+  // ============================================================================
 
-    if (data) {
-      setConversations(data as any);
-    }
-  }
-
-  async function loadMessages(conversationId: string) {
-    const { data } = await supabase
-      .from('ai_messages')
-      .select('*')
-      .eq('conversation_id', conversationId)
-      .order('created_at', { ascending: true });
-
-    if (data) {
-      setMessages(data as any);
-    }
-  }
-
-  function scrollToBottom() {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }
-
-  async function startNewConversation() {
-    setCurrentConversation(null);
-    setMessages([]);
-  }
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!input.trim() || loading) return;
-
-    const userMessage = input.trim();
-    setInput('');
-    setLoading(true);
-
-    // Optimistically add user message
-    const tempUserMessage: Message = {
-      id: 'temp-user',
-      role: 'user',
-      content: userMessage,
-      created_at: new Date().toISOString(),
-    };
-    setMessages((prev) => [...prev, tempUserMessage]);
+  const loadProjects = useCallback(async () => {
+    setLoadingStates((prev) => ({ ...prev, projects: true }));
+    setError(null);
 
     try {
-      // Call AI query edge function
-      const { data, error } = await supabase.functions.invoke('ai-query', {
+      // Get current user for authorization
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      if (authError || !user) {
+        throw new Error('Please sign in to access the AI assistant');
+      }
+
+      const { data, error: fetchError } = await supabase
+        .from('projects')
+        .select('id, name, project_number, organization_id')
+        .in('status', ['ACTIVE', 'MOBILIZATION', 'SUBSTANTIAL_COMPLETION'])
+        .order('name');
+
+      if (fetchError) throw new Error(`Failed to load projects: ${fetchError.message}`);
+
+      if (!isMountedRef.current) return;
+
+      if (data && data.length > 0) {
+        setProjects(data);
+        setSelectedProjectId(data[0]!.id);
+      } else {
+        setProjects([]);
+        addToast({
+          type: 'info',
+          message: 'No active projects found. Please contact your administrator.',
+        });
+      }
+    } catch (err) {
+      if (!isMountedRef.current) return;
+      const message = err instanceof Error ? err.message : 'Failed to load projects';
+      setError(message);
+      console.error('loadProjects error:', err);
+    } finally {
+      if (isMountedRef.current) {
+        setLoadingStates((prev) => ({ ...prev, projects: false }));
+      }
+    }
+  }, [addToast]);
+
+  const loadConversations = useCallback(async () => {
+    if (!selectedProjectId) return;
+
+    setLoadingStates((prev) => ({ ...prev, conversations: true }));
+
+    try {
+      const { data, error: fetchError } = await supabase
+        .from('ai_conversations')
+        .select('*')
+        .eq('project_id', selectedProjectId)
+        .order('created_at', { ascending: false });
+
+      if (fetchError) throw new Error(`Failed to load conversations: ${fetchError.message}`);
+
+      if (!isMountedRef.current) return;
+
+      setConversations((data as Conversation[]) || []);
+    } catch (err) {
+      if (!isMountedRef.current) return;
+      console.error('loadConversations error:', err);
+      addToast({
+        type: 'error',
+        message: 'Failed to load conversations',
+        action: { label: 'Retry', onClick: loadConversations },
+      });
+    } finally {
+      if (isMountedRef.current) {
+        setLoadingStates((prev) => ({ ...prev, conversations: false }));
+      }
+    }
+  }, [selectedProjectId, addToast]);
+
+  const loadMessages = useCallback(async (conversationId: string) => {
+    setLoadingStates((prev) => ({ ...prev, messages: true }));
+
+    try {
+      const { data, error: fetchError } = await supabase
+        .from('ai_messages')
+        .select('*')
+        .eq('conversation_id', conversationId)
+        .order('created_at', { ascending: true });
+
+      if (fetchError) throw new Error(`Failed to load messages: ${fetchError.message}`);
+
+      if (!isMountedRef.current) return;
+
+      setMessages((data as Message[]) || []);
+      // Clear any optimistic messages for this conversation
+      setOptimisticMessages(new Map());
+    } catch (err) {
+      if (!isMountedRef.current) return;
+      console.error('loadMessages error:', err);
+      addToast({
+        type: 'error',
+        message: 'Failed to load messages',
+        action: { label: 'Retry', onClick: () => loadMessages(conversationId) },
+      });
+    } finally {
+      if (isMountedRef.current) {
+        setLoadingStates((prev) => ({ ...prev, messages: false }));
+      }
+    }
+  }, [addToast]);
+
+  // ============================================================================
+  // MESSAGE HANDLING
+  // ============================================================================
+
+  const startNewConversation = useCallback(() => {
+    setCurrentConversation(null);
+    setMessages([]);
+    setOptimisticMessages(new Map());
+    inputRef.current?.focus();
+    setAriaLiveMessage('Started new conversation');
+  }, []);
+
+  const handleSendMessage = useCallback(async (messageContent: string, retryCount = 0) => {
+    const validation = validateMessage(messageContent);
+    if (!validation.valid) {
+      addToast({ type: 'error', message: validation.error! });
+      return;
+    }
+
+    if (!selectedProjectId) {
+      addToast({ type: 'error', message: 'Please select a project first' });
+      return;
+    }
+
+    // Queue message if offline
+    if (!isOnline) {
+      const pendingId = generateOptimisticId();
+      setPendingMessages((prev) => [...prev, { id: pendingId, content: messageContent }]);
+      addToast({
+        type: 'warning',
+        message: 'You\'re offline. Message will be sent when you reconnect.',
+      });
+      return;
+    }
+
+    const optimisticId = generateOptimisticId();
+
+    setLoadingStates((prev) => ({ ...prev, sending: true }));
+
+    // Add optimistic user message
+    const tempUserMessage: Message = {
+      id: optimisticId,
+      role: 'user',
+      content: messageContent,
+      created_at: new Date().toISOString(),
+      isOptimistic: true,
+    };
+
+    setOptimisticMessages((prev) => new Map(prev).set(optimisticId, tempUserMessage));
+
+    try {
+      const { data, error: invokeError } = await supabase.functions.invoke('ai-query', {
         body: {
           project_id: selectedProjectId,
           conversation_id: currentConversation?.id,
-          message: userMessage,
+          message: messageContent,
+          client_message_id: optimisticId,
         },
       });
 
-      if (error) throw error;
+      if (invokeError) throw invokeError;
+
+      if (!isMountedRef.current) return;
+
+      // Remove optimistic message
+      setOptimisticMessages((prev) => {
+        const next = new Map(prev);
+        next.delete(optimisticId);
+        return next;
+      });
 
       // Update conversation and messages
       if (data.conversation) {
@@ -133,17 +617,17 @@ export function AIQueryPage() {
       if (data.messages) {
         setMessages(data.messages);
       } else if (data.response) {
-        // Add assistant response
+        // Add confirmed messages
         setMessages((prev) => [
-          ...prev.filter((m) => m.id !== 'temp-user'),
+          ...prev,
           {
-            id: 'user-' + Date.now(),
+            id: `user-${Date.now()}`,
             role: 'user',
-            content: userMessage,
+            content: messageContent,
             created_at: new Date().toISOString(),
           },
           {
-            id: 'assistant-' + Date.now(),
+            id: `assistant-${Date.now()}`,
             role: 'assistant',
             content: data.response,
             created_at: new Date().toISOString(),
@@ -151,198 +635,395 @@ export function AIQueryPage() {
         ]);
       }
     } catch (err) {
-      console.error('AI query failed:', err);
-      // Remove optimistic message
-      setMessages((prev) => prev.filter((m) => m.id !== 'temp-user'));
-      alert('Failed to get AI response. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  }
+      if (!isMountedRef.current) return;
 
-  const suggestedQueries = [
-    "What work was completed last week?",
-    "Show me all open RFIs",
-    "What are the current change order totals?",
-    "List subcontractors on site today",
-    "What's the weather forecast for this week?",
-    "Summarize recent safety observations",
-  ];
+      console.error('AI query failed:', err);
+
+      // Remove failed optimistic message
+      setOptimisticMessages((prev) => {
+        const next = new Map(prev);
+        next.delete(optimisticId);
+        return next;
+      });
+
+      // Retry logic
+      if (retryCount < MAX_RETRIES) {
+        setTimeout(() => {
+          handleSendMessage(messageContent, retryCount + 1);
+        }, RETRY_DELAY_MS * (retryCount + 1));
+        addToast({
+          type: 'warning',
+          message: `Retrying... (attempt ${retryCount + 2}/${MAX_RETRIES + 1})`,
+        });
+      } else {
+        const errorMessage = err instanceof Error ? err.message : 'Failed to send message';
+        addToast({
+          type: 'error',
+          message: errorMessage,
+          action: { label: 'Retry', onClick: () => handleSendMessage(messageContent, 0) },
+        });
+      }
+    } finally {
+      if (isMountedRef.current) {
+        setLoadingStates((prev) => ({ ...prev, sending: false }));
+      }
+    }
+  }, [selectedProjectId, currentConversation, isOnline, addToast, loadConversations]);
+
+  const handleSubmit = useCallback((e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim() || loadingStates.sending) return;
+
+    const messageContent = input.trim();
+    setInput('');
+    handleSendMessage(messageContent);
+  }, [input, loadingStates.sending, handleSendMessage]);
+
+  // ============================================================================
+  // KEYBOARD NAVIGATION
+  // ============================================================================
+
+  const handleConversationKeyDown = useCallback((
+    e: React.KeyboardEvent<HTMLButtonElement>,
+    index: number,
+    conv: Conversation
+  ) => {
+    const buttons = conversationListRef.current?.querySelectorAll<HTMLButtonElement>('[data-conv-button]');
+    if (!buttons) return;
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        buttons[index + 1]?.focus();
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        buttons[index - 1]?.focus();
+        break;
+      case 'Enter':
+      case ' ':
+        e.preventDefault();
+        setCurrentConversation(conv);
+        break;
+      case 'Home':
+        e.preventDefault();
+        buttons[0]?.focus();
+        break;
+      case 'End':
+        e.preventDefault();
+        buttons[buttons.length - 1]?.focus();
+        break;
+    }
+  }, []);
+
+  // ============================================================================
+  // RENDER
+  // ============================================================================
+
+  const isSending = loadingStates.sending;
+  const isLoadingProjects = loadingStates.projects;
+  const isLoadingConversations = loadingStates.conversations;
+  const isLoadingMessages = loadingStates.messages;
 
   return (
-    <div className="h-[calc(100vh-64px)] flex">
-      {/* Sidebar */}
-      {sidebarOpen && (
-        <div className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col">
-          <div className="p-4 border-b border-gray-200">
-            <select
-              value={selectedProjectId}
-              onChange={(e) => setSelectedProjectId(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-            >
-              {projects.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.project_number}
-                </option>
-              ))}
-            </select>
-          </div>
+    <div className="h-[calc(100vh-64px)] flex flex-col">
+      {/* Screen reader announcements */}
+      <div
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className="sr-only"
+      >
+        {ariaLiveMessage}
+      </div>
 
-          <div className="p-4">
-            <button
-              onClick={startNewConversation}
-              className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium"
-            >
-              + New Conversation
-            </button>
-          </div>
+      {/* Offline banner */}
+      {!isOnline && <OfflineBanner />}
 
-          <div className="flex-1 overflow-y-auto">
-            <div className="px-4 py-2 text-xs font-medium text-gray-500 uppercase">
-              Recent Conversations
-            </div>
-            {conversations.length === 0 ? (
-              <div className="px-4 py-2 text-sm text-gray-500">No conversations yet</div>
-            ) : (
-              conversations.map((conv) => (
-                <button
-                  key={conv.id}
-                  onClick={() => setCurrentConversation(conv)}
-                  className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-100 ${
-                    currentConversation?.id === conv.id ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
-                  }`}
-                >
-                  <div className="font-medium truncate">{conv.title || 'New Conversation'}</div>
-                  <div className="text-xs text-gray-400">
-                    {new Date(conv.created_at).toLocaleDateString()}
-                  </div>
-                </button>
-              ))
-            )}
-          </div>
+      {/* Error banner */}
+      {error && (
+        <div
+          className="bg-red-50 border-b border-red-200 px-4 py-3 flex items-center gap-3"
+          role="alert"
+        >
+          <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0" />
+          <span className="text-sm text-red-800 flex-1">{error}</span>
+          <button
+            onClick={loadProjects}
+            className="text-red-600 hover:text-red-800 text-sm font-medium"
+          >
+            Retry
+          </button>
+          <button
+            onClick={() => setError(null)}
+            className="text-red-400 hover:text-red-600"
+            aria-label="Dismiss error"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
       )}
 
-      {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col">
-        {/* Header */}
-        <div className="h-14 border-b border-gray-200 flex items-center px-4 gap-4">
-          <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="text-gray-500 hover:text-gray-700"
+      <div className="flex-1 flex overflow-hidden">
+        {/* Sidebar */}
+        {sidebarOpen && (
+          <aside
+            className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col"
+            aria-label="Conversation sidebar"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-          <div>
-            <h1 className="font-semibold text-gray-900">AI Project Assistant</h1>
-            <p className="text-xs text-gray-500">
-              Ask questions about your project in natural language
-            </p>
-          </div>
-        </div>
-
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4">
-          {messages.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center">
-              <div className="text-center max-w-md">
-                <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
-                  <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                  </svg>
-                </div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                  How can I help you today?
-                </h2>
-                <p className="text-gray-500 mb-6">
-                  Ask me anything about your project - daily reports, equipment, crew, materials, or schedules.
-                </p>
-
-                <div className="grid grid-cols-2 gap-2">
-                  {suggestedQueries.map((query, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setInput(query)}
-                      className="text-left text-sm px-3 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 text-gray-700"
-                    >
-                      {query}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-4 max-w-3xl mx-auto">
-              {messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div
-                    className={`max-w-[80%] rounded-lg px-4 py-2 ${
-                      message.role === 'user'
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 text-gray-900'
-                    }`}
-                  >
-                    <div className="whitespace-pre-wrap">{message.content}</div>
-                    <div
-                      className={`text-xs mt-1 ${
-                        message.role === 'user' ? 'text-blue-200' : 'text-gray-400'
-                      }`}
-                    >
-                      {new Date(message.created_at).toLocaleTimeString()}
-                    </div>
-                  </div>
-                </div>
-              ))}
-              {loading && (
-                <div className="flex justify-start">
-                  <div className="bg-gray-100 rounded-lg px-4 py-2">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
-                    </div>
-                  </div>
-                </div>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-          )}
-        </div>
-
-        {/* Input */}
-        <div className="border-t border-gray-200 p-4">
-          <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask a question about your project..."
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                disabled={loading}
-              />
-              <button
-                type="submit"
-                disabled={loading || !input.trim()}
-                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            {/* Project selector */}
+            <div className="p-4 border-b border-gray-200">
+              <label htmlFor="project-select" className="sr-only">
+                Select project
+              </label>
+              <select
+                id="project-select"
+                value={selectedProjectId}
+                onChange={(e) => setSelectedProjectId(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                disabled={isLoadingProjects}
+                aria-busy={isLoadingProjects}
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                </svg>
+                {isLoadingProjects ? (
+                  <option>Loading projects...</option>
+                ) : projects.length === 0 ? (
+                  <option>No projects available</option>
+                ) : (
+                  projects.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.project_number} - {p.name}
+                    </option>
+                  ))
+                )}
+              </select>
+            </div>
+
+            {/* New conversation button */}
+            <div className="p-4">
+              <button
+                onClick={startNewConversation}
+                className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium inline-flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                aria-label="Start new conversation"
+              >
+                <Plus className="w-4 h-4" />
+                New Conversation
               </button>
             </div>
-            <p className="text-xs text-gray-400 mt-2 text-center">
-              AI responses are generated based on your project data. Always verify critical information.
-            </p>
-          </form>
-        </div>
+
+            {/* Conversation list */}
+            <nav
+              ref={conversationListRef}
+              className="flex-1 overflow-y-auto"
+              aria-label="Conversation history"
+            >
+              <h2 className="px-4 py-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Recent Conversations
+              </h2>
+
+              {isLoadingConversations ? (
+                <>
+                  <ConversationSkeleton />
+                  <ConversationSkeleton />
+                  <ConversationSkeleton />
+                </>
+              ) : conversations.length === 0 ? (
+                <div className="px-4 py-2 text-sm text-gray-500">
+                  No conversations yet
+                </div>
+              ) : (
+                <ul role="listbox" aria-label="Conversations">
+                  {conversations.map((conv, index) => (
+                    <li key={conv.id}>
+                      <button
+                        data-conv-button
+                        onClick={() => setCurrentConversation(conv)}
+                        onKeyDown={(e) => handleConversationKeyDown(e, index, conv)}
+                        className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 ${
+                          currentConversation?.id === conv.id
+                            ? 'bg-blue-50 text-blue-600'
+                            : 'text-gray-700'
+                        }`}
+                        role="option"
+                        aria-selected={currentConversation?.id === conv.id}
+                      >
+                        <div className="font-medium truncate">
+                          {conv.title || 'New Conversation'}
+                        </div>
+                        <div className="text-xs text-gray-400">
+                          {new Date(conv.created_at).toLocaleDateString()}
+                        </div>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </nav>
+          </aside>
+        )}
+
+        {/* Main Chat Area */}
+        <main className="flex-1 flex flex-col" role="main">
+          {/* Header */}
+          <header className="h-14 border-b border-gray-200 flex items-center px-4 gap-4">
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded p-1"
+              aria-label={sidebarOpen ? 'Close sidebar' : 'Open sidebar'}
+              aria-expanded={sidebarOpen}
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+            <div>
+              <h1 className="font-semibold text-gray-900">AI Project Assistant</h1>
+              <p className="text-xs text-gray-500">
+                Ask questions about your project in natural language
+              </p>
+            </div>
+          </header>
+
+          {/* Messages */}
+          <div
+            className="flex-1 overflow-y-auto p-4"
+            role="log"
+            aria-label="Conversation messages"
+            aria-live="polite"
+          >
+            {isLoadingMessages ? (
+              <div className="space-y-4 max-w-3xl mx-auto">
+                <MessageSkeleton />
+                <MessageSkeleton />
+              </div>
+            ) : displayMessages.length === 0 ? (
+              <div className="h-full flex flex-col items-center justify-center">
+                <div className="text-center max-w-md">
+                  <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
+                    <MessageSquare className="w-8 h-8 text-blue-600" />
+                  </div>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                    How can I help you today?
+                  </h2>
+                  <p className="text-gray-500 mb-6">
+                    Ask me anything about your project - daily reports, equipment, crew, materials, or schedules.
+                  </p>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    {SUGGESTED_QUERIES.map((query, i) => (
+                      <button
+                        key={i}
+                        onClick={() => {
+                          setInput(query);
+                          inputRef.current?.focus();
+                        }}
+                        className="text-left text-sm px-3 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        {query}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4 max-w-3xl mx-auto">
+                {displayMessages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div
+                      className={`max-w-[80%] rounded-lg px-4 py-2 ${
+                        message.role === 'user'
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-gray-100 text-gray-900'
+                      } ${message.isOptimistic ? 'opacity-70' : ''}`}
+                    >
+                      <MessageContent content={message.content} role={message.role} />
+                      <div
+                        className={`text-xs mt-1 flex items-center gap-1 ${
+                          message.role === 'user' ? 'text-blue-200' : 'text-gray-400'
+                        }`}
+                      >
+                        {message.isOptimistic && (
+                          <span className="italic">Sending...</span>
+                        )}
+                        {!message.isOptimistic && (
+                          new Date(message.created_at).toLocaleTimeString()
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                {isSending && !optimisticMessages.size && (
+                  <div className="flex justify-start">
+                    <div className="bg-gray-100 rounded-lg px-4 py-2" aria-label="AI is typing">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div ref={messagesEndRef} />
+              </div>
+            )}
+          </div>
+
+          {/* Input */}
+          <div className="border-t border-gray-200 p-4">
+            <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
+              <div className="flex gap-2">
+                <label htmlFor="message-input" className="sr-only">
+                  Type your message
+                </label>
+                <input
+                  ref={inputRef}
+                  id="message-input"
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Ask a question about your project..."
+                  className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  disabled={isSending || !isOnline}
+                  maxLength={MAX_MESSAGE_LENGTH}
+                  aria-describedby="input-help"
+                />
+                <button
+                  type="submit"
+                  disabled={isSending || !input.trim() || !isOnline}
+                  className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  aria-label="Send message"
+                >
+                  <Send className="w-5 h-5" />
+                </button>
+              </div>
+              <p id="input-help" className="text-xs text-gray-400 mt-2 text-center">
+                AI responses are generated based on your project data. Always verify critical information.
+              </p>
+            </form>
+          </div>
+        </main>
       </div>
+
+      {/* Toast notifications */}
+      <ToastContainer toasts={toasts} onDismiss={dismissToast} />
     </div>
+  );
+}
+
+// ============================================================================
+// EXPORTED COMPONENT WITH ERROR BOUNDARY
+// ============================================================================
+
+export function AIQueryPage() {
+  return (
+    <ErrorBoundary
+      onError={(error, errorInfo) => {
+        // In production, send to error monitoring service
+        console.error('AIQueryPage error:', error, errorInfo);
+      }}
+    >
+      <AIQueryPageContent />
+    </ErrorBoundary>
   );
 }
 

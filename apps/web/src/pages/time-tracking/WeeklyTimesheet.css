@@ -1,0 +1,446 @@
+.timesheet-page {
+  padding: 24px;
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #6b7280;
+  text-decoration: none;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.back-link:hover {
+  color: #4f46e5;
+}
+
+.header-content h1 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 28px;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin: 0 0 8px 0;
+}
+
+.header-content p {
+  color: #6b7280;
+  margin: 0;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.btn-secondary {
+  background: white;
+  color: #374151;
+  border: 1px solid #e5e7eb;
+}
+
+.btn-secondary:hover {
+  background: #f9fafb;
+}
+
+/* Week Navigator Bar */
+.week-nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+}
+
+.week-navigator {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+}
+
+.nav-btn:hover {
+  background: #f3f4f6;
+  color: #4f46e5;
+}
+
+.week-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.filters {
+  display: flex;
+  gap: 12px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 8px 14px;
+}
+
+.search-box input {
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 14px;
+  width: 150px;
+}
+
+.filters select {
+  padding: 10px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Summary Cards */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.summary-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.summary-card.overtime .summary-icon {
+  background: #fce7f3;
+  color: #db2777;
+}
+
+.summary-card.overtime .summary-value {
+  color: #db2777;
+}
+
+.summary-card.gross {
+  border-left: 4px solid #059669;
+}
+
+.summary-card.gross .summary-icon {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.summary-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: #e0e7ff;
+  color: #4f46e5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.summary-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.summary-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.summary-label {
+  font-size: 12px;
+  color: #6b7280;
+  text-transform: uppercase;
+}
+
+/* Timesheet Table */
+.timesheet-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+}
+
+.timesheet-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1200px;
+}
+
+.timesheet-table th,
+.timesheet-table td {
+  padding: 12px 10px;
+  text-align: center;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.timesheet-table th {
+  background: #f9fafb;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.timesheet-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+/* Column styles */
+.worker-col {
+  text-align: left !important;
+  min-width: 180px;
+  position: sticky;
+  left: 0;
+  background: white;
+  z-index: 2;
+}
+
+.timesheet-table thead .worker-col {
+  background: #f9fafb;
+}
+
+.trade-col {
+  min-width: 140px;
+  text-align: left !important;
+}
+
+.rate-col {
+  min-width: 80px;
+}
+
+.day-col {
+  min-width: 70px;
+}
+
+.day-col.weekend {
+  background: #f9fafb;
+}
+
+.day-col .day-name {
+  display: block;
+  font-size: 10px;
+  color: #9ca3af;
+}
+
+.day-col .day-num {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.total-col {
+  min-width: 70px;
+  font-weight: 600;
+  background: #f9fafb;
+}
+
+.total-col.overtime {
+  color: #db2777;
+}
+
+.gross-col {
+  min-width: 100px;
+  font-weight: 700;
+  background: #f0fdf4;
+  color: #059669;
+}
+
+/* Worker info */
+.worker-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.worker-info .name {
+  font-weight: 600;
+  color: #1a1a2e;
+  font-size: 14px;
+}
+
+.worker-info .emp-id {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+/* Day hours */
+.day-hours {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.day-hours .regular {
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.day-hours .overtime {
+  font-size: 11px;
+  color: #db2777;
+  font-weight: 600;
+}
+
+.no-hours {
+  color: #d1d5db;
+}
+
+/* Table body */
+.timesheet-table tbody tr:hover {
+  background: #fafafa;
+}
+
+.timesheet-table tbody tr:hover .worker-col {
+  background: #fafafa;
+}
+
+/* Table footer */
+.timesheet-table tfoot {
+  font-weight: 700;
+  background: #f3f4f6;
+}
+
+.timesheet-table tfoot td {
+  border-top: 2px solid #e5e7eb;
+  color: #1a1a2e;
+}
+
+/* Loading State */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #6b7280;
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .summary-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .week-nav-bar {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .filters {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 768px) {
+  .timesheet-page {
+    padding: 16px;
+  }
+
+  .page-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .summary-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .filters {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .search-box input {
+    width: 100%;
+  }
+
+  .filters select {
+    width: 100%;
+  }
+}
