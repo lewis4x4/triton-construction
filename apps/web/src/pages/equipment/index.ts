@@ -16,3 +16,5 @@ export { FuelManagementDashboard } from './FuelManagementDashboard';
 export { MaintenanceDashboard } from './MaintenanceDashboard';
 export { FleetReports } from './FleetReports';
 export { FleetInspections } from './FleetInspections';
+export { EnhancedDQFManagement } from './EnhancedDQFManagement';
+export { EnhancedIFTAReporting } from './EnhancedIFTAReporting';

@@ -70,15 +70,15 @@ import {
   VehicleDetails,
   FuelManagement,
   VehicleInspections,
-  DQFManagement,
-  IFTAReporting,
   // Enhanced Fleet Management Pages
   FleetAnalyticsDashboard,
   EnhancedVehicleDetails,
   FuelManagementDashboard,
   MaintenanceDashboard,
   FleetReports,
-  FleetInspections
+  FleetInspections,
+  EnhancedDQFManagement,
+  EnhancedIFTAReporting
 } from './pages/equipment';
 // Pay Estimates Module
 import {
@@ -804,7 +804,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <DQFManagement />
+                  <EnhancedDQFManagement />
                 </Layout>
               </ProtectedRoute>
             }
@@ -814,7 +814,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <IFTAReporting />
+                  <EnhancedIFTAReporting />
                 </Layout>
               </ProtectedRoute>
             }
