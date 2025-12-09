@@ -1,9 +1,14 @@
+/* =====================================================
+   SAFE ZONE MAP
+   Triton AI Platform - Unified Forest Green Theme
+   ===================================================== */
+
 /* Safe Zone Map Container */
 .safe-zone-map-container {
   position: relative;
   width: 100%;
   height: 500px;
-  background: #f0f4f8;
+  background: var(--bg-secondary);
   border-radius: 12px;
   overflow: hidden;
 }
@@ -22,10 +27,10 @@
 .layer-selector {
   display: flex;
   gap: 4px;
-  background: white;
+  background: var(--bg-card);
   padding: 4px;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
 }
 
 .layer-btn {
@@ -38,23 +43,23 @@
   border-radius: 6px;
   font-size: 12px;
   font-weight: 500;
-  color: #64748b;
+  color: var(--text-muted);
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .layer-btn:hover {
-  background: #f1f5f9;
+  background: var(--bg-secondary);
 }
 
 .layer-btn.active {
-  background: #1e293b;
+  background: var(--text-primary);
   color: white;
 }
 
-.layer-btn.clear.active { background: #16a34a; }
-.layer-btn.caution.active { background: #f59e0b; }
-.layer-btn.stop.active { background: #dc2626; }
+.layer-btn.clear.active { background: var(--stat-green-icon); }
+.layer-btn.caution.active { background: var(--stat-amber-icon); }
+.layer-btn.stop.active { background: var(--stat-rust-icon); }
 
 .zoom-controls {
   display: flex;
@@ -65,20 +70,20 @@
 .zoom-btn {
   width: 36px;
   height: 36px;
-  background: white;
+  background: var(--bg-card);
   border: none;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #1e293b;
+  color: var(--text-primary);
   transition: background 0.2s;
 }
 
 .zoom-btn:hover {
-  background: #f1f5f9;
+  background: var(--bg-secondary);
 }
 
 /* Locate Button */
@@ -88,21 +93,21 @@
   right: 12px;
   width: 44px;
   height: 44px;
-  background: white;
+  background: var(--bg-card);
   border: none;
   border-radius: 50%;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-md);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #2563eb;
+  color: var(--accent-primary);
   z-index: 100;
   transition: all 0.2s;
 }
 
 .locate-btn:hover {
-  background: #2563eb;
+  background: var(--accent-primary);
   color: white;
 }
 
@@ -214,7 +219,7 @@
   position: absolute;
   width: 40px;
   height: 40px;
-  background: rgba(37, 99, 235, 0.3);
+  background: rgba(61, 107, 79, 0.3);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   animation: pulse 2s infinite;
@@ -224,11 +229,11 @@
   position: absolute;
   width: 16px;
   height: 16px;
-  background: #2563eb;
+  background: var(--accent-primary);
   border: 3px solid white;
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.5);
+  box-shadow: 0 2px 8px rgba(61, 107, 79, 0.5);
 }
 
 @keyframes pulse {
@@ -249,7 +254,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 .no-tickets-message svg {
@@ -274,9 +279,9 @@
   bottom: 12px;
   left: 12px;
   right: 12px;
-  background: white;
+  background: var(--bg-card);
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-lg);
   z-index: 200;
   max-height: 50%;
   overflow-y: auto;
@@ -287,7 +292,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .panel-status {
@@ -305,7 +310,7 @@
 .panel-close {
   width: 28px;
   height: 28px;
-  background: #f1f5f9;
+  background: var(--bg-secondary);
   border: none;
   border-radius: 50%;
   font-size: 18px;
@@ -313,11 +318,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 .panel-close:hover {
-  background: #e2e8f0;
+  background: var(--bg-page);
 }
 
 .panel-content {
@@ -327,19 +332,19 @@
 .panel-content h3 {
   margin: 0 0 6px 0;
   font-size: 18px;
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
 .panel-address {
   margin: 0 0 2px 0;
   font-size: 14px;
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
 .panel-city {
   margin: 0 0 12px 0;
   font-size: 13px;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 .panel-dates {
@@ -356,29 +361,29 @@
 
 .date-label {
   font-size: 11px;
-  color: #64748b;
+  color: var(--text-muted);
   text-transform: uppercase;
 }
 
 .date-value {
   font-size: 14px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
 .panel-message {
   padding: 10px 12px;
-  background: #f8fafc;
+  background: var(--bg-secondary);
   border-radius: 8px;
   font-size: 13px;
-  color: #475569;
+  color: var(--text-secondary);
   margin-bottom: 12px;
 }
 
-.ticket-panel.clear .panel-message { background: #ecfdf5; color: #166534; }
-.ticket-panel.caution .panel-message { background: #fefce8; color: #854d0e; }
-.ticket-panel.warning .panel-message { background: #fff7ed; color: #c2410c; }
-.ticket-panel.stop .panel-message { background: #fef2f2; color: #991b1b; }
+.ticket-panel.clear .panel-message { background: var(--stat-green-bg); color: var(--stat-green-icon); }
+.ticket-panel.caution .panel-message { background: var(--stat-amber-bg); color: var(--stat-amber-icon); }
+.ticket-panel.warning .panel-message { background: rgba(234, 88, 12, 0.1); color: #c2410c; }
+.ticket-panel.stop .panel-message { background: var(--stat-rust-bg); color: var(--stat-rust-icon); }
 
 .panel-action {
   width: 100%;
@@ -387,7 +392,7 @@
   justify-content: center;
   gap: 8px;
   padding: 12px;
-  background: #2563eb;
+  background: var(--accent-primary);
   color: white;
   border: none;
   border-radius: 8px;
@@ -398,7 +403,7 @@
 }
 
 .panel-action:hover {
-  background: #1d4ed8;
+  background: var(--accent-olive);
 }
 
 /* Legend */
@@ -406,10 +411,10 @@
   position: absolute;
   bottom: 12px;
   right: 12px;
-  background: white;
+  background: var(--bg-card);
   padding: 10px 14px;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
   z-index: 100;
   display: flex;
   flex-direction: column;
@@ -421,7 +426,7 @@
   align-items: center;
   gap: 8px;
   font-size: 11px;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 .legend-color {
@@ -430,25 +435,25 @@
   border-radius: 50%;
 }
 
-.legend-color.clear { background: #16a34a; }
-.legend-color.caution { background: #f59e0b; }
-.legend-color.stop { background: #dc2626; }
+.legend-color.clear { background: var(--stat-green-icon); }
+.legend-color.caution { background: var(--stat-amber-icon); }
+.legend-color.stop { background: var(--stat-rust-icon); }
 
 .legend-user {
   width: 12px;
   height: 12px;
-  background: #2563eb;
+  background: var(--accent-primary);
   border: 2px solid white;
   border-radius: 50%;
-  box-shadow: 0 0 0 2px #2563eb;
+  box-shadow: 0 0 0 2px var(--accent-primary);
 }
 
 /* Spin Animation */
-.spin {
-  animation: spin 1s linear infinite;
+.safe-zone-map-container .spin {
+  animation: safeZoneSpin 1s linear infinite;
 }
 
-@keyframes spin {
+@keyframes safeZoneSpin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }

@@ -1,10 +1,15 @@
+/* =====================================================
+   POLYGON DRAWING TOOL
+   Triton AI Platform - Unified Forest Green Theme
+   ===================================================== */
+
 /* Polygon Drawing Tool Container */
 .polygon-drawing-tool {
   display: flex;
   flex-direction: column;
   height: 100%;
   min-height: 500px;
-  background: #f8fafc;
+  background: var(--bg-secondary);
   border-radius: 12px;
   overflow: hidden;
 }
@@ -15,8 +20,8 @@
   align-items: center;
   gap: 8px;
   padding: 10px 12px;
-  background: white;
-  border-bottom: 1px solid #e2e8f0;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .tool-group {
@@ -27,7 +32,7 @@
 .tool-divider {
   width: 1px;
   height: 24px;
-  background: #e2e8f0;
+  background: var(--border-color);
   margin: 0 4px;
 }
 
@@ -41,61 +46,61 @@
   justify-content: center;
   width: 36px;
   height: 36px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 6px;
-  color: #64748b;
+  color: var(--text-muted);
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .tool-btn:hover {
-  background: #f1f5f9;
-  color: #1e293b;
-  border-color: #cbd5e1;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  border-color: var(--text-muted);
 }
 
 .tool-btn.active {
-  background: #2563eb;
-  border-color: #2563eb;
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
   color: white;
 }
 
 .tool-btn.complete {
-  background: #dcfce7;
-  border-color: #86efac;
-  color: #16a34a;
+  background: var(--stat-green-bg);
+  border-color: var(--stat-green-icon);
+  color: var(--stat-green-icon);
 }
 
 .tool-btn.complete:hover {
-  background: #16a34a;
-  border-color: #16a34a;
+  background: var(--stat-green-icon);
+  border-color: var(--stat-green-icon);
   color: white;
 }
 
 .tool-btn.cancel {
-  background: #fef2f2;
-  border-color: #fecaca;
-  color: #dc2626;
+  background: var(--stat-rust-bg);
+  border-color: rgba(183, 99, 89, 0.3);
+  color: var(--stat-rust-icon);
 }
 
 .tool-btn.cancel:hover {
-  background: #dc2626;
-  border-color: #dc2626;
+  background: var(--stat-rust-icon);
+  border-color: var(--stat-rust-icon);
   color: white;
 }
 
 .tool-btn.delete,
 .tool-btn.danger {
-  background: #fef2f2;
-  border-color: #fecaca;
-  color: #dc2626;
+  background: var(--stat-rust-bg);
+  border-color: rgba(183, 99, 89, 0.3);
+  color: var(--stat-rust-icon);
 }
 
 .tool-btn.delete:hover,
 .tool-btn.danger:hover {
-  background: #dc2626;
-  border-color: #dc2626;
+  background: var(--stat-rust-icon);
+  border-color: var(--stat-rust-icon);
   color: white;
 }
 
@@ -104,7 +109,7 @@
   flex: 1;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-page) 100%);
 }
 
 .canvas-container canvas {
@@ -133,7 +138,7 @@
   bottom: 12px;
   left: 12px;
   padding: 6px 12px;
-  background: #2563eb;
+  background: var(--accent-primary);
   color: white;
   border-radius: 16px;
   font-size: 12px;
@@ -144,8 +149,8 @@
 /* Info Panel */
 .drawing-info-panel {
   padding: 16px;
-  background: white;
-  border-top: 1px solid #e2e8f0;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-color);
 }
 
 .info-stats {
@@ -154,23 +159,23 @@
   margin-bottom: 16px;
 }
 
-.stat {
+.polygon-drawing-tool .stat {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.stat-label {
+.polygon-drawing-tool .stat-label {
   font-size: 11px;
   text-transform: uppercase;
-  color: #64748b;
+  color: var(--text-muted);
   font-weight: 600;
 }
 
-.stat-value {
+.polygon-drawing-tool .stat-value {
   font-size: 18px;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
 /* Polygon List */
@@ -182,7 +187,7 @@
   margin: 0 0 8px 0;
   font-size: 12px;
   text-transform: uppercase;
-  color: #64748b;
+  color: var(--text-muted);
   font-weight: 600;
 }
 
@@ -191,8 +196,8 @@
   align-items: center;
   gap: 10px;
   padding: 8px 12px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   margin-bottom: 6px;
   cursor: pointer;
@@ -200,13 +205,13 @@
 }
 
 .polygon-item:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
+  background: var(--bg-page);
+  border-color: var(--text-muted);
 }
 
 .polygon-item.selected {
-  background: #dbeafe;
-  border-color: #3b82f6;
+  background: rgba(61, 107, 79, 0.1);
+  border-color: var(--accent-primary);
 }
 
 .polygon-color {
@@ -220,22 +225,22 @@
   flex: 1;
   font-size: 14px;
   font-weight: 500;
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
 .polygon-area {
   font-size: 13px;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 /* Help Text */
 .help-text {
   padding: 12px;
-  background: #f0f9ff;
-  border: 1px solid #bae6fd;
+  background: rgba(61, 107, 79, 0.1);
+  border: 1px solid rgba(61, 107, 79, 0.2);
   border-radius: 8px;
   font-size: 12px;
-  color: #0369a1;
+  color: var(--accent-primary);
 }
 
 .help-text p {
@@ -258,10 +263,10 @@
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  background: white;
-  border: 1px solid #2563eb;
+  background: var(--bg-card);
+  border: 1px solid var(--accent-primary);
   border-radius: 8px;
-  color: #2563eb;
+  color: var(--accent-primary);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -269,7 +274,7 @@
 }
 
 .draw-dig-area-btn:hover {
-  background: #2563eb;
+  background: var(--accent-primary);
   color: white;
 }
 
@@ -286,7 +291,7 @@
 }
 
 .polygon-modal {
-  background: white;
+  background: var(--bg-card);
   border-radius: 16px;
   width: 100%;
   max-width: 1000px;
@@ -294,7 +299,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-xl);
 }
 
 .polygon-modal-header {
@@ -302,7 +307,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px 20px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .polygon-modal-header h2 {
@@ -311,20 +316,20 @@
   gap: 10px;
   margin: 0;
   font-size: 18px;
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
 .polygon-modal-header h2 svg {
-  color: #2563eb;
+  color: var(--accent-primary);
 }
 
 .polygon-modal-header .modal-close {
   width: 36px;
   height: 36px;
-  background: #f1f5f9;
+  background: var(--bg-secondary);
   border: none;
   border-radius: 50%;
-  color: #64748b;
+  color: var(--text-muted);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -333,8 +338,8 @@
 }
 
 .polygon-modal-header .modal-close:hover {
-  background: #e2e8f0;
-  color: #1e293b;
+  background: var(--bg-page);
+  color: var(--text-primary);
 }
 
 .polygon-modal-content {
@@ -353,15 +358,15 @@
   justify-content: flex-end;
   gap: 12px;
   padding: 16px 20px;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--border-color);
 }
 
 .polygon-modal-footer .btn-secondary {
   padding: 10px 20px;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  color: #475569;
+  color: var(--text-secondary);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -369,7 +374,7 @@
 }
 
 .polygon-modal-footer .btn-secondary:hover {
-  background: #e2e8f0;
+  background: var(--bg-page);
 }
 
 .polygon-modal-footer .btn-primary {
@@ -377,7 +382,7 @@
   align-items: center;
   gap: 8px;
   padding: 10px 20px;
-  background: #2563eb;
+  background: var(--accent-primary);
   border: none;
   border-radius: 8px;
   color: white;
@@ -388,7 +393,7 @@
 }
 
 .polygon-modal-footer .btn-primary:hover {
-  background: #1d4ed8;
+  background: var(--accent-olive);
 }
 
 /* Keyboard Shortcuts Indicator */
