@@ -723,15 +723,17 @@ export function VoiceDailyReportPage() {
   // RENDER
   // ============================================================================
 
+  import './VoiceDailyReportPage.css';
+
   const isRecording = recordingState.status === 'recording';
   const isPaused = recordingState.status === 'paused';
 
   return (
-    <div className="min-h-screen text-white">
+    <div className="voice-report-page">
       {/* Header */}
-      <header className="page-header">
-        <div className="header-left">
-          <div className="header-title">
+      <header className="dashboard-header">
+        <div className="header-content">
+          <div className="header-left">
             <h1>Voice Daily Report</h1>
             <p className="header-subtitle">Record your daily report and let AI structure it for you</p>
           </div>

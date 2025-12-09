@@ -1,0 +1,55 @@
+/* Voice Daily Report - Anti-Gravity Industrial Theme */
+
+.voice-report-page {
+    padding: 0;
+    background: var(--bg-primary, #0f172a);
+    min-height: 100vh;
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+
+.dashboard-header {
+    background: linear-gradient(135deg, rgba(16, 20, 24, 0.95), rgba(61, 107, 79, 0.4));
+    padding: 2rem 2rem 1.5rem;
+    margin: 0 0 2rem 0;
+    /* Adjusted margin for standalone page */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.header-left h1 {
+    color: var(--text-primary);
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+.header-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* ============================================
+   CARDS
+   ============================================ */
+
+.dashboard-card {
+    background: rgba(30, 41, 59, 0.4);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}

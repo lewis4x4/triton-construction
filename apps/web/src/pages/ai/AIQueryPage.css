@@ -182,12 +182,12 @@
 }
 
 .ai-header {
-    padding: 2rem 2rem 1.5rem;
+    padding: 1.5rem 2rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     gap: 1rem;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    background: linear-gradient(135deg, rgba(16, 20, 24, 0.95), rgba(61, 107, 79, 0.4));
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 }
@@ -258,22 +258,24 @@
 }
 
 .suggested-card {
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.03);
+    padding: 1.5rem;
+    background: rgba(30, 41, 59, 0.4);
+    backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 12px;
     color: #94a3b8;
     font-size: 0.875rem;
     text-align: left;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s ease;
 }
 
 .suggested-card:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(59, 130, 246, 0.4);
+    background: rgba(30, 41, 59, 0.6);
+    border-color: rgba(255, 255, 255, 0.15);
     color: #e2e8f0;
     transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 /* Input Area */
