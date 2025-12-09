@@ -207,12 +207,11 @@ function ToastContainer({ toasts, onDismiss }: { toasts: Toast[]; onDismiss: (id
       {toasts.map((toast) => (
         <div
           key={toast.id}
-          className={`flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg min-w-[300px] ${
-            toast.type === 'error' ? 'bg-red-50 border border-red-200 text-red-800' :
-            toast.type === 'warning' ? 'bg-yellow-50 border border-yellow-200 text-yellow-800' :
-            toast.type === 'success' ? 'bg-green-50 border border-green-200 text-green-800' :
-            'bg-blue-50 border border-blue-200 text-blue-800'
-          }`}
+          className={`flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg min-w-[300px] ${toast.type === 'error' ? 'bg-red-50 border border-red-200 text-red-800' :
+              toast.type === 'warning' ? 'bg-yellow-50 border border-yellow-200 text-yellow-800' :
+                toast.type === 'success' ? 'bg-green-50 border border-green-200 text-green-800' :
+                  'bg-blue-50 border border-blue-200 text-blue-800'
+            }`}
         >
           {toast.type === 'error' && <AlertCircle className="w-5 h-5 flex-shrink-0" />}
           <div className="flex-1">
@@ -300,8 +299,8 @@ function MessageContent({ content, role }: MessageContentProps) {
   return (
     <div
       className="whitespace-pre-wrap break-words"
-      // Using dangerouslySetInnerHTML with sanitized content
-      // In production, consider using a markdown renderer with sanitization
+    // Using dangerouslySetInnerHTML with sanitized content
+    // In production, consider using a markdown renderer with sanitization
     >
       {sanitizedContent}
     </div>
@@ -764,188 +763,161 @@ function AIQueryPageContent() {
         </div>
       )}
 
-      <div className="flex-1 flex overflow-hidden">
+      <div className="ai-query-container">
         {/* Sidebar */}
-        {sidebarOpen && (
-          <aside
-            className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col"
-            aria-label="Conversation sidebar"
-          >
-            {/* Project selector */}
-            <div className="p-4 border-b border-gray-200">
-              <label htmlFor="project-select" className="sr-only">
-                Select project
-              </label>
-              <select
-                id="project-select"
-                value={selectedProjectId}
-                onChange={(e) => setSelectedProjectId(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                disabled={isLoadingProjects}
-                aria-busy={isLoadingProjects}
-              >
-                {isLoadingProjects ? (
-                  <option>Loading projects...</option>
-                ) : projects.length === 0 ? (
-                  <option>No projects available</option>
-                ) : (
-                  projects.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.project_number} - {p.name}
-                    </option>
-                  ))
-                )}
-              </select>
-            </div>
-
-            {/* New conversation button */}
-            <div className="p-4">
-              <button
-                onClick={startNewConversation}
-                className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium inline-flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                aria-label="Start new conversation"
-              >
-                <Plus className="w-4 h-4" />
-                New Conversation
-              </button>
-            </div>
-
-            {/* Conversation list */}
-            <nav
-              ref={conversationListRef}
-              className="flex-1 overflow-y-auto"
-              aria-label="Conversation history"
+        <aside
+          className={`ai-sidebar ${!sidebarOpen ? 'ai-sidebar-closed' : ''}`}
+          aria-label="Conversation sidebar"
+        >
+          {/* Project selector */}
+          <div className="project-selector">
+            <select
+              id="project-select"
+              value={selectedProjectId}
+              onChange={(e) => setSelectedProjectId(e.target.value)}
+              className="project-select-input"
+              disabled={isLoadingProjects}
+              aria-busy={isLoadingProjects}
             >
-              <h2 className="px-4 py-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Recent Conversations
-              </h2>
-
-              {isLoadingConversations ? (
-                <>
-                  <ConversationSkeleton />
-                  <ConversationSkeleton />
-                  <ConversationSkeleton />
-                </>
-              ) : conversations.length === 0 ? (
-                <div className="px-4 py-2 text-sm text-gray-500">
-                  No conversations yet
-                </div>
+              {isLoadingProjects ? (
+                <option>Loading projects...</option>
+              ) : projects.length === 0 ? (
+                <option>No projects available</option>
               ) : (
-                <ul role="listbox" aria-label="Conversations">
-                  {conversations.map((conv, index) => (
-                    <li key={conv.id}>
-                      <button
-                        data-conv-button
-                        onClick={() => setCurrentConversation(conv)}
-                        onKeyDown={(e) => handleConversationKeyDown(e, index, conv)}
-                        className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 ${
-                          currentConversation?.id === conv.id
-                            ? 'bg-blue-50 text-blue-600'
-                            : 'text-gray-700'
-                        }`}
-                        role="option"
-                        aria-selected={currentConversation?.id === conv.id}
-                      >
-                        <div className="font-medium truncate">
-                          {conv.title || 'New Conversation'}
-                        </div>
-                        <div className="text-xs text-gray-400">
-                          {new Date(conv.created_at).toLocaleDateString()}
-                        </div>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+                projects.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.project_number} - {p.name}
+                  </option>
+                ))
               )}
-            </nav>
-          </aside>
-        )}
+            </select>
+          </div>
+
+          {/* New conversation button */}
+          <button
+            onClick={startNewConversation}
+            className="new-chat-btn"
+            aria-label="Start new conversation"
+          >
+            <Plus className="w-5 h-5" />
+            New Conversation
+          </button>
+
+          {/* Conversation list */}
+          <nav
+            ref={conversationListRef}
+            className="conversation-list"
+            aria-label="Conversation history"
+          >
+            <h2 className="conversation-list-header">
+              Recent Conversations
+            </h2>
+
+            {isLoadingConversations ? (
+              <>
+                <ConversationSkeleton />
+                <ConversationSkeleton />
+                <ConversationSkeleton />
+              </>
+            ) : conversations.length === 0 ? (
+              <div className="px-4 py-2 text-sm text-gray-500">
+                No conversations yet
+              </div>
+            ) : (
+              <ul role="listbox" aria-label="Conversations">
+                {conversations.map((conv, index) => (
+                  <li key={conv.id}>
+                    <button
+                      data-conv-button
+                      onClick={() => setCurrentConversation(conv)}
+                      onKeyDown={(e) => handleConversationKeyDown(e, index, conv)}
+                      className={`conversation-item ${currentConversation?.id === conv.id ? 'active' : ''
+                        }`}
+                      role="option"
+                      aria-selected={currentConversation?.id === conv.id}
+                    >
+                      <div className="conversation-title">
+                        {conv.title || 'New Conversation'}
+                      </div>
+                      <div className="conversation-date">
+                        {new Date(conv.created_at).toLocaleDateString()}
+                      </div>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </nav>
+        </aside>
 
         {/* Main Chat Area */}
-        <main className="flex-1 flex flex-col" role="main">
+        <main className="chat-main" role="main">
           {/* Header */}
-          <header className="h-14 border-b border-gray-200 flex items-center px-4 gap-4">
+          <header className="chat-header">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded p-1"
+              className="sidebar-toggle"
               aria-label={sidebarOpen ? 'Close sidebar' : 'Open sidebar'}
               aria-expanded={sidebarOpen}
             >
               <Menu className="w-6 h-6" />
             </button>
-            <div>
-              <h1 className="font-semibold text-gray-900">AI Project Assistant</h1>
-              <p className="text-xs text-gray-500">
-                Ask questions about your project in natural language
-              </p>
+            <div className="chat-header-title">
+              <h1>AI Project Assistant</h1>
+              <p>Ask questions about your project in natural language</p>
             </div>
           </header>
 
           {/* Messages */}
           <div
-            className="flex-1 overflow-y-auto p-4"
+            className="messages-container custom-scrollbar"
             role="log"
             aria-label="Conversation messages"
             aria-live="polite"
           >
             {isLoadingMessages ? (
-              <div className="space-y-4 max-w-3xl mx-auto">
+              <div className="space-y-4 max-w-3xl mx-auto w-full">
                 <MessageSkeleton />
                 <MessageSkeleton />
               </div>
             ) : displayMessages.length === 0 ? (
-              <div className="h-full flex flex-col items-center justify-center">
-                <div className="text-center max-w-md">
-                  <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
-                    <MessageSquare className="w-8 h-8 text-blue-600" />
-                  </div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                    How can I help you today?
-                  </h2>
-                  <p className="text-gray-500 mb-6">
-                    Ask me anything about your project - daily reports, equipment, crew, materials, or schedules.
-                  </p>
+              <div className="empty-state">
+                <div className="empty-state-icon">
+                  <MessageSquare />
+                </div>
+                <h2>How can I help you today?</h2>
+                <p>
+                  Ask me anything about your project - daily reports, equipment, crew, materials, or schedules.
+                </p>
 
-                  <div className="grid grid-cols-2 gap-2">
-                    {SUGGESTED_QUERIES.map((query, i) => (
-                      <button
-                        key={i}
-                        onClick={() => {
-                          setInput(query);
-                          inputRef.current?.focus();
-                        }}
-                        className="text-left text-sm px-3 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      >
-                        {query}
-                      </button>
-                    ))}
-                  </div>
+                <div className="suggested-queries">
+                  {SUGGESTED_QUERIES.map((query, i) => (
+                    <button
+                      key={i}
+                      onClick={() => {
+                        setInput(query);
+                        inputRef.current?.focus();
+                      }}
+                      className="query-chip"
+                    >
+                      {query}
+                    </button>
+                  ))}
                 </div>
               </div>
             ) : (
-              <div className="space-y-4 max-w-3xl mx-auto">
+              <div className="w-full max-w-3xl mx-auto">
                 {displayMessages.map((message) => (
                   <div
                     key={message.id}
-                    className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                    className={`message-wrapper ${message.role}`}
                   >
-                    <div
-                      className={`max-w-[80%] rounded-lg px-4 py-2 ${
-                        message.role === 'user'
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-gray-100 text-gray-900'
-                      } ${message.isOptimistic ? 'opacity-70' : ''}`}
-                    >
+                    <div className={`message-bubble ${message.isOptimistic ? 'opacity-70' : ''}`}>
                       <MessageContent content={message.content} role={message.role} />
-                      <div
-                        className={`text-xs mt-1 flex items-center gap-1 ${
-                          message.role === 'user' ? 'text-blue-200' : 'text-gray-400'
-                        }`}
-                      >
-                        {message.isOptimistic && (
+                      <div className="message-time">
+                        {message.isOptimistic ? (
                           <span className="italic">Sending...</span>
-                        )}
-                        {!message.isOptimistic && (
+                        ) : (
                           new Date(message.created_at).toLocaleTimeString()
                         )}
                       </div>
@@ -953,12 +925,12 @@ function AIQueryPageContent() {
                   </div>
                 ))}
                 {isSending && !optimisticMessages.size && (
-                  <div className="flex justify-start">
-                    <div className="bg-gray-100 rounded-lg px-4 py-2" aria-label="AI is typing">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                  <div className="message-wrapper assistant">
+                    <div className="message-bubble">
+                      <div className="typing-indicator">
+                        <div className="dot" />
+                        <div className="dot" />
+                        <div className="dot" />
                       </div>
                     </div>
                   </div>
@@ -969,37 +941,35 @@ function AIQueryPageContent() {
           </div>
 
           {/* Input */}
-          <div className="border-t border-gray-200 p-4">
-            <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
-              <div className="flex gap-2">
-                <label htmlFor="message-input" className="sr-only">
-                  Type your message
-                </label>
-                <input
-                  ref={inputRef}
-                  id="message-input"
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask a question about your project..."
-                  className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  disabled={isSending || !isOnline}
-                  maxLength={MAX_MESSAGE_LENGTH}
-                  aria-describedby="input-help"
-                />
-                <button
-                  type="submit"
-                  disabled={isSending || !input.trim() || !isOnline}
-                  className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                  aria-label="Send message"
-                >
-                  <Send className="w-5 h-5" />
-                </button>
-              </div>
-              <p id="input-help" className="text-xs text-gray-400 mt-2 text-center">
-                AI responses are generated based on your project data. Always verify critical information.
-              </p>
+          <div className="input-area">
+            <form onSubmit={handleSubmit} className="input-container">
+              <label htmlFor="message-input" className="sr-only">
+                Type your message
+              </label>
+              <input
+                ref={inputRef}
+                id="message-input"
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Ask a question about your project..."
+                className="chat-input"
+                disabled={isSending || !isOnline}
+                maxLength={MAX_MESSAGE_LENGTH}
+                aria-describedby="input-help"
+              />
+              <button
+                type="submit"
+                disabled={isSending || !input.trim() || !isOnline}
+                className="send-btn"
+                aria-label="Send message"
+              >
+                <Send className="w-5 h-5" />
+              </button>
             </form>
+            <p id="input-help" className="input-disclaimer">
+              AI responses are generated based on your project data. Always verify critical information.
+            </p>
           </div>
         </main>
       </div>
