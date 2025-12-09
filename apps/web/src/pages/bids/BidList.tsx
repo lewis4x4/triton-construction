@@ -144,14 +144,18 @@ export function BidList() {
 
   return (
     <>
-      <div className="page-header">
-        <div className="page-header-content">
-          <h1>Bid Packages</h1>
-          <p>Manage your bid projects and track estimation progress</p>
+      <div className="dashboard-header">
+        <div className="header-content">
+          <div className="header-left">
+            <h1>Bid Packages</h1>
+            <p className="header-subtitle">Manage your bid projects and track estimation progress</p>
+          </div>
+          <div className="header-right">
+            <Link to="/bids/new" className="btn btn-primary">
+              + New Bid Project
+            </Link>
+          </div>
         </div>
-        <Link to="/bids/new" className="btn btn-primary">
-          + New Bid Project
-        </Link>
       </div>
 
       <div className="filters-bar">
@@ -250,8 +254,8 @@ export function BidList() {
                           {isPastDue
                             ? `${Math.abs(daysUntilBid)}d overdue`
                             : daysUntilBid === 0
-                            ? 'Today'
-                            : `${daysUntilBid}d`}
+                              ? 'Today'
+                              : `${daysUntilBid}d`}
                         </span>
                       )}
                     </span>

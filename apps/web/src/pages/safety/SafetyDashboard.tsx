@@ -179,6 +179,8 @@ export function SafetyDashboard() {
 
 
 
+  import './SafetyDashboard.css';
+
   if (loading && projects.length === 0) {
     return (
       <div className="flex items-center justify-center h-64 text-cyan-400">
@@ -188,67 +190,68 @@ export function SafetyDashboard() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="safety-dashboard">
       {/* Header */}
-      <header className="page-header">
-        <div className="header-left">
-          <div className="header-title">
+      <header className="dashboard-header">
+        <div className="header-content">
+          <div className="header-left">
             <h1>Safety Management</h1>
             <p className="header-subtitle">Monitor safety metrics, violations, JSAs, and toolbox talks</p>
           </div>
-        </div>
-        <div className="header-actions">
-          <select
-            value={selectedProjectId}
-            onChange={(e) => setSelectedProjectId(e.target.value)}
-            className="px-4 py-2 border border-white/10 rounded-lg focus:ring-1 focus:ring-cyan-500 bg-void-deep text-white text-sm"
-          >
-            {projects.map(project => (
-              <option key={project.id} value={project.id} className="bg-void-deep">
-                {project.project_number} - {project.name}
-              </option>
-            ))}
-          </select>
+          <div className="header-right">
+            <select
+              value={selectedProjectId}
+              onChange={(e) => setSelectedProjectId(e.target.value)}
+              className="px-4 py-2 border border-white/10 rounded-lg focus:ring-1 focus:ring-cyan-500 bg-void-deep text-white text-sm"
+              style={{ background: 'rgba(0,0,0,0.3)' }}
+            >
+              {projects.map(project => (
+                <option key={project.id} value={project.id} className="bg-void-deep">
+                  {project.project_number} - {project.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div className="gravity-card p-4 border border-white/10">
+          <div className="stat-card">
             <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">TRIR (YTD)</div>
             <div className="text-2xl font-bold font-mono text-white mt-1">{stats.trir.toFixed(2)}</div>
-            <div className="text-xs text-green-400 mt-1 font-mono">Target: &lt; 3.0</div>
+            <div className="stat-card-target">Target: &lt; 3.0</div>
           </div>
-          <div className="gravity-card p-4 border border-white/10">
+          <div className="stat-card">
             <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">DART Rate (YTD)</div>
             <div className="text-2xl font-bold font-mono text-white mt-1">{stats.dart.toFixed(2)}</div>
-            <div className="text-xs text-green-400 mt-1 font-mono">Target: &lt; 2.0</div>
+            <div className="stat-card-target">Target: &lt; 2.0</div>
           </div>
-          <div className="gravity-card p-4 border border-white/10">
+          <div className="stat-card">
             <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">Hours Worked (YTD)</div>
             <div className="text-2xl font-bold font-mono text-white mt-1">{stats.hoursWorked.toLocaleString()}</div>
           </div>
-          <div className="gravity-card p-4 border border-white/10">
+          <div className="stat-card">
             <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">Near Misses (YTD)</div>
             <div className="text-2xl font-bold font-mono text-white mt-1">{stats.nearMisses}</div>
             <div className="text-xs text-cyan-400 mt-1 font-mono">Leading indicator</div>
           </div>
-          <div className="gravity-card p-4 border border-white/10">
+          <div className="stat-card">
             <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">Recordables (YTD)</div>
             <div className="text-2xl font-bold font-mono text-white mt-1">{stats.recordableInjuries}</div>
           </div>
-          <div className="gravity-card p-4 border border-white/10">
+          <div className="stat-card">
             <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">Open Violations</div>
             <div className={`text-2xl font-bold font-mono mt-1 ${stats.openViolations > 0 ? 'text-red-400' : 'text-green-400'}`}>
               {stats.openViolations}
             </div>
           </div>
-          <div className="gravity-card p-4 border border-white/10">
+          <div className="stat-card">
             <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">Toolbox Talks (Month)</div>
             <div className="text-2xl font-bold font-mono text-white mt-1">{stats.toolboxTalksThisMonth}</div>
           </div>
-          <div className="gravity-card p-4 border border-white/10">
+          <div className="stat-card">
             <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">Pending JSAs</div>
             <div className={`text-2xl font-bold font-mono mt-1 ${stats.pendingJSAs > 0 ? 'text-yellow-400' : 'text-green-400'}`}>
               {stats.pendingJSAs}
@@ -257,7 +260,7 @@ export function SafetyDashboard() {
         </div>
 
         {/* Tabs */}
-        <div className="gravity-card">
+        <div className="dashboard-card">
           <div className="border-b border-white/10">
             <nav className="flex -mb-px">
               {['overview', 'violations', 'jsa', 'toolbox', 'osha'].map((tab) => (
