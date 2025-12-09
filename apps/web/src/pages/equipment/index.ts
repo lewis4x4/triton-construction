@@ -18,3 +18,4 @@ export { FleetReports } from './FleetReports';
 export { FleetInspections } from './FleetInspections';
 export { EnhancedDQFManagement } from './EnhancedDQFManagement';
 export { EnhancedIFTAReporting } from './EnhancedIFTAReporting';
+export { EnhancedCrewRoster } from './EnhancedCrewRoster';

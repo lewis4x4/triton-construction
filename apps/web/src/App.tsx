@@ -34,17 +34,17 @@ import { VoiceDailyReportPage } from './pages/daily-reports/VoiceDailyReportPage
 // Project Management
 import { ProjectDashboard } from './pages/projects/ProjectDashboard';
 // Subcontractor Management
-import { SubcontractorDashboard } from './pages/subcontractors/SubcontractorDashboard';
+import { EnhancedSubcontractorDashboard } from './pages/subcontractors';
 // Document Management
-import { DocumentDashboard } from './pages/documents/DocumentDashboard';
+import { EnhancedDocumentCenter } from './pages/documents';
 // Change Order Management
-import { ChangeOrderDashboard } from './pages/change-orders/ChangeOrderDashboard';
+import { EnhancedChangeOrderDashboard } from './pages/change-orders';
 // RFI Management
-import { RFIDashboard } from './pages/rfis/RFIDashboard';
+import { EnhancedRFIDashboard } from './pages/rfis';
 // AI Query
 import { AIQueryPage } from './pages/ai/AIQueryPage';
 // Predictive Analytics
-import { PredictiveAnalyticsDashboard } from './pages/analytics/PredictiveAnalyticsDashboard';
+import { EnhancedPredictiveAnalytics } from './pages/analytics';
 // User Management
 import { UserManagement } from './pages/admin/UserManagement';
 // Assignment Validation Rules
@@ -56,7 +56,7 @@ import { DailySafetyBriefForm } from './components/safety/DailySafetyBriefForm';
 import { StartMyDayScreen } from './components/safety/StartMyDayScreen';
 import { SafetyDashboard, IncidentReportPage, JSAManagement, ToolboxTalkLog } from './pages/safety';
 // Materials Module
-import { MaterialsDashboard, POManagement, MaterialTicketViewer } from './pages/materials';
+import { EnhancedMaterialsDashboard, POManagement, MaterialTicketViewer } from './pages/materials';
 // Quality Control Module Sub-pages
 import { QualityControlDashboard, InspectionManagement, NCRTracker, PunchListManager } from './pages/quality-control';
 // Self-Service Module
@@ -64,7 +64,6 @@ import { MyCertifications } from './pages/my/MyCertifications';
 // Equipment & Crew Management Module
 import {
   EquipmentFleetDashboard,
-  CrewRoster,
   MaintenanceScheduling,
   OperatorQualifications,
   VehicleDetails,
@@ -78,7 +77,8 @@ import {
   FleetReports,
   FleetInspections,
   EnhancedDQFManagement,
-  EnhancedIFTAReporting
+  EnhancedIFTAReporting,
+  EnhancedCrewRoster
 } from './pages/equipment';
 // Pay Estimates Module
 import {
@@ -92,8 +92,8 @@ import {
 // Self-Perform Cost Tracking
 import { SelfPerformDashboard } from './pages/self-perform';
 // Platform Core - Alerts, Geofences, Executive Dashboard
-import { PlatformAlertsDashboard } from './pages/alerts/PlatformAlertsDashboard';
-import { GeofenceManagement } from './pages/geofences/GeofenceManagement';
+import { EnhancedPlatformAlerts } from './pages/alerts';
+import { EnhancedGeofenceManagement } from './pages/geofences';
 import { ExecutiveDashboard } from './pages/executive/ExecutiveDashboard';
 // Time Tracking Module
 import { TimeTrackingDashboard, TimeEntryPage, TimesheetApproval, WeeklyTimesheet } from './pages/time-tracking';
@@ -448,7 +448,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <MaterialsDashboard />
+                  <EnhancedMaterialsDashboard />
                 </Layout>
               </ProtectedRoute>
             }
@@ -620,7 +620,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <SubcontractorDashboard />
+                  <EnhancedSubcontractorDashboard />
                 </Layout>
               </ProtectedRoute>
             }
@@ -632,7 +632,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <DocumentDashboard />
+                  <EnhancedDocumentCenter />
                 </Layout>
               </ProtectedRoute>
             }
@@ -644,7 +644,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <ChangeOrderDashboard />
+                  <EnhancedChangeOrderDashboard />
                 </Layout>
               </ProtectedRoute>
             }
@@ -656,7 +656,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <RFIDashboard />
+                  <EnhancedRFIDashboard />
                 </Layout>
               </ProtectedRoute>
             }
@@ -680,7 +680,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <PredictiveAnalyticsDashboard />
+                  <EnhancedPredictiveAnalytics />
                 </Layout>
               </ProtectedRoute>
             }
@@ -724,7 +724,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <CrewRoster />
+                  <EnhancedCrewRoster />
                 </Layout>
               </ProtectedRoute>
             }
@@ -877,7 +877,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <PlatformAlertsDashboard />
+                  <EnhancedPlatformAlerts />
                 </Layout>
               </ProtectedRoute>
             }
@@ -887,7 +887,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <GeofenceManagement />
+                  <EnhancedGeofenceManagement />
                 </Layout>
               </ProtectedRoute>
             }

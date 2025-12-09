@@ -1,0 +1,2480 @@
+/* Enhanced Predictive Analytics - Enterprise Dark Theme */
+
+.enhanced-predictive-analytics {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0f1a 0%, #1a1f2e 100%);
+  color: #e2e8f0;
+  padding: 0;
+}
+
+/* Header */
+.epa-header {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+  padding: 1.5rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.epa-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+.epa-header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.epa-header-icon {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4);
+}
+
+.epa-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin: 0;
+  background: linear-gradient(135deg, #f8fafc 0%, #a855f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.epa-subtitle {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.epa-header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.epa-project-select {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 10px;
+  padding: 0.625rem 1rem;
+  color: #e2e8f0;
+  font-size: 0.875rem;
+  min-width: 280px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.epa-project-select:hover {
+  border-color: rgba(139, 92, 246, 0.5);
+}
+
+.epa-project-select:focus {
+  outline: none;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+}
+
+.epa-project-select option {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
+.epa-refresh-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  background: rgba(30, 41, 59, 0.8);
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.epa-refresh-btn:hover {
+  background: rgba(139, 92, 246, 0.2);
+  border-color: rgba(139, 92, 246, 0.5);
+  color: #8b5cf6;
+}
+
+.epa-refresh-btn.active {
+  background: rgba(139, 92, 246, 0.2);
+  border-color: #8b5cf6;
+  color: #8b5cf6;
+}
+
+.epa-refresh-btn .spinning {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.epa-export-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.epa-export-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+}
+
+/* Alert Banner */
+.epa-alert-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  margin-top: 1rem;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.epa-alert-banner.critical {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(185, 28, 28, 0.2) 100%);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.epa-alert-banner.warning {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(217, 119, 6, 0.2) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.epa-alert-banner.info {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(37, 99, 235, 0.2) 100%);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+}
+
+.epa-alert-banner-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.epa-alert-banner.critical .epa-alert-banner-content svg {
+  color: #ef4444;
+}
+
+.epa-alert-banner.warning .epa-alert-banner-content svg {
+  color: #f59e0b;
+}
+
+.epa-alert-banner-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.epa-alert-banner-text strong {
+  color: #f8fafc;
+  font-size: 0.875rem;
+}
+
+.epa-alert-banner-text span {
+  color: #94a3b8;
+  font-size: 0.8125rem;
+}
+
+.epa-alert-banner-action {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #f8fafc;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.epa-alert-banner-action:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* KPI Grid */
+.epa-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1.25rem;
+  padding: 2rem;
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+.epa-kpi-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.8) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.epa-kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 16px 16px 0 0;
+}
+
+.epa-kpi-card.confidence::before {
+  background: linear-gradient(90deg, #10b981 0%, #3b82f6 100%);
+}
+
+.epa-kpi-card.schedule::before {
+  background: linear-gradient(90deg, #3b82f6 0%, #6366f1 100%);
+}
+
+.epa-kpi-card.cost::before {
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+}
+
+.epa-kpi-card.safety::before {
+  background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+}
+
+.epa-kpi-card.risks::before {
+  background: linear-gradient(90deg, #ef4444 0%, #b91c1c 100%);
+}
+
+.epa-kpi-card.recommendations::before {
+  background: linear-gradient(90deg, #8b5cf6 0%, #a855f7 100%);
+}
+
+.epa-kpi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.epa-kpi-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.epa-kpi-header svg {
+  color: #64748b;
+}
+
+.epa-kpi-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #f8fafc;
+  line-height: 1.2;
+}
+
+.epa-kpi-chart {
+  display: flex;
+  justify-content: center;
+  margin: 0.75rem 0;
+}
+
+.epa-confidence-ring {
+  width: 80px;
+  height: 80px;
+}
+
+.epa-kpi-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  margin: 0.75rem 0;
+  overflow: hidden;
+}
+
+.epa-kpi-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.epa-kpi-bar-fill.schedule {
+  background: linear-gradient(90deg, #3b82f6 0%, #6366f1 100%);
+}
+
+.epa-kpi-bar-fill.cost {
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+}
+
+.epa-kpi-bar-fill.safety {
+  background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+}
+
+.epa-kpi-breakdown {
+  display: flex;
+  gap: 1rem;
+  margin: 0.75rem 0;
+}
+
+.epa-kpi-breakdown span {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.epa-kpi-breakdown .critical {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.epa-kpi-breakdown .high {
+  background: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+}
+
+.epa-kpi-savings {
+  margin: 0.75rem 0;
+}
+
+.epa-savings-label {
+  display: block;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin-bottom: 0.25rem;
+}
+
+.epa-savings-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #10b981;
+}
+
+.epa-kpi-footer {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.epa-kpi-trend {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.epa-kpi-trend.positive {
+  color: #10b981;
+}
+
+.epa-kpi-trend.negative {
+  color: #ef4444;
+}
+
+.epa-view-all-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  background: none;
+  border: none;
+  color: #8b5cf6;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  transition: gap 0.2s ease;
+}
+
+.epa-view-all-btn:hover {
+  gap: 0.625rem;
+}
+
+/* Tabs */
+.epa-tabs {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0 2rem;
+  max-width: 1800px;
+  margin: 0 auto;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  overflow-x: auto;
+}
+
+.epa-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  background: none;
+  border: none;
+  color: #64748b;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.epa-tab:hover {
+  color: #94a3b8;
+}
+
+.epa-tab.active {
+  color: #f8fafc;
+}
+
+.epa-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #8b5cf6 0%, #a855f7 100%);
+  border-radius: 2px 2px 0 0;
+}
+
+.epa-tab-badge {
+  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+  color: white;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 0.125rem 0.5rem;
+  border-radius: 10px;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Loading */
+.epa-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 6rem 2rem;
+}
+
+.epa-loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(139, 92, 246, 0.2);
+  border-top-color: #8b5cf6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.epa-loading span {
+  color: #94a3b8;
+  font-size: 0.875rem;
+}
+
+/* Content */
+.epa-content {
+  padding: 2rem;
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+/* Sections */
+.epa-section {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.6) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.epa-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.epa-section-header h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #f8fafc;
+  margin: 0;
+}
+
+.epa-section-header h2 svg {
+  color: #8b5cf6;
+}
+
+.epa-section-subtitle {
+  font-size: 0.8125rem;
+  color: #64748b;
+  margin-left: 0.5rem;
+}
+
+.epa-section-action {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 8px;
+  color: #a78bfa;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.epa-section-action:hover {
+  background: rgba(139, 92, 246, 0.25);
+}
+
+/* Risk Matrix */
+.epa-risk-matrix {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.epa-matrix-y-label {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.epa-matrix-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.epa-matrix-row {
+  display: flex;
+  gap: 4px;
+}
+
+.epa-matrix-cell {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.epa-matrix-cell:hover {
+  transform: scale(1.05);
+}
+
+.epa-matrix-cell.low {
+  background: rgba(34, 197, 94, 0.2);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.epa-matrix-cell.medium {
+  background: rgba(245, 158, 11, 0.2);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.epa-matrix-cell.high {
+  background: rgba(249, 115, 22, 0.2);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+}
+
+.epa-matrix-cell.critical {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.epa-matrix-indicator {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  color: #0f172a;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.epa-matrix-x-label {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 0.5rem;
+}
+
+.epa-matrix-legend {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.epa-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.epa-legend-item span:first-child {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.epa-legend-item span.low { background: rgba(34, 197, 94, 0.6); }
+.epa-legend-item span.medium { background: rgba(245, 158, 11, 0.6); }
+.epa-legend-item span.high { background: rgba(249, 115, 22, 0.6); }
+.epa-legend-item span.critical { background: rgba(239, 68, 68, 0.6); }
+.epa-legend-item span.actual { background: #10b981; }
+.epa-legend-item span.predicted { background: #3b82f6; }
+.epa-legend-item span.band { background: rgba(59, 130, 246, 0.3); }
+
+/* Forecast Chart */
+.epa-forecast-chart {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.epa-forecast-chart svg {
+  width: 100%;
+  height: 300px;
+}
+
+.epa-forecast-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.epa-forecast-select {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 8px;
+  padding: 0.375rem 0.75rem;
+  color: #e2e8f0;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.epa-chart-legend {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+/* Overview Grid */
+.epa-overview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.epa-overview .risk-matrix-section,
+.epa-overview .forecast-section {
+  grid-column: span 1;
+}
+
+.epa-overview .risks-section,
+.epa-overview .alerts-section {
+  grid-column: span 1;
+}
+
+/* Risk List */
+.epa-risk-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.epa-risk-item {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.epa-risk-item:hover {
+  transform: translateY(-2px);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.epa-risk-item.risk-critical { border-left-color: #ef4444; }
+.epa-risk-item.risk-high { border-left-color: #f97316; }
+.epa-risk-item.risk-medium { border-left-color: #f59e0b; }
+.epa-risk-item.risk-low { border-left-color: #22c55e; }
+
+.epa-risk-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.epa-risk-category {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.epa-risk-badge {
+  padding: 0.25rem 0.625rem;
+  border-radius: 4px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+.epa-risk-badge.risk-critical {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.epa-risk-badge.risk-high {
+  background: rgba(249, 115, 22, 0.2);
+  color: #f97316;
+}
+
+.epa-risk-badge.risk-medium {
+  background: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+}
+
+.epa-risk-badge.risk-low {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
+.epa-risk-name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #f8fafc;
+  margin: 0 0 0.5rem 0;
+}
+
+.epa-risk-description {
+  font-size: 0.8125rem;
+  color: #94a3b8;
+  margin: 0 0 1rem 0;
+  line-height: 1.5;
+}
+
+.epa-risk-metrics {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.epa-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.epa-metric-label {
+  font-size: 0.6875rem;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.epa-metric-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.epa-metric-trend {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.epa-metric-trend.improving { color: #22c55e; }
+.epa-metric-trend.declining { color: #ef4444; }
+.epa-metric-trend.stable { color: #94a3b8; }
+
+/* Alert List */
+.epa-alert-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.epa-alert-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  border-left: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.epa-alert-item:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.epa-alert-item.unread {
+  background: rgba(139, 92, 246, 0.1);
+}
+
+.epa-alert-item.critical { border-left-color: #ef4444; }
+.epa-alert-item.warning { border-left-color: #f59e0b; }
+.epa-alert-item.info { border-left-color: #3b82f6; }
+
+.epa-alert-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.epa-alert-icon.critical {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.epa-alert-icon.warning {
+  background: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+}
+
+.epa-alert-icon.info {
+  background: rgba(59, 130, 246, 0.2);
+  color: #3b82f6;
+}
+
+.epa-alert-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.epa-alert-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.375rem;
+}
+
+.epa-alert-header h4 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #f8fafc;
+  margin: 0;
+}
+
+.epa-alert-time {
+  font-size: 0.6875rem;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+.epa-alert-message {
+  font-size: 0.8125rem;
+  color: #94a3b8;
+  margin: 0 0 0.75rem 0;
+  line-height: 1.4;
+}
+
+.epa-alert-action {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: #8b5cf6;
+  padding: 0.5rem 0.75rem;
+  background: rgba(139, 92, 246, 0.1);
+  border-radius: 6px;
+}
+
+/* Predictions */
+.epa-prediction-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.25rem;
+}
+
+.epa-prediction-card {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.epa-prediction-type {
+  font-size: 0.75rem;
+  color: #8b5cf6;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.epa-prediction-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin-bottom: 1rem;
+}
+
+.epa-prediction-confidence {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.epa-confidence-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.epa-confidence-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #8b5cf6 0%, #a855f7 100%);
+  border-radius: 3px;
+}
+
+.epa-prediction-confidence span {
+  font-size: 0.8125rem;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+
+.epa-prediction-factors h4 {
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+  margin: 0 0 0.75rem 0;
+}
+
+.epa-factor {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.epa-factor-name {
+  width: 80px;
+  font-size: 0.8125rem;
+  color: #94a3b8;
+  text-transform: capitalize;
+}
+
+.epa-factor-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.epa-factor-fill {
+  height: 100%;
+  background: #6366f1;
+  border-radius: 2px;
+}
+
+.epa-factor-value {
+  width: 40px;
+  font-size: 0.75rem;
+  color: #64748b;
+  text-align: right;
+}
+
+.epa-prediction-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.6875rem;
+  color: #64748b;
+}
+
+/* Risk Grid */
+.epa-risk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.25rem;
+}
+
+.epa-risk-card {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border-left: 3px solid transparent;
+}
+
+.epa-risk-card.risk-critical { border-left-color: #ef4444; }
+.epa-risk-card.risk-high { border-left-color: #f97316; }
+.epa-risk-card.risk-medium { border-left-color: #f59e0b; }
+.epa-risk-card.risk-low { border-left-color: #22c55e; }
+
+.epa-risk-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.epa-risk-card-header svg {
+  color: #64748b;
+}
+
+.epa-risk-level {
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+.epa-risk-level.risk-critical { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+.epa-risk-level.risk-high { background: rgba(249, 115, 22, 0.2); color: #f97316; }
+.epa-risk-level.risk-medium { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+.epa-risk-level.risk-low { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+
+.epa-risk-card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f8fafc;
+  margin: 0 0 0.5rem 0;
+}
+
+.epa-risk-card p {
+  font-size: 0.8125rem;
+  color: #94a3b8;
+  margin: 0 0 1rem 0;
+  line-height: 1.5;
+}
+
+.epa-risk-score {
+  margin-bottom: 1rem;
+}
+
+.epa-score-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.epa-score-item span {
+  width: 70px;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.epa-score-dots {
+  display: flex;
+  gap: 3px;
+}
+
+.epa-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.epa-dot.filled {
+  background: #8b5cf6;
+}
+
+.epa-risk-metrics-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.epa-metric-box {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.epa-metric-box .label {
+  display: block;
+  font-size: 0.6875rem;
+  color: #64748b;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.epa-metric-box .value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.epa-mitigation h4 {
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+  margin: 0 0 0.75rem 0;
+}
+
+.epa-mitigation ul {
+  margin: 0;
+  padding: 0 0 0 1.25rem;
+}
+
+.epa-mitigation li {
+  font-size: 0.8125rem;
+  color: #94a3b8;
+  margin-bottom: 0.375rem;
+  line-height: 1.4;
+}
+
+/* Cost Section */
+.epa-cost-overview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.epa-cost-card.main {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 16px;
+  padding: 2rem;
+}
+
+.epa-cost-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.epa-cost-header span:first-child {
+  font-size: 0.875rem;
+  color: #94a3b8;
+}
+
+.epa-variance {
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.epa-variance.positive {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+}
+
+.epa-variance.negative {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.epa-cost-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin-bottom: 1.5rem;
+}
+
+.epa-cost-comparison {
+  margin-bottom: 1rem;
+}
+
+.epa-comparison-bar {
+  position: relative;
+  height: 60px;
+}
+
+.epa-bar-budget,
+.epa-bar-forecast {
+  position: absolute;
+  height: 24px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding: 0 0.75rem;
+}
+
+.epa-bar-budget {
+  top: 0;
+  background: rgba(148, 163, 184, 0.2);
+}
+
+.epa-bar-budget span {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.epa-bar-forecast {
+  top: 30px;
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+}
+
+.epa-bar-forecast span {
+  font-size: 0.75rem;
+  color: white;
+  font-weight: 600;
+}
+
+.epa-cost-confidence {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #94a3b8;
+  font-size: 0.8125rem;
+}
+
+.epa-cost-breakdown h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f8fafc;
+  margin: 0 0 1.5rem 0;
+}
+
+.epa-breakdown-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.epa-breakdown-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr auto;
+  align-items: center;
+  gap: 1rem;
+}
+
+.epa-breakdown-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.epa-breakdown-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #e2e8f0;
+}
+
+.epa-breakdown-variance {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.epa-breakdown-variance.over { color: #ef4444; }
+.epa-breakdown-variance.under { color: #10b981; }
+
+.epa-breakdown-bars {
+  position: relative;
+  height: 20px;
+}
+
+.epa-breakdown-bar {
+  position: absolute;
+  height: 8px;
+  border-radius: 4px;
+}
+
+.epa-breakdown-bar.budget {
+  top: 0;
+  background: rgba(148, 163, 184, 0.3);
+}
+
+.epa-breakdown-bar.forecast {
+  top: 10px;
+  background: #6366f1;
+}
+
+.epa-breakdown-values {
+  text-align: right;
+}
+
+.epa-breakdown-values span {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+/* Safety Section */
+.epa-safety-overview {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+.epa-safety-gauge {
+  display: flex;
+  justify-content: center;
+}
+
+.epa-safety-gauge svg {
+  width: 200px;
+  height: 120px;
+}
+
+.epa-safety-predictions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.epa-safety-prediction-card {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 12px;
+}
+
+.epa-sp-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(245, 158, 11, 0.2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f59e0b;
+  flex-shrink: 0;
+}
+
+.epa-sp-content h3 {
+  font-size: 0.875rem;
+  color: #f59e0b;
+  margin: 0 0 0.25rem 0;
+}
+
+.epa-sp-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.epa-sp-content p {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.epa-sp-confidence {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 0.5rem;
+}
+
+.epa-safety-stats {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.epa-stat-item {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.epa-stat-label {
+  display: block;
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+.epa-stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.epa-stat-value.positive { color: #10b981; }
+.epa-stat-value.warning { color: #f59e0b; }
+
+.epa-safety-risks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.25rem;
+}
+
+.epa-safety-risk {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border-left: 3px solid;
+}
+
+.epa-safety-risk.risk-critical { border-left-color: #ef4444; }
+.epa-safety-risk.risk-high { border-left-color: #f97316; }
+.epa-safety-risk.risk-medium { border-left-color: #f59e0b; }
+.epa-safety-risk.risk-low { border-left-color: #22c55e; }
+
+.epa-sr-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.epa-sr-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+.epa-sr-badge.risk-critical { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+.epa-sr-badge.risk-high { background: rgba(249, 115, 22, 0.2); color: #f97316; }
+.epa-sr-badge.risk-medium { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+
+.epa-sr-trend {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.epa-sr-trend.improving { color: #22c55e; }
+.epa-sr-trend.declining { color: #ef4444; }
+.epa-sr-trend.stable { color: #94a3b8; }
+
+.epa-safety-risk h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f8fafc;
+  margin: 0 0 0.5rem 0;
+}
+
+.epa-safety-risk p {
+  font-size: 0.8125rem;
+  color: #94a3b8;
+  margin: 0 0 1rem 0;
+}
+
+.epa-sr-meter {
+  margin-bottom: 1rem;
+}
+
+.epa-meter-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-bottom: 0.375rem;
+}
+
+.epa-meter-bar {
+  position: relative;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.epa-meter-fill {
+  height: 100%;
+  border-radius: 4px;
+}
+
+.epa-meter-fill.risk-critical { background: #ef4444; }
+.epa-meter-fill.risk-high { background: #f97316; }
+.epa-meter-fill.risk-medium { background: #f59e0b; }
+.epa-meter-fill.risk-low { background: #22c55e; }
+
+.epa-meter-threshold {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 2px;
+  background: white;
+  border-radius: 1px;
+}
+
+.epa-sr-actions h4 {
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+  margin: 0 0 0.75rem 0;
+}
+
+.epa-sr-actions ul {
+  margin: 0;
+  padding: 0 0 0 1.25rem;
+}
+
+.epa-sr-actions li {
+  font-size: 0.8125rem;
+  color: #94a3b8;
+  margin-bottom: 0.375rem;
+}
+
+/* Equipment Section */
+.epa-equipment-overview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.epa-equipment-prediction {
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.epa-ep-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+  color: #8b5cf6;
+}
+
+.epa-ep-header h3 {
+  font-size: 0.875rem;
+  margin: 0;
+  color: #8b5cf6;
+}
+
+.epa-ep-value {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin-bottom: 0.5rem;
+}
+
+.epa-equipment-prediction > p {
+  font-size: 0.8125rem;
+  color: #94a3b8;
+  margin: 0 0 1.5rem 0;
+}
+
+.epa-ep-factors {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.epa-ep-factor {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.epa-ep-factor span:first-child {
+  width: 100px;
+  font-size: 0.8125rem;
+  color: #94a3b8;
+  text-transform: capitalize;
+}
+
+.epa-ep-factor-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.epa-ep-factor-bar div {
+  height: 100%;
+  background: #8b5cf6;
+  border-radius: 3px;
+}
+
+.epa-ep-factor span:last-child {
+  width: 40px;
+  font-size: 0.75rem;
+  color: #64748b;
+  text-align: right;
+}
+
+.epa-equipment-at-risk h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f8fafc;
+  margin: 0 0 1rem 0;
+}
+
+.epa-ear-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.epa-ear-item {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 1rem;
+  align-items: center;
+}
+
+.epa-ear-id {
+  display: block;
+  font-size: 0.6875rem;
+  color: #64748b;
+  font-family: monospace;
+}
+
+.epa-ear-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+.epa-ear-issue {
+  font-size: 0.8125rem;
+  color: #f59e0b;
+  display: block;
+}
+
+.epa-ear-due {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.epa-ear-risk {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 120px;
+}
+
+.epa-ear-risk-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.epa-ear-risk-bar div {
+  height: 100%;
+  border-radius: 3px;
+}
+
+.epa-ear-risk-bar div.high { background: #ef4444; }
+.epa-ear-risk-bar div.medium { background: #f59e0b; }
+.epa-ear-risk-bar div.low { background: #22c55e; }
+
+.epa-ear-risk span {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #f8fafc;
+  min-width: 35px;
+  text-align: right;
+}
+
+/* Scenarios Section */
+.epa-add-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.epa-add-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+}
+
+.epa-scenario-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.25rem;
+}
+
+.epa-scenario-card {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.epa-scenario-card:hover {
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+.epa-scenario-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.epa-scenario-header h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #f8fafc;
+  margin: 0;
+}
+
+.epa-scenario-prob {
+  padding: 0.25rem 0.75rem;
+  background: rgba(139, 92, 246, 0.2);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: #a78bfa;
+  font-weight: 500;
+}
+
+.epa-scenario-desc {
+  font-size: 0.8125rem;
+  color: #94a3b8;
+  margin: 0 0 1.25rem 0;
+}
+
+.epa-scenario-outcomes h4 {
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+  margin: 0 0 0.75rem 0;
+}
+
+.epa-outcome-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.epa-outcome {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.epa-outcome svg {
+  margin-bottom: 0.375rem;
+}
+
+.epa-outcome.positive svg { color: #10b981; }
+.epa-outcome.negative svg { color: #ef4444; }
+
+.epa-outcome-label {
+  display: block;
+  font-size: 0.6875rem;
+  color: #64748b;
+  margin-bottom: 0.25rem;
+}
+
+.epa-outcome-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.epa-outcome.positive .epa-outcome-value { color: #10b981; }
+.epa-outcome.negative .epa-outcome-value { color: #ef4444; }
+
+.epa-scenario-variables h4 {
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+  margin: 0 0 0.75rem 0;
+}
+
+.epa-variable {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8125rem;
+  color: #94a3b8;
+  margin-bottom: 0.375rem;
+}
+
+.epa-variable span:last-child {
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+.epa-scenario-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.epa-scenario-run,
+.epa-scenario-edit {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.epa-scenario-run {
+  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+  border: none;
+  color: white;
+}
+
+.epa-scenario-run:hover {
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
+}
+
+.epa-scenario-edit {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #94a3b8;
+}
+
+.epa-scenario-edit:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Recommendations Section */
+.epa-rec-summary {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.epa-rec-count {
+  font-size: 0.875rem;
+  color: #94a3b8;
+}
+
+.epa-rec-savings {
+  font-size: 0.875rem;
+  color: #10b981;
+  font-weight: 600;
+}
+
+.epa-rec-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.epa-rec-card {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.epa-rec-card:hover {
+  border-color: rgba(139, 92, 246, 0.3);
+  transform: translateY(-2px);
+}
+
+.epa-rec-card.in_progress {
+  border-left: 3px solid #3b82f6;
+}
+
+.epa-rec-card.completed {
+  border-left: 3px solid #22c55e;
+  opacity: 0.7;
+}
+
+.epa-rec-card.dismissed {
+  border-left: 3px solid #64748b;
+  opacity: 0.5;
+}
+
+.epa-rec-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.epa-rec-category {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: #8b5cf6;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.epa-rec-status {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+}
+
+.epa-rec-status.pending {
+  background: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+}
+
+.epa-rec-status.in_progress {
+  background: rgba(59, 130, 246, 0.2);
+  color: #3b82f6;
+}
+
+.epa-rec-status.completed {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
+.epa-rec-status.dismissed {
+  background: rgba(100, 116, 139, 0.2);
+  color: #64748b;
+}
+
+.epa-rec-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #f8fafc;
+  margin: 0 0 0.5rem 0;
+}
+
+.epa-rec-desc {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  margin: 0 0 1.25rem 0;
+  line-height: 1.5;
+}
+
+.epa-rec-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.epa-rec-metric {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.epa-rec-metric .label {
+  display: block;
+  font-size: 0.6875rem;
+  color: #64748b;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.epa-rec-metric .value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+.epa-rec-metric.impact-high .value { color: #ef4444; }
+.epa-rec-metric.impact-medium .value { color: #f59e0b; }
+.epa-rec-metric.impact-low .value { color: #22c55e; }
+
+.epa-rec-metric.savings .value { color: #10b981; }
+.epa-rec-metric.confidence .value { color: #8b5cf6; }
+
+.epa-rec-metric.effort-high .value { color: #ef4444; }
+.epa-rec-metric.effort-medium .value { color: #f59e0b; }
+.epa-rec-metric.effort-low .value { color: #22c55e; }
+
+.epa-rec-actions {
+  display: flex;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.epa-rec-accept,
+.epa-rec-dismiss {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.epa-rec-accept {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border: none;
+  color: white;
+}
+
+.epa-rec-accept:hover {
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+}
+
+.epa-rec-dismiss {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #94a3b8;
+}
+
+.epa-rec-dismiss:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+/* Modal */
+.epa-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+}
+
+.epa-modal {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.epa-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.epa-modal-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.epa-modal-title svg {
+  color: #8b5cf6;
+}
+
+.epa-modal-title h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #f8fafc;
+  margin: 0;
+}
+
+.epa-modal-close {
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  transition: color 0.2s ease;
+}
+
+.epa-modal-close:hover {
+  color: #ef4444;
+}
+
+.epa-modal-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.epa-modal-badge {
+  display: inline-block;
+  padding: 0.375rem 1rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.epa-modal-badge.risk-critical {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.epa-modal-badge.risk-high {
+  background: rgba(249, 115, 22, 0.2);
+  color: #f97316;
+}
+
+.epa-modal-badge.risk-medium {
+  background: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+}
+
+.epa-modal-badge.risk-low {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
+.epa-modal-desc {
+  font-size: 0.9375rem;
+  color: #94a3b8;
+  line-height: 1.6;
+  margin: 0 0 1.5rem 0;
+}
+
+.epa-modal-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.epa-modal-metric {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.epa-modal-metric span {
+  display: block;
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-bottom: 0.25rem;
+}
+
+.epa-modal-metric strong {
+  font-size: 1.25rem;
+  color: #f8fafc;
+}
+
+.epa-modal-metric.highlight strong {
+  color: #10b981;
+}
+
+.epa-modal-metric.impact-high strong {
+  color: #ef4444;
+}
+
+.epa-modal-section {
+  margin-bottom: 1.5rem;
+}
+
+.epa-modal-section h3 {
+  font-size: 0.875rem;
+  color: #f8fafc;
+  margin: 0 0 0.75rem 0;
+}
+
+.epa-trend-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.epa-trend-indicator.improving {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+}
+
+.epa-trend-indicator.declining {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.epa-trend-indicator.stable {
+  background: rgba(148, 163, 184, 0.1);
+  color: #94a3b8;
+}
+
+.epa-mitigation-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.epa-mitigation-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  color: #e2e8f0;
+  font-size: 0.875rem;
+}
+
+.epa-mitigation-list li svg {
+  color: #8b5cf6;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.epa-rec-category-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  background: rgba(139, 92, 246, 0.2);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  color: #a78bfa;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.epa-modal-rec-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #f8fafc;
+  margin: 0 0 1rem 0;
+}
+
+.epa-steps-list {
+  margin: 0;
+  padding: 0 0 0 1.5rem;
+  counter-reset: step-counter;
+}
+
+.epa-steps-list li {
+  position: relative;
+  padding: 0.5rem 0 0.5rem 0.75rem;
+  color: #94a3b8;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.epa-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.epa-modal-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.epa-modal-btn.primary {
+  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+  border: none;
+  color: white;
+}
+
+.epa-modal-btn.primary:hover {
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+}
+
+.epa-modal-btn.secondary {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #94a3b8;
+}
+
+.epa-modal-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 1400px) {
+  .epa-kpi-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .epa-overview {
+    grid-template-columns: 1fr;
+  }
+
+  .epa-risk-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1024px) {
+  .epa-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .epa-header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .epa-header-right {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .epa-project-select {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .epa-safety-overview {
+    grid-template-columns: 1fr;
+  }
+
+  .epa-cost-overview,
+  .epa-equipment-overview {
+    grid-template-columns: 1fr;
+  }
+
+  .epa-rec-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .epa-header {
+    padding: 1rem;
+  }
+
+  .epa-kpi-grid {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  .epa-tabs {
+    padding: 0 1rem;
+  }
+
+  .epa-tab {
+    padding: 0.75rem 1rem;
+  }
+
+  .epa-tab span {
+    display: none;
+  }
+
+  .epa-content {
+    padding: 1rem;
+  }
+
+  .epa-prediction-cards,
+  .epa-risk-grid,
+  .epa-scenario-grid,
+  .epa-safety-risks {
+    grid-template-columns: 1fr;
+  }
+
+  .epa-modal {
+    margin: 1rem;
+    max-height: 90vh;
+  }
+
+  .epa-modal-metrics {
+    grid-template-columns: 1fr;
+  }
+}
