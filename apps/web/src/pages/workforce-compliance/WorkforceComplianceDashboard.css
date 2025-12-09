@@ -1,9 +1,9 @@
 /* ============================================
-   SAFETY DASHBOARD - ANTI-GRAVITY INDUSTRIAL THEME
+   WORKFORCE COMPLIANCE DASHBOARD - ANTI-GRAVITY INDUSTRIAL THEME
    Matched to Project Management Standard
    ============================================ */
 
-.safety-dashboard {
+.workforce-dashboard {
     padding: 0;
     background: var(--bg-primary);
     min-height: 100vh;
@@ -16,8 +16,8 @@
 .dashboard-header {
     background: linear-gradient(135deg, rgba(16, 20, 24, 0.95), rgba(61, 107, 79, 0.4));
     padding: 2rem 2rem 1.5rem;
-    margin: -0.5rem -0.5rem 1.5rem;
-    /* Adjustment for container padding if any */
+    margin: -1.5rem -1.5rem 1.5rem;
+    /* Negative margin to pull to edges */
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
 }
@@ -44,7 +44,7 @@
     margin-top: 0.25rem;
 }
 
-.header-right {
+.header-actions {
     display: flex;
     gap: 1rem;
     align-items: center;
@@ -132,57 +132,4 @@
     font-size: 0.75rem;
     margin-top: 0.5rem;
     color: var(--text-muted);
-}
-
-/* ============================================
-   DASHBOARD CARD
-   ============================================ */
-
-.dashboard-card {
-    background: rgba(30, 41, 59, 0.6);
-    backdrop-filter: blur(12px);
-    border-radius: var(--radius-lg);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    margin: 0 1.5rem 2rem;
-}
-
-.card-content {
-    padding: 1.5rem;
-}
-
-/* ============================================
-   TABLE STYLES
-   ============================================ */
-.table-container {
-    overflow-x: auto;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th {
-    text-align: left;
-    padding: 1rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-td {
-    padding: 1rem;
-    font-size: 0.875rem;
-    color: var(--text-primary);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-tr:hover td {
-    background: rgba(255, 255, 255, 0.02);
 }

@@ -967,7 +967,7 @@ export function EnhancedMaterialsDashboard() {
                 {kpi.change !== undefined && (
                   <span className={`kpi-change ${kpi.trend}`}>
                     {kpi.trend === 'up' ? <ArrowUpRight size={14} /> :
-                     kpi.trend === 'down' ? <ArrowDownRight size={14} /> : <Minus size={14} />}
+                      kpi.trend === 'down' ? <ArrowDownRight size={14} /> : <Minus size={14} />}
                     {Math.abs(kpi.change)}% {kpi.changeLabel}
                   </span>
                 )}
@@ -1193,11 +1193,10 @@ export function EnhancedMaterialsDashboard() {
                       </div>
                       <div className="supplier-score">
                         <div
-                          className={`score-circle ${
-                            supplier.overall_score >= 95 ? 'excellent' :
-                            supplier.overall_score >= 90 ? 'good' :
-                            supplier.overall_score >= 80 ? 'fair' : 'poor'
-                          }`}
+                          className={`score-circle ${supplier.overall_score >= 95 ? 'excellent' :
+                              supplier.overall_score >= 90 ? 'good' :
+                                supplier.overall_score >= 80 ? 'fair' : 'poor'
+                            }`}
                         >
                           {supplier.overall_score.toFixed(0)}
                         </div>
@@ -1547,11 +1546,10 @@ export function EnhancedMaterialsDashboard() {
                         <span>{supplier.total_deliveries} deliveries</span>
                       </div>
                     </div>
-                    <div className={`overall-score ${
-                      supplier.overall_score >= 95 ? 'excellent' :
-                      supplier.overall_score >= 90 ? 'good' :
-                      supplier.overall_score >= 80 ? 'fair' : 'poor'
-                    }`}>
+                    <div className={`overall-score ${supplier.overall_score >= 95 ? 'excellent' :
+                        supplier.overall_score >= 90 ? 'good' :
+                          supplier.overall_score >= 80 ? 'fair' : 'poor'
+                      }`}>
                       <span className="score-value">{supplier.overall_score.toFixed(0)}</span>
                       <span className="score-label">Overall</span>
                     </div>
@@ -1862,7 +1860,7 @@ export function EnhancedMaterialsDashboard() {
 
       {/* Panel Overlay */}
       {showDetailPanel && (
-        <div className="panel-overlay" onClick={() => setShowDetailPanel(false)} />
+        <div className="detail-panel-overlay" onClick={() => setShowDetailPanel(false)} />
       )}
     </div>
   );

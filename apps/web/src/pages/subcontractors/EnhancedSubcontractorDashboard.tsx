@@ -994,7 +994,7 @@ export function EnhancedSubcontractorDashboard() {
                 {kpi.change !== undefined && (
                   <span className={`kpi-change ${kpi.trend}`}>
                     {kpi.trend === 'up' ? <ArrowUpRight size={14} /> :
-                     kpi.trend === 'down' ? <ArrowDownRight size={14} /> : <Minus size={14} />}
+                      kpi.trend === 'down' ? <ArrowDownRight size={14} /> : <Minus size={14} />}
                     {Math.abs(kpi.change)}% {kpi.changeLabel}
                   </span>
                 )}
@@ -1922,7 +1922,7 @@ export function EnhancedSubcontractorDashboard() {
 
       {/* Panel Overlay */}
       {showDetailPanel && (
-        <div className="panel-overlay" onClick={() => setShowDetailPanel(false)} />
+        <div className="detail-panel-overlay" onClick={() => setShowDetailPanel(false)} />
       )}
     </div>
   );

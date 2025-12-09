@@ -92,7 +92,7 @@ export function SafetyDashboard() {
     const { data, error } = await supabase
       .from('projects')
       .select('id, name, project_number')
-      .eq('status', 'ACTIVE')
+      // Removed status filter for visibility
       .order('name');
 
     if (!error && data) {
@@ -216,45 +216,49 @@ export function SafetyDashboard() {
       </header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        {/* North Star Analytics */}
+        <div className="stats-grid">
           <div className="stat-card">
-            <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">TRIR (YTD)</div>
-            <div className="text-2xl font-bold font-mono text-white mt-1">{stats.trir.toFixed(2)}</div>
-            <div className="stat-card-target">Target: &lt; 3.0</div>
-          </div>
-          <div className="stat-card">
-            <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">DART Rate (YTD)</div>
-            <div className="text-2xl font-bold font-mono text-white mt-1">{stats.dart.toFixed(2)}</div>
-            <div className="stat-card-target">Target: &lt; 2.0</div>
-          </div>
-          <div className="stat-card">
-            <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">Hours Worked (YTD)</div>
-            <div className="text-2xl font-bold font-mono text-white mt-1">{stats.hoursWorked.toLocaleString()}</div>
-          </div>
-          <div className="stat-card">
-            <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">Near Misses (YTD)</div>
-            <div className="text-2xl font-bold font-mono text-white mt-1">{stats.nearMisses}</div>
-            <div className="text-xs text-cyan-400 mt-1 font-mono">Leading indicator</div>
-          </div>
-          <div className="stat-card">
-            <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">Recordables (YTD)</div>
-            <div className="text-2xl font-bold font-mono text-white mt-1">{stats.recordableInjuries}</div>
-          </div>
-          <div className="stat-card">
-            <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">Open Violations</div>
-            <div className={`text-2xl font-bold font-mono mt-1 ${stats.openViolations > 0 ? 'text-red-400' : 'text-green-400'}`}>
-              {stats.openViolations}
+            <div className="stat-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
+            </div>
+            <div className="stat-content">
+              <span className="stat-label">TRIR (YTD)</span>
+              <span className="stat-value">{stats.trir.toFixed(2)}</span>
+              <span className="stat-target">Target: &lt; 3.0</span>
             </div>
           </div>
+
           <div className="stat-card">
-            <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">Toolbox Talks (Month)</div>
-            <div className="text-2xl font-bold font-mono text-white mt-1">{stats.toolboxTalksThisMonth}</div>
+            <div className="stat-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
+            </div>
+            <div className="stat-content">
+              <span className="stat-label">DART Rate</span>
+              <span className="stat-value">{stats.dart.toFixed(2)}</span>
+              <span className="stat-target">Target: &lt; 2.0</span>
+            </div>
           </div>
+
           <div className="stat-card">
-            <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">Pending JSAs</div>
-            <div className={`text-2xl font-bold font-mono mt-1 ${stats.pendingJSAs > 0 ? 'text-yellow-400' : 'text-green-400'}`}>
-              {stats.pendingJSAs}
+            <div className="stat-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
+            </div>
+            <div className="stat-content">
+              <span className="stat-label">Hours Worked</span>
+              <span className="stat-value">{stats.hoursWorked.toLocaleString()}</span>
+              <span className="stat-target">Year to Date</span>
+            </div>
+          </div>
+
+          <div className="stat-card">
+            <div className="stat-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
+            </div>
+            <div className="stat-content">
+              <span className="stat-label">Open Violations</span>
+              <span className={`stat-value ${stats.openViolations > 0 ? 'text-red-400' : 'text-green-400'}`}>{stats.openViolations}</span>
+              <span className="stat-target">Action Required</span>
             </div>
           </div>
         </div>

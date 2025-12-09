@@ -1337,7 +1337,11 @@
 }
 
 .enhanced-crew-page .detail-panel {
-  width: 560px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1001;
+  width: 600px;
   max-width: 100%;
   height: 100%;
   background: var(--bg-card);

@@ -444,7 +444,7 @@ function AIQueryPageContent() {
       const { data, error: fetchError } = await supabase
         .from('projects')
         .select('id, name, project_number, organization_id')
-        .in('status', ['ACTIVE', 'MOBILIZATION', 'SUBSTANTIAL_COMPLETION'])
+        .select('id, name, project_number, organization_id')
         .order('name');
 
       if (fetchError) throw new Error(`Failed to load projects: ${fetchError.message}`);
@@ -474,16 +474,23 @@ function AIQueryPageContent() {
   }, [addToast]);
 
   const loadConversations = useCallback(async () => {
-    if (!selectedProjectId) return;
+    // if (!selectedProjectId) return;
 
     setLoadingStates((prev) => ({ ...prev, conversations: true }));
 
     try {
-      const { data, error: fetchError } = await supabase
+      let query = supabase
         .from('ai_conversations')
         .select('*')
-        .eq('project_id', selectedProjectId)
         .order('created_at', { ascending: false });
+
+      if (selectedProjectId) {
+        query = query.eq('project_id', selectedProjectId);
+      } else {
+        query = query.is('project_id', null);
+      }
+
+      const { data, error: fetchError } = await query;
 
       if (fetchError) throw new Error(`Failed to load conversations: ${fetchError.message}`);
 
@@ -556,10 +563,10 @@ function AIQueryPageContent() {
       return;
     }
 
-    if (!selectedProjectId) {
-      addToast({ type: 'error', message: 'Please select a project first' });
-      return;
-    }
+    // if (!selectedProjectId) {
+    //   addToast({ type: 'error', message: 'Please select a project first' });
+    //   return;
+    // }
 
     // Queue message if offline
     if (!isOnline) {

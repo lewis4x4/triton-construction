@@ -16,6 +16,7 @@ import {
   Upload,
 } from 'lucide-react';
 import { supabase } from '@triton/supabase-client';
+import './WorkforceComplianceDashboard.css';
 
 
 interface ComplianceStats {
@@ -290,21 +291,19 @@ export function WorkforceComplianceDashboard() {
   }
 
   return (
-    <div className="min-h-screen">
-      <header className="page-header">
-        <div className="header-left">
-          <div className="header-title">
+    <div className="workforce-dashboard">
+      <header className="dashboard-header">
+        <div className="header-content">
+          <div className="header-left">
             <h1>Workforce Compliance</h1>
             <p className="header-subtitle">Monitor and manage workforce certifications, training, and documentation</p>
           </div>
-        </div>
-        <div className="header-actions">
-          <div className="flex items-center space-x-3">
+          <div className="header-actions">
             <button className="btn-secondary">
               <FileText size={18} />
               Reports
             </button>
-            <button className="btn-primary">
+            <button className="new-project-btn">
               <Upload size={18} />
               Upload Documents
             </button>
@@ -312,10 +311,10 @@ export function WorkforceComplianceDashboard() {
         </div>
       </header>
 
-      <div className="max-w-[1600px] mx-auto px-6 py-8">
+      <div className="max-w-[1600px] mx-auto">
         {/* Active Overrides Alert */}
         {activeOverrides.length > 0 && (
-          <div className="flex items-center gap-4 p-4 mb-6 bg-red-500/10 border border-red-500/30 rounded-xl shadow-[0_0_15px_rgba(239,68,68,0.1)]">
+          <div className="flex items-center gap-4 p-4 mx-6 mb-6 bg-red-500/10 border border-red-500/30 rounded-xl shadow-[0_0_15px_rgba(239,68,68,0.1)]">
             <AlertOctagon className="w-6 h-6 text-red-400 flex-shrink-0" />
             <div className="flex-1">
               <strong className="block text-red-400 font-bold uppercase tracking-wider text-sm">
@@ -330,67 +329,53 @@ export function WorkforceComplianceDashboard() {
         )}
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
-          <div className="gravity-card p-6 border-cyan-500/30 bg-cyan-500/5">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-cyan-500/10 rounded-lg border border-cyan-500/20">
-                <Users className="w-6 h-6 text-cyan-400" />
-              </div>
-              <span className={`px-2 py-1 rounded text-xs font-mono font-bold ${getCompliancePercentage() >= 90 ? 'text-green-400 bg-green-500/10 border border-green-500/20' :
-                getCompliancePercentage() >= 70 ? 'text-yellow-400 bg-yellow-500/10 border border-yellow-500/20' :
-                  'text-red-400 bg-red-500/10 border border-red-500/20'
-                }`}>
+        <div className="stats-grid">
+          <div className="stat-card">
+            <div className="stat-icon">
+              <Users className="w-6 h-6 text-cyan-400" />
+            </div>
+            <div className="stat-content">
+              <span className="stat-label">Active Employees</span>
+              <span className="stat-value">{stats?.totalEmployees || 0}</span>
+              <span className={`stat-target ${getCompliancePercentage() >= 90 ? 'text-green-400' : 'text-yellow-400'}`}>
                 {getCompliancePercentage()}% Compliant
               </span>
             </div>
-            <div className="text-4xl font-bold text-white font-mono tracking-tighter drop-shadow-md">{stats?.totalEmployees || 0}</div>
-            <div className="text-sm text-gray-400 mt-1 uppercase tracking-widest font-bold">Active Employees</div>
           </div>
 
-          <div className="gravity-card p-6 border-purple-500/30 bg-purple-500/5">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-purple-500/10 rounded-lg border border-purple-500/20">
-                <Building2 className="w-6 h-6 text-purple-400" />
-              </div>
-              <span className={`px-2 py-1 rounded text-xs font-mono font-bold ${getSubCompliancePercentage() >= 90 ? 'text-green-400 bg-green-500/10 border border-green-500/20' :
-                getSubCompliancePercentage() >= 70 ? 'text-yellow-400 bg-yellow-500/10 border border-yellow-500/20' :
-                  'text-red-400 bg-red-500/10 border border-red-500/20'
-                }`}>
-                {getSubCompliancePercentage()}% COI Valid
+          <div className="stat-card">
+            <div className="stat-icon">
+              <Building2 className="w-6 h-6 text-purple-400" />
+            </div>
+            <div className="stat-content">
+              <span className="stat-label">Subcontractors</span>
+              <span className="stat-value">{stats?.totalSubcontractors || 0}</span>
+              <span className={`stat-target ${getSubCompliancePercentage() >= 90 ? 'text-green-400' : 'text-yellow-400'}`}>
+                {getSubCompliancePercentage()}% Valid COI
               </span>
             </div>
-            <div className="text-4xl font-bold text-white font-mono tracking-tighter drop-shadow-md">{stats?.totalSubcontractors || 0}</div>
-            <div className="text-sm text-gray-400 mt-1 uppercase tracking-widest font-bold">Subcontractors</div>
           </div>
 
-          <div className="gravity-card p-6 border-orange-500/30 bg-orange-500/5">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-orange-500/10 rounded-lg border border-orange-500/20">
-                <Clock className="w-6 h-6 text-orange-400" />
-              </div>
-              <span className={`px-2 py-1 rounded text-xs font-mono font-bold ${expiringItems.filter(i => i.urgency === 'critical').length > 0
-                ? 'text-red-400 bg-red-500/10 border border-red-500/20'
-                : 'text-orange-400 bg-orange-500/10 border border-orange-500/20'
-                }`}>
-                {expiringItems.filter(i => i.urgency === 'critical').length} expired
-              </span>
+          <div className="stat-card">
+            <div className="stat-icon">
+              <Clock className="w-6 h-6 text-orange-400" />
             </div>
-            <div className="text-4xl font-bold text-white font-mono tracking-tighter drop-shadow-md">{stats?.expiringSoon || 0}</div>
-            <div className="text-sm text-gray-400 mt-1 uppercase tracking-widest font-bold">Expiring in 30 Days</div>
+            <div className="stat-content">
+              <span className="stat-label">Expiring Soon</span>
+              <span className="stat-value">{stats?.expiringSoon || 0}</span>
+              <span className="stat-target">Next 30 Days</span>
+            </div>
           </div>
 
-          <div className="gravity-card p-6 border-green-500/30 bg-green-500/5">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-green-500/10 rounded-lg border border-green-500/20">
-                <HardHat className="w-6 h-6 text-green-400" />
-              </div>
-              <div className="flex items-center gap-1 text-xs text-green-400">
-                <TrendingUp size={12} />
-                <span className="font-mono">Metrics</span>
-              </div>
+          <div className="stat-card">
+            <div className="stat-icon">
+              <TrendingUp className="w-6 h-6 text-green-400" />
             </div>
-            <div className="text-4xl font-bold text-white font-mono tracking-tighter drop-shadow-md">{stats?.incidentsYTD || 0}</div>
-            <div className="text-sm text-gray-400 mt-1 uppercase tracking-widest font-bold">Incidents YTD</div>
+            <div className="stat-content">
+              <span className="stat-label">Safety Incidents</span>
+              <span className="stat-value">{stats?.incidentsYTD || 0}</span>
+              <span className="stat-target">Year to Date</span>
+            </div>
           </div>
         </div>
 

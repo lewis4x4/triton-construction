@@ -1083,6 +1083,10 @@
 }
 
 .detail-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1001;
   width: 600px;
   max-width: 90vw;
   height: 100vh;

@@ -5,6 +5,7 @@ import { TestResultsPanel } from '../../components/quality-control/TestResultsPa
 import { Filter, Plus } from 'lucide-react';
 import { NCRTracker } from '../../components/quality-control/NCRTracker';
 import { PunchListManager } from '../../components/quality-control/PunchListManager';
+import './QualityControlDashboard.css';
 
 interface QCStats {
   totalInspections: number;
@@ -43,7 +44,7 @@ export function QualityControlDashboard() {
     const { data, error } = await supabase
       .from('projects')
       .select('id, name, project_number')
-      .eq('status', 'ACTIVE')
+      // Removed status filter for visibility
       .order('name');
 
     if (!error && data) {
@@ -114,42 +115,42 @@ export function QualityControlDashboard() {
   }
 
   return (
-    <div className="p-6">
-      <header className="page-header">
-        <div className="header-left">
-          <div className="header-title">
+    <div className="qc-dashboard">
+      <header className="dashboard-header">
+        <div className="header-content">
+          <div className="header-left">
             <h1>Quality Control</h1>
             <p className="header-subtitle">Manage project quality standards, inspections, and compliance</p>
           </div>
-        </div>
-        <div className="header-actions">
-          <div className="project-selector">
-            <span className="text-sm text-gray-400 mr-2">Project:</span>
-            <select
-              className="bg-black/40 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:ring-2 focus:ring-brand-primary outline-none"
-              value={selectedProjectId}
-              onChange={(e) => setSelectedProjectId(e.target.value)}
-            >
-              {/* <option value="all">All Projects</option> */} {/* Removed as per original logic, only active projects are shown */}
-              {projects.map((project) => (
-                <option key={project.id} value={project.id}>
-                  {project.project_number} - {project.name}
-                </option>
-              ))}
-            </select>
+          <div className="header-actions">
+            <div className="flex items-center gap-2 bg-white/5 rounded-lg p-1 border border-white/10">
+              <span className="text-sm text-gray-400 ml-2">Project:</span>
+              <select
+                className="bg-transparent text-white text-sm border-none focus:ring-0 cursor-pointer"
+                value={selectedProjectId}
+                onChange={(e) => setSelectedProjectId(e.target.value)}
+              >
+                {projects.map((project) => (
+                  <option key={project.id} value={project.id} className="bg-slate-900">
+                    {project.project_number} - {project.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <button className="btn-secondary">
+              <Filter size={18} />
+              Filters
+            </button>
+            <button className="new-project-btn">
+              <Plus size={18} />
+              New Inspection
+            </button>
           </div>
-          <button className="btn-secondary">
-            <Filter size={18} />
-            Filters
-          </button>
-          <button className="btn-primary">
-            <Plus size={18} />
-            New Inspection
-          </button>
         </div>
       </header>
+
       {/* Stats Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
+      <div className="stats-grid">
         <StatCard
           title="Total Inspections"
           value={stats.totalInspections}
@@ -236,22 +237,12 @@ function StatCard({
   color: string;
   highlight?: boolean;
 }) {
-  const colorClasses: Record<string, string> = {
-    blue: 'bg-blue-50 text-blue-700 border-blue-200',
-    yellow: 'bg-yellow-50 text-yellow-700 border-yellow-200',
-    orange: 'bg-orange-50 text-orange-700 border-orange-200',
-    red: 'bg-red-50 text-red-700 border-red-200',
-    green: 'bg-green-50 text-green-700 border-green-200',
-    purple: 'bg-purple-50 text-purple-700 border-purple-200',
-  };
+
 
   return (
-    <div
-      className={`p-4 rounded-lg border ${colorClasses[color]} ${highlight ? 'ring-2 ring-red-400 animate-pulse' : ''
-        }`}
-    >
-      <div className="text-sm font-medium">{title}</div>
-      <div className="text-2xl font-bold">{value}</div>
+    <div className={`stat-card ${color === 'red' && highlight ? 'alert' : ''}`}>
+      <div className="stat-title">{title}</div>
+      <div className="stat-value">{value}</div>
     </div>
   );
 }

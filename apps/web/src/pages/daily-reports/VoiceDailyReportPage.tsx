@@ -322,7 +322,7 @@ export function VoiceDailyReportPage() {
       const { data, error } = await supabase
         .from('projects')
         .select('id, name, project_number')
-        .eq('status', 'ACTIVE')
+        // .eq('status', 'ACTIVE') // Fixed project visibility
         .order('name');
 
       if (error) throw error;
@@ -804,8 +804,8 @@ export function VoiceDailyReportPage() {
         </div>
 
         {/* Project & Date Selection */}
-        <div className="gravity-card p-6 mb-8 border border-white/5 bg-slate-800/50 backdrop-blur-md">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="dashboard-card mb-8">
+          <div className="card-content grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label htmlFor="project-select" className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-widest pl-1">Project</label>
               <div className="relative">
@@ -848,7 +848,7 @@ export function VoiceDailyReportPage() {
         </div>
 
         {/* Recording Interface */}
-        <div className="gravity-card p-8 mb-8 text-center border-purple-500/20 bg-purple-500/5">
+        <div className="recording-card mb-8">
           <div className="mb-8">
             {/* Recording Status */}
             <div className="min-h-[120px] flex items-center justify-center" role="status" aria-live="polite">
