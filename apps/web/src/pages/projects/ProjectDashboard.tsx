@@ -286,31 +286,34 @@ export function ProjectDashboard() {
     <div className="project-dashboard">
       {/* Header */}
       <div className="dashboard-header">
-        <div className="header-left">
-          <h1>Project Management</h1>
-          <p className="header-subtitle">Overview of all construction projects</p>
-        </div>
-        <div className="header-right">
-          <div className="time-filter">
-            {(['today', 'week', 'month'] as const).map((range) => (
-              <button
-                key={range}
-                className={`time-filter-btn ${timeRange === range ? 'active' : ''}`}
-                onClick={() => setTimeRange(range)}
-              >
-                {range === 'today' ? 'Today' : range === 'week' ? 'This Week' : 'This Month'}
-              </button>
-            ))}
+        <div className="header-content">
+          <div className="header-left">
+            <h1>Project Management</h1>
+            <p className="header-subtitle">Overview of all construction projects</p>
           </div>
-          <button
-            onClick={() => setShowNewProjectForm(true)}
-            className="new-project-btn"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-            </svg>
-            New Project
-          </button>
+
+          <div className="header-right">
+            <div className="time-filter">
+              {(['today', 'week', 'month'] as const).map((range) => (
+                <button
+                  key={range}
+                  onClick={() => setTimeRange(range)}
+                  className={`time-filter-btn ${timeRange === range ? 'active' : ''}`}
+                >
+                  {range === 'today' ? 'Today' : range === 'week' ? 'This Week' : 'This Month'}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => setShowNewProjectForm(true)}
+              className="new-project-btn"
+            >
+              <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              New Project
+            </button>
+          </div>
         </div>
       </div>
 
@@ -595,13 +598,12 @@ export function ProjectDashboard() {
                   <div className="progress-section">
                     <div className="progress-bar-container">
                       <div
-                        className={`progress-bar-fill ${
-                          project.percentage > 90
-                            ? 'critical'
-                            : project.percentage > 75
+                        className={`progress-bar-fill ${project.percentage > 90
+                          ? 'critical'
+                          : project.percentage > 75
                             ? 'warning'
                             : 'normal'
-                        }`}
+                          }`}
                         style={{ width: `${Math.min(project.percentage, 100)}%` }}
                       />
                     </div>
@@ -673,9 +675,9 @@ export function ProjectDashboard() {
             filteredProjects.map((project) => {
               const daysRemaining = project.current_completion_date
                 ? Math.ceil(
-                    (new Date(project.current_completion_date).getTime() - new Date().getTime()) /
-                      (1000 * 60 * 60 * 24)
-                  )
+                  (new Date(project.current_completion_date).getTime() - new Date().getTime()) /
+                  (1000 * 60 * 60 * 24)
+                )
                 : null;
               const workingDaysPercent = project.current_working_days
                 ? Math.round(((project.working_days_used || 0) / project.current_working_days) * 100)
@@ -721,9 +723,8 @@ export function ProjectDashboard() {
                       <div className="metric">
                         <span className="metric-label">Days Remaining</span>
                         <span
-                          className={`metric-value ${
-                            daysRemaining < 0 ? 'overdue' : daysRemaining < 30 ? 'warning' : ''
-                          }`}
+                          className={`metric-value ${daysRemaining < 0 ? 'overdue' : daysRemaining < 30 ? 'warning' : ''
+                            }`}
                         >
                           {daysRemaining < 0 ? `${Math.abs(daysRemaining)} overdue` : daysRemaining}
                         </span>
@@ -732,13 +733,12 @@ export function ProjectDashboard() {
                     <div className="metric">
                       <span className="metric-label">Working Days</span>
                       <span
-                        className={`metric-value ${
-                          workingDaysPercent > 90
-                            ? 'overdue'
-                            : workingDaysPercent > 75
+                        className={`metric-value ${workingDaysPercent > 90
+                          ? 'overdue'
+                          : workingDaysPercent > 75
                             ? 'warning'
                             : ''
-                        }`}
+                          }`}
                       >
                         {project.working_days_used || 0} / {project.current_working_days || '-'}
                       </span>
@@ -1068,9 +1068,8 @@ function ProjectDetailModal({
               </span>
               <div className="mini-progress">
                 <div
-                  className={`mini-progress-fill ${
-                    workingDaysPercent > 90 ? 'critical' : workingDaysPercent > 75 ? 'warning' : ''
-                  }`}
+                  className={`mini-progress-fill ${workingDaysPercent > 90 ? 'critical' : workingDaysPercent > 75 ? 'warning' : ''
+                    }`}
                   style={{ width: `${Math.min(workingDaysPercent, 100)}%` }}
                 />
               </div>

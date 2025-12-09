@@ -777,53 +777,67 @@ export function VoiceDailyReportPage() {
         )}
 
         {/* Keyboard Shortcuts Hint */}
-        <div className="hidden md:flex gap-6 justify-center mb-6 text-xs text-gray-500 font-mono uppercase tracking-wider">
-          <span className="flex items-center gap-2">
-            <kbd className="px-2 py-1 bg-white/5 rounded border border-white/10">Ctrl</kbd>+<kbd className="px-2 py-1 bg-white/5 rounded border border-white/10">R</kbd> Record
+        <div className="flex flex-wrap gap-4 justify-center mb-8 text-xs text-gray-400 font-mono uppercase tracking-wider">
+          <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5">
+            <kbd className="min-w-[20px] h-5 flex items-center justify-center bg-slate-700 rounded text-gray-200 border-b-2 border-slate-600">Ctrl</kbd>
+            <span className="text-gray-500">+</span>
+            <kbd className="min-w-[20px] h-5 flex items-center justify-center bg-slate-700 rounded text-gray-200 border-b-2 border-slate-600">R</kbd>
+            <span className="ml-1 text-cyan-400 font-bold">Record</span>
           </span>
-          <span className="flex items-center gap-2">
-            <kbd className="px-2 py-1 bg-white/5 rounded border border-white/10">Space</kbd> Pause/Resume
+          <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5">
+            <kbd className="px-1.5 h-5 flex items-center justify-center bg-slate-700 rounded text-gray-200 border-b-2 border-slate-600">Space</kbd>
+            <span className="ml-1 text-yellow-400 font-bold">Pause</span>
           </span>
-          <span className="flex items-center gap-2">
-            <kbd className="px-2 py-1 bg-white/5 rounded border border-white/10">Ctrl</kbd>+<kbd className="px-2 py-1 bg-white/5 rounded border border-white/10">S</kbd> Save
+          <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5">
+            <kbd className="min-w-[20px] h-5 flex items-center justify-center bg-slate-700 rounded text-gray-200 border-b-2 border-slate-600">Ctrl</kbd>
+            <span className="text-gray-500">+</span>
+            <kbd className="min-w-[20px] h-5 flex items-center justify-center bg-slate-700 rounded text-gray-200 border-b-2 border-slate-600">S</kbd>
+            <span className="ml-1 text-green-400 font-bold">Save</span>
           </span>
-          <span className="flex items-center gap-2">
-            <kbd className="px-2 py-1 bg-white/5 rounded border border-white/10">Esc</kbd> Discard
+          <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5">
+            <kbd className="px-1.5 h-5 flex items-center justify-center bg-slate-700 rounded text-gray-200 border-b-2 border-slate-600">Esc</kbd>
+            <span className="ml-1 text-red-400 font-bold">Discard</span>
           </span>
         </div>
 
         {/* Project & Date Selection */}
-        <div className="gravity-card p-6 mb-8 border-cyan-500/20 bg-cyan-500/5">
+        <div className="gravity-card p-6 mb-8 border border-white/5 bg-slate-800/50 backdrop-blur-md">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label htmlFor="project-select" className="block text-sm font-bold text-cyan-400 mb-2 uppercase tracking-wide">Project</label>
-              <select
-                id="project-select"
-                value={selectedProjectId}
-                onChange={(e) => setSelectedProjectId(e.target.value)}
-                className="w-full bg-void-dark border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-500 transition-colors cursor-pointer"
-                disabled={isRecording || isPaused}
-                aria-describedby="project-help"
-              >
-                {projects.length === 0 && (
-                  <option value="">No projects available</option>
-                )}
-                {projects.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.project_number} - {p.name}
-                  </option>
-                ))}
-              </select>
-              <span id="project-help" className="block mt-1 text-xs text-gray-500">Select the project for this report</span>
+              <label htmlFor="project-select" className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-widest pl-1">Project</label>
+              <div className="relative">
+                <select
+                  id="project-select"
+                  value={selectedProjectId}
+                  onChange={(e) => setSelectedProjectId(e.target.value)}
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all appearance-none cursor-pointer shadow-inner"
+                  disabled={isRecording || isPaused}
+                  aria-describedby="project-help"
+                >
+                  {projects.length === 0 && (
+                    <option value="">No projects available</option>
+                  )}
+                  {projects.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.project_number} - {p.name}
+                    </option>
+                  ))}
+                </select>
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
             </div>
             <div>
-              <label htmlFor="report-date" className="block text-sm font-bold text-cyan-400 mb-2 uppercase tracking-wide">Report Date</label>
+              <label htmlFor="report-date" className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-widest pl-1">Report Date</label>
               <input
                 id="report-date"
                 type="date"
                 value={reportDate}
                 onChange={(e) => setReportDate(e.target.value)}
-                className="w-full bg-void-dark border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-500 transition-colors cursor-pointer"
+                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all cursor-pointer shadow-inner"
                 disabled={isRecording || isPaused}
               />
             </div>
