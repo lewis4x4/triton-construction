@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  LayoutDashboard,
   TrendingUp,
   Users,
   Truck,
@@ -11,8 +10,7 @@ import {
   Building,
   RefreshCw,
   Settings,
-  Download,
-  AlertTriangle
+  Download
 } from 'lucide-react';
 import { supabase } from '@triton/supabase-client';
 import { KPITrendChart } from '../../components/executive/KPITrendChart';
@@ -48,10 +46,9 @@ export function ExecutiveDashboard() {
     scheduledWorkDays: 0,
   });
   const [revenuetrend, setRevenueTrend] = useState<TrendData[]>([]);
-  const [utilizationTrend, setUtilizationTrend] = useState<TrendData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d' | '1y'>('30d');
-  const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
+
 
   useEffect(() => {
     fetchKPIs();
@@ -98,7 +95,7 @@ export function ExecutiveDashboard() {
         scheduledWorkDays: 180, // Would pull from projects
       });
 
-      setLastRefresh(new Date());
+
     } catch (err) {
       console.error('Error fetching KPIs:', err);
     } finally {
@@ -110,7 +107,7 @@ export function ExecutiveDashboard() {
     // Generate sample trend data
     const days = timeRange === '7d' ? 7 : timeRange === '30d' ? 30 : timeRange === '90d' ? 90 : 365;
     const revenueTrendData: TrendData[] = [];
-    const utilizationTrendData: TrendData[] = [];
+
 
     for (let i = days - 1; i >= 0; i--) {
       const date = new Date();
@@ -119,14 +116,11 @@ export function ExecutiveDashboard() {
         date: date.toLocaleDateString(),
         value: 1200000 + Math.random() * 300000,
       });
-      utilizationTrendData.push({
-        date: date.toLocaleDateString(),
-        value: 70 + Math.random() * 20,
-      });
+
     }
 
     setRevenueTrend(revenueTrendData);
-    setUtilizationTrend(utilizationTrendData);
+
   };
 
   const formatCurrency = (value: number) => {

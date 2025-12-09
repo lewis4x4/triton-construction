@@ -98,7 +98,7 @@ export function FleetInspections() {
   const [activeTab, setActiveTab] = useState<'inspections' | 'schedule' | 'defects' | 'compliance'>('inspections');
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
-  const [showNewInspectionModal, setShowNewInspectionModal] = useState(false);
+
   const [kpis, setKpis] = useState<InspectionKPI[]>([]);
   const [inspections, setInspections] = useState<Inspection[]>([]);
   const [schedules, setSchedules] = useState<InspectionSchedule[]>([]);
@@ -300,7 +300,7 @@ export function FleetInspections() {
             <Filter size={18} />
             Filters
           </button>
-          <button className="btn-primary" onClick={() => setShowNewInspectionModal(true)}>
+          <button className="btn-primary">
             <Plus size={18} />
             New Inspection
           </button>

@@ -63,7 +63,7 @@ export function WorkforceComplianceDashboard() {
   const [recentIncidents, setRecentIncidents] = useState<RecentIncident[]>([]);
   const [activeOverrides, setActiveOverrides] = useState<ActiveOverride[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [showUploadModal, setShowUploadModal] = useState(false);
+
 
   useEffect(() => {
     loadDashboardData();
@@ -304,7 +304,7 @@ export function WorkforceComplianceDashboard() {
               <FileText size={18} />
               Reports
             </button>
-            <button className="btn-primary" onClick={() => setShowUploadModal(true)}>
+            <button className="btn-primary">
               <Upload size={18} />
               Upload Documents
             </button>

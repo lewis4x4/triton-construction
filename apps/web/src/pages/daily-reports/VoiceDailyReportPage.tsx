@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback, useReducer } from 'react';
 import { supabase } from '@triton/supabase-client';
+import './VoiceDailyReportPage.css';
 
 
 // ============================================================================
@@ -723,7 +724,6 @@ export function VoiceDailyReportPage() {
   // RENDER
   // ============================================================================
 
-  import './VoiceDailyReportPage.css';
 
   const isRecording = recordingState.status === 'recording';
   const isPaused = recordingState.status === 'paused';
