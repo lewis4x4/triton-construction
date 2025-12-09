@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@triton/supabase-client';
+import './BidList.css';
 
 interface BidProject {
   id: string;

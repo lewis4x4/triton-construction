@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import { supabase } from '@triton/supabase-client';
+import './DocumentUpload.css';
 
 interface DocumentUploadProps {
   projectId: string;

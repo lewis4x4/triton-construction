@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@triton/supabase-client';
+import './DocumentList.css';
 
 interface DocumentListProps {
   projectId: string;

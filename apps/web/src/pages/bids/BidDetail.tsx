@@ -5,6 +5,10 @@ import { supabase } from '@triton/supabase-client';
 import { DocumentUpload } from '../../components/DocumentUpload';
 import { DocumentList } from '../../components/DocumentList';
 import { LineItemsTab } from '../../components/bids/LineItemsTab';
+import { RisksTab } from '../../components/bids/RisksTab';
+import { QuestionsTab } from '../../components/bids/QuestionsTab';
+import { WorkPackagesTab } from '../../components/bids/WorkPackagesTab';
+import './BidDetail.css';
 
 interface BidProject {
   id: string;
@@ -393,42 +397,3 @@ function DocumentsTab({
   );
 }
 
-// Placeholder Tab Components
-function RisksTab({ projectId: _projectId }: { projectId: string }) {
-  return (
-    <div className="placeholder-tab">
-      <div className="placeholder-icon">⚠️</div>
-      <h3>Risk Register</h3>
-      <p>Risk analysis coming in Phase 4 (AI Document Analysis)</p>
-      <p className="placeholder-hint">
-        AI will automatically identify risks from uploaded documents
-      </p>
-    </div>
-  );
-}
-
-function QuestionsTab({ projectId: _projectId }: { projectId: string }) {
-  return (
-    <div className="placeholder-tab">
-      <div className="placeholder-icon">❓</div>
-      <h3>Pre-Bid Questions</h3>
-      <p>Question management coming in Phase 5 (Risk & Categorization)</p>
-      <p className="placeholder-hint">
-        AI will suggest pre-bid questions based on identified risks
-      </p>
-    </div>
-  );
-}
-
-function WorkPackagesTab({ projectId: _projectId }: { projectId: string }) {
-  return (
-    <div className="placeholder-tab">
-      <div className="placeholder-icon">📦</div>
-      <h3>Work Packages</h3>
-      <p>Work package organization coming in Phase 6</p>
-      <p className="placeholder-hint">
-        Organize line items into work packages for estimating teams
-      </p>
-    </div>
-  );
-}
