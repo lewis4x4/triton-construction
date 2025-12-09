@@ -136,61 +136,57 @@ export function ExecutiveDashboard() {
   };
 
   return (
-    <div className="min-h-screen">
-      {/* Header - now transparent/glassy in new layout, avoiding bg-white */}
-      <div className="border-b border-white/10 bg-void-mid pt-20 pb-6 shadow-2xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="py-2">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-cyan-500/10 rounded-xl border border-cyan-500/20 shadow-[0_0_15px_rgba(46,196,182,0.2)]">
-                  <LayoutDashboard className="w-8 h-8 text-cyan-400" />
-                </div>
-                <div>
-                  <h1 className="text-3xl font-bold text-white tracking-tight drop-shadow-lg">
-                    Executive Command
-                  </h1>
-                  <p className="text-sm text-cyan-400/80 font-mono tracking-widest uppercase mt-1">
-                    Organization-wide performance overview
-                  </p>
-                </div>
+    <div className="executive-dashboard">
+      {/* Header */}
+      <div className="command-header">
+        <div className="command-header-content">
+          <div className="command-title-wrapper">
+            <div className="brand-section">
+              <div className="brand-icon-box">
+                <LayoutDashboard className="brand-icon" />
               </div>
+              <div className="command-title">
+                <h1>Executive Command</h1>
+                <p className="command-subtitle">
+                  Organization-wide performance overview
+                </p>
+              </div>
+            </div>
 
-              <div className="flex items-center gap-3">
-                <div className="flex flex-col items-end mr-4">
-                  <span className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">System Status</span>
-                  <span className="flex items-center gap-2 text-xs text-green-400 font-mono">
-                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                    ONLINE
-                  </span>
-                </div>
-                <div className="text-xs font-mono text-gray-400 border-r border-white/10 pr-4 mr-1">
-                  SYNC: {lastRefresh.toLocaleTimeString([], { hour12: false })}
-                </div>
-                <button
-                  onClick={() => fetchKPIs()}
-                  disabled={isLoading}
-                  className="p-2 rounded-lg hover:bg-white/5 border border-transparent hover:border-white/10 transition-all group"
-                  title="Refresh Data"
-                >
-                  <RefreshCw className={`w-5 h-5 text-gray-400 group-hover:text-cyan-400 ${isLoading ? 'animate-spin' : ''}`} />
-                </button>
-                <button className="p-2 rounded-lg hover:bg-white/5 border border-transparent hover:border-white/10 transition-all group">
-                  <Download className="w-5 h-5 text-gray-400 group-hover:text-cyan-400" />
-                </button>
-                <button className="p-2 rounded-lg hover:bg-white/5 border border-transparent hover:border-white/10 transition-all group">
-                  <Settings className="w-5 h-5 text-gray-400 group-hover:text-cyan-400" />
-                </button>
+            <div className="system-status-section">
+              <div className="status-indicator">
+                <span className="status-label">System Status</span>
+                <span className="status-value">
+                  <span className="status-dot"></span>
+                  ONLINE
+                </span>
               </div>
+              <div className="sync-time">
+                SYNC: {lastRefresh.toLocaleTimeString([], { hour12: false })}
+              </div>
+              <button
+                onClick={() => fetchKPIs()}
+                disabled={isLoading}
+                className="icon-btn"
+                title="Refresh Data"
+              >
+                <RefreshCw className={`w-5 h-5 ${isLoading ? 'animate-spin' : ''}`} />
+              </button>
+              <button className="icon-btn" title="Download Report">
+                <Download className="w-5 h-5" />
+              </button>
+              <button className="icon-btn" title="Settings">
+                <Settings className="w-5 h-5" />
+              </button>
             </div>
           </div>
         </div>
       </div>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="dashboard-content">
         {/* Top KPI Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div className="kpi-grid">
           <KPICard
             title="Active Projects"
             value={kpis.activeProjects}
@@ -219,7 +215,7 @@ export function ExecutiveDashboard() {
             onClick={() => navigate('/workforce')}
           />
           <KPICard
-            title="Utlization"
+            title="Utilization"
             value={kpis.equipmentUtilization}
             unit="%"
             icon={<Truck className="w-5 h-5" />}
@@ -233,7 +229,7 @@ export function ExecutiveDashboard() {
         </div>
 
         {/* Safety & Compliance Row */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div className="compliance-grid">
           <KPICard
             title="TRIR (Safety Rate)"
             value={kpis.safetyIncidentRate}
@@ -269,8 +265,8 @@ export function ExecutiveDashboard() {
         </div>
 
         {/* Charts & Widgets Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-          <div className="lg:col-span-2">
+        <div className="charts-grid">
+          <div className="main-chart-col">
             <KPITrendChart
               title="Monthly Revenue"
               data={revenuetrend}
@@ -287,7 +283,7 @@ export function ExecutiveDashboard() {
         </div>
 
         {/* Second Charts Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div className="secondary-charts-grid">
           <KPITrendChart
             title="Equipment Utilization"
             data={utilizationTrend}
@@ -297,30 +293,24 @@ export function ExecutiveDashboard() {
             timeRange={timeRange}
             onTimeRangeChange={setTimeRange}
           />
-          <div className="gravity-card p-6">
-            <h3 className="text-sm font-medium text-gray-400 mb-4 uppercase tracking-wider">Project Status Overview</h3>
-            <div className="space-y-4">
+          <div className="glass-panel">
+            <h3 className="panel-title">Project Status Overview</h3>
+            <div className="project-status-list">
               {[
                 { name: 'Corridor H Section 12', progress: 68, status: 'on-track' },
                 { name: 'US-35 Bridge Replacement', progress: 45, status: 'at-risk' },
                 { name: 'I-64 Widening Phase 2', progress: 12, status: 'on-track' },
               ].map((project, idx) => (
-                <div key={idx} className="space-y-2">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="font-medium text-primary">{project.name}</span>
-                    <span className={`px-2 py-0.5 text-xs rounded font-bold uppercase ${project.status === 'on-track' ? 'bg-green-900/30 text-green-400' :
-                      project.status === 'at-risk' ? 'bg-yellow-900/30 text-yellow-400' :
-                        'bg-red-900/30 text-red-400'
-                      }`}>
+                <div key={idx} className="project-status-item">
+                  <div className="project-info">
+                    <span className="project-name">{project.name}</span>
+                    <span className={`status-badge ${project.status}`}>
                       {project.progress}%
                     </span>
                   </div>
-                  <div className="h-2 bg-gray-700/50 rounded-full overflow-hidden backdrop-blur-sm">
+                  <div className="progress-bar-track">
                     <div
-                      className={`h-full rounded-full ${project.status === 'on-track' ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]' :
-                        project.status === 'at-risk' ? 'bg-yellow-500 shadow-[0_0_10px_rgba(234,179,8,0.5)]' :
-                          'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]'
-                        }`}
+                      className={`progress-bar-fill ${project.status}`}
                       style={{ width: `${project.progress}%` }}
                     />
                   </div>
@@ -331,9 +321,9 @@ export function ExecutiveDashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="gravity-card p-6">
-          <h3 className="text-sm font-medium text-gray-400 mb-4 uppercase tracking-wider">Quick Actions</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="glass-panel">
+          <h3 className="panel-title">Quick Actions</h3>
+          <div className="quick-actions-grid">
             {[
               { label: 'View Projects', icon: Building, href: '/projects' },
               { label: 'Safety Dashboard', icon: ShieldCheck, href: '/safety' },
@@ -343,10 +333,10 @@ export function ExecutiveDashboard() {
               <button
                 key={idx}
                 onClick={() => navigate(action.href)}
-                className="flex items-center gap-3 p-4 rounded-xl border border-white/10 hover:bg-white/5 hover:border-cyan-500/50 transition-all text-left group"
+                className="action-card"
               >
-                <action.icon className="w-5 h-5 text-gray-400 group-hover:text-cyan-400 transition-colors" />
-                <span className="text-sm font-medium text-primary group-hover:text-white">{action.label}</span>
+                <action.icon className="action-icon" />
+                <span className="action-label">{action.label}</span>
               </button>
             ))}
           </div>
