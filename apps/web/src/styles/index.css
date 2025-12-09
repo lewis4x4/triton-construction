@@ -559,9 +559,10 @@ p {
   padding: 2rem 2rem 1.5rem;
   margin: -1.5rem -1.5rem 1.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  /* Note: backdrop-filter removed - can interfere with fixed-position panels */
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
   position: relative;
+  z-index: 1;
 }
 
 .page-header-content h1,
@@ -1754,6 +1755,24 @@ table tbody tr:hover td {
 }
 
 /* ============================================
+   Detail Panel Overlays (Slide-out Panels)
+   ============================================ */
+
+.detail-panel-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.detail-panel {
+  position: relative;
+  z-index: 1001;
+}
+
+/* ============================================
    Modals
    ============================================ */
 
@@ -1764,7 +1783,7 @@ table tbody tr:hover td {
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(4px);
+  /* Note: backdrop-filter removed to prevent issues with fixed positioning */
   display: flex;
   align-items: center;
   justify-content: center;
