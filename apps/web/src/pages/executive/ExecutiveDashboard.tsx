@@ -12,9 +12,9 @@ import {
   RefreshCw,
   Settings,
   Download,
+  AlertTriangle
 } from 'lucide-react';
 import { supabase } from '@triton/supabase-client';
-import { KPICard } from '../../components/executive/KPICard';
 import { KPITrendChart } from '../../components/executive/KPITrendChart';
 import { AlertSummaryWidget } from '../../components/executive/AlertSummaryWidget';
 import './ExecutiveDashboard.css';
@@ -107,7 +107,7 @@ export function ExecutiveDashboard() {
   };
 
   const fetchTrends = async () => {
-    // Generate sample trend data - in production would fetch from kpi_snapshots
+    // Generate sample trend data
     const days = timeRange === '7d' ? 7 : timeRange === '30d' ? 30 : timeRange === '90d' ? 90 : 365;
     const revenueTrendData: TrendData[] = [];
     const utilizationTrendData: TrendData[] = [];
@@ -139,137 +139,112 @@ export function ExecutiveDashboard() {
   return (
     <div className="executive-dashboard">
       {/* Header */}
-      <div className="command-header">
-        <div className="command-header-content">
-          <div className="command-title-wrapper">
-            <div className="brand-section">
-              <div className="brand-icon-box">
-                <LayoutDashboard className="brand-icon" />
-              </div>
-              <div className="command-title">
-                <h1>Executive Command</h1>
-                <p className="command-subtitle">
-                  Organization-wide performance overview
-                </p>
-              </div>
-            </div>
+      <div className="dashboard-header">
+        <div className="header-content">
+          <div className="header-left">
+            <h1>Executive Command</h1>
+            <p className="header-subtitle">Organization-wide performance overview</p>
+          </div>
 
-            <div className="system-status-section">
-              <div className="status-indicator">
-                <span className="status-label">System Status</span>
-                <span className="status-value">
-                  <span className="status-dot"></span>
-                  ONLINE
-                </span>
-              </div>
-              <div className="sync-time">
-                SYNC: {lastRefresh.toLocaleTimeString([], { hour12: false })}
-              </div>
-              <button
-                onClick={() => fetchKPIs()}
-                disabled={isLoading}
-                className="icon-btn"
-                title="Refresh Data"
-              >
-                <RefreshCw className={`w-5 h-5 ${isLoading ? 'animate-spin' : ''}`} />
-              </button>
-              <button className="icon-btn" title="Download Report">
-                <Download className="w-5 h-5" />
-              </button>
-              <button className="icon-btn" title="Settings">
-                <Settings className="w-5 h-5" />
-              </button>
+          <div className="header-right">
+            <div className="time-filter">
+              {(['7d', '30d', '90d'] as const).map((range) => (
+                <button
+                  key={range}
+                  onClick={() => setTimeRange(range as any)}
+                  className={`time-filter-btn ${timeRange === range ? 'active' : ''}`}
+                >
+                  {range === '7d' ? 'Week' : range === '30d' ? 'Month' : 'Quarter'}
+                </button>
+              ))}
             </div>
+            <button
+              onClick={() => fetchKPIs()}
+              disabled={isLoading}
+              className="action-btn"
+              title="Refresh Data"
+            >
+              <RefreshCw className={`w-5 h-5 ${isLoading ? 'animate-spin' : ''}`} />
+            </button>
+            <button className="action-btn" title="Download Report">
+              <Download className="w-5 h-5" />
+            </button>
+            <button className="action-btn" title="Settings">
+              <Settings className="w-5 h-5" />
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="dashboard-content">
-        {/* Top KPI Cards */}
-        <div className="kpi-grid">
-          <KPICard
-            title="Active Projects"
-            value={kpis.activeProjects}
-            icon={<Building className="w-5 h-5" />}
-            trend="up"
-            percentChange={8.3}
-            status="good"
-            onClick={() => navigate('/projects')}
-          />
-          <KPICard
-            title="Contract Value"
-            value={formatCurrency(kpis.totalContractValue)}
-            icon={<DollarSign className="w-5 h-5" />}
-            trend="up"
-            percentChange={12.5}
-            trendIsGood={true}
-            status="good"
-          />
-          <KPICard
-            title="Workforce"
-            value={kpis.workforceCount}
-            unit="workers"
-            icon={<Users className="w-5 h-5" />}
-            trend="flat"
-            percentChange={0}
-            onClick={() => navigate('/workforce')}
-          />
-          <KPICard
-            title="Utilization"
-            value={kpis.equipmentUtilization}
-            unit="%"
-            icon={<Truck className="w-5 h-5" />}
-            target={85}
-            trend="down"
-            percentChange={-3.2}
-            trendIsGood={false}
-            status={kpis.equipmentUtilization >= 80 ? 'good' : kpis.equipmentUtilization >= 60 ? 'warning' : 'critical'}
-            onClick={() => navigate('/fleet')}
-          />
+      {/* Stats Grid */}
+      <div className="stats-grid">
+        <div className="stat-card stat-card-primary" onClick={() => navigate('/projects')}>
+          <div className="stat-icon">
+            <Building />
+          </div>
+          <div className="stat-content">
+            <span className="stat-label">Active Projects</span>
+            <span className="stat-value">{kpis.activeProjects}</span>
+            <span className="stat-change positive">
+              <TrendingUp className="w-3 h-3 inline mr-1" />
+              +8.3% vs prev
+            </span>
+          </div>
         </div>
 
-        {/* Safety & Compliance Row */}
-        <div className="compliance-grid">
-          <KPICard
-            title="TRIR (Safety Rate)"
-            value={kpis.safetyIncidentRate}
-            description="Total Recordable Incident Rate per 200,000 hours"
-            icon={<ShieldCheck className="w-5 h-5" />}
-            target={1.0}
-            trend="down"
-            percentChange={-15.0}
-            trendIsGood={true}
-            status={kpis.safetyIncidentRate <= 1.0 ? 'good' : kpis.safetyIncidentRate <= 2.0 ? 'warning' : 'critical'}
-            onClick={() => navigate('/safety')}
-          />
-          <KPICard
-            title="Compliance Score"
-            value={kpis.complianceScore}
-            unit="%"
-            icon={<ShieldCheck className="w-5 h-5" />}
-            target={95}
-            trend="up"
-            percentChange={2.1}
-            status={kpis.complianceScore >= 95 ? 'good' : kpis.complianceScore >= 85 ? 'warning' : 'critical'}
-          />
-          <KPICard
-            title="Budget Variance"
-            value={kpis.budgetVariance}
-            unit="%"
-            description="Positive = under budget, Negative = over budget"
-            icon={<TrendingUp className="w-5 h-5" />}
-            trend={kpis.budgetVariance >= 0 ? 'up' : 'down'}
-            trendIsGood={kpis.budgetVariance >= 0}
-            status={kpis.budgetVariance >= 0 ? 'good' : kpis.budgetVariance >= -5 ? 'warning' : 'critical'}
-          />
+        <div className="stat-card stat-card-success">
+          <div className="stat-icon">
+            <DollarSign />
+          </div>
+          <div className="stat-content">
+            <span className="stat-label">Contract Value</span>
+            <span className="stat-value">{formatCurrency(kpis.totalContractValue)}</span>
+            <span className="stat-change positive">
+              <TrendingUp className="w-3 h-3 inline mr-1" />
+              +12.5% vs prev
+            </span>
+          </div>
         </div>
 
-        {/* Charts & Widgets Row */}
-        <div className="charts-grid">
-          <div className="main-chart-col">
+        <div className="stat-card stat-card-info" onClick={() => navigate('/workforce')}>
+          <div className="stat-icon">
+            <Users />
+          </div>
+          <div className="stat-content">
+            <span className="stat-label">Workforce</span>
+            <span className="stat-value">{kpis.workforceCount}</span>
+            <span className="stat-change neutral">
+              Stable
+            </span>
+          </div>
+        </div>
+
+        <div className="stat-card stat-card-warning" onClick={() => navigate('/fleet')}>
+          <div className="stat-icon">
+            <Truck />
+          </div>
+          <div className="stat-content">
+            <span className="stat-label">Fleet Utilization</span>
+            <span className="stat-value">{kpis.equipmentUtilization}%</span>
+            <span className="stat-change negative">
+              <TrendingUp className="w-3 h-3 inline mr-1 rotate-180" />
+              -3.2% vs prev
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Dashboard Content */}
+      <div className="dashboard-grid">
+        {/* Main Chart */}
+        <div className="dashboard-card wide">
+          <div className="card-header">
+            <h3>Revenue Trend</h3>
+            <span className="card-subtitle">Monthly Performance</span>
+          </div>
+          <div className="chart-container">
             <KPITrendChart
-              title="Monthly Revenue"
+              title=""
               data={revenuetrend}
               unit="$"
               color="#3B82F6"
@@ -278,52 +253,13 @@ export function ExecutiveDashboard() {
               onTimeRangeChange={setTimeRange}
             />
           </div>
-          <AlertSummaryWidget
-            onViewAll={() => navigate('/alerts')}
-          />
-        </div>
-
-        {/* Second Charts Row */}
-        <div className="secondary-charts-grid">
-          <KPITrendChart
-            title="Equipment Utilization"
-            data={utilizationTrend}
-            unit="%"
-            color="#10B981"
-            target={85}
-            timeRange={timeRange}
-            onTimeRangeChange={setTimeRange}
-          />
-          <div className="glass-panel">
-            <h3 className="panel-title">Project Status Overview</h3>
-            <div className="project-status-list">
-              {[
-                { name: 'Corridor H Section 12', progress: 68, status: 'on-track' },
-                { name: 'US-35 Bridge Replacement', progress: 45, status: 'at-risk' },
-                { name: 'I-64 Widening Phase 2', progress: 12, status: 'on-track' },
-              ].map((project, idx) => (
-                <div key={idx} className="project-status-item">
-                  <div className="project-info">
-                    <span className="project-name">{project.name}</span>
-                    <span className={`status-badge ${project.status}`}>
-                      {project.progress}%
-                    </span>
-                  </div>
-                  <div className="progress-bar-track">
-                    <div
-                      className={`progress-bar-fill ${project.status}`}
-                      style={{ width: `${project.progress}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
 
         {/* Quick Actions */}
-        <div className="glass-panel">
-          <h3 className="panel-title">Quick Actions</h3>
+        <div className="dashboard-card">
+          <div className="card-header">
+            <h3>Quick Actions</h3>
+          </div>
           <div className="quick-actions-grid">
             {[
               { label: 'View Projects', icon: Building, href: '/projects' },
@@ -340,6 +276,39 @@ export function ExecutiveDashboard() {
                 <span className="action-label">{action.label}</span>
               </button>
             ))}
+          </div>
+        </div>
+
+        {/* Secondary Grid */}
+        <div className="dashboard-card">
+          <div className="card-header">
+            <h3>Safety & Compliance</h3>
+          </div>
+          <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div className="stat-item" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'rgba(255,255,255,0.03)', borderRadius: '8px' }}>
+              <div>
+                <div style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase' }}>TRIR Rate</div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'white' }}>{kpis.safetyIncidentRate}</div>
+              </div>
+              <ShieldCheck className="text-green-500 w-8 h-8" />
+            </div>
+            <div className="stat-item" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'rgba(255,255,255,0.03)', borderRadius: '8px' }}>
+              <div>
+                <div style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase' }}>Compliance</div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'white' }}>{kpis.complianceScore}%</div>
+              </div>
+              <div style={{ color: '#10B981', fontWeight: 'bold' }}>On Track</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="dashboard-card wide">
+          <div className="card-header">
+            <h3>System Alerts</h3>
+            <span className="view-all-btn" onClick={() => navigate('/alerts')}>View All</span>
+          </div>
+          <div style={{ padding: '0' }}>
+            <AlertSummaryWidget onViewAll={() => navigate('/alerts')} />
           </div>
         </div>
       </div>
