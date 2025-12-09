@@ -17,6 +17,7 @@ interface BaseMapProps {
     initialZoom?: number;
     style?: 'satellite' | 'streets' | 'outdoors' | 'light' | 'dark';
     className?: string;
+    mapStyle?: React.CSSProperties;
     onLoad?: (map: mapboxgl.Map) => void;
 }
 
@@ -32,7 +33,8 @@ export const BaseMap = forwardRef<MapRef, BaseMapProps>(({
     initialCenter = [-80.5, 38.9], // WV center
     initialZoom = 7,
     style = 'satellite',
-    className = 'w-full h-[500px]',
+    className = '',
+    mapStyle,
     onLoad
 }, ref) => {
     const mapContainer = useRef<HTMLDivElement>(null);
@@ -87,7 +89,14 @@ export const BaseMap = forwardRef<MapRef, BaseMapProps>(({
         }
     }, [style]);
 
-    return <div ref={mapContainer} className={className} />;
+    // Default styles ensure the map has dimensions even without Tailwind
+    const defaultStyle: React.CSSProperties = {
+        width: '100%',
+        height: '100%',
+        minHeight: '400px',
+    };
+
+    return <div ref={mapContainer} className={className} style={{ ...defaultStyle, ...mapStyle }} />;
 });
 
 BaseMap.displayName = 'BaseMap';

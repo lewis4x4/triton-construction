@@ -341,3 +341,611 @@
   background: rgba(255, 159, 28, 0.15);
   color: var(--neon-amber);
 }
+
+/* ============================================
+   BULK ACTIONS BAR
+   ============================================ */
+
+.bulk-actions-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  background: linear-gradient(135deg, rgba(46, 196, 182, 0.15), rgba(59, 130, 246, 0.1));
+  border: 1px solid var(--border-accent);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-4);
+  backdrop-filter: var(--glass-blur);
+}
+
+.bulk-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.bulk-info .selected-count {
+  font-weight: 600;
+  color: var(--neon-cyan);
+}
+
+.clear-selection-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.clear-selection-btn:hover {
+  color: var(--text-primary);
+}
+
+.bulk-actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.bulk-btn {
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bulk-btn:hover:not(:disabled) {
+  background: var(--bg-hover);
+  border-color: var(--border-strong);
+}
+
+.bulk-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.bulk-btn.review {
+  border-color: var(--neon-blue);
+  color: var(--neon-blue);
+}
+
+.bulk-btn.review:hover:not(:disabled) {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.bulk-btn.accept {
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+}
+
+.bulk-btn.accept:hover:not(:disabled) {
+  background: rgba(46, 196, 182, 0.1);
+}
+
+/* ============================================
+   RISK CHECKBOX
+   ============================================ */
+
+.risk-checkbox-wrapper {
+  display: flex;
+  align-items: flex-start;
+  padding-top: var(--space-1);
+}
+
+.risk-checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--neon-cyan);
+}
+
+.risk-card.selected {
+  background: rgba(46, 196, 182, 0.05);
+  border-color: var(--neon-cyan);
+}
+
+.risk-card-content {
+  flex: 1;
+}
+
+.risk-card-body {
+  display: flex;
+  gap: var(--space-4);
+}
+
+/* ============================================
+   ACTION BUTTONS
+   ============================================ */
+
+.risk-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.action-btn:hover:not(:disabled) {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+
+.action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.action-btn.review {
+  border-color: rgba(59, 130, 246, 0.3);
+  color: var(--neon-blue);
+}
+
+.action-btn.review:hover:not(:disabled) {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: var(--neon-blue);
+}
+
+.action-btn.accept {
+  border-color: rgba(46, 196, 182, 0.3);
+  color: var(--neon-cyan);
+}
+
+.action-btn.accept:hover:not(:disabled) {
+  background: rgba(46, 196, 182, 0.1);
+  border-color: var(--neon-cyan);
+}
+
+.action-btn.mitigate {
+  border-color: rgba(139, 92, 246, 0.3);
+  color: #a78bfa;
+}
+
+.action-btn.mitigate:hover:not(:disabled) {
+  background: rgba(139, 92, 246, 0.1);
+  border-color: #a78bfa;
+}
+
+.action-btn.archive {
+  border-color: rgba(107, 114, 128, 0.3);
+  color: var(--text-tertiary);
+}
+
+.action-btn.archive:hover:not(:disabled) {
+  background: rgba(107, 114, 128, 0.1);
+  border-color: var(--text-tertiary);
+}
+
+.action-btn.question {
+  border-color: rgba(255, 159, 28, 0.3);
+  color: var(--neon-amber);
+}
+
+.action-btn.question:hover:not(:disabled) {
+  background: rgba(255, 159, 28, 0.1);
+  border-color: var(--neon-amber);
+}
+
+.action-btn.edit {
+  border-color: rgba(59, 130, 246, 0.3);
+  color: var(--neon-blue);
+}
+
+.action-btn.edit:hover:not(:disabled) {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: var(--neon-blue);
+}
+
+/* ============================================
+   REVIEW STATUS BADGES
+   ============================================ */
+
+.review-badge {
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.review-pending {
+  background: rgba(255, 159, 28, 0.15);
+  color: var(--neon-amber);
+  border: 1px solid rgba(255, 159, 28, 0.3);
+}
+
+.review-reviewed {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--neon-blue);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.review-accepted {
+  background: rgba(46, 196, 182, 0.15);
+  color: var(--neon-cyan);
+  border: 1px solid rgba(46, 196, 182, 0.3);
+}
+
+.review-mitigated {
+  background: rgba(139, 92, 246, 0.15);
+  color: #a78bfa;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.review-archived {
+  background: rgba(107, 114, 128, 0.15);
+  color: var(--text-tertiary);
+  border: 1px solid rgba(107, 114, 128, 0.3);
+}
+
+/* ============================================
+   HEADER ACTIONS
+   ============================================ */
+
+.header-actions {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.btn-new-risk {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--bg-primary);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-new-risk:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(46, 196, 182, 0.3);
+}
+
+.btn-new-risk:active {
+  transform: translateY(0);
+}
+
+/* ============================================
+   MODAL STYLES
+   ============================================ */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: var(--space-4);
+}
+
+.modal-content {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+}
+
+.modal-content.large {
+  max-width: 800px;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-5);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: var(--space-1);
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.modal-close:hover {
+  color: var(--text-primary);
+}
+
+.modal-body {
+  padding: var(--space-5);
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border-top: 1px solid var(--border-default);
+}
+
+/* ============================================
+   FORM STYLES
+   ============================================ */
+
+.form-group {
+  margin-bottom: var(--space-4);
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: var(--space-3);
+  background: var(--bg-input);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  transition: all 0.2s ease;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 0 2px rgba(46, 196, 182, 0.2);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+.form-row.three-col {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* ============================================
+   TYPE TOGGLE
+   ============================================ */
+
+.type-toggle {
+  display: flex;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  padding: var(--space-1);
+  margin-bottom: var(--space-4);
+}
+
+.type-btn {
+  flex: 1;
+  padding: var(--space-2) var(--space-4);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.type-btn:hover:not(.active) {
+  color: var(--text-primary);
+}
+
+.type-btn.active {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.type-btn.risk.active {
+  color: var(--neon-amber);
+}
+
+.type-btn.opportunity.active {
+  color: var(--neon-cyan);
+}
+
+/* ============================================
+   BUTTON VARIANTS
+   ============================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: var(--bg-tertiary);
+  border-color: var(--border-default);
+  color: var(--text-secondary);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
+  color: var(--bg-primary);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(46, 196, 182, 0.3);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, var(--neon-cyan), #10b981);
+  color: var(--bg-primary);
+}
+
+.btn-success:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(46, 196, 182, 0.3);
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, var(--neon-amber), #f59e0b);
+  color: var(--bg-primary);
+}
+
+.btn-warning:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 159, 28, 0.3);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, var(--neon-red), #dc2626);
+  color: white;
+}
+
+.btn-danger:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* ============================================
+   STAT VARIANTS FOR NEW STATS
+   ============================================ */
+
+.stat-item.critical-stat .stat-value {
+  color: var(--neon-red);
+}
+
+.stat-item.high-stat .stat-value {
+  color: var(--neon-amber);
+}
+
+.stat-item.pending-stat .stat-value {
+  color: var(--neon-blue);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+  .risks-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .risks-stats {
+    justify-content: space-between;
+  }
+
+  .stat-item {
+    min-width: 80px;
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .stat-item .stat-value {
+    font-size: 1.5rem;
+  }
+
+  .risks-filters {
+    flex-direction: column;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .bulk-actions-bar {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .risk-card-body {
+    flex-direction: column;
+  }
+
+  .risk-actions {
+    justify-content: flex-start;
+    width: 100%;
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--border-default);
+  }
+
+  .form-row,
+  .form-row.three-col {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-content {
+    max-height: 85vh;
+  }
+}

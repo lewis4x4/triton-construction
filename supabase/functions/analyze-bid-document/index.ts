@@ -260,10 +260,21 @@ serve(async (req) => {
   }
 
   const startTime = Date.now();
+  let parsedRequest: AnalysisRequest | null = null;
 
   try {
-    // Parse request
-    const { document_id, analysis_type = 'FULL_EXTRACTION' }: AnalysisRequest = await req.json();
+    // Verify authentication
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: 'Authorization header required' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Parse request (store for error handler)
+    parsedRequest = await req.json();
+    const { document_id, analysis_type = 'FULL_EXTRACTION' } = parsedRequest;
 
     if (!document_id) {
       return new Response(
@@ -272,8 +283,9 @@ serve(async (req) => {
       );
     }
 
-    // Initialize Supabase client
+    // Initialize Supabase clients
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const anthropicApiKey = Deno.env.get('ANTHROPIC_API_KEY')!;
 
@@ -281,7 +293,46 @@ serve(async (req) => {
       throw new Error('ANTHROPIC_API_KEY not configured');
     }
 
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    // Check if this is a service-to-service call (service role key in auth header)
+    const token = authHeader.replace('Bearer ', '');
+    const isServiceRoleCall = token === supabaseServiceKey;
+
+    if (!isServiceRoleCall) {
+      // User authentication flow
+      const supabaseUser = createClient(supabaseUrl, supabaseAnonKey, {
+        global: { headers: { Authorization: authHeader } },
+        auth: { autoRefreshToken: false, persistSession: false },
+      });
+
+      // Verify user is authenticated
+      const { data: { user }, error: authError } = await supabaseUser.auth.getUser();
+      if (authError || !user) {
+        return new Response(
+          JSON.stringify({ error: 'Invalid authentication' }),
+          { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // Verify user has access to this document through its project (RLS will enforce this)
+      const { data: docAccess, error: accessError } = await supabaseUser
+        .from('bid_documents')
+        .select('id, bid_project_id')
+        .eq('id', document_id)
+        .single();
+
+      if (accessError || !docAccess) {
+        return new Response(
+          JSON.stringify({ error: 'Document not found or access denied' }),
+          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+    }
+    // Service role calls are trusted (used by internal queue processor)
+
+    // Create service role client for actual operations
+    const supabase = createClient(supabaseUrl, supabaseServiceKey, {
+      auth: { autoRefreshToken: false, persistSession: false },
+    });
 
     // Get document details
     const { data: document, error: docError } = await supabase
@@ -489,14 +540,15 @@ serve(async (req) => {
     console.error('Analysis error:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 
-    // Try to update document status to FAILED
+    // Try to update document status to FAILED (use stored parsedRequest to avoid double req.json())
     try {
       const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
       const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-      const supabase = createClient(supabaseUrl, supabaseServiceKey);
+      const supabase = createClient(supabaseUrl, supabaseServiceKey, {
+        auth: { autoRefreshToken: false, persistSession: false },
+      });
 
-      const { document_id } = await req.json().catch(() => ({}));
-      if (document_id) {
+      if (parsedRequest?.document_id) {
         await supabase
           .from('bid_documents')
           .update({
@@ -504,7 +556,7 @@ serve(async (req) => {
             processing_error: errorMessage,
             processing_completed_at: new Date().toISOString(),
           })
-          .eq('id', document_id);
+          .eq('id', parsedRequest.document_id);
       }
     } catch {
       // Ignore update errors

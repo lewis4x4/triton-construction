@@ -8,6 +8,7 @@ import { LineItemsTab } from '../../components/bids/LineItemsTab';
 import { RisksTab } from '../../components/bids/RisksTab';
 import { QuestionsTab } from '../../components/bids/QuestionsTab';
 import { WorkPackagesTab } from '../../components/bids/WorkPackagesTab';
+import { TeamTab } from '../../components/bids/TeamTab';
 import './BidDetail.css';
 
 interface BidProject {
@@ -48,7 +49,7 @@ interface DashboardMetrics {
   estimated_completion_pct: number | null;
 }
 
-type TabId = 'overview' | 'executive-snapshot' | 'documents' | 'line-items' | 'risks' | 'questions' | 'work-packages';
+type TabId = 'overview' | 'executive-snapshot' | 'documents' | 'line-items' | 'risks' | 'questions' | 'work-packages' | 'team';
 
 const TABS: { id: TabId; label: string; icon: string }[] = [
   { id: 'overview', label: 'Overview', icon: '📊' },
@@ -58,6 +59,7 @@ const TABS: { id: TabId; label: string; icon: string }[] = [
   { id: 'risks', label: 'Risks', icon: '⚠️' },
   { id: 'questions', label: 'Questions', icon: '❓' },
   { id: 'work-packages', label: 'Work Packages', icon: '📦' },
+  { id: 'team', label: 'Team', icon: '👥' },
 ];
 
 export function BidDetail() {
@@ -226,7 +228,7 @@ export function BidDetail() {
         {/* Tab Content */}
         <div className="tab-content">
           {activeTab === 'overview' && (
-            <OverviewTab project={project} metrics={metrics} />
+            <OverviewTab project={project} metrics={metrics} onDataRefresh={fetchProject} />
           )}
           {activeTab === 'executive-snapshot' && (
             <ExecutiveSnapshotTab projectId={project.id} projectName={project.project_name} />
@@ -238,6 +240,7 @@ export function BidDetail() {
           {activeTab === 'risks' && <RisksTab projectId={project.id} />}
           {activeTab === 'questions' && <QuestionsTab projectId={project.id} />}
           {activeTab === 'work-packages' && <WorkPackagesTab projectId={project.id} />}
+          {activeTab === 'team' && <TeamTab projectId={project.id} />}
         </div>
       </div>
     </>
@@ -248,9 +251,11 @@ export function BidDetail() {
 function OverviewTab({
   project,
   metrics,
+  onDataRefresh,
 }: {
   project: BidProject;
   metrics: DashboardMetrics | null;
+  onDataRefresh?: () => Promise<void>;
 }) {
   const [aiOperations, setAiOperations] = useState<Record<string, boolean>>({});
   const [aiErrors, setAiErrors] = useState<Record<string, string>>({});
@@ -292,6 +297,11 @@ function OverviewTab({
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || `${operation} failed`);
+      }
+
+      // Refresh data after successful AI operation
+      if (onDataRefresh) {
+        await onDataRefresh();
       }
 
       return true;
@@ -595,6 +605,7 @@ function ExecutiveSnapshotTab({
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [generateError, setGenerateError] = useState<string | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
 
   const fetchSnapshot = useCallback(async () => {
     setIsLoading(true);
@@ -681,6 +692,206 @@ function ExecutiveSnapshotTab({
     }).format(value);
   };
 
+  const handleExportPDF = () => {
+    if (!snapshot) return;
+
+    setIsExporting(true);
+
+    // Generate PDF-friendly HTML content
+    const pdfContent = `
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Executive Summary - ${projectName}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: #1a1a1a;
+      padding: 40px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .header {
+      border-bottom: 3px solid #3d6b4f;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    .header h1 {
+      font-size: 24px;
+      color: #3d6b4f;
+      margin-bottom: 8px;
+    }
+    .header .meta {
+      font-size: 12px;
+      color: #666;
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 30px;
+      padding: 20px;
+      background: #f5f5f5;
+      border-radius: 8px;
+    }
+    .metric {
+      text-align: center;
+    }
+    .metric .value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #3d6b4f;
+    }
+    .metric .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #666;
+    }
+    .metric.danger .value { color: #dc2626; }
+    .metric.warning .value { color: #d97706; }
+    .section {
+      margin-bottom: 24px;
+      page-break-inside: avoid;
+    }
+    .section h2 {
+      font-size: 16px;
+      color: #3d6b4f;
+      border-bottom: 1px solid #e5e5e5;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+    .section.danger h2 { color: #dc2626; border-color: #fecaca; }
+    .section.warning h2 { color: #d97706; border-color: #fed7aa; }
+    .section.success h2 { color: #059669; border-color: #a7f3d0; }
+    .section p {
+      font-size: 14px;
+      color: #333;
+      white-space: pre-wrap;
+    }
+    .footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #e5e5e5;
+      font-size: 11px;
+      color: #999;
+      text-align: center;
+    }
+    @media print {
+      body { padding: 20px; }
+      .section { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Executive Summary</h1>
+    <div class="project-name" style="font-size: 18px; font-weight: 600; margin-bottom: 4px;">${projectName}</div>
+    <div class="meta">
+      Version ${snapshot.version_number} • Generated ${formatDate(snapshot.created_at)}
+      ${snapshot.ai_model_used ? ` • AI Model: ${snapshot.ai_model_used}` : ''}
+    </div>
+  </div>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="value">${snapshot.total_line_items ?? 0}</div>
+      <div class="label">Line Items</div>
+    </div>
+    <div class="metric">
+      <div class="value">${formatCurrency(snapshot.total_estimated_value)}</div>
+      <div class="label">Est. Value</div>
+    </div>
+    <div class="metric danger">
+      <div class="value">${snapshot.critical_risks_count ?? 0}</div>
+      <div class="label">Critical Risks</div>
+    </div>
+    <div class="metric warning">
+      <div class="value">${snapshot.high_risks_count ?? 0}</div>
+      <div class="label">High Risks</div>
+    </div>
+    <div class="metric">
+      <div class="value">${snapshot.work_packages_count ?? 0}</div>
+      <div class="label">Work Packages</div>
+    </div>
+    <div class="metric">
+      <div class="value">${snapshot.prebid_questions_count ?? 0}</div>
+      <div class="label">Questions</div>
+    </div>
+  </div>
+
+  ${snapshot.project_overview ? `
+  <div class="section">
+    <h2>Project Overview</h2>
+    <p>${snapshot.project_overview}</p>
+  </div>` : ''}
+
+  ${snapshot.key_quantities_summary ? `
+  <div class="section">
+    <h2>Key Quantities</h2>
+    <p>${snapshot.key_quantities_summary}</p>
+  </div>` : ''}
+
+  ${snapshot.risk_summary ? `
+  <div class="section danger">
+    <h2>Risk Summary</h2>
+    <p>${snapshot.risk_summary}</p>
+  </div>` : ''}
+
+  ${snapshot.environmental_summary ? `
+  <div class="section warning">
+    <h2>Environmental Considerations</h2>
+    <p>${snapshot.environmental_summary}</p>
+  </div>` : ''}
+
+  ${snapshot.schedule_summary ? `
+  <div class="section">
+    <h2>Schedule Analysis</h2>
+    <p>${snapshot.schedule_summary}</p>
+  </div>` : ''}
+
+  ${snapshot.cost_considerations ? `
+  <div class="section">
+    <h2>Cost Considerations</h2>
+    <p>${snapshot.cost_considerations}</p>
+  </div>` : ''}
+
+  ${snapshot.recommendations ? `
+  <div class="section success">
+    <h2>AI Recommendations</h2>
+    <p>${snapshot.recommendations}</p>
+  </div>` : ''}
+
+  <div class="footer">
+    Generated by Triton AI Platform • ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+    ${!snapshot.reviewed ? '<br><strong>Note: This AI-generated summary has not been reviewed by an estimator.</strong>' : ''}
+  </div>
+</body>
+</html>`;
+
+    // Open a new window with the PDF content
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(pdfContent);
+      printWindow.document.close();
+
+      // Wait for content to load, then trigger print
+      printWindow.onload = () => {
+        printWindow.print();
+        setIsExporting(false);
+      };
+
+      // Fallback if onload doesn't fire
+      setTimeout(() => {
+        setIsExporting(false);
+      }, 2000);
+    } else {
+      setIsExporting(false);
+      alert('Please allow popups to export PDF');
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="executive-snapshot-tab">
@@ -719,6 +930,22 @@ function ExecutiveSnapshotTab({
           )}
         </div>
         <div className="snapshot-header-right">
+          {snapshot && (
+            <button
+              className="btn btn-secondary"
+              onClick={handleExportPDF}
+              disabled={isExporting}
+            >
+              {isExporting ? (
+                <>
+                  <span className="btn-spinner" />
+                  Exporting...
+                </>
+              ) : (
+                <>📄 Export PDF</>
+              )}
+            </button>
+          )}
           <button
             className={`btn ${snapshot ? 'btn-secondary' : 'btn-primary'}`}
             onClick={handleGenerate}

@@ -106,10 +106,16 @@
 }
 
 /* Document Name Cell */
-.doc-name-cell {
+.doc-name-cell,
+.file-name-cell {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+}
+
+.file-icon {
+  flex-shrink: 0;
+  font-size: 1.25rem;
 }
 
 .doc-icon {
@@ -253,6 +259,101 @@
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
+}
+
+/* =====================================================
+   FAILED DOCUMENT STYLES
+   ===================================================== */
+
+/* Failed Row Styling */
+.document-table tr.row-failed {
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.document-table tr.row-failed:hover td {
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.document-table tr.row-failed td {
+  border-bottom-color: rgba(239, 68, 68, 0.2);
+}
+
+/* File Info Wrapper */
+.file-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+/* Inline Error Message */
+.error-message-inline {
+  font-size: 0.75rem;
+  color: var(--stat-rust-icon, #dc2626);
+  background: rgba(239, 68, 68, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  display: inline-block;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Retry Button */
+.btn-retry {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 6px;
+  color: var(--stat-rust-icon, #dc2626);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-retry:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.btn-retry:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Danger Button for Header */
+.btn-danger {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: var(--stat-rust-icon, #dc2626);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.btn-danger:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Error Hint Icon - Legacy Support */
+.error-hint {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  margin-left: 0.375rem;
+  font-size: 0.75rem;
+  color: var(--stat-rust-icon, #dc2626);
+  cursor: help;
 }
 
 .status-spinner {

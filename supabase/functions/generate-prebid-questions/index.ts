@@ -91,6 +91,15 @@ serve(async (req) => {
   const startTime = Date.now();
 
   try {
+    // Verify authentication
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: 'Authorization header required' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Parse request
     const { bid_project_id, force_refresh = false, include_risk_questions = true }: GenerateRequest = await req.json();
 
@@ -101,8 +110,9 @@ serve(async (req) => {
       );
     }
 
-    // Initialize Supabase client
+    // Initialize Supabase clients
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const anthropicApiKey = Deno.env.get('ANTHROPIC_API_KEY')!;
 
@@ -110,9 +120,41 @@ serve(async (req) => {
       throw new Error('ANTHROPIC_API_KEY not configured');
     }
 
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    // Create user client to verify authentication and authorization
+    const supabaseUser = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } },
+      auth: { autoRefreshToken: false, persistSession: false },
+    });
 
-    // Get project details
+    // Verify user is authenticated
+    const { data: { user }, error: authError } = await supabaseUser.auth.getUser();
+    if (authError || !user) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid authentication' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Verify user has access to this project (RLS will enforce this)
+    const { data: projectAccess, error: accessError } = await supabaseUser
+      .from('bid_projects')
+      .select('id')
+      .eq('id', bid_project_id)
+      .single();
+
+    if (accessError || !projectAccess) {
+      return new Response(
+        JSON.stringify({ error: 'Project not found or access denied' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Create service role client for actual operations
+    const supabase = createClient(supabaseUrl, supabaseServiceKey, {
+      auth: { autoRefreshToken: false, persistSession: false },
+    });
+
+    // Get project details with service role
     const { data: project, error: projectError } = await supabase
       .from('bid_projects')
       .select('id, project_name, state_project_number, county, route_number, question_deadline')

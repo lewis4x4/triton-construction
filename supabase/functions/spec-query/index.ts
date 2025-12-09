@@ -146,9 +146,10 @@ serve(async (req) => {
     const queryEmbeddingVector = `[${queryEmbedding.join(',')}]`;
 
     // Search for similar chunks using pgvector
+    // Lower threshold (0.25) allows more semantic matches - Claude will filter relevance
     const { data: chunks, error: searchError } = await supabaseAdmin.rpc('search_specs', {
       query_embedding: queryEmbeddingVector,
-      match_threshold: 0.4,
+      match_threshold: 0.25,
       match_count: maxResults,
       filter_section_ids: sectionNumbers ? await getSectionIds(supabaseAdmin, sectionNumbers) : null,
       filter_pay_items: payItemCode ? [payItemCode] : null,

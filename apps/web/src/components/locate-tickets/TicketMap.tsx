@@ -406,7 +406,6 @@ export function TicketMap({ tickets, onTicketClick, center, zoom = 10 }: TicketM
         initialCenter={center}
         initialZoom={zoom}
         style="satellite"
-        className="w-full h-full"
         onLoad={handleMapLoad}
       />
 

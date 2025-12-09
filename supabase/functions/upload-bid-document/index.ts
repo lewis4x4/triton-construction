@@ -176,6 +176,33 @@ serve(async (req) => {
       );
     }
 
+    // Auto-trigger document processing (async - don't wait for completion)
+    let processingTriggered = false;
+    try {
+      const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
+      const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+
+      // Fire and forget - call process-document-queue for this document
+      fetch(`${supabaseUrl}/functions/v1/process-document-queue`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${serviceRoleKey}`,
+        },
+        body: JSON.stringify({
+          documentIds: [document.id],
+          batchSize: 1,
+        }),
+      }).catch((err) => {
+        console.error('Auto-processing trigger failed (non-blocking):', err);
+      });
+
+      processingTriggered = true;
+    } catch (triggerErr) {
+      // Don't fail upload if auto-processing trigger fails
+      console.error('Failed to trigger auto-processing:', triggerErr);
+    }
+
     // Return success with document info
     return new Response(
       JSON.stringify({
@@ -188,7 +215,10 @@ serve(async (req) => {
           processingStatus: document.processing_status,
           createdAt: document.created_at,
         },
-        message: 'Document uploaded successfully. Processing will begin shortly.',
+        processingTriggered,
+        message: processingTriggered
+          ? 'Document uploaded successfully. AI processing has been triggered.'
+          : 'Document uploaded successfully. Processing will begin shortly.',
       }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );

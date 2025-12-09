@@ -55,6 +55,8 @@ export function DocumentList({ projectId }: DocumentListProps) {
   const [selectedDoc, setSelectedDoc] = useState<Document | null>(null);
   const [isAnalyzingAll, setIsAnalyzingAll] = useState(false);
   const [analyzingDocId, setAnalyzingDocId] = useState<string | null>(null);
+  const [retryingDocId, setRetryingDocId] = useState<string | null>(null);
+  const [isRetryingAll, setIsRetryingAll] = useState(false);
 
   const fetchDocuments = useCallback(async () => {
     setIsLoading(true);
@@ -174,6 +176,7 @@ export function DocumentList({ projectId }: DocumentListProps) {
   };
 
   const triggerProcessing = async (doc: Document) => {
+    setRetryingDocId(doc.id);
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) throw new Error('Not authenticated');
@@ -202,6 +205,47 @@ export function DocumentList({ projectId }: DocumentListProps) {
     } catch (err) {
       console.error('Processing error:', err);
       alert('Failed to trigger processing');
+    } finally {
+      setRetryingDocId(null);
+    }
+  };
+
+  const retryAllFailed = async () => {
+    const failedDocs = documents.filter((doc) => doc.processing_status === 'FAILED');
+    if (failedDocs.length === 0) return;
+
+    setIsRetryingAll(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error('Not authenticated');
+
+      // Retry all failed documents in parallel
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/process-document-queue`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({
+            documentIds: failedDocs.map((doc) => doc.id),
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const result = await response.json();
+        throw new Error(result.error || 'Retry failed');
+      }
+
+      // Refresh list
+      fetchDocuments();
+    } catch (err) {
+      console.error('Retry all error:', err);
+      alert('Failed to retry documents');
+    } finally {
+      setIsRetryingAll(false);
     }
   };
 
@@ -303,6 +347,10 @@ export function DocumentList({ projectId }: DocumentListProps) {
       doc.processing_status !== 'AI_ANALYZING'
   ).length;
 
+  const failedCount = documents.filter(
+    (doc) => doc.processing_status === 'FAILED'
+  ).length;
+
   if (isLoading) {
     return (
       <div className="document-list">
@@ -341,6 +389,22 @@ export function DocumentList({ projectId }: DocumentListProps) {
       <div className="document-list-header">
         <h3>Uploaded Documents ({documents.length})</h3>
         <div className="header-actions">
+          {failedCount > 0 && (
+            <button
+              onClick={retryAllFailed}
+              className="btn btn-danger btn-sm"
+              disabled={isRetryingAll}
+            >
+              {isRetryingAll ? (
+                <>
+                  <span className="btn-spinner" />
+                  Retrying...
+                </>
+              ) : (
+                <>🔄 Retry Failed ({failedCount})</>
+              )}
+            </button>
+          )}
           {pendingAnalysisCount > 0 && (
             <button
               onClick={triggerAnalyzeAll}
@@ -379,14 +443,29 @@ export function DocumentList({ projectId }: DocumentListProps) {
             {documents.map((doc) => {
               const status = doc.processing_status || 'PENDING';
               const statusConfig = PROCESSING_STATUS_CONFIG[status] ?? PROCESSING_STATUS_CONFIG.PENDING;
+              const isFailed = doc.processing_status === 'FAILED';
+              const isRetrying = retryingDocId === doc.id;
 
               return (
-                <tr key={doc.id} onClick={() => setSelectedDoc(doc)}>
+                <tr
+                  key={doc.id}
+                  onClick={() => setSelectedDoc(doc)}
+                  className={isFailed ? 'row-failed' : ''}
+                >
                   <td className="file-name-cell">
-                    <span className="file-icon">📄</span>
-                    <span className="file-name" title={doc.file_name}>
-                      {doc.file_name}
-                    </span>
+                    <span className="file-icon">{isFailed ? '⚠️' : '📄'}</span>
+                    <div className="file-info">
+                      <span className="file-name" title={doc.file_name}>
+                        {doc.file_name}
+                      </span>
+                      {isFailed && doc.processing_error && (
+                        <span className="error-message-inline" title={doc.processing_error}>
+                          {doc.processing_error.length > 60
+                            ? doc.processing_error.substring(0, 60) + '...'
+                            : doc.processing_error}
+                        </span>
+                      )}
+                    </div>
                   </td>
                   <td>
                     <span className="doc-type-badge">
@@ -399,14 +478,26 @@ export function DocumentList({ projectId }: DocumentListProps) {
                       <span className="status-icon">{statusConfig?.icon ?? '⏳'}</span>
                       {statusConfig?.label ?? 'Pending'}
                     </span>
-                    {doc.processing_status === 'FAILED' && doc.processing_error && (
-                      <span className="error-hint" title={doc.processing_error}>
-                        ⓘ
-                      </span>
-                    )}
                   </td>
                   <td>{doc.created_at ? formatDate(doc.created_at) : '-'}</td>
                   <td className="actions-cell" onClick={(e) => e.stopPropagation()}>
+                    {isFailed && (
+                      <button
+                        className="btn btn-retry btn-sm"
+                        onClick={() => triggerProcessing(doc)}
+                        title="Retry processing"
+                        disabled={isRetrying || isRetryingAll}
+                      >
+                        {isRetrying ? (
+                          <>
+                            <span className="btn-spinner" />
+                            Retrying
+                          </>
+                        ) : (
+                          <>🔄 Retry</>
+                        )}
+                      </button>
+                    )}
                     <button
                       className="btn btn-icon"
                       onClick={() => handleDownload(doc)}
@@ -414,14 +505,14 @@ export function DocumentList({ projectId }: DocumentListProps) {
                     >
                       ⬇️
                     </button>
-                    {(doc.processing_status === 'PENDING' ||
-                      doc.processing_status === 'FAILED') && (
+                    {doc.processing_status === 'PENDING' && (
                       <button
                         className="btn btn-icon"
                         onClick={() => triggerProcessing(doc)}
                         title="Process"
+                        disabled={isRetrying}
                       >
-                        ▶️
+                        {isRetrying ? '⏳' : '▶️'}
                       </button>
                     )}
                     {doc.processing_status !== 'AI_ANALYZED' &&
