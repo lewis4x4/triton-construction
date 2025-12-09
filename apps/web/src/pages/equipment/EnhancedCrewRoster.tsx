@@ -755,7 +755,10 @@ export function EnhancedCrewRoster() {
                 <div
                   key={member.id}
                   className={`member-card ${selectedMember?.id === member.id ? 'selected' : ''}`}
-                  onClick={() => handleSelectMember(member)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSelectMember(member);
+                  }}
                 >
                   <div className="member-header">
                     <div className="member-avatar">

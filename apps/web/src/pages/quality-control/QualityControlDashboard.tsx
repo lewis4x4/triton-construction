@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@triton/supabase-client';
 import { InspectionList } from '../../components/quality-control/InspectionList';
 import { TestResultsPanel } from '../../components/quality-control/TestResultsPanel';
+import { Filter, Plus } from 'lucide-react';
 import { NCRTracker } from '../../components/quality-control/NCRTracker';
 import { PunchListManager } from '../../components/quality-control/PunchListManager';
 
@@ -114,23 +115,39 @@ export function QualityControlDashboard() {
 
   return (
     <div className="p-6">
-      <div className="mb-6">
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">Quality Control</h1>
-          <select
-            value={selectedProjectId}
-            onChange={(e) => setSelectedProjectId(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-          >
-            {projects.map((project) => (
-              <option key={project.id} value={project.id}>
-                {project.project_number} - {project.name}
-              </option>
-            ))}
-          </select>
+      <header className="page-header">
+        <div className="header-left">
+          <div className="header-title">
+            <h1>Quality Control</h1>
+            <p className="header-subtitle">Manage project quality standards, inspections, and compliance</p>
+          </div>
         </div>
-      </div>
-
+        <div className="header-actions">
+          <div className="project-selector">
+            <span className="text-sm text-gray-400 mr-2">Project:</span>
+            <select
+              className="bg-black/40 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:ring-2 focus:ring-brand-primary outline-none"
+              value={selectedProjectId}
+              onChange={(e) => setSelectedProjectId(e.target.value)}
+            >
+              {/* <option value="all">All Projects</option> */} {/* Removed as per original logic, only active projects are shown */}
+              {projects.map((project) => (
+                <option key={project.id} value={project.id}>
+                  {project.project_number} - {project.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button className="btn-secondary">
+            <Filter size={18} />
+            Filters
+          </button>
+          <button className="btn-primary">
+            <Plus size={18} />
+            New Inspection
+          </button>
+        </div>
+      </header>
       {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
         <StatCard
@@ -178,11 +195,10 @@ export function QualityControlDashboard() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                activeTab === tab.id
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
+              className={`py-2 px-1 border-b-2 font-medium text-sm ${activeTab === tab.id
+                ? 'border-blue-500 text-blue-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
             >
               {tab.label}
             </button>
@@ -231,9 +247,8 @@ function StatCard({
 
   return (
     <div
-      className={`p-4 rounded-lg border ${colorClasses[color]} ${
-        highlight ? 'ring-2 ring-red-400 animate-pulse' : ''
-      }`}
+      className={`p-4 rounded-lg border ${colorClasses[color]} ${highlight ? 'ring-2 ring-red-400 animate-pulse' : ''
+        }`}
     >
       <div className="text-sm font-medium">{title}</div>
       <div className="text-2xl font-bold">{value}</div>

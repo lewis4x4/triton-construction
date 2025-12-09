@@ -96,6 +96,9 @@ interface VehicleComplianceStatus {
 export function FleetInspections() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'inspections' | 'schedule' | 'defects' | 'compliance'>('inspections');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showFilters, setShowFilters] = useState(false);
+  const [showNewInspectionModal, setShowNewInspectionModal] = useState(false);
   const [kpis, setKpis] = useState<InspectionKPI[]>([]);
   const [inspections, setInspections] = useState<Inspection[]>([]);
   const [schedules, setSchedules] = useState<InspectionSchedule[]>([]);
@@ -270,24 +273,35 @@ export function FleetInspections() {
     <div className="fleet-inspections-page">
       {/* Header */}
       <div className="page-header">
-        <div className="header-content">
+        <div className="header-left">
           <Link to="/equipment" className="back-link">
             <ChevronLeft size={20} />
             Fleet Management
           </Link>
-          <h1>
-            <ClipboardCheck size={32} />
-            Fleet Inspections
-          </h1>
-          <p>Vehicle inspections, compliance tracking, and defect management</p>
+          <div className="header-title">
+            <h1>
+              <ClipboardCheck size={32} />
+              Fleet Inspections
+            </h1>
+            <p>Vehicle inspections, compliance tracking, and defect management</p>
+          </div>
         </div>
         <div className="header-actions">
-          <button className="btn btn-secondary" onClick={loadInspectionData}>
-            <RefreshCw size={16} />
-            Refresh
+          <div className="search-box">
+            <Search size={18} />
+            <input
+              type="text"
+              placeholder="Search inspections..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <button className="btn-secondary" onClick={() => setShowFilters(!showFilters)}>
+            <Filter size={18} />
+            Filters
           </button>
-          <button className="btn btn-primary">
-            <Plus size={16} />
+          <button className="btn-primary" onClick={() => setShowNewInspectionModal(true)}>
+            <Plus size={18} />
             New Inspection
           </button>
         </div>
