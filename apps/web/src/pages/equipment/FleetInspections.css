@@ -1,0 +1,1210 @@
+.fleet-inspections-page {
+  padding: 24px;
+  background: linear-gradient(135deg, #0f1219 0%, #1a1f2e 100%);
+  min-height: 100vh;
+}
+
+/* Loading State */
+.fleet-inspections-page .loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  color: #9ca3af;
+}
+
+.fleet-inspections-page .loading-state .spinning {
+  animation: spin 1s linear infinite;
+  color: #06b6d4;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Page Header */
+.fleet-inspections-page .page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.fleet-inspections-page .header-content {
+  flex: 1;
+  min-width: 300px;
+}
+
+.fleet-inspections-page .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #9ca3af;
+  text-decoration: none;
+  font-size: 14px;
+  margin-bottom: 8px;
+  transition: color 0.2s;
+}
+
+.fleet-inspections-page .back-link:hover {
+  color: #06b6d4;
+}
+
+.fleet-inspections-page .header-content h1 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 8px 0;
+}
+
+.fleet-inspections-page .header-content h1 svg {
+  color: #06b6d4;
+}
+
+.fleet-inspections-page .header-content p {
+  color: #9ca3af;
+  margin: 0;
+  font-size: 14px;
+}
+
+.fleet-inspections-page .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.fleet-inspections-page .btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.fleet-inspections-page .btn-sm {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.fleet-inspections-page .btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: #e5e7eb;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.fleet-inspections-page .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.fleet-inspections-page .btn-primary {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+  color: #ffffff;
+}
+
+.fleet-inspections-page .btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+}
+
+/* Alert Banner */
+.fleet-inspections-page .alert-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.1));
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+.fleet-inspections-page .alert-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fca5a5;
+}
+
+.fleet-inspections-page .alert-content svg {
+  color: #ef4444;
+}
+
+.fleet-inspections-page .alert-content strong {
+  color: #ffffff;
+}
+
+.fleet-inspections-page .alert-action {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(239, 68, 68, 0.2);
+  border: none;
+  color: #ef4444;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.fleet-inspections-page .alert-action:hover {
+  background: rgba(239, 68, 68, 0.3);
+}
+
+/* KPI Grid */
+.fleet-inspections-page .kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.fleet-inspections-page .kpi-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+}
+
+.fleet-inspections-page .kpi-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.fleet-inspections-page .kpi-info {
+  flex: 1;
+}
+
+.fleet-inspections-page .kpi-value {
+  display: block;
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.fleet-inspections-page .kpi-label {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.fleet-inspections-page .kpi-change {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.fleet-inspections-page .kpi-change.positive {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.fleet-inspections-page .kpi-change.negative {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+/* Tab Navigation */
+.fleet-inspections-page .tab-navigation {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.fleet-inspections-page .tab-navigation .tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: #9ca3af;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.fleet-inspections-page .tab-navigation .tab:hover {
+  color: #e5e7eb;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.fleet-inspections-page .tab-navigation .tab.active {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+  color: #ffffff;
+}
+
+.fleet-inspections-page .tab-badge {
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 8px;
+  min-width: 18px;
+  text-align: center;
+}
+
+.fleet-inspections-page .tab.active .tab-badge {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Filters Bar */
+.fleet-inspections-page .filters-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.fleet-inspections-page .search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  flex: 1;
+  max-width: 400px;
+}
+
+.fleet-inspections-page .search-box svg {
+  color: #6b7280;
+}
+
+.fleet-inspections-page .search-box input {
+  background: transparent;
+  border: none;
+  color: #e5e7eb;
+  font-size: 14px;
+  width: 100%;
+  outline: none;
+}
+
+.fleet-inspections-page .filter-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fleet-inspections-page .filter-group svg {
+  color: #6b7280;
+}
+
+.fleet-inspections-page .filter-group select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 10px 16px;
+  color: #e5e7eb;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Inspections List */
+.fleet-inspections-page .inspections-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fleet-inspections-page .inspection-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.fleet-inspections-page .inspection-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateX(4px);
+}
+
+.fleet-inspections-page .inspection-status-indicator {
+  width: 4px;
+  height: 60px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.fleet-inspections-page .inspection-main {
+  flex: 1;
+}
+
+.fleet-inspections-page .inspection-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.fleet-inspections-page .vehicle-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.fleet-inspections-page .vehicle-number {
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 16px;
+}
+
+.fleet-inspections-page .vehicle-type {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.fleet-inspections-page .status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  text-transform: capitalize;
+}
+
+.fleet-inspections-page .status-badge.pass {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.fleet-inspections-page .status-badge.fail {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.fleet-inspections-page .status-badge.conditional {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.fleet-inspections-page .status-badge.pending {
+  background: rgba(107, 114, 128, 0.15);
+  color: #9ca3af;
+}
+
+.fleet-inspections-page .inspection-type-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  background: rgba(6, 182, 212, 0.15);
+  color: #06b6d4;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.fleet-inspections-page .inspection-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 12px;
+  color: #9ca3af;
+  margin-bottom: 8px;
+}
+
+.fleet-inspections-page .inspection-meta span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.fleet-inspections-page .inspection-stats {
+  display: flex;
+  gap: 16px;
+}
+
+.fleet-inspections-page .inspection-stats .stat {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.fleet-inspections-page .inspection-stats .stat.defects {
+  color: #f59e0b;
+}
+
+.fleet-inspections-page .inspection-card .chevron {
+  color: #6b7280;
+  transition: transform 0.2s;
+}
+
+.fleet-inspections-page .inspection-card:hover .chevron {
+  transform: translateX(4px);
+  color: #06b6d4;
+}
+
+/* Schedule Content */
+.fleet-inspections-page .schedule-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.fleet-inspections-page .schedule-section h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #e5e7eb;
+  margin: 0 0 12px 0;
+}
+
+.fleet-inspections-page .schedule-section.overdue h3 {
+  color: #ef4444;
+}
+
+.fleet-inspections-page .schedule-section.due h3 {
+  color: #f59e0b;
+}
+
+.fleet-inspections-page .schedule-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fleet-inspections-page .schedule-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+}
+
+.fleet-inspections-page .schedule-card.overdue {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+.fleet-inspections-page .schedule-card.due {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.2);
+}
+
+.fleet-inspections-page .schedule-vehicle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 180px;
+}
+
+.fleet-inspections-page .schedule-vehicle svg {
+  color: #6b7280;
+}
+
+.fleet-inspections-page .schedule-vehicle .vehicle-num {
+  display: block;
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.fleet-inspections-page .schedule-vehicle .vehicle-type {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.fleet-inspections-page .schedule-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.fleet-inspections-page .schedule-info .inspection-type {
+  font-size: 14px;
+  color: #e5e7eb;
+  font-weight: 500;
+}
+
+.fleet-inspections-page .schedule-info .due-date {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.fleet-inspections-page .days-indicator {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 6px;
+  min-width: 100px;
+  text-align: center;
+}
+
+.fleet-inspections-page .days-indicator.overdue {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.fleet-inspections-page .days-indicator.due {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.fleet-inspections-page .days-indicator.upcoming {
+  background: rgba(107, 114, 128, 0.15);
+  color: #9ca3af;
+}
+
+/* Defects Content */
+.fleet-inspections-page .defects-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.fleet-inspections-page .defects-summary {
+  display: flex;
+  gap: 16px;
+}
+
+.fleet-inspections-page .defect-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 32px;
+  border-radius: 12px;
+  min-width: 120px;
+}
+
+.fleet-inspections-page .defect-stat.critical {
+  background: rgba(220, 38, 38, 0.15);
+}
+
+.fleet-inspections-page .defect-stat.major {
+  background: rgba(239, 68, 68, 0.15);
+}
+
+.fleet-inspections-page .defect-stat.minor {
+  background: rgba(245, 158, 11, 0.15);
+}
+
+.fleet-inspections-page .defect-stat .count {
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.fleet-inspections-page .defect-stat .label {
+  font-size: 12px;
+  color: #9ca3af;
+  text-transform: capitalize;
+}
+
+.fleet-inspections-page .defects-table {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.fleet-inspections-page .defects-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.fleet-inspections-page .defects-table th {
+  text-align: left;
+  padding: 14px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.fleet-inspections-page .defects-table td {
+  padding: 14px 16px;
+  font-size: 14px;
+  color: #e5e7eb;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.fleet-inspections-page .defects-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.fleet-inspections-page .vehicle-cell {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.fleet-inspections-page .severity-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: capitalize;
+}
+
+.fleet-inspections-page .severity-badge.critical {
+  background: rgba(220, 38, 38, 0.2);
+  color: #dc2626;
+}
+
+.fleet-inspections-page .severity-badge.major {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.fleet-inspections-page .severity-badge.minor {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.fleet-inspections-page .defect-status {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: capitalize;
+}
+
+.fleet-inspections-page .defect-status.open {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.fleet-inspections-page .defect-status.in_repair {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
+.fleet-inspections-page .action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.fleet-inspections-page .action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #9ca3af;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.fleet-inspections-page .action-btn:hover {
+  background: rgba(6, 182, 212, 0.15);
+  color: #06b6d4;
+}
+
+/* Compliance Content */
+.fleet-inspections-page .compliance-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.fleet-inspections-page .compliance-overview {
+  display: flex;
+  gap: 16px;
+}
+
+.fleet-inspections-page .compliance-stat {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px;
+  border-radius: 12px;
+  flex: 1;
+}
+
+.fleet-inspections-page .compliance-stat.compliant {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.fleet-inspections-page .compliance-stat.attention {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+}
+
+.fleet-inspections-page .compliance-stat.non-compliant {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.fleet-inspections-page .compliance-stat .count {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.fleet-inspections-page .compliance-stat .label {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.fleet-inspections-page .compliance-table {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.fleet-inspections-page .compliance-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.fleet-inspections-page .compliance-table th {
+  text-align: left;
+  padding: 14px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.fleet-inspections-page .compliance-table td {
+  padding: 14px 16px;
+  font-size: 14px;
+  color: #e5e7eb;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.fleet-inspections-page .compliance-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.fleet-inspections-page .compliance-table td.expired {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.fleet-inspections-page .defect-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.fleet-inspections-page .no-defects {
+  color: #10b981;
+}
+
+.fleet-inspections-page .score-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 120px;
+}
+
+.fleet-inspections-page .score-bar .score-fill {
+  flex: 1;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.fleet-inspections-page .score-bar span {
+  font-size: 12px;
+  font-weight: 600;
+  color: #e5e7eb;
+  min-width: 36px;
+}
+
+.fleet-inspections-page .compliance-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  text-transform: capitalize;
+}
+
+.fleet-inspections-page .compliance-badge.compliant {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.fleet-inspections-page .compliance-badge.attention {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.fleet-inspections-page .compliance-badge.non_compliant {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+/* Detail Panel */
+.fleet-inspections-page .detail-panel-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 1000;
+}
+
+.fleet-inspections-page .detail-panel {
+  width: 100%;
+  max-width: 500px;
+  background: linear-gradient(135deg, #1a1f2e, #0f1219);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.fleet-inspections-page .panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.fleet-inspections-page .panel-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fleet-inspections-page .panel-title h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.fleet-inspections-page .close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  color: #9ca3af;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fleet-inspections-page .close-btn:hover {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.fleet-inspections-page .panel-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.fleet-inspections-page .detail-section {
+  margin-bottom: 24px;
+}
+
+.fleet-inspections-page .detail-section h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #e5e7eb;
+  margin: 0 0 12px 0;
+}
+
+.fleet-inspections-page .detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.fleet-inspections-page .detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fleet-inspections-page .detail-item label {
+  font-size: 11px;
+  color: #6b7280;
+  text-transform: uppercase;
+}
+
+.fleet-inspections-page .detail-item span {
+  font-size: 14px;
+  color: #e5e7eb;
+}
+
+.fleet-inspections-page .results-summary {
+  display: flex;
+  gap: 16px;
+}
+
+.fleet-inspections-page .result-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  flex: 1;
+}
+
+.fleet-inspections-page .result-item.passed {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.fleet-inspections-page .result-item.failed {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.fleet-inspections-page .defect-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fleet-inspections-page .defect-item {
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  border-left: 3px solid;
+}
+
+.fleet-inspections-page .defect-item.critical {
+  border-left-color: #dc2626;
+}
+
+.fleet-inspections-page .defect-item.major {
+  border-left-color: #ef4444;
+}
+
+.fleet-inspections-page .defect-item.minor {
+  border-left-color: #f59e0b;
+}
+
+.fleet-inspections-page .defect-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.fleet-inspections-page .defect-category {
+  font-weight: 600;
+  color: #e5e7eb;
+  font-size: 13px;
+}
+
+.fleet-inspections-page .defect-header .severity {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.fleet-inspections-page .defect-header .severity.critical {
+  background: rgba(220, 38, 38, 0.2);
+  color: #dc2626;
+}
+
+.fleet-inspections-page .defect-header .severity.major {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.fleet-inspections-page .defect-header .severity.minor {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.fleet-inspections-page .defect-item p {
+  font-size: 13px;
+  color: #9ca3af;
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+}
+
+.fleet-inspections-page .defect-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fleet-inspections-page .photo-count {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.fleet-inspections-page .notes-text {
+  font-size: 14px;
+  color: #9ca3af;
+  margin: 0;
+  line-height: 1.5;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+}
+
+.fleet-inspections-page .panel-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Responsive Styles */
+@media (max-width: 1400px) {
+  .fleet-inspections-page .kpi-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .fleet-inspections-page .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .fleet-inspections-page .compliance-overview {
+    flex-wrap: wrap;
+  }
+
+  .fleet-inspections-page .compliance-stat {
+    flex: 1 1 calc(33% - 10px);
+    min-width: 150px;
+  }
+}
+
+@media (max-width: 768px) {
+  .fleet-inspections-page {
+    padding: 16px;
+  }
+
+  .fleet-inspections-page .page-header {
+    flex-direction: column;
+  }
+
+  .fleet-inspections-page .header-actions {
+    width: 100%;
+  }
+
+  .fleet-inspections-page .kpi-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .fleet-inspections-page .tab-navigation {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .fleet-inspections-page .filters-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .fleet-inspections-page .search-box {
+    max-width: none;
+  }
+
+  .fleet-inspections-page .schedule-card {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .fleet-inspections-page .schedule-vehicle {
+    min-width: 100%;
+  }
+
+  .fleet-inspections-page .defects-summary {
+    flex-wrap: wrap;
+  }
+
+  .fleet-inspections-page .defect-stat {
+    flex: 1 1 calc(33% - 10px);
+    min-width: 100px;
+    padding: 16px;
+  }
+
+  .fleet-inspections-page .compliance-stat {
+    flex: 1 1 100%;
+  }
+
+  .fleet-inspections-page .detail-panel {
+    max-width: 100%;
+  }
+
+  .fleet-inspections-page .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}

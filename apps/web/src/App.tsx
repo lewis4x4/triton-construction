@@ -71,7 +71,14 @@ import {
   FuelManagement,
   VehicleInspections,
   DQFManagement,
-  IFTAReporting
+  IFTAReporting,
+  // Enhanced Fleet Management Pages
+  FleetAnalyticsDashboard,
+  EnhancedVehicleDetails,
+  FuelManagementDashboard,
+  MaintenanceDashboard,
+  FleetReports,
+  FleetInspections
 } from './pages/equipment';
 // Pay Estimates Module
 import {
@@ -697,7 +704,17 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <EquipmentFleetDashboard />
+                  <FleetAnalyticsDashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/equipment/analytics"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <FleetAnalyticsDashboard />
                 </Layout>
               </ProtectedRoute>
             }
@@ -717,7 +734,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <MaintenanceScheduling />
+                  <MaintenanceDashboard />
                 </Layout>
               </ProtectedRoute>
             }
@@ -737,7 +754,17 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <VehicleDetails />
+                  <EnhancedVehicleDetails />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/equipment/vehicles/:id"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <EnhancedVehicleDetails />
                 </Layout>
               </ProtectedRoute>
             }
@@ -747,7 +774,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <FuelManagement />
+                  <FuelManagementDashboard />
                 </Layout>
               </ProtectedRoute>
             }
@@ -757,7 +784,17 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <VehicleInspections />
+                  <FleetInspections />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/equipment/reports"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <FleetReports />
                 </Layout>
               </ProtectedRoute>
             }
@@ -778,6 +815,57 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <IFTAReporting />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          {/* Legacy routes - redirect to new enhanced versions */}
+          <Route
+            path="/equipment/fleet-legacy"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <EquipmentFleetDashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/equipment/vehicles-legacy"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <VehicleDetails />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/equipment/fuel-legacy"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <FuelManagement />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/equipment/inspections-legacy"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <VehicleInspections />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/equipment/maintenance-legacy"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <MaintenanceScheduling />
                 </Layout>
               </ProtectedRoute>
             }

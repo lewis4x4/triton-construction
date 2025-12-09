@@ -8,7 +8,6 @@ import {
   FolderKanban,
   ClipboardList,
   Clock,
-  Truck,
   Users,
   Settings,
   Shield,
@@ -34,6 +33,8 @@ import {
   Receipt,
   Package,
   AlertTriangle,
+  FileBarChart,
+  Gauge,
 } from 'lucide-react';
 
 interface LayoutProps {
@@ -86,14 +87,21 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
-    label: 'Resources',
+    label: 'Fleet Management',
     items: [
-      { path: '/equipment', label: 'Fleet Dashboard', icon: <Truck size={20} strokeWidth={1.5} /> },
+      { path: '/equipment', label: 'Fleet Analytics', icon: <Gauge size={20} strokeWidth={1.5} /> },
       { path: '/equipment/vehicles', label: 'Vehicle Details', icon: <Car size={20} strokeWidth={1.5} /> },
+      { path: '/equipment/maintenance', label: 'Maintenance', icon: <Wrench size={20} strokeWidth={1.5} /> },
       { path: '/equipment/fuel', label: 'Fuel Management', icon: <Fuel size={20} strokeWidth={1.5} /> },
       { path: '/equipment/inspections', label: 'Inspections', icon: <ClipboardList size={20} strokeWidth={1.5} /> },
+      { path: '/equipment/reports', label: 'Fleet Reports', icon: <FileBarChart size={20} strokeWidth={1.5} /> },
       { path: '/equipment/dqf', label: 'Driver Files (DQF)', icon: <UserCheck size={20} strokeWidth={1.5} /> },
       { path: '/equipment/ifta', label: 'IFTA Reports', icon: <Receipt size={20} strokeWidth={1.5} /> },
+    ],
+  },
+  {
+    label: 'Resources',
+    items: [
       { path: '/equipment/crew', label: 'Crew Roster', icon: <Users size={20} strokeWidth={1.5} /> },
       { path: '/materials', label: 'Materials', icon: <Package size={20} strokeWidth={1.5} /> },
       { path: '/subcontractors', label: 'Subcontractors', icon: <Building2 size={20} strokeWidth={1.5} /> },

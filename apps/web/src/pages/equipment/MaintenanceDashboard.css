@@ -1,0 +1,1514 @@
+.maintenance-dashboard-page {
+  padding: 24px;
+  background: linear-gradient(135deg, #0f1219 0%, #1a1f2e 100%);
+  min-height: 100vh;
+}
+
+/* Loading State */
+.maintenance-dashboard-page .loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  color: #9ca3af;
+}
+
+.maintenance-dashboard-page .loading-state .spinning {
+  animation: spin 1s linear infinite;
+  color: #8b5cf6;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Page Header */
+.maintenance-dashboard-page .page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.maintenance-dashboard-page .header-content {
+  flex: 1;
+  min-width: 300px;
+}
+
+.maintenance-dashboard-page .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #9ca3af;
+  text-decoration: none;
+  font-size: 14px;
+  margin-bottom: 8px;
+  transition: color 0.2s;
+}
+
+.maintenance-dashboard-page .back-link:hover {
+  color: #8b5cf6;
+}
+
+.maintenance-dashboard-page .header-content h1 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 8px 0;
+}
+
+.maintenance-dashboard-page .header-content h1 svg {
+  color: #8b5cf6;
+}
+
+.maintenance-dashboard-page .header-content p {
+  color: #9ca3af;
+  margin: 0;
+  font-size: 14px;
+}
+
+.maintenance-dashboard-page .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.maintenance-dashboard-page .date-range-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #e5e7eb;
+}
+
+.maintenance-dashboard-page .date-range-selector select {
+  background: transparent;
+  border: none;
+  color: #e5e7eb;
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+}
+
+.maintenance-dashboard-page .btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.maintenance-dashboard-page .btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: #e5e7eb;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.maintenance-dashboard-page .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.maintenance-dashboard-page .btn-primary {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  color: #ffffff;
+}
+
+.maintenance-dashboard-page .btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+/* Alert Banner */
+.maintenance-dashboard-page .alert-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+.maintenance-dashboard-page .alert-banner.critical {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.1));
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.maintenance-dashboard-page .alert-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fca5a5;
+}
+
+.maintenance-dashboard-page .alert-content svg {
+  color: #ef4444;
+}
+
+.maintenance-dashboard-page .alert-content strong {
+  color: #ffffff;
+}
+
+.maintenance-dashboard-page .alert-action {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(239, 68, 68, 0.2);
+  border: none;
+  color: #ef4444;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.maintenance-dashboard-page .alert-action:hover {
+  background: rgba(239, 68, 68, 0.3);
+}
+
+/* KPI Grid */
+.maintenance-dashboard-page .kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.maintenance-dashboard-page .kpi-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 20px;
+  transition: all 0.3s;
+}
+
+.maintenance-dashboard-page .kpi-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.maintenance-dashboard-page .kpi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.maintenance-dashboard-page .kpi-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.maintenance-dashboard-page .kpi-change {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.maintenance-dashboard-page .kpi-change.positive {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.maintenance-dashboard-page .kpi-change.negative {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.maintenance-dashboard-page .kpi-change.neutral {
+  background: rgba(156, 163, 175, 0.15);
+  color: #9ca3af;
+}
+
+.maintenance-dashboard-page .kpi-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.maintenance-dashboard-page .kpi-label {
+  font-size: 14px;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+.maintenance-dashboard-page .kpi-subtitle {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+/* Tab Navigation */
+.maintenance-dashboard-page .tab-navigation {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.maintenance-dashboard-page .tab-navigation .tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: #9ca3af;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.maintenance-dashboard-page .tab-navigation .tab:hover {
+  color: #e5e7eb;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.maintenance-dashboard-page .tab-navigation .tab.active {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  color: #ffffff;
+}
+
+.maintenance-dashboard-page .tab-badge {
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 8px;
+  min-width: 18px;
+  text-align: center;
+}
+
+.maintenance-dashboard-page .tab.active .tab-badge {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Dashboard Content */
+.maintenance-dashboard-page .dashboard-content {
+  margin-bottom: 24px;
+}
+
+/* Overview Grid */
+.maintenance-dashboard-page .overview-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+}
+
+/* Dashboard Cards */
+.maintenance-dashboard-page .dashboard-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.maintenance-dashboard-page .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.maintenance-dashboard-page .card-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.maintenance-dashboard-page .card-header h3 svg {
+  color: #8b5cf6;
+}
+
+.maintenance-dashboard-page .view-all-link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #8b5cf6;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.maintenance-dashboard-page .view-all-link:hover {
+  color: #a78bfa;
+}
+
+/* Vehicle Status Card */
+.maintenance-dashboard-page .vehicle-status-card {
+  grid-column: span 6;
+}
+
+.maintenance-dashboard-page .status-summary {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.maintenance-dashboard-page .status-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  flex: 1;
+}
+
+.maintenance-dashboard-page .status-item.good {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.maintenance-dashboard-page .status-item.due-soon {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+}
+
+.maintenance-dashboard-page .status-item.overdue {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.maintenance-dashboard-page .status-item.in-service {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+.maintenance-dashboard-page .status-item .count {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.maintenance-dashboard-page .status-item .label {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.maintenance-dashboard-page .vehicle-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.maintenance-dashboard-page .vehicle-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  border-left: 3px solid transparent;
+}
+
+.maintenance-dashboard-page .vehicle-item.good {
+  border-left-color: #10b981;
+}
+
+.maintenance-dashboard-page .vehicle-item.due_soon {
+  border-left-color: #f59e0b;
+}
+
+.maintenance-dashboard-page .vehicle-item.overdue {
+  border-left-color: #ef4444;
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.maintenance-dashboard-page .vehicle-item.in_service {
+  border-left-color: #3b82f6;
+}
+
+.maintenance-dashboard-page .vehicle-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.maintenance-dashboard-page .vehicle-number {
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.maintenance-dashboard-page .vehicle-type {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.maintenance-dashboard-page .service-info {
+  text-align: right;
+}
+
+.maintenance-dashboard-page .next-service {
+  display: block;
+  font-size: 13px;
+  color: #e5e7eb;
+}
+
+.maintenance-dashboard-page .service-due {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.maintenance-dashboard-page .service-due.soon {
+  color: #f59e0b;
+}
+
+.maintenance-dashboard-page .service-due.overdue {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.maintenance-dashboard-page .status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.maintenance-dashboard-page .status-indicator.good {
+  background: #10b981;
+}
+
+.maintenance-dashboard-page .status-indicator.due_soon {
+  background: #f59e0b;
+}
+
+.maintenance-dashboard-page .status-indicator.overdue {
+  background: #ef4444;
+  animation: pulse 1.5s infinite;
+}
+
+.maintenance-dashboard-page .status-indicator.in_service {
+  background: #3b82f6;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Cost Breakdown Card */
+.maintenance-dashboard-page .cost-breakdown-card {
+  grid-column: span 3;
+}
+
+.maintenance-dashboard-page .cost-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.maintenance-dashboard-page .cost-total {
+  text-align: center;
+  padding: 16px;
+  background: rgba(139, 92, 246, 0.1);
+  border-radius: 12px;
+}
+
+.maintenance-dashboard-page .total-value {
+  display: block;
+  font-size: 28px;
+  font-weight: 700;
+  color: #8b5cf6;
+}
+
+.maintenance-dashboard-page .total-label {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.maintenance-dashboard-page .cost-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.maintenance-dashboard-page .cost-bar-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.maintenance-dashboard-page .cost-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.maintenance-dashboard-page .category-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #e5e7eb;
+}
+
+.maintenance-dashboard-page .color-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.maintenance-dashboard-page .category-amount {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.maintenance-dashboard-page .cost-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.maintenance-dashboard-page .cost-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.maintenance-dashboard-page .cost-bar-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #6b7280;
+}
+
+/* Technician Card */
+.maintenance-dashboard-page .technician-card {
+  grid-column: span 3;
+}
+
+.maintenance-dashboard-page .technician-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.maintenance-dashboard-page .technician-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+}
+
+.maintenance-dashboard-page .tech-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+  color: #ffffff;
+}
+
+.maintenance-dashboard-page .tech-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.maintenance-dashboard-page .tech-name {
+  display: block;
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.maintenance-dashboard-page .tech-stats {
+  display: block;
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.maintenance-dashboard-page .tech-metrics {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.maintenance-dashboard-page .efficiency-meter {
+  width: 50px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.maintenance-dashboard-page .efficiency-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #34d399);
+  border-radius: 3px;
+}
+
+.maintenance-dashboard-page .efficiency-value {
+  font-size: 11px;
+  font-weight: 600;
+  color: #10b981;
+  min-width: 32px;
+}
+
+.maintenance-dashboard-page .tech-status {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+.maintenance-dashboard-page .tech-status.available {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.maintenance-dashboard-page .tech-status.busy {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.maintenance-dashboard-page .tech-status.offline {
+  background: rgba(107, 114, 128, 0.15);
+  color: #9ca3af;
+}
+
+/* Recent Work Orders Card */
+.maintenance-dashboard-page .recent-work-orders {
+  grid-column: span 6;
+}
+
+.maintenance-dashboard-page .work-order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.maintenance-dashboard-page .work-order-item {
+  display: flex;
+  gap: 12px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  transition: background 0.2s;
+}
+
+.maintenance-dashboard-page .work-order-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.maintenance-dashboard-page .wo-priority {
+  width: 4px;
+  border-radius: 2px;
+}
+
+.maintenance-dashboard-page .wo-content {
+  flex: 1;
+}
+
+.maintenance-dashboard-page .wo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.maintenance-dashboard-page .wo-number {
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 13px;
+}
+
+.maintenance-dashboard-page .wo-status {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: capitalize;
+}
+
+.maintenance-dashboard-page .wo-status.open {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.maintenance-dashboard-page .wo-status.in_progress {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
+.maintenance-dashboard-page .wo-status.pending_parts {
+  background: rgba(236, 72, 153, 0.15);
+  color: #ec4899;
+}
+
+.maintenance-dashboard-page .wo-status.completed {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.maintenance-dashboard-page .wo-status.on_hold {
+  background: rgba(107, 114, 128, 0.15);
+  color: #9ca3af;
+}
+
+.maintenance-dashboard-page .wo-vehicle {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-bottom: 4px;
+}
+
+.maintenance-dashboard-page .wo-description {
+  font-size: 13px;
+  color: #e5e7eb;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.maintenance-dashboard-page .wo-footer {
+  display: flex;
+  gap: 16px;
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.maintenance-dashboard-page .wo-footer span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Calendar Card */
+.maintenance-dashboard-page .calendar-card {
+  grid-column: span 6;
+}
+
+.maintenance-dashboard-page .calendar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.maintenance-dashboard-page .calendar-item {
+  display: flex;
+  gap: 16px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+}
+
+.maintenance-dashboard-page .calendar-item.overdue {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.maintenance-dashboard-page .calendar-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  padding: 8px;
+  background: rgba(139, 92, 246, 0.15);
+  border-radius: 8px;
+}
+
+.maintenance-dashboard-page .calendar-item.overdue .calendar-date {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+.maintenance-dashboard-page .date-day {
+  font-size: 20px;
+  font-weight: 700;
+  color: #8b5cf6;
+  line-height: 1;
+}
+
+.maintenance-dashboard-page .calendar-item.overdue .date-day {
+  color: #ef4444;
+}
+
+.maintenance-dashboard-page .date-month {
+  font-size: 10px;
+  color: #9ca3af;
+  text-transform: uppercase;
+}
+
+.maintenance-dashboard-page .calendar-content {
+  flex: 1;
+}
+
+.maintenance-dashboard-page .calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.maintenance-dashboard-page .maintenance-type {
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.maintenance-dashboard-page .priority-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: capitalize;
+}
+
+.maintenance-dashboard-page .priority-badge.critical {
+  background: rgba(220, 38, 38, 0.2);
+  color: #dc2626;
+}
+
+.maintenance-dashboard-page .priority-badge.high {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.maintenance-dashboard-page .priority-badge.medium {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.maintenance-dashboard-page .priority-badge.low {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
+.maintenance-dashboard-page .calendar-vehicle {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-bottom: 6px;
+}
+
+.maintenance-dashboard-page .calendar-details {
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.maintenance-dashboard-page .calendar-details span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Scheduled Content */
+.maintenance-dashboard-page .scheduled-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Filters Bar */
+.maintenance-dashboard-page .filters-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.maintenance-dashboard-page .search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  flex: 1;
+  max-width: 400px;
+}
+
+.maintenance-dashboard-page .search-box svg {
+  color: #6b7280;
+}
+
+.maintenance-dashboard-page .search-box input {
+  background: transparent;
+  border: none;
+  color: #e5e7eb;
+  font-size: 14px;
+  width: 100%;
+  outline: none;
+}
+
+.maintenance-dashboard-page .search-box input::placeholder {
+  color: #6b7280;
+}
+
+.maintenance-dashboard-page .filter-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.maintenance-dashboard-page .filter-group svg {
+  color: #6b7280;
+}
+
+.maintenance-dashboard-page .filter-group select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 10px 16px;
+  color: #e5e7eb;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Maintenance Table */
+.maintenance-dashboard-page .maintenance-table {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.maintenance-dashboard-page .maintenance-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.maintenance-dashboard-page .maintenance-table th {
+  text-align: left;
+  padding: 14px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.maintenance-dashboard-page .maintenance-table td {
+  padding: 14px 16px;
+  font-size: 14px;
+  color: #e5e7eb;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.maintenance-dashboard-page .maintenance-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.maintenance-dashboard-page .maintenance-table .overdue-row td {
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.maintenance-dashboard-page .vehicle-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.maintenance-dashboard-page .vehicle-num {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.maintenance-dashboard-page .category-badge {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.maintenance-dashboard-page .category-badge.preventive {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.maintenance-dashboard-page .category-badge.corrective {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.maintenance-dashboard-page .category-badge.inspection {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
+.maintenance-dashboard-page .category-badge.recall {
+  background: rgba(236, 72, 153, 0.15);
+  color: #ec4899;
+}
+
+.maintenance-dashboard-page .priority-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.maintenance-dashboard-page .status-badge {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.maintenance-dashboard-page .status-badge.scheduled {
+  background: rgba(139, 92, 246, 0.15);
+  color: #8b5cf6;
+}
+
+.maintenance-dashboard-page .status-badge.in_progress {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
+.maintenance-dashboard-page .status-badge.completed {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.maintenance-dashboard-page .status-badge.overdue {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.maintenance-dashboard-page .status-badge.cancelled {
+  background: rgba(107, 114, 128, 0.15);
+  color: #9ca3af;
+}
+
+.maintenance-dashboard-page .action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.maintenance-dashboard-page .action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #9ca3af;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.maintenance-dashboard-page .action-btn:hover {
+  background: rgba(139, 92, 246, 0.15);
+  color: #8b5cf6;
+}
+
+/* Work Orders Content */
+.maintenance-dashboard-page .work-orders-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.maintenance-dashboard-page .wo-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.maintenance-dashboard-page .wo-stats {
+  display: flex;
+  gap: 24px;
+}
+
+.maintenance-dashboard-page .wo-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+}
+
+.maintenance-dashboard-page .wo-stat .stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.maintenance-dashboard-page .wo-stat .stat-label {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.maintenance-dashboard-page .wo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.maintenance-dashboard-page .wo-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 16px;
+  border-top: 3px solid;
+}
+
+.maintenance-dashboard-page .wo-card.critical {
+  border-top-color: #dc2626;
+}
+
+.maintenance-dashboard-page .wo-card.high {
+  border-top-color: #ef4444;
+}
+
+.maintenance-dashboard-page .wo-card.medium {
+  border-top-color: #f59e0b;
+}
+
+.maintenance-dashboard-page .wo-card.low {
+  border-top-color: #3b82f6;
+}
+
+.maintenance-dashboard-page .wo-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.maintenance-dashboard-page .wo-card-header .wo-number {
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.maintenance-dashboard-page .wo-card-header .wo-priority {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+.maintenance-dashboard-page .wo-card-header .wo-priority.critical {
+  background: rgba(220, 38, 38, 0.2);
+  color: #dc2626;
+}
+
+.maintenance-dashboard-page .wo-card-header .wo-priority.high {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.maintenance-dashboard-page .wo-card-header .wo-priority.medium {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.maintenance-dashboard-page .wo-card-header .wo-priority.low {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
+.maintenance-dashboard-page .wo-card-vehicle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #9ca3af;
+  margin-bottom: 8px;
+}
+
+.maintenance-dashboard-page .wo-card-description {
+  font-size: 14px;
+  color: #e5e7eb;
+  margin: 0 0 12px 0;
+  line-height: 1.4;
+}
+
+.maintenance-dashboard-page .wo-card-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.maintenance-dashboard-page .wo-card-details .detail {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.maintenance-dashboard-page .wo-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.maintenance-dashboard-page .wo-card-footer .wo-date {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #6b7280;
+}
+
+/* History Content */
+.maintenance-dashboard-page .history-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.maintenance-dashboard-page .history-table {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  overflow-x: auto;
+}
+
+.maintenance-dashboard-page .history-table table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1000px;
+}
+
+.maintenance-dashboard-page .history-table th {
+  text-align: left;
+  padding: 14px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.maintenance-dashboard-page .history-table td {
+  padding: 14px 16px;
+  font-size: 14px;
+  color: #e5e7eb;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.maintenance-dashboard-page .history-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.maintenance-dashboard-page .history-table .total-cell {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.maintenance-dashboard-page .history-table tfoot td {
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.03);
+  border-top: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Quick Actions Footer */
+.maintenance-dashboard-page .quick-actions-footer {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+}
+
+.maintenance-dashboard-page .quick-action {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  color: #e5e7eb;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.maintenance-dashboard-page .quick-action:hover {
+  background: rgba(139, 92, 246, 0.1);
+  border-color: rgba(139, 92, 246, 0.3);
+  color: #8b5cf6;
+}
+
+.maintenance-dashboard-page .quick-action svg {
+  color: #8b5cf6;
+}
+
+/* Responsive Styles */
+@media (max-width: 1400px) {
+  .maintenance-dashboard-page .kpi-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .maintenance-dashboard-page .overview-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .maintenance-dashboard-page .vehicle-status-card,
+  .maintenance-dashboard-page .cost-breakdown-card,
+  .maintenance-dashboard-page .technician-card,
+  .maintenance-dashboard-page .recent-work-orders,
+  .maintenance-dashboard-page .calendar-card {
+    grid-column: span 6;
+  }
+
+  .maintenance-dashboard-page .cost-breakdown-card {
+    grid-column: span 3;
+  }
+
+  .maintenance-dashboard-page .technician-card {
+    grid-column: span 3;
+  }
+}
+
+@media (max-width: 1024px) {
+  .maintenance-dashboard-page .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .maintenance-dashboard-page .vehicle-status-card,
+  .maintenance-dashboard-page .cost-breakdown-card,
+  .maintenance-dashboard-page .technician-card,
+  .maintenance-dashboard-page .recent-work-orders,
+  .maintenance-dashboard-page .calendar-card {
+    grid-column: span 6;
+  }
+
+  .maintenance-dashboard-page .quick-actions-footer {
+    flex-wrap: wrap;
+  }
+
+  .maintenance-dashboard-page .quick-action {
+    flex: 1 1 calc(50% - 8px);
+    min-width: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .maintenance-dashboard-page {
+    padding: 16px;
+  }
+
+  .maintenance-dashboard-page .page-header {
+    flex-direction: column;
+  }
+
+  .maintenance-dashboard-page .header-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .maintenance-dashboard-page .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .maintenance-dashboard-page .overview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .maintenance-dashboard-page .vehicle-status-card,
+  .maintenance-dashboard-page .cost-breakdown-card,
+  .maintenance-dashboard-page .technician-card,
+  .maintenance-dashboard-page .recent-work-orders,
+  .maintenance-dashboard-page .calendar-card {
+    grid-column: span 1;
+  }
+
+  .maintenance-dashboard-page .status-summary {
+    flex-wrap: wrap;
+  }
+
+  .maintenance-dashboard-page .status-item {
+    flex: 1 1 calc(50% - 8px);
+  }
+
+  .maintenance-dashboard-page .tab-navigation {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .maintenance-dashboard-page .filters-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .maintenance-dashboard-page .search-box {
+    max-width: none;
+  }
+
+  .maintenance-dashboard-page .filter-group {
+    flex-wrap: wrap;
+  }
+
+  .maintenance-dashboard-page .wo-stats {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .maintenance-dashboard-page .wo-stat {
+    flex: 1 1 calc(50% - 6px);
+  }
+
+  .maintenance-dashboard-page .quick-action {
+    flex: 1 1 100%;
+  }
+}

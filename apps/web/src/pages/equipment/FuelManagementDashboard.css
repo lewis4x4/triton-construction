@@ -1,0 +1,1303 @@
+.fuel-dashboard-page {
+  padding: 24px;
+  background: linear-gradient(135deg, #0f1219 0%, #1a1f2e 100%);
+  min-height: 100vh;
+}
+
+/* Loading State */
+.fuel-dashboard-page .loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  color: #9ca3af;
+}
+
+.fuel-dashboard-page .loading-state .spinning {
+  animation: spin 1s linear infinite;
+  color: #f59e0b;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Page Header */
+.fuel-dashboard-page .page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.fuel-dashboard-page .header-content {
+  flex: 1;
+  min-width: 300px;
+}
+
+.fuel-dashboard-page .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #9ca3af;
+  text-decoration: none;
+  font-size: 14px;
+  margin-bottom: 8px;
+  transition: color 0.2s;
+}
+
+.fuel-dashboard-page .back-link:hover {
+  color: #f59e0b;
+}
+
+.fuel-dashboard-page .header-content h1 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 8px 0;
+}
+
+.fuel-dashboard-page .header-content h1 svg {
+  color: #f59e0b;
+}
+
+.fuel-dashboard-page .header-content p {
+  color: #9ca3af;
+  margin: 0;
+  font-size: 14px;
+}
+
+.fuel-dashboard-page .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.fuel-dashboard-page .date-range-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #e5e7eb;
+}
+
+.fuel-dashboard-page .date-range-selector select {
+  background: transparent;
+  border: none;
+  color: #e5e7eb;
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+}
+
+.fuel-dashboard-page .btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.fuel-dashboard-page .btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: #e5e7eb;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.fuel-dashboard-page .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.fuel-dashboard-page .btn-primary {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #ffffff;
+}
+
+.fuel-dashboard-page .btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+/* Alert Banner */
+.fuel-dashboard-page .alert-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.1));
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+.fuel-dashboard-page .alert-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fca5a5;
+}
+
+.fuel-dashboard-page .alert-content svg {
+  color: #ef4444;
+}
+
+.fuel-dashboard-page .alert-content strong {
+  color: #ffffff;
+}
+
+.fuel-dashboard-page .alert-action {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #ef4444;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  transition: color 0.2s;
+}
+
+.fuel-dashboard-page .alert-action:hover {
+  color: #f87171;
+}
+
+/* KPI Grid */
+.fuel-dashboard-page .kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.fuel-dashboard-page .kpi-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 20px;
+  transition: all 0.3s;
+}
+
+.fuel-dashboard-page .kpi-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.fuel-dashboard-page .kpi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.fuel-dashboard-page .kpi-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fuel-dashboard-page .kpi-change {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.fuel-dashboard-page .kpi-change.positive {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.fuel-dashboard-page .kpi-change.negative {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.fuel-dashboard-page .kpi-change.neutral {
+  background: rgba(156, 163, 175, 0.15);
+  color: #9ca3af;
+}
+
+.fuel-dashboard-page .kpi-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+
+.fuel-dashboard-page .kpi-label {
+  font-size: 14px;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+.fuel-dashboard-page .kpi-subtitle {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+/* View Mode Tabs */
+.fuel-dashboard-page .view-mode-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.fuel-dashboard-page .view-mode-tabs .tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: #9ca3af;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.fuel-dashboard-page .view-mode-tabs .tab:hover {
+  color: #e5e7eb;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.fuel-dashboard-page .view-mode-tabs .tab.active {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #ffffff;
+}
+
+/* Dashboard Grid */
+.fuel-dashboard-page .dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+/* Dashboard Cards */
+.fuel-dashboard-page .dashboard-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.fuel-dashboard-page .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.fuel-dashboard-page .card-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.fuel-dashboard-page .card-header h3 svg {
+  color: #f59e0b;
+}
+
+.fuel-dashboard-page .card-actions select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 6px 12px;
+  color: #e5e7eb;
+  font-size: 13px;
+}
+
+.fuel-dashboard-page .view-all-link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #f59e0b;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.fuel-dashboard-page .view-all-link:hover {
+  color: #fbbf24;
+}
+
+.fuel-dashboard-page .icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #9ca3af;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.fuel-dashboard-page .icon-btn:hover {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+/* Consumption Chart */
+.fuel-dashboard-page .consumption-chart {
+  grid-column: span 8;
+}
+
+.fuel-dashboard-page .chart-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.fuel-dashboard-page .chart-summary {
+  display: flex;
+  gap: 32px;
+}
+
+.fuel-dashboard-page .summary-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.fuel-dashboard-page .summary-label {
+  font-size: 12px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.fuel-dashboard-page .summary-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.fuel-dashboard-page .bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 160px;
+  padding-top: 20px;
+}
+
+.fuel-dashboard-page .bar-wrapper {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.fuel-dashboard-page .bar {
+  width: 100%;
+  max-width: 24px;
+  background: linear-gradient(180deg, #f59e0b, #d97706);
+  border-radius: 4px 4px 0 0;
+  transition: height 0.3s ease;
+  cursor: pointer;
+}
+
+.fuel-dashboard-page .bar:hover {
+  background: linear-gradient(180deg, #fbbf24, #f59e0b);
+}
+
+.fuel-dashboard-page .bar.weekend {
+  background: linear-gradient(180deg, #6b7280, #4b5563);
+}
+
+.fuel-dashboard-page .bar-label {
+  font-size: 10px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+/* Fuel Breakdown */
+.fuel-dashboard-page .fuel-breakdown {
+  grid-column: span 4;
+}
+
+.fuel-dashboard-page .breakdown-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.fuel-dashboard-page .donut-chart {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin: 0 auto;
+}
+
+.fuel-dashboard-page .donut-chart svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.fuel-dashboard-page .donut-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.fuel-dashboard-page .donut-value {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.fuel-dashboard-page .donut-label {
+  display: block;
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.fuel-dashboard-page .breakdown-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fuel-dashboard-page .legend-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fuel-dashboard-page .legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.fuel-dashboard-page .legend-details {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.fuel-dashboard-page .legend-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #e5e7eb;
+}
+
+.fuel-dashboard-page .legend-value {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.fuel-dashboard-page .legend-cost {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* Vehicle Efficiency Table */
+.fuel-dashboard-page .vehicle-efficiency {
+  grid-column: span 8;
+}
+
+.fuel-dashboard-page .efficiency-table {
+  overflow-x: auto;
+}
+
+.fuel-dashboard-page .efficiency-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.fuel-dashboard-page .efficiency-table th {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.fuel-dashboard-page .efficiency-table td {
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #e5e7eb;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.fuel-dashboard-page .efficiency-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.fuel-dashboard-page .vehicle-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.fuel-dashboard-page .vehicle-number {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.fuel-dashboard-page .efficiency-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 120px;
+}
+
+.fuel-dashboard-page .efficiency-bar .progress-bar,
+.fuel-dashboard-page .efficiency-bar {
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.fuel-dashboard-page .efficiency-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.fuel-dashboard-page .efficiency-bar span {
+  font-size: 12px;
+  font-weight: 600;
+  color: #9ca3af;
+  min-width: 36px;
+  text-align: right;
+}
+
+.fuel-dashboard-page .status-badge {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.fuel-dashboard-page .status-badge.excellent {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.fuel-dashboard-page .status-badge.good {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
+.fuel-dashboard-page .status-badge.average {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.fuel-dashboard-page .status-badge.poor {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+/* Driver Leaderboard */
+.fuel-dashboard-page .driver-leaderboard {
+  grid-column: span 4;
+}
+
+.fuel-dashboard-page .leaderboard-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fuel-dashboard-page .leaderboard-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  transition: background 0.2s;
+}
+
+.fuel-dashboard-page .leaderboard-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.fuel-dashboard-page .rank-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #9ca3af;
+}
+
+.fuel-dashboard-page .rank-badge[data-rank="1"] {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #1a1f2e;
+}
+
+.fuel-dashboard-page .rank-badge[data-rank="2"] {
+  background: linear-gradient(135deg, #9ca3af, #6b7280);
+  color: #1a1f2e;
+}
+
+.fuel-dashboard-page .rank-badge[data-rank="3"] {
+  background: linear-gradient(135deg, #cd7f32, #8b4513);
+  color: #ffffff;
+}
+
+.fuel-dashboard-page .driver-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.fuel-dashboard-page .driver-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.fuel-dashboard-page .driver-stats {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.fuel-dashboard-page .driver-score {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fuel-dashboard-page .score-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: conic-gradient(
+    #10b981 calc(var(--score) * 3.6deg),
+    rgba(255, 255, 255, 0.1) 0
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.fuel-dashboard-page .score-circle::before {
+  content: '';
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #1a1f2e;
+}
+
+.fuel-dashboard-page .score-circle span {
+  position: relative;
+  z-index: 1;
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.fuel-dashboard-page .score-trend {
+  color: #6b7280;
+}
+
+.fuel-dashboard-page .score-trend.up {
+  color: #10b981;
+}
+
+.fuel-dashboard-page .score-trend.down {
+  color: #ef4444;
+}
+
+/* Anomaly Panel */
+.fuel-dashboard-page .anomaly-panel {
+  grid-column: span 6;
+}
+
+.fuel-dashboard-page .anomaly-badge {
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: 8px;
+}
+
+.fuel-dashboard-page .anomaly-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fuel-dashboard-page .anomaly-item {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+
+.fuel-dashboard-page .anomaly-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.fuel-dashboard-page .anomaly-severity {
+  width: 4px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.fuel-dashboard-page .anomaly-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.fuel-dashboard-page .anomaly-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.fuel-dashboard-page .anomaly-type {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.fuel-dashboard-page .anomaly-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: capitalize;
+}
+
+.fuel-dashboard-page .anomaly-status.new {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.fuel-dashboard-page .anomaly-status.reviewing {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.fuel-dashboard-page .anomaly-status.resolved {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.fuel-dashboard-page .anomaly-description {
+  font-size: 13px;
+  color: #9ca3af;
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+}
+
+.fuel-dashboard-page .anomaly-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.fuel-dashboard-page .anomaly-meta span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.fuel-dashboard-page .anomaly-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.fuel-dashboard-page .anomaly-action:hover {
+  color: #f59e0b;
+}
+
+/* Project Allocation */
+.fuel-dashboard-page .project-allocation {
+  grid-column: span 6;
+}
+
+.fuel-dashboard-page .allocation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fuel-dashboard-page .allocation-item {
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+}
+
+.fuel-dashboard-page .allocation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.fuel-dashboard-page .project-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.fuel-dashboard-page .project-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.fuel-dashboard-page .project-number {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.fuel-dashboard-page .allocation-vehicles {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.fuel-dashboard-page .allocation-metrics {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 12px;
+}
+
+.fuel-dashboard-page .allocation-metrics .metric {
+  display: flex;
+  flex-direction: column;
+}
+
+.fuel-dashboard-page .metric-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.fuel-dashboard-page .metric-label {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.fuel-dashboard-page .allocation-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fuel-dashboard-page .progress-bar {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.fuel-dashboard-page .progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.fuel-dashboard-page .progress-fill.warning {
+  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+}
+
+.fuel-dashboard-page .progress-label {
+  font-size: 11px;
+  color: #6b7280;
+  text-align: right;
+}
+
+/* Fueling Locations */
+.fuel-dashboard-page .fueling-locations {
+  grid-column: span 6;
+}
+
+.fuel-dashboard-page .locations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fuel-dashboard-page .location-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  transition: background 0.2s;
+}
+
+.fuel-dashboard-page .location-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.fuel-dashboard-page .location-rank {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.fuel-dashboard-page .location-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.fuel-dashboard-page .location-name {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fuel-dashboard-page .location-address {
+  display: block;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.fuel-dashboard-page .location-stats {
+  display: flex;
+  gap: 16px;
+}
+
+.fuel-dashboard-page .location-stats .stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.fuel-dashboard-page .location-stats .stat-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+.fuel-dashboard-page .location-stats .stat-label {
+  font-size: 10px;
+  color: #6b7280;
+}
+
+.fuel-dashboard-page .location-stats .stat.highlight .stat-value {
+  color: #10b981;
+}
+
+/* Environmental Impact */
+.fuel-dashboard-page .environmental {
+  grid-column: span 6;
+}
+
+.fuel-dashboard-page .environmental-content {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+.fuel-dashboard-page .carbon-metric {
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+  border-radius: 16px;
+  min-width: 140px;
+}
+
+.fuel-dashboard-page .carbon-value {
+  font-size: 36px;
+  font-weight: 700;
+  color: #10b981;
+  line-height: 1;
+}
+
+.fuel-dashboard-page .carbon-unit {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.fuel-dashboard-page .carbon-label {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-top: 8px;
+}
+
+.fuel-dashboard-page .environmental-stats {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fuel-dashboard-page .env-stat {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+}
+
+.fuel-dashboard-page .env-stat svg {
+  color: #10b981;
+}
+
+.fuel-dashboard-page .env-stat div {
+  display: flex;
+  flex-direction: column;
+}
+
+.fuel-dashboard-page .env-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.fuel-dashboard-page .env-label {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+/* Quick Actions Footer */
+.fuel-dashboard-page .quick-actions-footer {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+}
+
+.fuel-dashboard-page .quick-action {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  color: #e5e7eb;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.fuel-dashboard-page .quick-action:hover {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.3);
+  color: #f59e0b;
+}
+
+.fuel-dashboard-page .quick-action svg {
+  color: #f59e0b;
+}
+
+/* Responsive Styles */
+@media (max-width: 1400px) {
+  .fuel-dashboard-page .kpi-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .fuel-dashboard-page .dashboard-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .fuel-dashboard-page .consumption-chart {
+    grid-column: span 6;
+  }
+
+  .fuel-dashboard-page .fuel-breakdown {
+    grid-column: span 6;
+  }
+
+  .fuel-dashboard-page .vehicle-efficiency {
+    grid-column: span 6;
+  }
+
+  .fuel-dashboard-page .driver-leaderboard {
+    grid-column: span 6;
+  }
+
+  .fuel-dashboard-page .anomaly-panel {
+    grid-column: span 6;
+  }
+
+  .fuel-dashboard-page .project-allocation {
+    grid-column: span 6;
+  }
+
+  .fuel-dashboard-page .fueling-locations {
+    grid-column: span 6;
+  }
+
+  .fuel-dashboard-page .environmental {
+    grid-column: span 6;
+  }
+}
+
+@media (max-width: 1024px) {
+  .fuel-dashboard-page .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .fuel-dashboard-page .consumption-chart,
+  .fuel-dashboard-page .fuel-breakdown,
+  .fuel-dashboard-page .vehicle-efficiency,
+  .fuel-dashboard-page .driver-leaderboard,
+  .fuel-dashboard-page .anomaly-panel,
+  .fuel-dashboard-page .project-allocation,
+  .fuel-dashboard-page .fueling-locations,
+  .fuel-dashboard-page .environmental {
+    grid-column: span 6;
+  }
+
+  .fuel-dashboard-page .quick-actions-footer {
+    flex-wrap: wrap;
+  }
+
+  .fuel-dashboard-page .quick-action {
+    flex: 1 1 calc(50% - 8px);
+    min-width: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .fuel-dashboard-page {
+    padding: 16px;
+  }
+
+  .fuel-dashboard-page .page-header {
+    flex-direction: column;
+  }
+
+  .fuel-dashboard-page .header-actions {
+    width: 100%;
+  }
+
+  .fuel-dashboard-page .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .fuel-dashboard-page .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .fuel-dashboard-page .consumption-chart,
+  .fuel-dashboard-page .fuel-breakdown,
+  .fuel-dashboard-page .vehicle-efficiency,
+  .fuel-dashboard-page .driver-leaderboard,
+  .fuel-dashboard-page .anomaly-panel,
+  .fuel-dashboard-page .project-allocation,
+  .fuel-dashboard-page .fueling-locations,
+  .fuel-dashboard-page .environmental {
+    grid-column: span 1;
+  }
+
+  .fuel-dashboard-page .chart-summary {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .fuel-dashboard-page .environmental-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .fuel-dashboard-page .location-stats {
+    display: none;
+  }
+
+  .fuel-dashboard-page .quick-action {
+    flex: 1 1 100%;
+  }
+}
