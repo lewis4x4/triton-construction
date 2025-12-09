@@ -44,12 +44,12 @@ export function Login() {
         <div className="login-hero-overlay"></div>
         <div className="login-hero-content">
           <h1>
-            Constructing <br />
-            <span>Integrity.</span>
+            Paving the <br />
+            <span>Future.</span>
           </h1>
           <p>
-            Experience the next generation of construction management with AI-driven insights
-            and real-time field operations.
+            The comprehensive platform for heavy civil, road, and bridge contactors.
+            Streamline your operations from bid to closeout.
           </p>
         </div>
       </div>
