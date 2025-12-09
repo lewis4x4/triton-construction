@@ -114,6 +114,7 @@
     text-transform: uppercase;
     letter-spacing: 0.1em;
     font-weight: 700;
+    margin-bottom: 0.25rem;
 }
 
 .status-value {

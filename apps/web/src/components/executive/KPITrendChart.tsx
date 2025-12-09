@@ -114,7 +114,7 @@ export function KPITrendChart({
           <h3 className="text-xs font-bold text-secondary uppercase tracking-widest">{title}</h3>
           <div className="flex items-baseline gap-2 mt-2">
             <span className="text-3xl font-bold font-mono text-white tracking-tighter drop-shadow-md">
-              {latest.toLocaleString()}
+              {latest.toLocaleString(undefined, { maximumFractionDigits: 0 })}
             </span>
             {unit && <span className="text-sm font-mono text-secondary">{unit}</span>}
           </div>
