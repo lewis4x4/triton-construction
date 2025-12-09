@@ -134,7 +134,7 @@ export function WorkPackagesTab({ projectId }: WorkPackagesTabProps) {
       const { data, error: fetchError } = await query;
 
       if (fetchError) throw fetchError;
-      setPackages(data || []);
+      setPackages((data as unknown as WorkPackage[]) || []);
     } catch (err) {
       console.error('Error fetching work packages:', err);
       setError('Failed to load work packages');
@@ -190,7 +190,7 @@ export function WorkPackagesTab({ projectId }: WorkPackagesTabProps) {
       const { data: assignedIds } = await supabase
         .from('bid_work_package_items')
         .select('line_item_id')
-        .eq('work_package_id', packages.map(p => p.id));
+        .in('work_package_id', packages.map(p => p.id));
 
       const assignedSet = new Set((assignedIds || []).map(a => a.line_item_id));
 
@@ -333,7 +333,7 @@ export function WorkPackagesTab({ projectId }: WorkPackagesTabProps) {
             status: packageForm.status,
             notes: packageForm.notes.trim() || null,
             is_ai_generated: false,
-          })
+          } as any)
           .eq('id', editingPackage.id);
 
         if (updateError) throw updateError;
@@ -355,7 +355,7 @@ export function WorkPackagesTab({ projectId }: WorkPackagesTabProps) {
             notes: packageForm.notes.trim() || null,
             is_ai_generated: false,
             sort_order: maxSortOrder + 1,
-          });
+          } as any);
 
         if (insertError) throw insertError;
       }
@@ -411,7 +411,7 @@ export function WorkPackagesTab({ projectId }: WorkPackagesTabProps) {
         .update({
           is_locked: lock,
           locked_at: lock ? new Date().toISOString() : null,
-        })
+        } as any)
         .eq('id', packageId);
 
       if (updateError) throw updateError;
@@ -785,7 +785,7 @@ export function WorkPackagesTab({ projectId }: WorkPackagesTabProps) {
                         e.stopPropagation();
                         handleDeletePackage(pkg.id);
                       }}
-                      disabled={actionInProgress === pkg.id || pkg.is_locked}
+                      disabled={actionInProgress === pkg.id || (pkg.is_locked ?? false)}
                     >
                       Delete
                     </button>
@@ -852,7 +852,7 @@ export function WorkPackagesTab({ projectId }: WorkPackagesTabProps) {
                                   <button
                                     className="remove-item-btn"
                                     onClick={() => handleRemoveItem(item.id, pkg.id)}
-                                    disabled={actionInProgress === item.id || pkg.is_locked}
+                                    disabled={actionInProgress === item.id || (pkg.is_locked ?? false)}
                                     title="Remove from package"
                                   >
                                     ✕

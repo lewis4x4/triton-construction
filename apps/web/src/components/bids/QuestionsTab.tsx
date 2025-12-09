@@ -523,7 +523,7 @@ export function QuestionsTab({ projectId }: QuestionsTabProps) {
                   question_text: updated.question_text,
                   justification: updated.justification,
                   category: updated.category,
-                })
+                } as any)
                 .eq('id', updated.id);
 
               if (error) throw error;
@@ -553,9 +553,10 @@ export function QuestionsTab({ projectId }: QuestionsTabProps) {
                 .limit(1);
 
               let nextNumber = 1;
-              if (existing && existing.length > 0 && existing[0].question_number) {
-                const match = existing[0].question_number.match(/Q-(\d+)/);
-                if (match) {
+              const latestQ = existing?.[0];
+              if (latestQ && latestQ.question_number) {
+                const match = latestQ.question_number.match(/Q-(\d+)/);
+                if (match && match[1]) {
                   nextNumber = parseInt(match[1], 10) + 1;
                 }
               }
@@ -568,7 +569,7 @@ export function QuestionsTab({ projectId }: QuestionsTabProps) {
                 category: newQuestion.category,
                 status: 'APPROVED', // Manual questions start as approved
                 ai_generated: false,
-              });
+              } as any);
 
               if (error) throw error;
               setShowNewQuestionModal(false);
@@ -594,7 +595,7 @@ export function QuestionsTab({ projectId }: QuestionsTabProps) {
                   status: 'ANSWERED',
                   response_text: responseText,
                   response_received_at: new Date().toISOString(),
-                })
+                } as any)
                 .eq('id', questionId);
 
               if (error) throw error;

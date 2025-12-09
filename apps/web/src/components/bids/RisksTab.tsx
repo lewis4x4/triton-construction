@@ -11,12 +11,12 @@ interface Risk {
   risk_number: string | null;
   type: 'RISK' | 'OPPORTUNITY';
   title: string;
-  description: string;
-  category: string;
-  probability: string;
-  cost_impact: string;
-  schedule_impact: string;
-  overall_severity: string;
+  description: string | null;
+  category: string | null;
+  probability: string | null;
+  cost_impact: string | null;
+  schedule_impact: string | null;
+  overall_severity: string | null;
   owner_vs_contractor: string | null;
   mitigation_strategy: string | null;
   review_status: string | null;
@@ -208,9 +208,10 @@ export function RisksTab({ projectId }: RisksTabProps) {
         .limit(1);
 
       let nextNumber = 1;
-      if (existing && existing.length > 0 && existing[0].question_number) {
-        const match = existing[0].question_number.match(/Q-(\d+)/);
-        if (match) {
+      const latestQ = existing?.[0];
+      if (latestQ && latestQ.question_number) {
+        const match = latestQ.question_number.match(/Q-(\d+)/);
+        if (match && match[1]) {
           nextNumber = parseInt(match[1], 10) + 1;
         }
       }
@@ -224,7 +225,7 @@ export function RisksTab({ projectId }: RisksTabProps) {
         category: risk.category,
         status: 'AI_SUGGESTED',
         ai_generated: false,
-      });
+      } as any);
 
       if (error) throw error;
 
@@ -638,7 +639,7 @@ export function RisksTab({ projectId }: RisksTabProps) {
                   mitigation_strategy: updated.mitigation_strategy,
                   estimated_value_low: updated.estimated_value_low,
                   estimated_value_high: updated.estimated_value_high,
-                })
+                } as any)
                 .eq('id', updated.id);
 
               if (error) throw error;
@@ -668,9 +669,10 @@ export function RisksTab({ projectId }: RisksTabProps) {
                 .limit(1);
 
               let nextNumber = 1;
-              if (existing && existing.length > 0 && existing[0].risk_number) {
-                const match = existing[0].risk_number.match(/R-(\d+)/);
-                if (match) {
+              const latestR = existing?.[0];
+              if (latestR && latestR.risk_number) {
+                const match = latestR.risk_number.match(/R-(\d+)/);
+                if (match && match[1]) {
                   nextNumber = parseInt(match[1], 10) + 1;
                 }
               }
@@ -681,7 +683,7 @@ export function RisksTab({ projectId }: RisksTabProps) {
                 ...newRisk,
                 review_status: 'REVIEWED', // Manual risks start as reviewed
                 ai_generated: false,
-              });
+              } as any);
 
               if (error) throw error;
               setShowNewRiskModal(false);

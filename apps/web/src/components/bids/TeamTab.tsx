@@ -65,7 +65,7 @@ export function TeamTab({ projectId }: TeamTabProps) {
     setError(null);
 
     try {
-      const { data, error: fetchError } = await supabase
+      const { data, error: fetchError } = await (supabase as any)
         .from('bid_project_members')
         .select(`
           id,
@@ -101,7 +101,7 @@ export function TeamTab({ projectId }: TeamTabProps) {
   const fetchAvailableUsers = useCallback(async () => {
     try {
       // Get all users in the organization
-      const { data, error: fetchError } = await supabase
+      const { data, error: fetchError } = await (supabase as any)
         .from('user_profiles')
         .select('id, email, first_name, last_name')
         .eq('status', 'ACTIVE')
@@ -132,13 +132,13 @@ export function TeamTab({ projectId }: TeamTabProps) {
         throw new Error('User is already a team member');
       }
 
-      const { error: insertError } = await supabase
+      const { error: insertError } = await (supabase as any)
         .from('bid_project_members')
         .insert({
           bid_project_id: projectId,
           user_id: selectedUserId,
           role: selectedRole,
-        });
+        } as any);
 
       if (insertError) throw insertError;
 
@@ -160,9 +160,9 @@ export function TeamTab({ projectId }: TeamTabProps) {
     setIsUpdating(true);
 
     try {
-      const { error: updateError } = await supabase
+      const { error: updateError } = await (supabase as any)
         .from('bid_project_members')
-        .update({ role: editRole })
+        .update({ role: editRole } as any)
         .eq('id', editingMember.id);
 
       if (updateError) throw updateError;
@@ -184,7 +184,7 @@ export function TeamTab({ projectId }: TeamTabProps) {
     setActionInProgress(memberId);
 
     try {
-      const { error: deleteError } = await supabase
+      const { error: deleteError } = await (supabase as any)
         .from('bid_project_members')
         .delete()
         .eq('id', memberId);
@@ -323,9 +323,9 @@ export function TeamTab({ projectId }: TeamTabProps) {
                   {member.can_generate_snapshots && <span className="permission-tag">Snapshots</span>}
                   {member.can_upload_documents && <span className="permission-tag">Documents</span>}
                   {!member.can_edit_line_items && !member.can_edit_risks && !member.can_edit_questions &&
-                   !member.can_run_ai_analysis && !member.can_generate_snapshots && !member.can_upload_documents && (
-                    <span className="permission-tag readonly">Read Only</span>
-                  )}
+                    !member.can_run_ai_analysis && !member.can_generate_snapshots && !member.can_upload_documents && (
+                      <span className="permission-tag readonly">Read Only</span>
+                    )}
                 </div>
               </div>
 
