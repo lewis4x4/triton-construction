@@ -1,12 +1,17 @@
-/* Incident Report Form Styles */
+/* =====================================================
+   INCIDENT REPORT FORM - Safety Incident Documentation
+   Triton AI Platform - Unified Forest Green Theme
+   Note: Maintains semantic red/rust colors for incidents
+   ===================================================== */
 
 .incident-form {
-  background: white;
+  background: var(--bg-card);
   border-radius: 16px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
   overflow: hidden;
   max-width: 800px;
   margin: 0 auto;
+  border: 1px solid var(--border-color);
 }
 
 .incident-form.loading {
@@ -18,33 +23,33 @@
   gap: 16px;
 }
 
-.loading-spinner {
+.incident-form .loading-spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid #e2e8f0;
-  border-top-color: #dc2626;
+  border: 3px solid var(--border-color);
+  border-top-color: var(--stat-rust-icon);
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  animation: incidentFormSpin 1s linear infinite;
 }
 
-@keyframes spin {
+@keyframes incidentFormSpin {
   to { transform: rotate(360deg); }
 }
 
-/* Header */
-.form-header {
+/* Header - Semantic red for incidents */
+.incident-form .form-header {
   display: flex;
   align-items: center;
   gap: 16px;
   padding: 20px 24px;
-  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-  border-bottom: 1px solid #fecaca;
+  background: linear-gradient(135deg, rgba(185, 83, 64, 0.1) 0%, rgba(185, 83, 64, 0.15) 100%);
+  border-bottom: 1px solid rgba(185, 83, 64, 0.2);
 }
 
-.header-icon {
+.incident-form .header-icon {
   width: 48px;
   height: 48px;
-  background: #dc2626;
+  background: var(--stat-rust-icon);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -52,45 +57,45 @@
   color: white;
 }
 
-.header-text h2 {
+.incident-form .header-text h2 {
   font-size: 18px;
   font-weight: 600;
-  color: #991b1b;
+  color: var(--stat-rust-icon);
   margin: 0;
 }
 
-.header-text p {
+.incident-form .header-text p {
   font-size: 13px;
-  color: #b91c1c;
+  color: #a04535;
   margin: 4px 0 0 0;
 }
 
-.close-btn {
+.incident-form .close-btn {
   margin-left: auto;
   background: none;
   border: none;
-  color: #b91c1c;
+  color: #a04535;
   cursor: pointer;
   padding: 8px;
   border-radius: 8px;
   transition: background 0.2s;
 }
 
-.close-btn:hover {
-  background: rgba(185, 28, 28, 0.1);
+.incident-form .close-btn:hover {
+  background: rgba(185, 83, 64, 0.1);
 }
 
 /* Steps */
-.form-steps {
+.incident-form .form-steps {
   display: flex;
   justify-content: center;
   gap: 8px;
   padding: 20px;
-  background: #f8fafc;
-  border-bottom: 1px solid #e2e8f0;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
 }
 
-.form-steps .step {
+.incident-form .form-steps .step {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -100,11 +105,11 @@
   transition: all 0.2s;
 }
 
-.form-steps .step:hover {
-  background: #e2e8f0;
+.incident-form .form-steps .step:hover {
+  background: var(--bg-page);
 }
 
-.step-number {
+.incident-form .step-number {
   width: 28px;
   height: 28px;
   border-radius: 50%;
@@ -113,159 +118,159 @@
   justify-content: center;
   font-size: 13px;
   font-weight: 600;
-  background: #e2e8f0;
-  color: #64748b;
+  background: var(--bg-page);
+  color: var(--text-muted);
 }
 
-.form-steps .step.active .step-number {
-  background: #dc2626;
+.incident-form .form-steps .step.active .step-number {
+  background: var(--stat-rust-icon);
   color: white;
 }
 
-.form-steps .step.completed .step-number {
-  background: #10b981;
+.incident-form .form-steps .step.completed .step-number {
+  background: var(--stat-green-icon);
   color: white;
 }
 
-.step-label {
+.incident-form .step-label {
   font-size: 13px;
-  color: #64748b;
+  color: var(--text-muted);
   font-weight: 500;
 }
 
-.form-steps .step.active .step-label {
-  color: #1e293b;
+.incident-form .form-steps .step.active .step-label {
+  color: var(--text-primary);
 }
 
 /* Form Step Content */
-.form-step {
+.incident-form .form-step {
   padding: 24px;
 }
 
-.form-step h3 {
+.incident-form .form-step h3 {
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 16px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--text-primary);
   margin: 0 0 20px 0;
 }
 
-.form-step h3 svg {
-  color: #64748b;
+.incident-form .form-step h3 svg {
+  color: var(--text-muted);
 }
 
-.form-step h4 {
+.incident-form .form-step h4 {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 14px;
   font-weight: 600;
-  color: #475569;
+  color: var(--text-secondary);
   margin: 20px 0 12px 0;
 }
 
-.form-step h4 svg {
-  color: #64748b;
+.incident-form .form-step h4 svg {
+  color: var(--text-muted);
 }
 
 /* Form Grid */
-.form-grid {
+.incident-form .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
 
 @media (max-width: 600px) {
-  .form-grid {
+  .incident-form .form-grid {
     grid-template-columns: 1fr;
   }
 }
 
-.form-group {
+.incident-form .form-group {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.form-group.full-width {
+.incident-form .form-group.full-width {
   grid-column: span 2;
 }
 
 @media (max-width: 600px) {
-  .form-group.full-width {
+  .incident-form .form-group.full-width {
     grid-column: span 1;
   }
 }
 
-.form-group label {
+.incident-form .form-group label {
   font-size: 13px;
   font-weight: 500;
-  color: #475569;
+  color: var(--text-secondary);
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
-.form-group label svg {
-  color: #94a3b8;
+.incident-form .form-group label svg {
+  color: var(--text-muted);
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
+.incident-form .form-group input,
+.incident-form .form-group select,
+.incident-form .form-group textarea {
   padding: 10px 12px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   font-size: 14px;
-  color: #1e293b;
-  background: white;
+  color: var(--text-primary);
+  background: var(--bg-card);
   transition: border-color 0.2s;
 }
 
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
+.incident-form .form-group input:focus,
+.incident-form .form-group select:focus,
+.incident-form .form-group textarea:focus {
   outline: none;
-  border-color: #dc2626;
-  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(61, 107, 79, 0.15);
 }
 
-.form-group textarea {
+.incident-form .form-group textarea {
   min-height: 100px;
   resize: vertical;
 }
 
 /* Notification Checks */
-.notification-checks {
+.incident-form .notification-checks {
   margin-top: 24px;
   padding: 16px;
-  background: #f8fafc;
+  background: var(--bg-secondary);
   border-radius: 8px;
 }
 
-.notification-checks h4 {
+.incident-form .notification-checks h4 {
   margin: 0 0 12px 0;
 }
 
-.checkbox-label {
+.incident-form .checkbox-label {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 8px 0;
   font-size: 14px;
-  color: #475569;
+  color: var(--text-secondary);
   cursor: pointer;
 }
 
-.checkbox-label input[type="checkbox"] {
+.incident-form .checkbox-label input[type="checkbox"] {
   width: 18px;
   height: 18px;
-  accent-color: #dc2626;
+  accent-color: var(--accent-primary);
 }
 
-.checkbox-grid {
+.incident-form .checkbox-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
@@ -273,16 +278,16 @@
 }
 
 /* Classification Grid */
-.classification-grid {
+.incident-form .classification-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 12px;
   margin-bottom: 24px;
 }
 
-.classification-card {
+.incident-form .classification-card {
   padding: 16px;
-  border: 2px solid #e2e8f0;
+  border: 2px solid var(--border-color);
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.2s;
@@ -291,15 +296,16 @@
   gap: 12px;
 }
 
-.classification-card:hover {
-  border-color: #94a3b8;
+.incident-form .classification-card:hover {
+  border-color: var(--text-muted);
 }
 
-.classification-card.selected {
-  background: #f8fafc;
+.incident-form .classification-card.selected {
+  background: var(--bg-secondary);
+  border-color: var(--accent-primary);
 }
 
-.classification-dot {
+.incident-form .classification-dot {
   width: 12px;
   height: 12px;
   border-radius: 50%;
@@ -307,122 +313,126 @@
   margin-top: 4px;
 }
 
-.classification-content strong {
+.incident-form .classification-content strong {
   display: block;
   font-size: 14px;
-  color: #1e293b;
+  color: var(--text-primary);
   margin-bottom: 4px;
 }
 
-.classification-content span {
+.incident-form .classification-content span {
   font-size: 12px;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 /* Severity Section */
-.severity-section {
+.incident-form .severity-section {
   margin-bottom: 24px;
 }
 
-.severity-section h4 {
+.incident-form .severity-section h4 {
   margin: 0 0 12px 0;
 }
 
-.severity-options {
+.incident-form .severity-options {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
 }
 
-.severity-btn {
+.incident-form .severity-btn {
   padding: 8px 20px;
-  border: 2px solid #e2e8f0;
+  border: 2px solid var(--border-color);
   border-radius: 8px;
-  background: white;
+  background: var(--bg-card);
   font-size: 13px;
   font-weight: 500;
-  color: #64748b;
+  color: var(--text-muted);
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.severity-btn:hover {
-  border-color: #94a3b8;
+.incident-form .severity-btn:hover {
+  border-color: var(--text-muted);
 }
 
-.severity-btn.selected {
-  color: #1e293b;
+.incident-form .severity-btn.selected {
+  color: var(--text-primary);
   font-weight: 600;
+  border-color: var(--accent-primary);
+  background: rgba(61, 107, 79, 0.08);
 }
 
 /* Injury Details */
-.injury-details {
+.incident-form .injury-details {
   margin-top: 24px;
   padding: 20px;
-  background: #fef3c7;
-  border: 1px solid #fde68a;
+  background: var(--stat-amber-bg);
+  border: 1px solid rgba(180, 130, 60, 0.3);
   border-radius: 10px;
 }
 
-.injury-details h4 {
+.incident-form .injury-details h4 {
   margin: 0 0 16px 0;
-  color: #92400e;
+  color: #7c5a20;
 }
 
-.injury-details h4 svg {
-  color: #d97706;
+.incident-form .injury-details h4 svg {
+  color: var(--stat-amber-icon);
 }
 
 /* OSHA Alert */
-.osha-alert {
+.incident-form .osha-alert {
   display: flex;
   align-items: center;
   gap: 16px;
   padding: 16px;
-  background: #fee2e2;
-  border: 1px solid #fecaca;
+  background: var(--stat-rust-bg);
+  border: 1px solid rgba(185, 83, 64, 0.3);
   border-radius: 10px;
   margin-top: 20px;
 }
 
-.osha-alert svg {
-  color: #dc2626;
+.incident-form .osha-alert svg {
+  color: var(--stat-rust-icon);
   flex-shrink: 0;
 }
 
-.osha-alert strong {
+.incident-form .osha-alert strong {
   display: block;
   font-size: 14px;
-  color: #991b1b;
+  color: var(--stat-rust-icon);
 }
 
-.osha-alert p {
+.incident-form .osha-alert p {
   font-size: 12px;
-  color: #b91c1c;
+  color: #a04535;
   margin: 4px 0 0 0;
 }
 
 /* Witnesses Section */
-.witnesses-section {
+.incident-form .witnesses-section {
   margin-top: 24px;
 }
 
-.witness-input {
+.incident-form .witness-input {
   display: flex;
   gap: 8px;
 }
 
-.witness-input input {
+.incident-form .witness-input input {
   flex: 1;
   padding: 10px 12px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   font-size: 14px;
+  background: var(--bg-card);
+  color: var(--text-primary);
 }
 
-.witness-input button {
+.incident-form .witness-input button {
   padding: 10px 20px;
-  background: #3b82f6;
+  background: var(--accent-primary);
   color: white;
   border: none;
   border-radius: 8px;
@@ -431,81 +441,81 @@
   cursor: pointer;
 }
 
-.witness-input button:hover {
-  background: #2563eb;
+.incident-form .witness-input button:hover {
+  background: var(--accent-olive);
 }
 
-.witness-list {
+.incident-form .witness-list {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 12px;
 }
 
-.witness-tag {
+.incident-form .witness-tag {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 6px 12px;
-  background: #e2e8f0;
+  background: var(--bg-secondary);
   border-radius: 6px;
   font-size: 13px;
-  color: #475569;
+  color: var(--text-secondary);
 }
 
-.witness-tag button {
+.incident-form .witness-tag button {
   background: none;
   border: none;
   padding: 2px;
   cursor: pointer;
-  color: #64748b;
+  color: var(--text-muted);
   display: flex;
 }
 
-.witness-tag button:hover {
-  color: #dc2626;
+.incident-form .witness-tag button:hover {
+  color: var(--stat-rust-icon);
 }
 
 /* Photos Section */
-.photos-section {
+.incident-form .photos-section {
   margin-top: 24px;
 }
 
-.photo-upload input {
+.incident-form .photo-upload input {
   display: none;
 }
 
-.upload-area {
+.incident-form .upload-area {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
   padding: 32px;
-  border: 2px dashed #e2e8f0;
+  border: 2px dashed var(--border-color);
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.2s;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
-.upload-area:hover {
-  border-color: #dc2626;
-  background: #fef2f2;
-  color: #dc2626;
+.incident-form .upload-area:hover {
+  border-color: var(--accent-primary);
+  background: rgba(61, 107, 79, 0.05);
+  color: var(--accent-primary);
 }
 
-.upload-area span {
+.incident-form .upload-area span {
   font-size: 13px;
 }
 
-.photo-preview {
+.incident-form .photo-preview {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 12px;
 }
 
-.photo-thumb {
+.incident-form .photo-thumb {
   position: relative;
   width: 80px;
   height: 80px;
@@ -513,13 +523,13 @@
   overflow: hidden;
 }
 
-.photo-thumb img {
+.incident-form .photo-thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.photo-thumb button {
+.incident-form .photo-thumb button {
   position: absolute;
   top: 4px;
   right: 4px;
@@ -536,61 +546,61 @@
 }
 
 /* Review Summary */
-.review-summary {
-  background: #f8fafc;
+.incident-form .review-summary {
+  background: var(--bg-secondary);
   border-radius: 10px;
   overflow: hidden;
 }
 
-.review-section {
+.incident-form .review-section {
   padding: 16px 20px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.review-section:last-child {
+.incident-form .review-section:last-child {
   border-bottom: none;
 }
 
-.review-section h4 {
+.incident-form .review-section h4 {
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: #64748b;
+  color: var(--text-muted);
   margin: 0 0 12px 0;
 }
 
-.review-section p {
+.incident-form .review-section p {
   font-size: 14px;
-  color: #1e293b;
+  color: var(--text-primary);
   margin: 0;
   line-height: 1.6;
 }
 
-.review-grid {
+.incident-form .review-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
 
-.review-item {
+.incident-form .review-item {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.review-item .label {
+.incident-form .review-item .label {
   font-size: 12px;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
-.review-item .value {
+.incident-form .review-item .value {
   font-size: 14px;
   font-weight: 500;
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
-.classification-tag {
+.incident-form .classification-tag {
   display: inline-block;
   padding: 4px 10px;
   border-radius: 6px;
@@ -598,37 +608,37 @@
   font-weight: 600;
 }
 
-.osha-warning {
+.incident-form .osha-warning {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 16px 20px;
-  background: #fee2e2;
-  color: #991b1b;
+  background: var(--stat-rust-bg);
+  color: var(--stat-rust-icon);
   font-size: 14px;
   font-weight: 500;
 }
 
-.osha-warning svg {
-  color: #dc2626;
+.incident-form .osha-warning svg {
+  color: var(--stat-rust-icon);
 }
 
 /* Form Actions */
-.form-actions {
+.incident-form .form-actions {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 20px 24px;
-  background: #f8fafc;
-  border-top: 1px solid #e2e8f0;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
 }
 
-.action-spacer {
+.incident-form .action-spacer {
   flex: 1;
 }
 
 /* Buttons */
-.btn {
+.incident-form .btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -641,59 +651,59 @@
   transition: all 0.2s;
 }
 
-.btn-primary {
-  background: #dc2626;
+.incident-form .btn-primary {
+  background: var(--accent-primary);
   color: white;
 }
 
-.btn-primary:hover {
-  background: #b91c1c;
+.incident-form .btn-primary:hover {
+  background: var(--accent-olive);
 }
 
-.btn-primary:disabled {
-  background: #94a3b8;
+.incident-form .btn-primary:disabled {
+  background: var(--text-muted);
   cursor: not-allowed;
 }
 
-.btn-secondary {
-  background: white;
-  color: #475569;
-  border: 1px solid #e2e8f0;
+.incident-form .btn-secondary {
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
 }
 
-.btn-secondary:hover {
-  background: #f1f5f9;
+.incident-form .btn-secondary:hover {
+  background: var(--bg-page);
 }
 
-.btn-success {
-  background: #10b981;
+.incident-form .btn-success {
+  background: var(--stat-green-icon);
   color: white;
 }
 
-.btn-success:hover {
-  background: #059669;
+.incident-form .btn-success:hover {
+  background: #4a7c59;
 }
 
 /* Responsive */
 @media (max-width: 640px) {
-  .form-steps {
+  .incident-form .form-steps {
     flex-wrap: wrap;
   }
 
-  .form-steps .step {
+  .incident-form .form-steps .step {
     flex: 1 0 40%;
     justify-content: center;
   }
 
-  .step-label {
+  .incident-form .step-label {
     display: none;
   }
 
-  .classification-grid {
+  .incident-form .classification-grid {
     grid-template-columns: 1fr;
   }
 
-  .review-grid {
+  .incident-form .review-grid {
     grid-template-columns: 1fr;
   }
 }
