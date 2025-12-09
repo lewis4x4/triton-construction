@@ -1,9 +1,29 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@triton/supabase-client';
+import { Upload, FileText, Sparkles, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import './CreateBid.css';
 
 import { useAuth } from '../../hooks/useAuth';
+
+interface ExtractedMetadata {
+  project_name: string | null;
+  state_project_number: string | null;
+  federal_project_number: string | null;
+  county: string | null;
+  route: string | null;
+  location_description: string | null;
+  letting_date: string | null;
+  bid_due_date: string | null;
+  contract_time_days: number | null;
+  dbe_goal_percentage: number | null;
+  is_federal_aid: boolean;
+  liquidated_damages_per_day: number | null;
+  engineers_estimate: number | null;
+  owner: string | null;
+  confidence_score: number;
+  extraction_notes: string[];
+}
 
 // West Virginia counties for dropdown
 const WV_COUNTIES = [
@@ -39,6 +59,16 @@ export function CreateBid() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Document upload state
+  const [_uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [isExtracting, setIsExtracting] = useState(false);
+  const [extractionResult, setExtractionResult] = useState<{
+    metadata: ExtractedMetadata;
+    filename: string;
+  } | null>(null);
+  const [extractionError, setExtractionError] = useState<string | null>(null);
+  const [isDragOver, setIsDragOver] = useState(false);
+
   const [formData, setFormData] = useState<FormData>({
     project_name: '',
     state_project_number: '',
@@ -64,6 +94,114 @@ export function CreateBid() {
       setFormData((prev) => ({ ...prev, [name]: checked }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  // Handle file drop
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    const files = e.dataTransfer.files;
+    if (files.length > 0 && files[0]) {
+      handleFileSelect(files[0]);
+    }
+  }, []);
+
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0 && files[0]) {
+      handleFileSelect(files[0]);
+    }
+  };
+
+  const handleFileSelect = async (file: File) => {
+    // Validate file type
+    const allowedTypes = ['application/pdf', 'image/png', 'image/jpeg', 'image/jpg'];
+    if (!allowedTypes.includes(file.type)) {
+      setExtractionError('Please upload a PDF or image file (PNG, JPEG)');
+      return;
+    }
+
+    // Validate file size (max 20MB)
+    if (file.size > 20 * 1024 * 1024) {
+      setExtractionError('File size must be less than 20MB');
+      return;
+    }
+
+    setUploadedFile(file);
+    setExtractionError(null);
+    setIsExtracting(true);
+
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const token = sessionData?.session?.access_token;
+
+      if (!token) {
+        throw new Error('Not authenticated');
+      }
+
+      // Create form data for upload
+      const uploadData = new FormData();
+      uploadData.append('file', file);
+
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/extract-bid-metadata`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: uploadData,
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Extraction failed');
+      }
+
+      const result = await response.json();
+
+      if (result.success && result.metadata) {
+        setExtractionResult({
+          metadata: result.metadata,
+          filename: result.filename,
+        });
+
+        // Pre-fill form with extracted data
+        const meta = result.metadata as ExtractedMetadata;
+        setFormData((prev) => ({
+          ...prev,
+          project_name: meta.project_name || prev.project_name,
+          state_project_number: meta.state_project_number || prev.state_project_number,
+          federal_project_number: meta.federal_project_number || prev.federal_project_number,
+          owner: meta.owner || prev.owner,
+          county: meta.county || prev.county,
+          route: meta.route || prev.route,
+          location_description: meta.location_description || prev.location_description,
+          letting_date: meta.letting_date || prev.letting_date,
+          bid_due_date: meta.bid_due_date || prev.bid_due_date,
+          contract_time_days: meta.contract_time_days?.toString() || prev.contract_time_days,
+          dbe_goal_percentage: meta.dbe_goal_percentage?.toString() || prev.dbe_goal_percentage,
+          is_federal_aid: meta.is_federal_aid ?? prev.is_federal_aid,
+          liquidated_damages_per_day: meta.liquidated_damages_per_day?.toString() || prev.liquidated_damages_per_day,
+        }));
+      }
+    } catch (err) {
+      console.error('Extraction error:', err);
+      setExtractionError(err instanceof Error ? err.message : 'Failed to extract data from document');
+    } finally {
+      setIsExtracting(false);
     }
   };
 
@@ -132,11 +270,98 @@ export function CreateBid() {
       </div>
 
       <div className="form-container">
+        {/* Document Upload Section */}
+        <div className="form-section ai-extract-section">
+          <div className="section-header-with-badge">
+            <h2>
+              <Sparkles size={20} />
+              Quick Start with AI
+            </h2>
+            <span className="badge badge-info">Optional</span>
+          </div>
+          <p className="section-description">
+            Upload a bid advertisement or proposal document and let AI extract project details automatically.
+          </p>
+
+          <div
+            className={`file-drop-zone ${isDragOver ? 'drag-over' : ''} ${isExtracting ? 'extracting' : ''} ${extractionResult ? 'has-result' : ''}`}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          >
+            {isExtracting ? (
+              <div className="extracting-state">
+                <Loader2 size={32} className="spinner" />
+                <span>Analyzing document with AI...</span>
+                <span className="extracting-hint">This may take 10-20 seconds</span>
+              </div>
+            ) : extractionResult ? (
+              <div className="extraction-success">
+                <CheckCircle size={32} className="success-icon" />
+                <div className="success-content">
+                  <span className="success-title">Data Extracted Successfully</span>
+                  <span className="success-file">{extractionResult.filename}</span>
+                  <span className="confidence-badge">
+                    {extractionResult.metadata.confidence_score}% confidence
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-secondary btn-sm"
+                  onClick={() => {
+                    setExtractionResult(null);
+                    setUploadedFile(null);
+                  }}
+                >
+                  Upload Different File
+                </button>
+              </div>
+            ) : (
+              <label className="drop-zone-content">
+                <input
+                  type="file"
+                  accept=".pdf,image/png,image/jpeg"
+                  onChange={handleFileInputChange}
+                  className="file-input-hidden"
+                />
+                <Upload size={32} className="upload-icon" />
+                <span className="drop-zone-text">
+                  <strong>Drop bid document here</strong> or click to browse
+                </span>
+                <span className="drop-zone-hint">
+                  Supports PDF and images (PNG, JPEG) up to 20MB
+                </span>
+              </label>
+            )}
+          </div>
+
+          {extractionError && (
+            <div className="extraction-error">
+              <AlertCircle size={16} />
+              {extractionError}
+            </div>
+          )}
+
+          {extractionResult && extractionResult.metadata.extraction_notes.length > 0 && (
+            <div className="extraction-notes">
+              <strong>AI Notes:</strong>
+              <ul>
+                {extractionResult.metadata.extraction_notes.map((note, i) => (
+                  <li key={i}>{note}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+
         <form onSubmit={handleSubmit} className="bid-form">
           {error && <div className="form-error">{error}</div>}
 
           <div className="form-section">
-            <h2>Project Information</h2>
+            <h2>
+              <FileText size={20} />
+              Project Information
+            </h2>
 
             <div className="form-group">
               <label htmlFor="project_name">
