@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@triton/supabase-client';
+import './UserManagement.css';
 
 interface User {
   id: string;
@@ -77,174 +78,155 @@ export function UserManagement() {
     u.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const getStatusBadge = (status: string) => {
+  const getStatusBadgeClass = (status: string) => {
     switch (status) {
-      case 'ACTIVE':
-        return 'bg-green-100 text-green-800';
-      case 'INACTIVE':
-        return 'bg-gray-100 text-gray-800';
-      case 'PENDING':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'SUSPENDED':
-        return 'bg-red-100 text-red-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
+      case 'ACTIVE': return 'status-badge active';
+      case 'INACTIVE': return 'status-badge inactive';
+      case 'PENDING': return 'status-badge pending';
+      case 'SUSPENDED': return 'status-badge suspended';
+      default: return 'status-badge inactive';
     }
   };
 
-  const getRoleBadgeColor = (level: number) => {
-    if (level === 1) return 'bg-red-100 text-red-800';
-    if (level <= 10) return 'bg-purple-100 text-purple-800';
-    if (level <= 20) return 'bg-blue-100 text-blue-800';
-    if (level <= 30) return 'bg-green-100 text-green-800';
-    if (level <= 40) return 'bg-yellow-100 text-yellow-800';
-    return 'bg-gray-100 text-gray-800';
+  const getRoleLevelClass = (level: number) => {
+    if (level === 1) return 'level-1'; // Admin
+    if (level <= 10) return 'level-2'; // Manager
+    if (level <= 20) return 'level-3'; // Supervisor
+    if (level <= 30) return 'level-4'; // Standard
+    if (level <= 40) return 'level-5'; // Limited
+    return 'level-default';
   };
 
   return (
-    <div className="p-6">
-      <div className="mb-6">
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">User Management</h1>
+    <div className="user-management-page">
+      <div className="page-header">
+        <div className="page-header-content">
+          <div>
+            <h1>User Management</h1>
+            <p>Manage system users, roles, and permissions</p>
+          </div>
+        </div>
+        <div className="page-header-actions">
           <button
             onClick={() => setShowInviteForm(true)}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="btn btn-primary"
           >
-            Invite User
+            + Invite User
           </button>
         </div>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white p-4 rounded-lg border border-gray-200">
-          <div className="text-sm text-gray-500">Total Users</div>
-          <div className="text-2xl font-bold text-gray-900">{users.length}</div>
+      <div className="stats-grid">
+        <div className="stat-card">
+          <div className="stat-label">Total Users</div>
+          <div className="stat-value">{users.length}</div>
         </div>
-        <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-          <div className="text-sm text-green-600">Active Users</div>
-          <div className="text-2xl font-bold text-green-700">
+        <div className="stat-card active-users">
+          <div className="stat-label">Active Users</div>
+          <div className="stat-value">
             {users.filter(u => u.status === 'ACTIVE').length}
           </div>
         </div>
-        <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
-          <div className="text-sm text-yellow-600">Pending Invites</div>
-          <div className="text-2xl font-bold text-yellow-700">
+        <div className="stat-card pending-users">
+          <div className="stat-label">Pending Invites</div>
+          <div className="stat-value">
             {users.filter(u => u.status === 'PENDING').length}
           </div>
         </div>
-        <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
-          <div className="text-sm text-purple-600">Total Roles</div>
-          <div className="text-2xl font-bold text-purple-700">{roles.length}</div>
+        <div className="stat-card total-roles">
+          <div className="stat-label">Total Roles</div>
+          <div className="stat-value">{roles.length}</div>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="border-b border-gray-200 mb-6">
-        <nav className="-mb-px flex space-x-8">
-          {[
-            { id: 'users', label: 'Users' },
-            { id: 'roles', label: 'Roles & Permissions' },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                activeTab === tab.id
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+      <div className="tabs-container">
+        <nav className="tabs-nav">
+          <button
+            onClick={() => setActiveTab('users')}
+            className={`tab-btn ${activeTab === 'users' ? 'active' : ''}`}
+          >
+            Users
+          </button>
+          <button
+            onClick={() => setActiveTab('roles')}
+            className={`tab-btn ${activeTab === 'roles' ? 'active' : ''}`}
+          >
+            Roles & Permissions
+          </button>
         </nav>
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <span>Loading data...</span>
         </div>
       ) : (
         <>
           {activeTab === 'users' && (
             <>
-              <div className="mb-4">
+              <div className="filters-bar">
                 <input
                   type="text"
                   placeholder="Search users..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-lg"
+                  className="search-input"
                 />
               </div>
 
-              <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
+              <div className="table-container">
+                <table className="users-table">
+                  <thead>
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        User
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Email
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Phone
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Status
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Last Login
-                      </th>
-                      <th className="px-4 py-3"></th>
+                      <th style={{ width: '30%' }}>User</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                      <th>Status</th>
+                      <th>Last Login</th>
+                      <th style={{ width: '10%' }}></th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-200">
+                  <tbody>
                     {filteredUsers.length === 0 ? (
                       <tr>
-                        <td colSpan={6} className="px-4 py-8 text-center text-gray-500">
-                          No users found
+                        <td colSpan={6} style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-secondary)' }}>
+                          No users found matching your search.
                         </td>
                       </tr>
                     ) : (
                       filteredUsers.map((user) => (
-                        <tr key={user.id} className="hover:bg-gray-50">
-                          <td className="px-4 py-3">
-                            <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                                <span className="text-blue-600 font-medium">
-                                  {user.first_name?.[0]}{user.last_name?.[0]}
-                                </span>
+                        <tr key={user.id}>
+                          <td>
+                            <div className="user-cell">
+                              <div className="user-avatar">
+                                {user.first_name?.[0]}{user.last_name?.[0]}
                               </div>
-                              <div>
-                                <div className="font-medium text-gray-900">
+                              <div className="user-info">
+                                <span className="user-name">
                                   {user.first_name} {user.last_name}
-                                </div>
+                                </span>
                               </div>
                             </div>
                           </td>
-                          <td className="px-4 py-3 text-sm text-gray-600">{user.email}</td>
-                          <td className="px-4 py-3 text-sm text-gray-600">{user.phone || '-'}</td>
-                          <td className="px-4 py-3">
-                            <span
-                              className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusBadge(
-                                user.status
-                              )}`}
-                            >
+                          <td>{user.email}</td>
+                          <td>{user.phone || '-'}</td>
+                          <td>
+                            <span className={getStatusBadgeClass(user.status)}>
                               {user.status}
                             </span>
                           </td>
-                          <td className="px-4 py-3 text-sm text-gray-600">
+                          <td>
                             {user.last_sign_in
                               ? new Date(user.last_sign_in).toLocaleDateString()
                               : 'Never'}
                           </td>
-                          <td className="px-4 py-3 text-right">
+                          <td style={{ textAlign: 'right' }}>
                             <button
                               onClick={() => setSelectedUser(user)}
-                              className="text-blue-600 hover:text-blue-800 text-sm"
+                              className="btn-link"
                             >
                               Manage
                             </button>
@@ -259,24 +241,18 @@ export function UserManagement() {
           )}
 
           {activeTab === 'roles' && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="roles-grid">
               {roles.map((role) => (
-                <div key={role.id} className="bg-white rounded-lg border border-gray-200 p-4">
-                  <div className="flex justify-between items-start mb-2">
-                    <div>
-                      <span
-                        className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getRoleBadgeColor(
-                          role.level
-                        )}`}
-                      >
-                        Level {role.level}
-                      </span>
-                    </div>
+                <div key={role.id} className="role-card">
+                  <div className="role-header">
+                    <span className={`role-badge ${getRoleLevelClass(role.level)}`}>
+                      Level {role.level}
+                    </span>
                   </div>
-                  <h3 className="font-semibold text-gray-900">{role.name}</h3>
-                  <p className="text-sm text-gray-500 mt-1">{role.description}</p>
-                  <div className="mt-3 pt-3 border-t">
-                    <span className="text-xs text-gray-400">Code: {role.code}</span>
+                  <h3 className="role-name">{role.name}</h3>
+                  <p className="role-description">{role.description}</p>
+                  <div className="role-code">
+                    Code: {role.code}
                   </div>
                 </div>
               ))}
@@ -360,70 +336,65 @@ function InviteUserModal({
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md">
-        <h2 className="text-lg font-bold mb-4">Invite User</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email *
-            </label>
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h2 className="modal-title">Invite User</h2>
+          <button onClick={onClose} className="modal-close-btn">
+            ✕
+          </button>
+        </div>
+        <form onSubmit={handleSubmit} className="modal-body modal-form">
+          <div className="form-group">
+            <label className="form-label">Email *</label>
             <input
               type="email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+              className="form-input"
               required
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                First Name *
-              </label>
+          <div className="form-grid-2">
+            <div className="form-group">
+              <label className="form-label">First Name *</label>
               <input
                 type="text"
                 value={formData.first_name}
                 onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                className="form-input"
                 required
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Last Name *
-              </label>
+            <div className="form-group">
+              <label className="form-label">Last Name *</label>
               <input
                 type="text"
                 value={formData.last_name}
                 onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                className="form-input"
                 required
               />
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Phone
-            </label>
+          <div className="form-group">
+            <label className="form-label">Phone</label>
             <input
               type="tel"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+              className="form-input"
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Initial Role
-            </label>
+          <div className="form-group">
+            <label className="form-label">Initial Role</label>
             <select
               value={formData.role_id}
               onChange={(e) => setFormData({ ...formData, role_id: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+              className="form-select"
             >
               <option value="">Select role...</option>
               {roles.map((role) => (
@@ -434,18 +405,18 @@ function InviteUserModal({
             </select>
           </div>
 
-          <div className="flex gap-3 pt-4">
+          <div className="modal-footer">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+              className="btn btn-secondary"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+              className="btn btn-primary"
             >
               {saving ? 'Sending...' : 'Send Invite'}
             </button>
@@ -545,134 +516,134 @@ function UserDetailModal({
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
-        <div className="flex justify-between items-start mb-4">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-              <span className="text-blue-600 font-bold text-lg">
-                {user.first_name?.[0]}{user.last_name?.[0]}
-              </span>
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <div className="modal-header">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div className="user-avatar" style={{ width: '40px', height: '40px' }}>
+              {user.first_name?.[0]}{user.last_name?.[0]}
             </div>
             <div>
-              <h2 className="text-lg font-bold text-gray-900">
+              <h2 className="modal-title" style={{ fontSize: '1rem' }}>
                 {user.first_name} {user.last_name}
               </h2>
-              <p className="text-sm text-gray-500">{user.email}</p>
+              <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{user.email}</p>
             </div>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
+          <button onClick={onClose} className="modal-close-btn">
+            ✕
           </button>
         </div>
 
-        {/* Status Actions */}
-        <div className="flex gap-2 mb-6">
-          {user.status !== 'ACTIVE' && (
-            <button
-              onClick={() => updateStatus('ACTIVE')}
-              className="px-3 py-1 bg-green-100 text-green-700 rounded-lg text-sm hover:bg-green-200"
-            >
-              Activate
-            </button>
-          )}
-          {user.status !== 'SUSPENDED' && (
-            <button
-              onClick={() => updateStatus('SUSPENDED')}
-              className="px-3 py-1 bg-red-100 text-red-700 rounded-lg text-sm hover:bg-red-200"
-            >
-              Suspend
-            </button>
-          )}
-          {user.status !== 'INACTIVE' && (
-            <button
-              onClick={() => updateStatus('INACTIVE')}
-              className="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200"
-            >
-              Deactivate
-            </button>
-          )}
-        </div>
+        <div className="modal-body">
+          {/* Status Actions */}
+          <div style={{ display: 'flex', gap: '8px', marginBottom: '1.5rem' }}>
+            {user.status !== 'ACTIVE' && (
+              <button
+                onClick={() => updateStatus('ACTIVE')}
+                className="btn btn-secondary"
+                style={{ color: 'var(--neon-green)', borderColor: 'var(--neon-green)' }}
+              >
+                Activate
+              </button>
+            )}
+            {user.status !== 'SUSPENDED' && (
+              <button
+                onClick={() => updateStatus('SUSPENDED')}
+                className="btn btn-secondary"
+                style={{ color: 'var(--neon-red)', borderColor: 'var(--neon-red)' }}
+              >
+                Suspend
+              </button>
+            )}
+            {user.status !== 'INACTIVE' && (
+              <button
+                onClick={() => updateStatus('INACTIVE')}
+                className="btn btn-secondary"
+              >
+                Deactivate
+              </button>
+            )}
+          </div>
 
-        {/* User Roles */}
-        <div className="mb-6">
-          <h3 className="font-medium text-gray-900 mb-3">Assigned Roles</h3>
-          {loading ? (
-            <div className="animate-pulse h-20 bg-gray-100 rounded"></div>
-          ) : (
-            <>
-              <div className="space-y-2 mb-4">
-                {userRoles.length === 0 ? (
-                  <div className="text-sm text-gray-500 py-2">No roles assigned</div>
-                ) : (
-                  userRoles.map((ur) => (
-                    <div
-                      key={ur.id}
-                      className="flex items-center justify-between bg-gray-50 px-3 py-2 rounded-lg"
-                    >
-                      <div>
-                        <span className="font-medium text-gray-900">{ur.roles?.name}</span>
-                        {ur.project_id && (
-                          <span className="text-sm text-gray-500 ml-2">
-                            ({ur.projects?.project_number})
-                          </span>
-                        )}
+          {/* User Roles */}
+          <div className="form-group">
+            <h3 className="form-label" style={{ fontSize: '0.9rem', marginBottom: '0.75rem' }}>Assigned Roles</h3>
+            {loading ? (
+              <div className="loading-spinner"></div>
+            ) : (
+              <>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '1rem' }}>
+                  {userRoles.length === 0 ? (
+                    <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', fontStyle: 'italic' }}>No roles assigned</div>
+                  ) : (
+                    userRoles.map((ur) => (
+                      <div key={ur.id} className="list-item">
+                        <div>
+                          <span className="list-item-title">{ur.roles?.name}</span>
+                          {ur.project_id && (
+                            <span className="list-item-subtitle">
+                              ({ur.projects?.project_number})
+                            </span>
+                          )}
+                        </div>
+                        <button
+                          onClick={() => removeRole(ur.id)}
+                          className="btn-remove"
+                        >
+                          Remove
+                        </button>
                       </div>
-                      <button
-                        onClick={() => removeRole(ur.id)}
-                        className="text-red-600 hover:text-red-800 text-sm"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  ))
-                )}
-              </div>
+                    ))
+                  )}
+                </div>
 
-              {/* Add Role */}
-              <div className="flex gap-2">
-                <select
-                  value={newRoleId}
-                  onChange={(e) => setNewRoleId(e.target.value)}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                >
-                  <option value="">Select role...</option>
-                  {roles.map((role) => (
-                    <option key={role.id} value={role.id}>
-                      {role.name}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  value={newProjectId}
-                  onChange={(e) => setNewProjectId(e.target.value)}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                >
-                  <option value="">All projects</option>
-                  {projects.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.project_number}
-                    </option>
-                  ))}
-                </select>
-                <button
-                  onClick={addRole}
-                  disabled={!newRoleId}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 text-sm"
-                >
-                  Add
-                </button>
-              </div>
-            </>
-          )}
+                {/* Add Role */}
+                <div className="add-role-row">
+                  <select
+                    value={newRoleId}
+                    onChange={(e) => setNewRoleId(e.target.value)}
+                    className="form-select"
+                    style={{ flex: 1 }}
+                  >
+                    <option value="">Select role...</option>
+                    {roles.map((role) => (
+                      <option key={role.id} value={role.id}>
+                        {role.name}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    value={newProjectId}
+                    onChange={(e) => setNewProjectId(e.target.value)}
+                    className="form-select"
+                    style={{ flex: 1 }}
+                  >
+                    <option value="">All projects</option>
+                    {projects.map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.project_number}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    onClick={addRole}
+                    disabled={!newRoleId}
+                    className="btn btn-primary"
+                    style={{ padding: '0.625rem 1rem' }}
+                  >
+                    Add
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
 
-        <div className="flex justify-end pt-4 border-t">
+        <div className="modal-footer">
           <button
             onClick={onClose}
-            className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+            className="btn btn-secondary"
           >
             Close
           </button>

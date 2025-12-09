@@ -150,13 +150,13 @@ export function DocumentDashboard() {
 
   const getStatusBadge = (status: string) => {
     const colors: Record<string, string> = {
-      DRAFT: 'bg-gray-100 text-gray-800',
-      PENDING_REVIEW: 'bg-yellow-100 text-yellow-800',
-      APPROVED: 'bg-green-100 text-green-800',
-      REJECTED: 'bg-red-100 text-red-800',
-      SUPERSEDED: 'bg-purple-100 text-purple-800',
+      DRAFT: 'bg-white/10 text-gray-400 border-white/10',
+      PENDING_REVIEW: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20',
+      APPROVED: 'bg-green-500/10 text-green-500 border-green-500/20',
+      REJECTED: 'bg-red-500/10 text-red-500 border-red-500/20',
+      SUPERSEDED: 'bg-purple-500/10 text-purple-500 border-purple-500/20',
     };
-    return colors[status] || 'bg-gray-100 text-gray-800';
+    return colors[status] || 'bg-white/10 text-gray-400 border-white/10';
   };
 
   const formatFileSize = (bytes: number) => {
@@ -166,18 +166,21 @@ export function DocumentDashboard() {
   };
 
   return (
-    <div className="p-6">
-      <div className="mb-6">
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">Document Management</h1>
-          <div className="flex gap-3">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mb-8">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-4 border-b border-white/10 pb-6">
+          <div>
+            <h1 className="text-3xl font-bold text-white mb-2">Document Management</h1>
+            <p className="text-gray-400 font-mono text-sm uppercase tracking-wider">Project Documentation Center</p>
+          </div>
+          <div className="flex flex-wrap gap-3">
             <select
               value={selectedProjectId}
               onChange={(e) => setSelectedProjectId(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg"
+              className="px-4 py-2 bg-black/20 border border-white/10 rounded-lg text-white font-mono text-sm focus:outline-none focus:border-[var(--neon-cyan)]"
             >
               {projects.map((p) => (
-                <option key={p.id} value={p.id}>
+                <option key={p.id} value={p.id} className="bg-slate-900">
                   {p.project_number} - {p.name}
                 </option>
               ))}
@@ -185,7 +188,7 @@ export function DocumentDashboard() {
             {activeTab === 'documents' && (
               <button
                 onClick={() => setShowUploadModal(true)}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                className="px-4 py-2 bg-[var(--neon-cyan)]/10 border border-[var(--neon-cyan)]/50 text-[var(--neon-cyan)] rounded-lg hover:bg-[var(--neon-cyan)]/20 transition-all font-medium flex items-center gap-2 shadow-[0_0_15px_rgba(46,196,182,0.1)]"
               >
                 Upload Document
               </button>
@@ -195,34 +198,38 @@ export function DocumentDashboard() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white p-4 rounded-lg border border-gray-200">
-          <div className="text-sm text-gray-500">Total Documents</div>
-          <div className="text-2xl font-bold text-gray-900">{documents.length}</div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="gravity-card p-6 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm relative overflow-hidden group">
+          <div className="absolute top-0 left-0 w-1 h-full bg-blue-500/50"></div>
+          <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Total Documents</div>
+          <div className="text-3xl font-bold text-white font-mono group-hover:text-blue-400 transition-colors">{documents.length}</div>
         </div>
-        <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
-          <div className="text-sm text-yellow-600">Pending Submittals</div>
-          <div className="text-2xl font-bold text-yellow-700">
+        <div className="gravity-card p-6 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm relative overflow-hidden group">
+          <div className="absolute top-0 left-0 w-1 h-full bg-yellow-500/50"></div>
+          <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Pending Submittals</div>
+          <div className="text-3xl font-bold text-white font-mono group-hover:text-yellow-400 transition-colors">
             {submittals.filter(s => s.status === 'PENDING' || s.status === 'UNDER_REVIEW').length}
           </div>
         </div>
-        <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-          <div className="text-sm text-green-600">Approved</div>
-          <div className="text-2xl font-bold text-green-700">
+        <div className="gravity-card p-6 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm relative overflow-hidden group">
+          <div className="absolute top-0 left-0 w-1 h-full bg-green-500/50"></div>
+          <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Approved</div>
+          <div className="text-3xl font-bold text-white font-mono group-hover:text-green-400 transition-colors">
             {submittals.filter(s => s.status === 'APPROVED').length}
           </div>
         </div>
-        <div className="bg-red-50 p-4 rounded-lg border border-red-200">
-          <div className="text-sm text-red-600">Rejected</div>
-          <div className="text-2xl font-bold text-red-700">
+        <div className="gravity-card p-6 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm relative overflow-hidden group">
+          <div className="absolute top-0 left-0 w-1 h-full bg-red-500/50"></div>
+          <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Rejected</div>
+          <div className="text-3xl font-bold text-white font-mono group-hover:text-red-400 transition-colors">
             {submittals.filter(s => s.status === 'REJECTED').length}
           </div>
         </div>
       </div>
 
       {/* Tab Navigation */}
-      <div className="border-b border-gray-200 mb-6">
-        <nav className="-mb-px flex space-x-8">
+      <div className="mb-8 overflow-x-auto">
+        <nav className="flex space-x-2 border-b border-white/10 pb-1">
           {[
             { id: 'documents', label: 'Documents' },
             { id: 'submittals', label: 'Submittals' },
@@ -232,13 +239,15 @@ export function DocumentDashboard() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                activeTab === tab.id
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
+              className={`py-3 px-6 rounded-t-lg font-medium text-sm transition-all relative ${activeTab === tab.id
+                  ? 'text-[var(--neon-cyan)] bg-white/5 border-t border-x border-white/10'
+                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+                }`}
             >
               {tab.label}
+              {activeTab === tab.id && (
+                <div className="absolute bottom-0 left-0 w-full h-[2px] bg-[var(--neon-cyan)] shadow-[0_0_10px_var(--neon-cyan)]" />
+              )}
             </button>
           ))}
         </nav>
@@ -247,10 +256,10 @@ export function DocumentDashboard() {
       {/* Tab Content */}
       {loading ? (
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--neon-cyan)] shadow-[0_0_15px_rgba(46,196,182,0.3)]"></div>
         </div>
       ) : (
-        <>
+        <div className="gravity-card bg-white/5 border border-white/10 backdrop-blur-md rounded-xl p-6 min-h-[500px]">
           {activeTab === 'documents' && (
             <DocumentsPanel
               documents={documents}
@@ -267,7 +276,7 @@ export function DocumentDashboard() {
           )}
           {activeTab === 'transmittals' && <TransmittalsPanel />}
           {activeTab === 'meetings' && <MeetingMinutesPanel />}
-        </>
+        </div>
       )}
 
       {showUploadModal && (
@@ -306,10 +315,10 @@ function DocumentsPanel({
     <div>
       {/* Breadcrumb */}
       {currentFolder && (
-        <div className="mb-4">
+        <div className="mb-6">
           <button
             onClick={() => onFolderClick(null)}
-            className="text-blue-600 hover:text-blue-800 text-sm flex items-center gap-1"
+            className="text-[var(--neon-cyan)] hover:text-white text-sm flex items-center gap-2 font-medium transition-colors"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -321,90 +330,90 @@ function DocumentsPanel({
 
       {/* Folders */}
       {folders.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
           {folders.map((folder) => (
             <button
               key={folder.id}
               onClick={() => onFolderClick(folder.id)}
-              className="bg-white p-4 rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all text-left"
+              className="bg-white/5 p-4 rounded-xl border border-white/5 hover:border-[var(--neon-cyan)]/50 hover:bg-white/10 hover:-translate-y-1 hover:shadow-lg transition-all text-left group"
             >
-              <div className="text-3xl mb-2">📁</div>
-              <div className="font-medium text-gray-900 truncate">{folder.name}</div>
-              <div className="text-sm text-gray-500">{folder.document_count || 0} items</div>
+              <div className="text-3xl mb-3 grayscale group-hover:grayscale-0 transition-all">📁</div>
+              <div className="font-medium text-white truncate mb-1">{folder.name}</div>
+              <div className="text-xs text-gray-500 font-mono">{folder.document_count || 0} items</div>
             </button>
           ))}
         </div>
       )}
 
       {/* Documents Table */}
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+      <div className="rounded-lg border border-white/10 overflow-hidden">
+        <table className="min-w-full divide-y divide-white/10">
+          <thead className="bg-black/20">
             <tr>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              <th className="px-6 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">
                 Document
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              <th className="px-6 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">
                 Type
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              <th className="px-6 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">
                 Version
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              <th className="px-6 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">
                 Size
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              <th className="px-6 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">
                 Status
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              <th className="px-6 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">
                 Uploaded
               </th>
-              <th className="px-4 py-3"></th>
+              <th className="px-6 py-4"></th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-white/5">
             {documents.length === 0 ? (
               <tr>
-                <td colSpan={7} className="px-4 py-8 text-center text-gray-500">
+                <td colSpan={7} className="px-6 py-12 text-center text-gray-500 text-lg">
                   No documents in this folder
                 </td>
               </tr>
             ) : (
               documents.map((doc) => (
-                <tr key={doc.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xl">{getDocTypeIcon(doc.document_type)}</span>
+                <tr key={doc.id} className="hover:bg-white/5 transition-colors group">
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">{getDocTypeIcon(doc.document_type)}</span>
                       <div>
-                        <div className="font-medium text-gray-900">{doc.title}</div>
-                        <div className="text-sm text-gray-500">{doc.document_number}</div>
+                        <div className="font-medium text-white group-hover:text-[var(--neon-cyan)] transition-colors">{doc.title}</div>
+                        <div className="text-xs text-gray-500 font-mono mt-1">{doc.document_number}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-600">
+                  <td className="px-6 py-4 text-sm text-gray-400">
                     {doc.document_type?.replace(/_/g, ' ')}
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-600">v{doc.version}</td>
-                  <td className="px-4 py-3 text-sm text-gray-600">
+                  <td className="px-6 py-4 text-sm text-gray-400 font-mono">v{doc.version}</td>
+                  <td className="px-6 py-4 text-sm text-gray-400 font-mono">
                     {formatFileSize(doc.file_size || 0)}
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-6 py-4">
                     <span
-                      className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusBadge(
+                      className={`inline-flex px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded border ${getStatusBadge(
                         doc.status
                       )}`}
                     >
                       {doc.status?.replace(/_/g, ' ')}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-600">
+                  <td className="px-6 py-4 text-sm text-gray-500 font-mono">
                     {new Date(doc.created_at).toLocaleDateString()}
                   </td>
-                  <td className="px-4 py-3 text-right">
-                    <button className="text-blue-600 hover:text-blue-800 text-sm mr-2">
+                  <td className="px-6 py-4 text-right">
+                    <button className="text-gray-400 hover:text-[var(--neon-cyan)] text-sm mr-4 transition-colors">
                       Download
                     </button>
-                    <button className="text-blue-600 hover:text-blue-800 text-sm">
+                    <button className="text-gray-400 hover:text-white text-sm transition-colors">
                       View
                     </button>
                   </td>
@@ -427,76 +436,76 @@ function SubmittalsPanel({
 }) {
   const getPriorityBadge = (priority: string) => {
     const colors: Record<string, string> = {
-      LOW: 'bg-gray-100 text-gray-800',
-      MEDIUM: 'bg-blue-100 text-blue-800',
-      HIGH: 'bg-orange-100 text-orange-800',
-      CRITICAL: 'bg-red-100 text-red-800',
+      LOW: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+      MEDIUM: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20',
+      HIGH: 'bg-orange-500/10 text-orange-500 border-orange-500/20',
+      CRITICAL: 'bg-red-500/10 text-red-500 border-red-500/20 shadow-[0_0_10px_rgba(239,68,68,0.2)]',
     };
-    return colors[priority] || 'bg-gray-100 text-gray-800';
+    return colors[priority] || 'bg-white/10 text-gray-400 border-white/10';
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
+    <div className="rounded-lg border border-white/10 overflow-hidden">
+      <table className="min-w-full divide-y divide-white/10">
+        <thead className="bg-black/20">
           <tr>
-            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+            <th className="px-6 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">
               Submittal #
             </th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+            <th className="px-6 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">
               Title
             </th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+            <th className="px-6 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">
               Spec Section
             </th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+            <th className="px-6 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">
               Priority
             </th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+            <th className="px-6 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">
               Status
             </th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+            <th className="px-6 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">
               Required Date
             </th>
-            <th className="px-4 py-3"></th>
+            <th className="px-6 py-4"></th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-200">
+        <tbody className="divide-y divide-white/5">
           {submittals.length === 0 ? (
             <tr>
-              <td colSpan={7} className="px-4 py-8 text-center text-gray-500">
+              <td colSpan={7} className="px-6 py-12 text-center text-gray-500 text-lg">
                 No submittals found
               </td>
             </tr>
           ) : (
             submittals.map((submittal) => (
-              <tr key={submittal.id} className="hover:bg-gray-50">
-                <td className="px-4 py-3 text-sm font-medium text-blue-600">
+              <tr key={submittal.id} className="hover:bg-white/5 transition-colors">
+                <td className="px-6 py-4 text-sm font-bold text-[var(--neon-cyan)] font-mono">
                   {submittal.submittal_number}
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-900">{submittal.title}</td>
-                <td className="px-4 py-3 text-sm text-gray-600">{submittal.spec_section}</td>
-                <td className="px-4 py-3">
+                <td className="px-6 py-4 text-sm text-white">{submittal.title}</td>
+                <td className="px-6 py-4 text-sm text-gray-400 font-mono">{submittal.spec_section}</td>
+                <td className="px-6 py-4">
                   <span
-                    className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getPriorityBadge(
+                    className={`inline-flex px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded border ${getPriorityBadge(
                       submittal.priority
                     )}`}
                   >
                     {submittal.priority}
                   </span>
                 </td>
-                <td className="px-4 py-3">
+                <td className="px-6 py-4">
                   <span
-                    className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusBadge(
+                    className={`inline-flex px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded border ${getStatusBadge(
                       submittal.status
                     )}`}
                   >
                     {submittal.status?.replace(/_/g, ' ')}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-600">{submittal.required_date}</td>
-                <td className="px-4 py-3 text-right">
-                  <button className="text-blue-600 hover:text-blue-800 text-sm">View</button>
+                <td className="px-6 py-4 text-sm text-gray-400 font-mono">{submittal.required_date}</td>
+                <td className="px-6 py-4 text-right">
+                  <button className="text-[var(--neon-cyan)] hover:text-white text-sm font-medium transition-colors">View</button>
                 </td>
               </tr>
             ))
@@ -509,24 +518,28 @@ function SubmittalsPanel({
 
 function TransmittalsPanel() {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
-      <svg className="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-      </svg>
-      <h3 className="text-lg font-medium text-gray-900 mb-2">Transmittals</h3>
-      <p className="text-gray-500">Create and track document transmittals to external parties</p>
+    <div className="p-12 text-center">
+      <div className="w-20 h-20 mx-auto bg-white/5 rounded-full flex items-center justify-center mb-6 border border-white/10">
+        <svg className="w-10 h-10 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+      </div>
+      <h3 className="text-xl font-bold text-white mb-2">Transmittals</h3>
+      <p className="text-gray-400 max-w-md mx-auto">Create and track document transmittals to external parties. This module is currently under development.</p>
     </div>
   );
 }
 
 function MeetingMinutesPanel() {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
-      <svg className="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-      </svg>
-      <h3 className="text-lg font-medium text-gray-900 mb-2">Meeting Minutes</h3>
-      <p className="text-gray-500">Record and distribute meeting minutes with action items</p>
+    <div className="p-12 text-center">
+      <div className="w-20 h-20 mx-auto bg-white/5 rounded-full flex items-center justify-center mb-6 border border-white/10">
+        <svg className="w-10 h-10 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+      </div>
+      <h3 className="text-xl font-bold text-white mb-2">Meeting Minutes</h3>
+      <p className="text-gray-400 max-w-md mx-auto">Record and distribute meeting minutes with action items. This module is currently under development.</p>
     </div>
   );
 }
@@ -592,43 +605,53 @@ function UploadDocumentModal({
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md">
-        <h2 className="text-lg font-bold mb-4">Upload Document</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-[#1a2332] border border-white/10 rounded-2xl p-8 w-full max-w-md relative shadow-2xl">
+        <div className="absolute top-4 right-4 text-gray-500 hover:text-white cursor-pointer" onClick={onClose}>
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </div>
+
+        <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+          <span className="text-[var(--neon-cyan)]">📄</span> Upload Document
+        </h2>
+
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
               File *
             </label>
             <input
               type="file"
               onChange={(e) => setFile(e.target.files?.[0] || null)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+              className="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-lg text-gray-300 focus:outline-none focus:border-[var(--neon-cyan)] transition-colors file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[var(--neon-cyan)]/10 file:text-[var(--neon-cyan)] hover:file:bg-[var(--neon-cyan)]/20"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
               Title *
             </label>
             <input
               type="text"
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+              className="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-[var(--neon-cyan)] transition-colors"
+              placeholder="Enter document title"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
               Document Type
             </label>
             <select
               value={formData.document_type}
               onChange={(e) => setFormData({ ...formData, document_type: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+              className="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-lg text-white focus:outline-none focus:border-[var(--neon-cyan)] transition-colors"
             >
               <option value="GENERAL">General</option>
               <option value="CONTRACT">Contract</option>
@@ -644,31 +667,32 @@ function UploadDocumentModal({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
               Description
             </label>
             <textarea
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-              rows={2}
+              className="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-[var(--neon-cyan)] transition-colors"
+              rows={3}
+              placeholder="Optional description..."
             />
           </div>
 
-          <div className="flex gap-3 pt-4">
+          <div className="flex gap-4 pt-4">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+              className="flex-1 px-4 py-3 border border-white/10 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors font-medium"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={uploading || !file}
-              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+              className="flex-1 px-4 py-3 bg-[var(--neon-cyan)]/20 border border-[var(--neon-cyan)] text-[var(--neon-cyan)] rounded-lg hover:bg-[var(--neon-cyan)]/30 hover:shadow-[0_0_20px_rgba(46,196,182,0.3)] transition-all font-bold disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {uploading ? 'Uploading...' : 'Upload'}
+              {uploading ? 'Uploading...' : 'Upload File'}
             </button>
           </div>
         </form>

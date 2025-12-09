@@ -27,8 +27,13 @@
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Header */
@@ -1324,11 +1329,11 @@
 .enhanced-crew-page .detail-panel-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.25);
   display: flex;
   justify-content: flex-end;
   z-index: 100;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(1px);
 }
 
 .enhanced-crew-page .detail-panel {
@@ -1349,6 +1354,7 @@
     transform: translateX(100%);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;

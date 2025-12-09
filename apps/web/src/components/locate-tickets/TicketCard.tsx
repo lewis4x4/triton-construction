@@ -30,7 +30,7 @@ export function TicketCard({ ticket }: TicketCardProps) {
 
   // Calculate urgency
   const daysUntilDig = Math.ceil((legalDigDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-  const daysUntilExpire = Math.ceil((expiresAt.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
 
   const getUrgencyClass = () => {
     if (daysUntilDig <= 0) return 'urgency-critical';
@@ -75,21 +75,19 @@ export function TicketCard({ ticket }: TicketCardProps) {
 
       <div className="ticket-card-dates">
         <div className="ticket-date">
-          <Calendar size={14} />
-          <span>
-            Legal Dig: <strong>{formatDate(legalDigDate)}</strong>
-            {daysUntilDig <= 0 && <span className="date-warning"> (Today!)</span>}
-            {daysUntilDig === 1 && <span className="date-warning"> (Tomorrow)</span>}
-          </span>
+          <div className="ticket-date-label">
+            <Calendar size={14} />
+            DO NOT DIG BEFORE
+          </div>
+          <strong>{formatDate(legalDigDate)}</strong>
+          {daysUntilDig <= 0 && <span className="date-warning text-xs font-bold text-neon-amer">(Active)</span>}
         </div>
         <div className="ticket-date">
-          <Clock size={14} />
-          <span>
-            Expires: <strong>{formatDate(expiresAt)}</strong>
-            {daysUntilExpire <= 3 && daysUntilExpire > 0 && (
-              <span className="date-warning"> ({daysUntilExpire} days)</span>
-            )}
-          </span>
+          <div className="ticket-date-label">
+            <Clock size={14} />
+            EXPIRES
+          </div>
+          <strong>{formatDate(expiresAt)}</strong>
         </div>
       </div>
 

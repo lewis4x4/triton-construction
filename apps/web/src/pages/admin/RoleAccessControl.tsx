@@ -197,19 +197,21 @@ export function RoleAccessControl() {
   }
 
   return (
-    <>
+    <div className="role-access-page">
       <div className="page-header">
         <div className="page-header-content">
-          <div className="page-header-icon">🔐</div>
-          <div>
-            <h1>Role Access Control</h1>
-            <p>Configure which modules are visible on the dashboard for each role.</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <span style={{ fontSize: '2rem' }}>🔐</span>
+            <div>
+              <h1>Role Access Control</h1>
+              <p>Configure which modules are visible on the dashboard for each role.</p>
+            </div>
           </div>
         </div>
       </div>
 
-      {error && <div className="error-message">{error}</div>}
-      {success && <div className="success-message">{success}</div>}
+      {error && <div className="error-message">⚠️ {error}</div>}
+      {success && <div className="success-message">✅ {success}</div>}
 
       <div className="role-access-card">
         <div className="role-access-header">
@@ -274,9 +276,7 @@ export function RoleAccessControl() {
                               onChange={() => toggleAccess(role.id, mod.id)}
                               disabled={role.code === 'ADMIN' && mod.module_group === 'ADMIN'}
                             />
-                            <span className={`custom-checkbox ${accessMatrix[role.id]?.[mod.id] ? 'checked' : ''}`}>
-                              {accessMatrix[role.id]?.[mod.id] && '✓'}
-                            </span>
+                            <span className="custom-checkbox"></span>
                           </label>
                         </td>
                       ))}
@@ -290,13 +290,15 @@ export function RoleAccessControl() {
 
         {hasChanges && (
           <div className="unsaved-changes-bar">
-            <span>You have unsaved changes</span>
+            <span>⚠️ You have unsaved changes</span>
             <button className="btn btn-primary" onClick={handleSave} disabled={isSaving}>
               Save Changes
             </button>
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }
+
+export default RoleAccessControl;

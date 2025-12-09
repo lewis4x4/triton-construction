@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback, useReducer } from 'react';
 import { supabase } from '@triton/supabase-client';
-import './VoiceDailyReportPage.css';
+
 
 // ============================================================================
 // TYPES & INTERFACES
@@ -727,68 +727,81 @@ export function VoiceDailyReportPage() {
   const isPaused = recordingState.status === 'paused';
 
   return (
-    <div className="voice-daily-report">
-      <div className="page-header">
-        <h1>Voice Daily Report</h1>
-        <p>Record your daily report and let AI structure it for you</p>
-      </div>
-
-      {/* Offline Banner */}
-      {!isOnlineStatus && (
-        <div className="offline-banner" role="alert">
-          <svg className="offline-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 2.829a4.978 4.978 0 01-1.414-2.83m-1.414 5.658a9 9 0 01-2.167-9.238m7.824 2.167a1 1 0 111.414 1.414m-1.414-1.414L3 3" />
-          </svg>
-          <span>You're offline. Recording will work, but upload requires internet.</span>
+    <div className="min-h-screen bg-void-deep text-white p-6">
+      <div className="max-w-[1200px] mx-auto">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+            Voice Daily Report
+          </h1>
+          <p className="text-gray-400 font-mono text-sm mt-2 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>
+            Record your daily report and let AI structure it for you
+          </p>
         </div>
-      )}
 
-      {/* Browser Unsupported Banner */}
-      {!browserSupported && (
-        <div className="error-banner" role="alert">
-          <svg className="error-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-          </svg>
-          <span>{ERROR_MESSAGES[ErrorCode.BROWSER_UNSUPPORTED]}</span>
+        {/* Offline Banner */}
+        {!isOnlineStatus && (
+          <div className="mb-6 p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/30 flex items-center gap-3 text-yellow-500">
+            <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 2.829a4.978 4.978 0 01-1.414-2.83m-1.414 5.658a9 9 0 01-2.167-9.238m7.824 2.167a1 1 0 111.414 1.414m-1.414-1.414L3 3" />
+            </svg>
+            <span className="font-mono text-sm">You're offline. Recording will work, but upload requires internet.</span>
+          </div>
+        )}
+
+        {/* Browser Unsupported Banner */}
+        {!browserSupported && (
+          <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center gap-3 text-red-500">
+            <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <span className="font-mono text-sm">{ERROR_MESSAGES[ErrorCode.BROWSER_UNSUPPORTED]}</span>
+          </div>
+        )}
+
+        {/* Error Banner */}
+        {recordingState.errorMessage && recordingState.status === 'error' && (
+          <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center gap-3 text-red-500">
+            <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span className="font-mono text-sm">{recordingState.errorMessage}</span>
+            <button
+              className="ml-auto text-red-400 hover:text-red-300 transition-colors"
+              onClick={() => dispatch({ type: 'RESET' })}
+              aria-label="Dismiss error"
+            >
+              &times;
+            </button>
+          </div>
+        )}
+
+        {/* Keyboard Shortcuts Hint */}
+        <div className="hidden md:flex gap-6 justify-center mb-6 text-xs text-gray-500 font-mono uppercase tracking-wider">
+          <span className="flex items-center gap-2">
+            <kbd className="px-2 py-1 bg-white/5 rounded border border-white/10">Ctrl</kbd>+<kbd className="px-2 py-1 bg-white/5 rounded border border-white/10">R</kbd> Record
+          </span>
+          <span className="flex items-center gap-2">
+            <kbd className="px-2 py-1 bg-white/5 rounded border border-white/10">Space</kbd> Pause/Resume
+          </span>
+          <span className="flex items-center gap-2">
+            <kbd className="px-2 py-1 bg-white/5 rounded border border-white/10">Ctrl</kbd>+<kbd className="px-2 py-1 bg-white/5 rounded border border-white/10">S</kbd> Save
+          </span>
+          <span className="flex items-center gap-2">
+            <kbd className="px-2 py-1 bg-white/5 rounded border border-white/10">Esc</kbd> Discard
+          </span>
         </div>
-      )}
 
-      {/* Error Banner */}
-      {recordingState.errorMessage && recordingState.status === 'error' && (
-        <div className="error-banner" role="alert">
-          <svg className="error-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span>{recordingState.errorMessage}</span>
-          <button
-            className="dismiss-btn"
-            onClick={() => dispatch({ type: 'RESET' })}
-            aria-label="Dismiss error"
-          >
-            &times;
-          </button>
-        </div>
-      )}
-
-      {/* Keyboard Shortcuts Hint */}
-      <div className="shortcuts-hint">
-        <span><kbd>Ctrl</kbd>+<kbd>R</kbd> Record</span>
-        <span><kbd>Space</kbd> Pause/Resume</span>
-        <span><kbd>Ctrl</kbd>+<kbd>S</kbd> Save</span>
-        <span><kbd>Esc</kbd> Discard</span>
-      </div>
-
-      {/* Project & Date Selection */}
-      <div className="card">
-        <div className="card-body-compact">
-          <div className="form-grid">
-            <div className="form-group">
-              <label htmlFor="project-select">Project</label>
+        {/* Project & Date Selection */}
+        <div className="gravity-card p-6 mb-8 border-cyan-500/20 bg-cyan-500/5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label htmlFor="project-select" className="block text-sm font-bold text-cyan-400 mb-2 uppercase tracking-wide">Project</label>
               <select
                 id="project-select"
                 value={selectedProjectId}
                 onChange={(e) => setSelectedProjectId(e.target.value)}
-                className="form-select"
+                className="w-full bg-void-dark border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-500 transition-colors cursor-pointer"
                 disabled={isRecording || isPaused}
                 aria-describedby="project-help"
               >
@@ -801,204 +814,217 @@ export function VoiceDailyReportPage() {
                   </option>
                 ))}
               </select>
-              <span id="project-help" className="form-help">Select the project for this report</span>
+              <span id="project-help" className="block mt-1 text-xs text-gray-500">Select the project for this report</span>
             </div>
-            <div className="form-group">
-              <label htmlFor="report-date">Report Date</label>
+            <div>
+              <label htmlFor="report-date" className="block text-sm font-bold text-cyan-400 mb-2 uppercase tracking-wide">Report Date</label>
               <input
                 id="report-date"
                 type="date"
                 value={reportDate}
                 onChange={(e) => setReportDate(e.target.value)}
-                className="form-input"
+                className="w-full bg-void-dark border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-500 transition-colors cursor-pointer"
                 disabled={isRecording || isPaused}
               />
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Recording Interface */}
-      <div className="card">
-        <div className="card-body">
-          <div className="recording-interface">
+        {/* Recording Interface */}
+        <div className="gravity-card p-8 mb-8 text-center border-purple-500/20 bg-purple-500/5">
+          <div className="mb-8">
             {/* Recording Status */}
-            <div className="recording-status" role="status" aria-live="polite">
+            <div className="min-h-[120px] flex items-center justify-center" role="status" aria-live="polite">
               {isRecording || isPaused ? (
-                <div className="recording-active">
-                  <div
-                    className={`recording-indicator ${isPaused ? 'paused' : 'recording'}`}
-                    aria-hidden="true"
-                  />
-                  <span className="recording-time" aria-label={`Recording time: ${formatTime(recordingState.time)}`}>
-                    {formatTime(recordingState.time)}
-                  </span>
-                  <span className="recording-label">{isPaused ? 'Paused' : 'Recording...'}</span>
+                <div className="flex flex-col items-center gap-4">
+                  <div className="relative">
+                    <div className={`w-4 h-4 rounded-full ${isPaused ? 'bg-yellow-500' : 'bg-red-500 animate-pulse'}`} aria-hidden="true" />
+                    {isRecording && <div className="absolute top-0 left-0 w-4 h-4 bg-red-500 rounded-full animate-ping opacity-75" />}
+                  </div>
+                  <div className="flex flex-col items-center gap-1">
+                    <span className="text-5xl font-mono font-bold text-white tracking-widest drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]" aria-label={`Recording time: ${formatTime(recordingState.time)}`}>
+                      {formatTime(recordingState.time)}
+                    </span>
+                    <span className="text-sm text-gray-400 font-mono uppercase tracking-widest">{isPaused ? 'Paused' : 'Recording...'}</span>
+                  </div>
                   {recordingState.time > MAX_RECORDING_SECONDS - 60 && (
-                    <span className="time-warning">
+                    <span className="text-red-400 font-mono text-xs animate-pulse">
                       ({Math.floor((MAX_RECORDING_SECONDS - recordingState.time) / 60)}m remaining)
                     </span>
                   )}
                 </div>
               ) : audioBlob ? (
-                <div className="recording-complete">
-                  <div className="recording-indicator complete" aria-hidden="true" />
-                  <span className="recording-complete-text">Recording Complete</span>
-                  <span className="recording-duration">
-                    {formatTime(recordingState.time)} • {formatFileSize(audioBlob.size)}
-                  </span>
+                <div className="flex flex-col items-center gap-4">
+                  <div className="w-16 h-16 rounded-full bg-green-500/20 border border-green-500/50 flex items-center justify-center">
+                    <div className="w-4 h-4 rounded bg-green-500" aria-hidden="true" />
+                  </div>
+                  <div>
+                    <span className="block text-xl font-bold text-green-400">Recording Complete</span>
+                    <span className="text-sm text-gray-500 font-mono mt-1">
+                      {formatTime(recordingState.time)} • {formatFileSize(audioBlob.size)}
+                    </span>
+                  </div>
                 </div>
               ) : (
-                <div className="recording-idle">
-                  <svg
-                    className="mic-icon-large"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-                  </svg>
-                  <p>Press the microphone to start recording</p>
+                <div className="text-gray-500 flex flex-col items-center gap-4">
+                  <div className="w-20 h-20 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
+                    <svg
+                      className="w-8 h-8 opacity-50"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                    </svg>
+                  </div>
+                  <p className="font-mono text-sm uppercase tracking-wider">Press the microphone to start recording</p>
                 </div>
               )}
             </div>
+          </div>
 
-            {/* Recording Controls */}
-            <div className="recording-controls" role="group" aria-label="Recording controls">
-              {!isRecording && !isPaused && !audioBlob && (
-                <button
-                  onClick={startRecording}
-                  className="btn btn-record"
-                  disabled={!browserSupported}
-                  aria-label="Start recording"
-                  title="Start recording (Ctrl+R)"
-                >
-                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-                  </svg>
-                </button>
-              )}
-
-              {(isRecording || isPaused) && (
-                <>
-                  {isPaused ? (
-                    <button
-                      onClick={resumeRecording}
-                      className="btn btn-control btn-resume"
-                      aria-label="Resume recording"
-                      title="Resume recording (Space)"
-                    >
-                      <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </button>
-                  ) : (
-                    <button
-                      onClick={pauseRecording}
-                      className="btn btn-control btn-pause"
-                      aria-label="Pause recording"
-                      title="Pause recording (Space)"
-                    >
-                      <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
-                      </svg>
-                    </button>
-                  )}
-                  <button
-                    onClick={stopRecording}
-                    className="btn btn-control btn-stop"
-                    aria-label="Stop recording"
-                  >
-                    <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <rect x="6" y="6" width="12" height="12" />
-                    </svg>
-                  </button>
-                </>
-              )}
-
-              {audioBlob && !isRecording && !isPaused && (
-                <>
-                  <button
-                    onClick={discardRecording}
-                    className="btn btn-secondary"
-                    aria-label="Discard recording"
-                    title="Discard recording (Esc)"
-                  >
-                    Discard
-                  </button>
-                  <button
-                    onClick={transcribeAudio}
-                    disabled={transcribing || !isOnlineStatus}
-                    className="btn btn-primary"
-                    aria-label={transcribing ? 'Transcribing audio' : 'Transcribe audio'}
-                  >
-                    {transcribing ? (
-                      uploadProgress !== null ? `Uploading ${uploadProgress}%` : 'Transcribing...'
-                    ) : (
-                      'Transcribe'
-                    )}
-                  </button>
-                </>
-              )}
-            </div>
-
-            {/* Progress Bar */}
-            {uploadProgress !== null && (
-              <div className="progress-bar-container" role="progressbar" aria-valuenow={uploadProgress} aria-valuemin={0} aria-valuemax={100}>
-                <div className="progress-bar" style={{ width: `${uploadProgress}%` }} />
-                <span className="progress-label">
-                  {uploadProgress < 50 ? 'Uploading...' : 'Processing...'}
-                </span>
-              </div>
+          {/* Recording Controls */}
+          <div className="flex justify-center gap-6" role="group" aria-label="Recording controls">
+            {!isRecording && !isPaused && !audioBlob && (
+              <button
+                onClick={startRecording}
+                className="group relative flex items-center justify-center w-24 h-24 rounded-full bg-red-500 hover:bg-red-600 transition-all shadow-[0_0_30px_rgba(239,68,68,0.3)] hover:shadow-[0_0_50px_rgba(239,68,68,0.5)] hover:scale-105"
+                disabled={!browserSupported}
+                aria-label="Start recording"
+                title="Start recording (Ctrl+R)"
+              >
+                <div className="absolute inset-0 rounded-full border-2 border-red-400/50 animate-ping opacity-20 group-hover:opacity-40" />
+                <svg className="w-10 h-10 text-white drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                </svg>
+              </button>
             )}
 
-            {/* Audio Playback */}
-            {audioUrl && (
-              <div className="audio-playback">
-                <audio
-                  controls
-                  src={audioUrl}
-                  aria-label="Recorded audio playback"
-                />
+            {(isRecording || isPaused) && (
+              <>
+                {isPaused ? (
+                  <button
+                    onClick={resumeRecording}
+                    className="flex items-center justify-center w-16 h-16 rounded-full bg-green-500 hover:bg-green-600 shadow-[0_0_20px_rgba(34,197,94,0.3)] transition-all hover:scale-105"
+                    aria-label="Resume recording"
+                    title="Resume recording (Space)"
+                  >
+                    <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </button>
+                ) : (
+                  <button
+                    onClick={pauseRecording}
+                    className="flex items-center justify-center w-16 h-16 rounded-full bg-yellow-500 hover:bg-yellow-600 shadow-[0_0_20px_rgba(234,179,8,0.3)] transition-all hover:scale-105"
+                    aria-label="Pause recording"
+                    title="Pause recording (Space)"
+                  >
+                    <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+                    </svg>
+                  </button>
+                )}
+                <button
+                  onClick={stopRecording}
+                  className="flex items-center justify-center w-16 h-16 rounded-full bg-void-dark border border-white/20 hover:bg-white/10 transition-all hover:scale-105"
+                  aria-label="Stop recording"
+                >
+                  <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="6" y="6" width="12" height="12" />
+                  </svg>
+                </button>
+              </>
+            )}
+
+            {audioBlob && !isRecording && !isPaused && (
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={discardRecording}
+                  className="px-6 py-3 rounded-lg border border-white/10 hover:bg-white/5 text-gray-300 transition-colors uppercase font-bold text-sm tracking-wide"
+                  aria-label="Discard recording"
+                  title="Discard recording (Esc)"
+                >
+                  Discard
+                </button>
+                <button
+                  onClick={transcribeAudio}
+                  disabled={transcribing || !isOnlineStatus}
+                  className="px-8 py-3 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-black font-bold uppercase tracking-wide shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  aria-label={transcribing ? 'Transcribing audio' : 'Transcribe audio'}
+                >
+                  {transcribing ? (
+                    <span className="flex items-center gap-2">
+                      <svg className="animate-spin h-4 w-4 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      {uploadProgress !== null ? `Uploading ${uploadProgress}%` : 'Processing...'}
+                    </span>
+                  ) : (
+                    'Transcribe'
+                  )}
+                </button>
               </div>
             )}
           </div>
-        </div>
-      </div>
 
-      {/* Transcription */}
-      {transcription && (
-        <div className="card">
-          <div className="card-body">
-            <div className="section-header">
-              <h2>Transcription</h2>
+          {/* Progress Bar */}
+          {uploadProgress !== null && (
+            <div className="mt-8 relative h-2 bg-white/10 rounded-full overflow-hidden" role="progressbar" aria-valuenow={uploadProgress} aria-valuemin={0} aria-valuemax={100}>
+              <div className="absolute top-0 left-0 h-full bg-cyan-500 transition-all duration-300" style={{ width: `${uploadProgress}%` }} />
+            </div>
+          )}
+
+          {/* Audio Playback */}
+          {audioUrl && (
+            <div className="mt-8 flex justify-center">
+              <audio
+                controls
+                src={audioUrl}
+                className="w-full max-w-md [&::-webkit-media-controls-panel]:bg-gray-800 [&::-webkit-media-controls-current-time-display]:text-gray-300 [&::-webkit-media-controls-time-remaining-display]:text-gray-300"
+                aria-label="Recorded audio playback"
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Transcription */}
+        {transcription && (
+          <div className="gravity-card p-6 mb-8 border-green-500/20 bg-green-500/5">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold text-green-400 uppercase tracking-widest flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-green-500" />
+                Transcription
+              </h2>
               <button
                 onClick={generateReport}
                 disabled={generating || !isOnlineStatus}
-                className="btn btn-success"
+                className="px-6 py-2 rounded-lg bg-green-500 hover:bg-green-400 text-black font-bold text-sm uppercase tracking-wide shadow-lg transition-all disabled:opacity-50"
                 aria-label={generating ? 'Generating report' : 'Generate report from transcription'}
               >
-                {generating ? 'Generating Report...' : 'Generate Report'}
+                {generating ? 'Generating...' : 'Generate Report'}
               </button>
             </div>
-            <div className="transcription-text" role="region" aria-label="Transcription text">
+            <div className="bg-void-dark border border-white/10 rounded-lg p-6 text-gray-300 font-mono text-sm leading-relaxed max-h-[300px] overflow-y-auto custom-scrollbar" role="region" aria-label="Transcription text">
               {transcription.text}
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Structured Report */}
-      {structuredReport && (
-        <div className="card">
-          <div className="card-body">
-            <div className="section-header">
-              <h2>Generated Report</h2>
+        {/* Structured Report */}
+        {structuredReport && (
+          <div className="gravity-card p-6 border-cyan-500/20 bg-cyan-500/5">
+            <div className="flex justify-between items-center mb-6 border-b border-white/10 pb-6">
+              <h2 className="text-xl font-bold text-white uppercase tracking-widest flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-cyan-500" />
+                Generated Report
+              </h2>
               <button
                 onClick={saveReport}
                 disabled={saving || !isOnlineStatus}
-                className="btn btn-primary"
+                className="px-6 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-sm uppercase tracking-wide shadow-lg transition-all disabled:opacity-50"
                 aria-label={saving ? 'Saving report' : 'Save report as draft'}
                 title="Save report (Ctrl+S)"
               >
@@ -1006,20 +1032,23 @@ export function VoiceDailyReportPage() {
               </button>
             </div>
 
-            <div className="report-sections">
+            <div className="space-y-8">
               {/* Summary */}
-              <div className="report-section">
-                <h3>Summary</h3>
-                <p>{structuredReport.summary}</p>
+              <div>
+                <h3 className="text-sm font-bold text-cyan-400 uppercase tracking-wider mb-2">Summary</h3>
+                <p className="text-gray-300 leading-relaxed bg-white/5 p-4 rounded-lg border border-white/5">{structuredReport.summary}</p>
               </div>
 
               {/* Work Performed */}
               {structuredReport.work_performed.length > 0 && (
-                <div className="report-section">
-                  <h3>Work Performed</h3>
-                  <ul>
+                <div>
+                  <h3 className="text-sm font-bold text-cyan-400 uppercase tracking-wider mb-2">Work Performed</h3>
+                  <ul className="space-y-2">
                     {structuredReport.work_performed.map((work, i) => (
-                      <li key={i}>{work}</li>
+                      <li key={i} className="flex gap-3 text-gray-300 bg-white/5 p-3 rounded border border-white/5">
+                        <span className="text-cyan-500 mt-1.5 w-1.5 h-1.5 rounded-full bg-cyan-500 flex-shrink-0" />
+                        {work}
+                      </li>
                     ))}
                   </ul>
                 </div>
@@ -1027,61 +1056,65 @@ export function VoiceDailyReportPage() {
 
               {/* Manpower */}
               {structuredReport.manpower.length > 0 && (
-                <div className="report-section">
-                  <h3>Manpower</h3>
-                  <table className="data-table">
-                    <thead>
-                      <tr>
-                        <th>Trade</th>
-                        <th>Count</th>
-                        <th>Hours</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {structuredReport.manpower.map((m, i) => (
-                        <tr key={i}>
-                          <td>{m.trade}</td>
-                          <td>{m.count}</td>
-                          <td>{m.hours}</td>
+                <div>
+                  <h3 className="text-sm font-bold text-cyan-400 uppercase tracking-wider mb-2">Manpower</h3>
+                  <div className="bg-white/5 rounded-lg border border-white/10 overflow-hidden">
+                    <table className="w-full text-sm">
+                      <thead className="bg-white/5 border-b border-white/10">
+                        <tr>
+                          <th className="px-4 py-3 text-left font-bold text-gray-400 uppercase tracking-wider">Trade</th>
+                          <th className="px-4 py-3 text-left font-bold text-gray-400 uppercase tracking-wider">Count</th>
+                          <th className="px-4 py-3 text-left font-bold text-gray-400 uppercase tracking-wider">Hours</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody className="divide-y divide-white/5">
+                        {structuredReport.manpower.map((m, i) => (
+                          <tr key={i} className="hover:bg-white/5 transition-colors">
+                            <td className="px-4 py-3 text-white font-mono">{m.trade}</td>
+                            <td className="px-4 py-3 text-gray-300 font-mono">{m.count}</td>
+                            <td className="px-4 py-3 text-gray-300 font-mono">{m.hours}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               )}
 
               {/* Equipment */}
               {structuredReport.equipment.length > 0 && (
-                <div className="report-section">
-                  <h3>Equipment</h3>
-                  <table className="data-table">
-                    <thead>
-                      <tr>
-                        <th>Equipment</th>
-                        <th>Hours</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {structuredReport.equipment.map((e, i) => (
-                        <tr key={i}>
-                          <td>{e.name}</td>
-                          <td>{e.hours}</td>
+                <div>
+                  <h3 className="text-sm font-bold text-cyan-400 uppercase tracking-wider mb-2">Equipment</h3>
+                  <div className="bg-white/5 rounded-lg border border-white/10 overflow-hidden">
+                    <table className="w-full text-sm">
+                      <thead className="bg-white/5 border-b border-white/10">
+                        <tr>
+                          <th className="px-4 py-3 text-left font-bold text-gray-400 uppercase tracking-wider">Equipment</th>
+                          <th className="px-4 py-3 text-left font-bold text-gray-400 uppercase tracking-wider">Hours</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody className="divide-y divide-white/5">
+                        {structuredReport.equipment.map((e, i) => (
+                          <tr key={i} className="hover:bg-white/5 transition-colors">
+                            <td className="px-4 py-3 text-white font-mono">{e.name}</td>
+                            <td className="px-4 py-3 text-gray-300 font-mono">{e.hours}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               )}
 
               {/* Delays */}
               {structuredReport.delays.length > 0 && (
-                <div className="report-section">
-                  <h3>Delays</h3>
-                  <div className="delay-list">
+                <div>
+                  <h3 className="text-sm font-bold text-orange-400 uppercase tracking-wider mb-2">Delays</h3>
+                  <div className="space-y-2">
                     {structuredReport.delays.map((d, i) => (
-                      <div key={i} className="delay-item">
-                        <span className="delay-duration">{d.duration}:</span>{' '}
-                        <span className="delay-description">{d.description}</span>
+                      <div key={i} className="bg-orange-500/10 border border-orange-500/20 rounded-lg p-3 flex gap-3 text-sm">
+                        <span className="font-bold text-orange-400 whitespace-nowrap">{d.duration}:</span>
+                        <span className="text-orange-200">{d.description}</span>
                       </div>
                     ))}
                   </div>
@@ -1090,19 +1123,22 @@ export function VoiceDailyReportPage() {
 
               {/* Weather */}
               {structuredReport.weather_notes && (
-                <div className="report-section">
-                  <h3>Weather</h3>
-                  <p>{structuredReport.weather_notes}</p>
+                <div>
+                  <h3 className="text-sm font-bold text-cyan-400 uppercase tracking-wider mb-2">Weather</h3>
+                  <p className="text-gray-300 bg-white/5 p-4 rounded-lg border border-white/5">{structuredReport.weather_notes}</p>
                 </div>
               )}
 
               {/* Safety Notes */}
               {structuredReport.safety_notes.length > 0 && (
-                <div className="report-section">
-                  <h3>Safety Notes</h3>
-                  <ul>
+                <div>
+                  <h3 className="text-sm font-bold text-red-400 uppercase tracking-wider mb-2">Safety Notes</h3>
+                  <ul className="space-y-2">
                     {structuredReport.safety_notes.map((note, i) => (
-                      <li key={i}>{note}</li>
+                      <li key={i} className="flex gap-3 text-red-200 bg-red-500/10 p-3 rounded border border-red-500/20">
+                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0" />
+                        {note}
+                      </li>
                     ))}
                   </ul>
                 </div>
@@ -1110,30 +1146,53 @@ export function VoiceDailyReportPage() {
 
               {/* Visitors */}
               {structuredReport.visitors.length > 0 && (
-                <div className="report-section">
-                  <h3>Visitors</h3>
-                  <ul>
+                <div>
+                  <h3 className="text-sm font-bold text-purple-400 uppercase tracking-wider mb-2">Visitors</h3>
+                  <ul className="space-y-2">
                     {structuredReport.visitors.map((v, i) => (
-                      <li key={i}>{v}</li>
+                      <li key={i} className="flex gap-3 text-purple-200 bg-purple-500/10 p-3 rounded border border-purple-500/20">
+                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-purple-500 flex-shrink-0" />
+                        {v}
+                      </li>
                     ))}
                   </ul>
                 </div>
               )}
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Tips */}
-      <div className="tips-box">
-        <h3>Recording Tips</h3>
-        <ul>
-          <li>Speak clearly and at a normal pace</li>
-          <li>Mention trade types and crew sizes (e.g., "4 operators, 6 laborers")</li>
-          <li>Include equipment names and hours used</li>
-          <li>Note any delays, weather impacts, or safety observations</li>
-          <li>Mention visitors by name and organization</li>
-        </ul>
+        {/* Tips */}
+        <div className="mt-8 p-6 rounded-lg bg-blue-500/5 border border-blue-500/10">
+          <h3 className="text-sm font-bold text-blue-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Recording Tips
+          </h3>
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-blue-300/80">
+            <li className="flex items-center gap-2">
+              <span className="w-1 h-1 bg-blue-500 rounded-full" />
+              Speak clearly and at a normal pace
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="w-1 h-1 bg-blue-500 rounded-full" />
+              Mention trade types and crew sizes
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="w-1 h-1 bg-blue-500 rounded-full" />
+              Include equipment names and hours used
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="w-1 h-1 bg-blue-500 rounded-full" />
+              Note any delays or weather impacts
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="w-1 h-1 bg-blue-500 rounded-full" />
+              Mention visitors by name and organization
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   );

@@ -177,287 +177,280 @@ export function SafetyDashboard() {
     setLoading(false);
   }
 
-  function getSeverityColor(severity: string) {
-    switch (severity) {
-      case 'critical': return 'bg-red-100 text-red-800';
-      case 'major': return 'bg-orange-100 text-orange-800';
-      case 'minor': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  }
 
-  function getStatusColor(status: string) {
-    switch (status) {
-      case 'approved': return 'bg-green-100 text-green-800';
-      case 'in_progress': return 'bg-blue-100 text-blue-800';
-      case 'draft': return 'bg-gray-100 text-gray-800';
-      case 'closed': return 'bg-green-100 text-green-800';
-      case 'open': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  }
 
   if (loading && projects.length === 0) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <div className="flex items-center justify-center h-64 text-cyan-400">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-current"></div>
       </div>
     );
   }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Safety Management</h1>
-          <p className="text-gray-600">Monitor safety metrics, violations, JSAs, and toolbox talks</p>
-        </div>
-        <select
-          value={selectedProjectId}
-          onChange={(e) => setSelectedProjectId(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-        >
-          {projects.map(project => (
-            <option key={project.id} value={project.id}>
-              {project.project_number} - {project.name}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white rounded-lg shadow p-4">
-          <div className="text-sm text-gray-500">TRIR (YTD)</div>
-          <div className="text-2xl font-bold text-gray-900">{stats.trir.toFixed(2)}</div>
-          <div className="text-xs text-green-600">Target: &lt; 3.0</div>
-        </div>
-        <div className="bg-white rounded-lg shadow p-4">
-          <div className="text-sm text-gray-500">DART Rate (YTD)</div>
-          <div className="text-2xl font-bold text-gray-900">{stats.dart.toFixed(2)}</div>
-          <div className="text-xs text-green-600">Target: &lt; 2.0</div>
-        </div>
-        <div className="bg-white rounded-lg shadow p-4">
-          <div className="text-sm text-gray-500">Hours Worked (YTD)</div>
-          <div className="text-2xl font-bold text-gray-900">{stats.hoursWorked.toLocaleString()}</div>
-        </div>
-        <div className="bg-white rounded-lg shadow p-4">
-          <div className="text-sm text-gray-500">Near Misses (YTD)</div>
-          <div className="text-2xl font-bold text-gray-900">{stats.nearMisses}</div>
-          <div className="text-xs text-blue-600">Leading indicator</div>
-        </div>
-        <div className="bg-white rounded-lg shadow p-4">
-          <div className="text-sm text-gray-500">Recordables (YTD)</div>
-          <div className="text-2xl font-bold text-gray-900">{stats.recordableInjuries}</div>
-        </div>
-        <div className="bg-white rounded-lg shadow p-4">
-          <div className="text-sm text-gray-500">Open Violations</div>
-          <div className={`text-2xl font-bold ${stats.openViolations > 0 ? 'text-red-600' : 'text-green-600'}`}>
-            {stats.openViolations}
-          </div>
-        </div>
-        <div className="bg-white rounded-lg shadow p-4">
-          <div className="text-sm text-gray-500">Toolbox Talks (Month)</div>
-          <div className="text-2xl font-bold text-gray-900">{stats.toolboxTalksThisMonth}</div>
-        </div>
-        <div className="bg-white rounded-lg shadow p-4">
-          <div className="text-sm text-gray-500">Pending JSAs</div>
-          <div className={`text-2xl font-bold ${stats.pendingJSAs > 0 ? 'text-yellow-600' : 'text-green-600'}`}>
-            {stats.pendingJSAs}
+    <div className="min-h-screen">
+      {/* Header */}
+      <div className="border-b border-white/10 bg-void-mid pt-20 pb-6 shadow-2xl">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-3xl font-bold text-white tracking-tight drop-shadow-lg">Safety Management</h1>
+              <p className="text-cyan-400/80 font-mono tracking-widest uppercase mt-1 text-sm">Monitor safety metrics, violations, JSAs, and toolbox talks</p>
+            </div>
+            <select
+              value={selectedProjectId}
+              onChange={(e) => setSelectedProjectId(e.target.value)}
+              className="px-4 py-2 border border-white/10 rounded-lg focus:ring-1 focus:ring-cyan-500 bg-void-deep text-white text-sm"
+            >
+              {projects.map(project => (
+                <option key={project.id} value={project.id} className="bg-void-deep">
+                  {project.project_number} - {project.name}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
       </div>
 
-      {/* Tabs */}
-      <div className="bg-white rounded-lg shadow">
-        <div className="border-b border-gray-200">
-          <nav className="flex -mb-px">
-            {['overview', 'violations', 'jsa', 'toolbox', 'osha'].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab as any)}
-                className={`py-4 px-6 text-sm font-medium border-b-2 ${
-                  activeTab === tab
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                {tab === 'jsa' ? 'Job Safety Analysis' :
-                 tab === 'osha' ? 'OSHA Logs' :
-                 tab.charAt(0).toUpperCase() + tab.slice(1)}
-              </button>
-            ))}
-          </nav>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* Stats Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div className="gravity-card p-4 border border-white/10">
+            <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">TRIR (YTD)</div>
+            <div className="text-2xl font-bold font-mono text-white mt-1">{stats.trir.toFixed(2)}</div>
+            <div className="text-xs text-green-400 mt-1 font-mono">Target: &lt; 3.0</div>
+          </div>
+          <div className="gravity-card p-4 border border-white/10">
+            <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">DART Rate (YTD)</div>
+            <div className="text-2xl font-bold font-mono text-white mt-1">{stats.dart.toFixed(2)}</div>
+            <div className="text-xs text-green-400 mt-1 font-mono">Target: &lt; 2.0</div>
+          </div>
+          <div className="gravity-card p-4 border border-white/10">
+            <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">Hours Worked (YTD)</div>
+            <div className="text-2xl font-bold font-mono text-white mt-1">{stats.hoursWorked.toLocaleString()}</div>
+          </div>
+          <div className="gravity-card p-4 border border-white/10">
+            <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">Near Misses (YTD)</div>
+            <div className="text-2xl font-bold font-mono text-white mt-1">{stats.nearMisses}</div>
+            <div className="text-xs text-cyan-400 mt-1 font-mono">Leading indicator</div>
+          </div>
+          <div className="gravity-card p-4 border border-white/10">
+            <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">Recordables (YTD)</div>
+            <div className="text-2xl font-bold font-mono text-white mt-1">{stats.recordableInjuries}</div>
+          </div>
+          <div className="gravity-card p-4 border border-white/10">
+            <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">Open Violations</div>
+            <div className={`text-2xl font-bold font-mono mt-1 ${stats.openViolations > 0 ? 'text-red-400' : 'text-green-400'}`}>
+              {stats.openViolations}
+            </div>
+          </div>
+          <div className="gravity-card p-4 border border-white/10">
+            <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">Toolbox Talks (Month)</div>
+            <div className="text-2xl font-bold font-mono text-white mt-1">{stats.toolboxTalksThisMonth}</div>
+          </div>
+          <div className="gravity-card p-4 border border-white/10">
+            <div className="text-xs font-medium text-gray-400 uppercase tracking-widest">Pending JSAs</div>
+            <div className={`text-2xl font-bold font-mono mt-1 ${stats.pendingJSAs > 0 ? 'text-yellow-400' : 'text-green-400'}`}>
+              {stats.pendingJSAs}
+            </div>
+          </div>
         </div>
 
-        <div className="p-6">
-          {activeTab === 'overview' && (
-            <div className="space-y-6">
+        {/* Tabs */}
+        <div className="gravity-card">
+          <div className="border-b border-white/10">
+            <nav className="flex -mb-px">
+              {['overview', 'violations', 'jsa', 'toolbox', 'osha'].map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab as any)}
+                  className={`py-4 px-6 text-sm font-medium border-b-2 transition-colors ${activeTab === tab
+                    ? 'border-cyan-500 text-cyan-400'
+                    : 'border-transparent text-gray-400 hover:text-white hover:border-gray-700'
+                    }`}
+                >
+                  {tab === 'jsa' ? 'Job Safety Analysis' :
+                    tab === 'osha' ? 'OSHA Logs' :
+                      tab.charAt(0).toUpperCase() + tab.slice(1)}
+                </button>
+              ))}
+            </nav>
+          </div>
+
+          <div className="p-6">
+            {activeTab === 'overview' && (
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-bold text-white mb-4">Monthly Safety Metrics</h3>
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-800">
+                      <thead className="bg-void-deep">
+                        <tr>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Month</th>
+                          <th className="px-4 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">Hours</th>
+                          <th className="px-4 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">Recordables</th>
+                          <th className="px-4 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">Near Misses</th>
+                          <th className="px-4 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">Observations</th>
+                          <th className="px-4 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">Toolbox Talks</th>
+                          <th className="px-4 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">TRIR</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-800">
+                        {metrics.map(metric => (
+                          <tr key={metric.id} className="hover:bg-white/5 transition-colors">
+                            <td className="px-4 py-3 text-sm text-gray-300">
+                              {new Date(metric.metric_year, metric.metric_month - 1).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                            </td>
+                            <td className="px-4 py-3 text-sm text-gray-300 font-mono text-right">{metric.total_hours_worked.toLocaleString()}</td>
+                            <td className="px-4 py-3 text-sm text-gray-300 font-mono text-right">{metric.recordable_injuries}</td>
+                            <td className="px-4 py-3 text-sm text-gray-300 font-mono text-right">{metric.near_misses_reported}</td>
+                            <td className="px-4 py-3 text-sm text-gray-300 font-mono text-right">{metric.safety_observations}</td>
+                            <td className="px-4 py-3 text-sm text-gray-300 font-mono text-right">{metric.toolbox_talks_conducted}</td>
+                            <td className={`px-4 py-3 text-sm font-mono text-right ${metric.trir > 3 ? 'text-red-400' : 'text-green-400'}`}>{metric.trir?.toFixed(2) || '-'}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'violations' && (
               <div>
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Monthly Safety Metrics</h3>
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-bold text-white">Safety Violations</h3>
+                  <button className="px-4 py-2 bg-blue-600/20 text-blue-400 border border-blue-600/50 rounded-lg hover:bg-blue-600/30 transition-colors">
+                    + New Violation
+                  </button>
+                </div>
                 <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
+                  <table className="min-w-full divide-y divide-gray-800">
+                    <thead className="bg-void-deep">
                       <tr>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Month</th>
-                        <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Hours</th>
-                        <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Recordables</th>
-                        <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Near Misses</th>
-                        <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Observations</th>
-                        <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Toolbox Talks</th>
-                        <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">TRIR</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Violation #</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Date</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Category</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Severity</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Description</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Due Date</th>
                       </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {metrics.map(metric => (
-                        <tr key={metric.id}>
-                          <td className="px-4 py-3 text-sm text-gray-900">
-                            {new Date(metric.metric_year, metric.metric_month - 1).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                    <tbody className="divide-y divide-gray-800">
+                      {violations.map(violation => (
+                        <tr key={violation.id} className="hover:bg-white/5 transition-colors cursor-pointer">
+                          <td className="px-4 py-3 text-sm font-medium font-mono text-cyan-400">{violation.violation_number}</td>
+                          <td className="px-4 py-3 text-sm text-gray-300">{new Date(violation.violation_date).toLocaleDateString()}</td>
+                          <td className="px-4 py-3 text-sm text-gray-300 capitalize">{violation.category}</td>
+                          <td className="px-4 py-3">
+                            <span className={`px-2 py-1 text-xs font-medium rounded-full capitalize ${violation.severity === 'critical' ? 'bg-red-500/20 text-red-400' :
+                              violation.severity === 'major' ? 'bg-orange-500/20 text-orange-400' :
+                                'bg-yellow-500/20 text-yellow-400'
+                              }`}>
+                              {violation.severity}
+                            </span>
                           </td>
-                          <td className="px-4 py-3 text-sm text-gray-900 text-right">{metric.total_hours_worked.toLocaleString()}</td>
-                          <td className="px-4 py-3 text-sm text-gray-900 text-right">{metric.recordable_injuries}</td>
-                          <td className="px-4 py-3 text-sm text-gray-900 text-right">{metric.near_misses_reported}</td>
-                          <td className="px-4 py-3 text-sm text-gray-900 text-right">{metric.safety_observations}</td>
-                          <td className="px-4 py-3 text-sm text-gray-900 text-right">{metric.toolbox_talks_conducted}</td>
-                          <td className="px-4 py-3 text-sm text-gray-900 text-right">{metric.trir?.toFixed(2) || '-'}</td>
+                          <td className="px-4 py-3 text-sm text-gray-300 max-w-xs truncate">{violation.description}</td>
+                          <td className="px-4 py-3">
+                            <span className={`px-2 py-1 text-xs font-medium rounded-full capitalize ${violation.status === 'closed' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
+                              }`}>
+                              {violation.status}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 text-sm text-gray-300">
+                            {violation.corrective_action_due ? new Date(violation.corrective_action_due).toLocaleDateString() : '-'}
+                          </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {activeTab === 'violations' && (
-            <div>
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-medium text-gray-900">Safety Violations</h3>
-                <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                  + New Violation
-                </button>
-              </div>
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Violation #</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Severity</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Description</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Due Date</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {violations.map(violation => (
-                      <tr key={violation.id} className="hover:bg-gray-50 cursor-pointer">
-                        <td className="px-4 py-3 text-sm font-medium text-blue-600">{violation.violation_number}</td>
-                        <td className="px-4 py-3 text-sm text-gray-900">{new Date(violation.violation_date).toLocaleDateString()}</td>
-                        <td className="px-4 py-3 text-sm text-gray-900 capitalize">{violation.category}</td>
-                        <td className="px-4 py-3">
-                          <span className={`px-2 py-1 text-xs font-medium rounded-full capitalize ${getSeverityColor(violation.severity)}`}>
-                            {violation.severity}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3 text-sm text-gray-900 max-w-xs truncate">{violation.description}</td>
-                        <td className="px-4 py-3">
-                          <span className={`px-2 py-1 text-xs font-medium rounded-full capitalize ${getStatusColor(violation.status)}`}>
-                            {violation.status}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3 text-sm text-gray-900">
-                          {violation.corrective_action_due ? new Date(violation.corrective_action_due).toLocaleDateString() : '-'}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'jsa' && (
-            <div>
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-medium text-gray-900">Job Safety Analyses</h3>
-                <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                  + New JSA
-                </button>
-              </div>
-              <div className="grid gap-4">
-                {jsas.map(jsa => (
-                  <div key={jsa.id} className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 cursor-pointer">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h4 className="font-medium text-gray-900">{jsa.title}</h4>
-                        <p className="text-sm text-gray-600 mt-1">{jsa.activity_description}</p>
-                        <div className="flex gap-4 mt-2 text-sm text-gray-500">
-                          <span>Location: {jsa.work_location}</span>
-                          <span>Date: {new Date(jsa.prepared_date).toLocaleDateString()}</span>
-                        </div>
-                      </div>
-                      <span className={`px-2 py-1 text-xs font-medium rounded-full capitalize ${getStatusColor(jsa.status)}`}>
-                        {jsa.status}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'toolbox' && (
-            <div>
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-medium text-gray-900">Toolbox Talk Templates</h3>
-                <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                  + New Template
-                </button>
-              </div>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {templates.map(template => (
-                  <div key={template.id} className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 cursor-pointer">
-                    <div className="flex justify-between items-start mb-2">
-                      <h4 className="font-medium text-gray-900">{template.title}</h4>
-                      <span className="text-sm text-gray-500">{template.duration_minutes} min</span>
-                    </div>
-                    <span className="inline-block px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full capitalize mb-2">
-                      {template.category.replace('_', ' ')}
-                    </span>
-                    <div className="flex flex-wrap gap-1 mt-2">
-                      {template.required_for_trades?.slice(0, 3).map(trade => (
-                        <span key={trade} className="text-xs bg-gray-200 text-gray-700 px-2 py-0.5 rounded">
-                          {trade}
-                        </span>
-                      ))}
-                      {template.required_for_trades?.length > 3 && (
-                        <span className="text-xs text-gray-500">+{template.required_for_trades.length - 3} more</span>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'osha' && (
-            <div>
-              <h3 className="text-lg font-medium text-gray-900 mb-4">OSHA 300 Log</h3>
-              <p className="text-gray-600 mb-4">
-                OSHA 300 Log tracking and Form 301 incident reports are managed at the establishment level.
-              </p>
-              <div className="bg-gray-50 rounded-lg p-6 text-center">
-                <div className="text-gray-500 mb-4">
-                  View and manage OSHA recordkeeping requirements
+            {activeTab === 'jsa' && (
+              <div>
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-bold text-white">Job Safety Analyses</h3>
+                  <button className="px-4 py-2 bg-blue-600/20 text-blue-400 border border-blue-600/50 rounded-lg hover:bg-blue-600/30 transition-colors">
+                    + New JSA
+                  </button>
                 </div>
-                <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                  View OSHA 300 Log
-                </button>
+                <div className="grid gap-4">
+                  {jsas.map(jsa => (
+                    <div key={jsa.id} className="bg-white/5 border border-white/10 rounded-lg p-4 hover:border-cyan-500/50 transition-colors cursor-pointer">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h4 className="font-bold text-white">{jsa.title}</h4>
+                          <p className="text-sm text-gray-400 mt-1">{jsa.activity_description}</p>
+                          <div className="flex gap-4 mt-2 text-sm text-gray-500">
+                            <span>Location: {jsa.work_location}</span>
+                            <span>Date: {new Date(jsa.prepared_date).toLocaleDateString()}</span>
+                          </div>
+                        </div>
+                        <span className={`px-2 py-1 text-xs font-medium rounded-full capitalize ${jsa.status === 'APPROVED' ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400'
+                          }`}>
+                          {jsa.status.toLowerCase()}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
+
+            {activeTab === 'toolbox' && (
+              <div>
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-bold text-white">Toolbox Talk Templates</h3>
+                  <button className="px-4 py-2 bg-blue-600/20 text-blue-400 border border-blue-600/50 rounded-lg hover:bg-blue-600/30 transition-colors">
+                    + New Template
+                  </button>
+                </div>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {templates.map(template => (
+                    <div key={template.id} className="bg-white/5 border border-white/10 rounded-lg p-4 hover:border-cyan-500/50 transition-colors cursor-pointer">
+                      <div className="flex justify-between items-start mb-2">
+                        <h4 className="font-bold text-white">{template.title}</h4>
+                        <span className="text-sm text-gray-400 font-mono">{template.duration_minutes} min</span>
+                      </div>
+                      <span className="inline-block px-2 py-1 text-xs bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded-full capitalize mb-2">
+                        {template.category.replace('_', ' ')}
+                      </span>
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        {template.required_for_trades?.slice(0, 3).map(trade => (
+                          <span key={trade} className="text-xs bg-gray-700 text-gray-300 px-2 py-0.5 rounded">
+                            {trade}
+                          </span>
+                        ))}
+                        {template.required_for_trades?.length > 3 && (
+                          <span className="text-xs text-gray-500">+{template.required_for_trades.length - 3} more</span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'osha' && (
+              <div>
+                <h3 className="text-lg font-bold text-white mb-4">OSHA 300 Log</h3>
+                <p className="text-gray-400 mb-4">
+                  OSHA 300 Log tracking and Form 301 incident reports are managed at the establishment level.
+                </p>
+                <div className="bg-white/5 border border-white/10 border-dashed rounded-lg p-6 text-center">
+                  <div className="text-gray-400 mb-4">
+                    View and manage OSHA recordkeeping requirements
+                  </div>
+                  <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    View OSHA 300 Log
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

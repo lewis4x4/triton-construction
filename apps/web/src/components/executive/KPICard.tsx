@@ -31,17 +31,19 @@ export function KPICard({
   onClick,
   compact = false,
 }: KPICardProps) {
-  const statusColors = {
-    good: 'border-green-200 bg-green-50',
-    warning: 'border-yellow-200 bg-yellow-50',
-    critical: 'border-red-200 bg-red-50',
-    neutral: 'border-gray-200 bg-white',
+  const statusConfig = {
+    good: { border: 'border-cyan-500/30', bg: 'bg-cyan-500/5', text: 'text-cyan-400', icon: 'text-cyan-400' },
+    warning: { border: 'border-yellow-500/30', bg: 'bg-yellow-500/5', text: 'text-yellow-400', icon: 'text-yellow-400' },
+    critical: { border: 'border-red-500/30', bg: 'bg-red-500/5', text: 'text-red-400', icon: 'text-red-400' },
+    neutral: { border: 'border-white/10', bg: 'bg-white/5', text: 'text-primary', icon: 'text-secondary' },
   };
 
+  const currentStatus = statusConfig[status];
+
   const trendColors = {
-    up: trendIsGood ? 'text-green-600' : 'text-red-600',
-    down: trendIsGood ? 'text-red-600' : 'text-green-600',
-    flat: 'text-gray-500',
+    up: trendIsGood ? 'text-cyan-400' : 'text-red-400',
+    down: trendIsGood ? 'text-red-400' : 'text-cyan-400',
+    flat: 'text-secondary',
   };
 
   const TrendIcon = trend === 'up' ? TrendingUp : trend === 'down' ? TrendingDown : Minus;
@@ -49,19 +51,19 @@ export function KPICard({
   if (compact) {
     return (
       <div
-        className={`p-4 rounded-lg border ${statusColors[status]} ${onClick ? 'cursor-pointer hover:shadow-md transition-shadow' : ''}`}
+        className={`gravity-card p-4 border ${currentStatus.border} ${currentStatus.bg} ${onClick ? 'cursor-pointer hover:border-white/20' : ''}`}
         onClick={onClick}
       >
         <div className="flex items-center justify-between">
-          <div className="text-sm text-gray-600">{title}</div>
-          {icon && <div className="text-gray-400">{icon}</div>}
+          <div className="text-xs font-medium text-secondary uppercase tracking-wider">{title}</div>
+          {icon && <div className={`${currentStatus.icon} opacity-80`}>{icon}</div>}
         </div>
-        <div className="flex items-baseline gap-2 mt-1">
-          <span className="text-2xl font-bold text-gray-900">{value}</span>
-          {unit && <span className="text-sm text-gray-500">{unit}</span>}
+        <div className="flex items-baseline gap-2 mt-2">
+          <span className="text-2xl font-bold font-mono text-white tracking-tight">{value}</span>
+          {unit && <span className="text-xs text-secondary font-mono">{unit}</span>}
         </div>
         {percentChange !== undefined && trend && (
-          <div className={`flex items-center gap-1 mt-1 text-xs ${trendColors[trend]}`}>
+          <div className={`flex items-center gap-1 mt-1 text-xs font-mono ${trendColors[trend]}`}>
             <TrendIcon className="w-3 h-3" />
             <span>{Math.abs(percentChange).toFixed(1)}%</span>
           </div>
@@ -72,56 +74,55 @@ export function KPICard({
 
   return (
     <div
-      className={`p-6 rounded-xl border ${statusColors[status]} ${onClick ? 'cursor-pointer hover:shadow-lg transition-shadow' : ''}`}
+      className={`gravity-card p-6 border ${currentStatus.border} ${currentStatus.bg} ${onClick ? 'cursor-pointer hover:border-white/30 transition-all' : ''}`}
       onClick={onClick}
     >
       <div className="flex items-start justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <h3 className="text-sm font-medium text-gray-600">{title}</h3>
+            <h3 className="text-xs font-bold text-secondary uppercase tracking-widest">{title}</h3>
             {description && (
               <div className="group relative">
-                <Info className="w-4 h-4 text-gray-400 cursor-help" />
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+                <Info className="w-3 h-3 text-secondary/50 cursor-help hover:text-primary transition-colors" />
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-void-mid border border-white/10 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none shadow-xl backdrop-blur-md">
                   {description}
                 </div>
               </div>
             )}
           </div>
-          <div className="flex items-baseline gap-2 mt-2">
-            <span className="text-3xl font-bold text-gray-900">{value}</span>
-            {unit && <span className="text-lg text-gray-500">{unit}</span>}
+          <div className="flex items-baseline gap-2 mt-3">
+            <span className="text-3xl font-bold text-white font-mono tracking-tighter drop-shadow-md">{value}</span>
+            {unit && <span className="text-sm text-secondary font-mono">{unit}</span>}
           </div>
         </div>
         {icon && (
-          <div className={`p-3 rounded-lg ${
-            status === 'good' ? 'bg-green-100 text-green-600' :
-            status === 'warning' ? 'bg-yellow-100 text-yellow-600' :
-            status === 'critical' ? 'bg-red-100 text-red-600' :
-            'bg-gray-100 text-gray-600'
-          }`}>
+          <div className={`p-3 rounded-lg border border-white/5 ${status === 'good' ? 'bg-cyan-500/10 text-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.2)]' :
+              status === 'warning' ? 'bg-yellow-500/10 text-yellow-400 shadow-[0_0_10px_rgba(234,179,8,0.2)]' :
+                status === 'critical' ? 'bg-red-500/10 text-red-400 shadow-[0_0_10px_rgba(239,68,68,0.2)]' :
+                  'bg-white/5 text-gray-400'
+            }`}>
             {icon}
           </div>
         )}
       </div>
 
       {/* Trend & Target */}
-      <div className="flex items-center justify-between mt-4">
+      <div className="flex items-center justify-between mt-5 pt-4 border-t border-white/5">
         {percentChange !== undefined && trend ? (
-          <div className={`flex items-center gap-1 ${trendColors[trend]}`}>
-            <TrendIcon className="w-4 h-4" />
-            <span className="text-sm font-medium">
+          <div className={`flex items-center gap-1.5 ${trendColors[trend]} bg-black/20 px-2 py-1 rounded text-xs font-mono`}>
+            <TrendIcon className="w-3.5 h-3.5" />
+            <span className="font-bold">
               {percentChange > 0 ? '+' : ''}{percentChange.toFixed(1)}%
             </span>
-            <span className="text-xs text-gray-500 ml-1">vs last period</span>
+            <span className="text-gray-500 opacity-60 ml-1">vs prev</span>
           </div>
         ) : (
           <div />
         )}
 
         {target !== undefined && (
-          <div className="text-sm text-gray-500">
-            Target: <span className="font-medium text-gray-700">{target}{unit}</span>
+          <div className="text-xs text-gray-500 font-mono">
+            Target: <span className="text-gray-300">{target}{unit}</span>
           </div>
         )}
       </div>
@@ -129,34 +130,28 @@ export function KPICard({
       {/* Progress toward target */}
       {target !== undefined && typeof value === 'number' && (
         <div className="mt-3">
-          <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div className="h-1.5 bg-gray-700/30 rounded-full overflow-hidden backdrop-blur-sm">
             <div
-              className={`h-full rounded-full transition-all ${
-                (value / target) >= 1 ? 'bg-green-500' :
-                (value / target) >= 0.8 ? 'bg-yellow-500' :
-                'bg-red-500'
-              }`}
+              className={`h-full rounded-full transition-all relative ${(value / target) >= 1 ? 'bg-cyan-500 shadow-[0_0_8px_rgba(6,182,212,0.6)]' :
+                  (value / target) >= 0.8 ? 'bg-yellow-500 shadow-[0_0_8px_rgba(234,179,8,0.6)]' :
+                    'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]'
+                }`}
               style={{ width: `${Math.min((value / target) * 100, 100)}%` }}
-            />
-          </div>
-          <div className="text-xs text-gray-500 mt-1">
-            {((value / target) * 100).toFixed(0)}% of target
+            >
+              <div className="absolute right-0 top-0 bottom-0 w-[2px] bg-white/50" />
+            </div>
           </div>
         </div>
       )}
 
       {/* Status Indicator */}
       {status !== 'neutral' && (
-        <div className={`flex items-center gap-2 mt-4 pt-4 border-t text-sm ${
-          status === 'good' ? 'text-green-700 border-green-200' :
-          status === 'warning' ? 'text-yellow-700 border-yellow-200' :
-          'text-red-700 border-red-200'
-        }`}>
-          {status === 'critical' && <AlertTriangle className="w-4 h-4" />}
+        <div className={`flex items-center gap-2 mt-3 text-xs font-bold uppercase tracking-wider ${currentStatus.text}`}>
+          {status === 'critical' && <AlertTriangle className="w-3.5 h-3.5" />}
           <span>
-            {status === 'good' ? 'On track' :
-             status === 'warning' ? 'Needs attention' :
-             'Requires action'}
+            {status === 'good' ? 'On Track' :
+              status === 'warning' ? 'Needs Attention' :
+                'Critical Action Required'}
           </span>
         </div>
       )}

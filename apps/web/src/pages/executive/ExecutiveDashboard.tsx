@@ -136,40 +136,50 @@ export function ExecutiveDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b">
+    <div className="min-h-screen">
+      {/* Header - now transparent/glassy in new layout, avoiding bg-white */}
+      <div className="border-b border-white/10 bg-void-mid pt-20 pb-6 shadow-2xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="py-6">
+          <div className="py-2">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-indigo-100 rounded-lg">
-                  <LayoutDashboard className="w-6 h-6 text-indigo-600" />
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-cyan-500/10 rounded-xl border border-cyan-500/20 shadow-[0_0_15px_rgba(46,196,182,0.2)]">
+                  <LayoutDashboard className="w-8 h-8 text-cyan-400" />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold text-gray-900">Executive Dashboard</h1>
-                  <p className="text-sm text-gray-500">
+                  <h1 className="text-3xl font-bold text-white tracking-tight drop-shadow-lg">
+                    Executive Command
+                  </h1>
+                  <p className="text-sm text-cyan-400/80 font-mono tracking-widest uppercase mt-1">
                     Organization-wide performance overview
                   </p>
                 </div>
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="text-sm text-gray-500">
-                  Last updated: {lastRefresh.toLocaleTimeString()}
+                <div className="flex flex-col items-end mr-4">
+                  <span className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">System Status</span>
+                  <span className="flex items-center gap-2 text-xs text-green-400 font-mono">
+                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    ONLINE
+                  </span>
+                </div>
+                <div className="text-xs font-mono text-gray-400 border-r border-white/10 pr-4 mr-1">
+                  SYNC: {lastRefresh.toLocaleTimeString([], { hour12: false })}
                 </div>
                 <button
                   onClick={() => fetchKPIs()}
                   disabled={isLoading}
-                  className="p-2 rounded-lg hover:bg-gray-100"
+                  className="p-2 rounded-lg hover:bg-white/5 border border-transparent hover:border-white/10 transition-all group"
+                  title="Refresh Data"
                 >
-                  <RefreshCw className={`w-5 h-5 text-gray-600 ${isLoading ? 'animate-spin' : ''}`} />
+                  <RefreshCw className={`w-5 h-5 text-gray-400 group-hover:text-cyan-400 ${isLoading ? 'animate-spin' : ''}`} />
                 </button>
-                <button className="p-2 rounded-lg hover:bg-gray-100">
-                  <Download className="w-5 h-5 text-gray-600" />
+                <button className="p-2 rounded-lg hover:bg-white/5 border border-transparent hover:border-white/10 transition-all group">
+                  <Download className="w-5 h-5 text-gray-400 group-hover:text-cyan-400" />
                 </button>
-                <button className="p-2 rounded-lg hover:bg-gray-100">
-                  <Settings className="w-5 h-5 text-gray-600" />
+                <button className="p-2 rounded-lg hover:bg-white/5 border border-transparent hover:border-white/10 transition-all group">
+                  <Settings className="w-5 h-5 text-gray-400 group-hover:text-cyan-400" />
                 </button>
               </div>
             </div>
@@ -178,7 +188,7 @@ export function ExecutiveDashboard() {
       </div>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Top KPI Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <KPICard
@@ -209,7 +219,7 @@ export function ExecutiveDashboard() {
             onClick={() => navigate('/workforce')}
           />
           <KPICard
-            title="Equipment Utilization"
+            title="Utlization"
             value={kpis.equipmentUtilization}
             unit="%"
             icon={<Truck className="w-5 h-5" />}
@@ -225,7 +235,7 @@ export function ExecutiveDashboard() {
         {/* Safety & Compliance Row */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <KPICard
-            title="Safety Incident Rate (TRIR)"
+            title="TRIR (Safety Rate)"
             value={kpis.safetyIncidentRate}
             description="Total Recordable Incident Rate per 200,000 hours"
             icon={<ShieldCheck className="w-5 h-5" />}
@@ -287,32 +297,30 @@ export function ExecutiveDashboard() {
             timeRange={timeRange}
             onTimeRangeChange={setTimeRange}
           />
-          <div className="bg-white rounded-lg border p-6">
-            <h3 className="text-sm font-medium text-gray-700 mb-4">Project Status Overview</h3>
-            <div className="space-y-3">
+          <div className="gravity-card p-6">
+            <h3 className="text-sm font-medium text-gray-400 mb-4 uppercase tracking-wider">Project Status Overview</h3>
+            <div className="space-y-4">
               {[
                 { name: 'Corridor H Section 12', progress: 68, status: 'on-track' },
                 { name: 'US-35 Bridge Replacement', progress: 45, status: 'at-risk' },
                 { name: 'I-64 Widening Phase 2', progress: 12, status: 'on-track' },
               ].map((project, idx) => (
-                <div key={idx} className="space-y-1">
+                <div key={idx} className="space-y-2">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="font-medium text-gray-900">{project.name}</span>
-                    <span className={`px-2 py-0.5 text-xs rounded ${
-                      project.status === 'on-track' ? 'bg-green-100 text-green-700' :
-                      project.status === 'at-risk' ? 'bg-yellow-100 text-yellow-700' :
-                      'bg-red-100 text-red-700'
-                    }`}>
+                    <span className="font-medium text-primary">{project.name}</span>
+                    <span className={`px-2 py-0.5 text-xs rounded font-bold uppercase ${project.status === 'on-track' ? 'bg-green-900/30 text-green-400' :
+                      project.status === 'at-risk' ? 'bg-yellow-900/30 text-yellow-400' :
+                        'bg-red-900/30 text-red-400'
+                      }`}>
                       {project.progress}%
                     </span>
                   </div>
-                  <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                  <div className="h-2 bg-gray-700/50 rounded-full overflow-hidden backdrop-blur-sm">
                     <div
-                      className={`h-full rounded-full ${
-                        project.status === 'on-track' ? 'bg-green-500' :
-                        project.status === 'at-risk' ? 'bg-yellow-500' :
-                        'bg-red-500'
-                      }`}
+                      className={`h-full rounded-full ${project.status === 'on-track' ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]' :
+                        project.status === 'at-risk' ? 'bg-yellow-500 shadow-[0_0_10px_rgba(234,179,8,0.5)]' :
+                          'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]'
+                        }`}
                       style={{ width: `${project.progress}%` }}
                     />
                   </div>
@@ -323,8 +331,8 @@ export function ExecutiveDashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white rounded-lg border p-6">
-          <h3 className="text-sm font-medium text-gray-700 mb-4">Quick Actions</h3>
+        <div className="gravity-card p-6">
+          <h3 className="text-sm font-medium text-gray-400 mb-4 uppercase tracking-wider">Quick Actions</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
               { label: 'View Projects', icon: Building, href: '/projects' },
@@ -335,10 +343,10 @@ export function ExecutiveDashboard() {
               <button
                 key={idx}
                 onClick={() => navigate(action.href)}
-                className="flex items-center gap-3 p-4 rounded-lg border hover:bg-gray-50 hover:border-gray-300 transition-colors text-left"
+                className="flex items-center gap-3 p-4 rounded-xl border border-white/10 hover:bg-white/5 hover:border-cyan-500/50 transition-all text-left group"
               >
-                <action.icon className="w-5 h-5 text-gray-400" />
-                <span className="text-sm font-medium text-gray-700">{action.label}</span>
+                <action.icon className="w-5 h-5 text-gray-400 group-hover:text-cyan-400 transition-colors" />
+                <span className="text-sm font-medium text-primary group-hover:text-white">{action.label}</span>
               </button>
             ))}
           </div>

@@ -452,8 +452,13 @@
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Overview Panel */
@@ -1084,11 +1089,11 @@
 .detail-panel-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.25);
   display: flex;
   justify-content: flex-end;
   z-index: 1000;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(1px);
 }
 
 .detail-panel {
@@ -1099,6 +1104,17 @@
   flex-direction: column;
   height: 100%;
   overflow: hidden;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
 }
 
 .panel-header {

@@ -37,8 +37,6 @@ const adminCards: AdminCard[] = [
     description: 'Manage users, assign roles, and configure user permissions across the organization.',
     icon: <Users size={24} />,
     path: '/admin/users',
-    badge: 'Coming Soon',
-    disabled: true,
   },
   {
     title: 'System Settings',

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@triton/supabase-client';
+import './CreateBid.css';
 
 import { useAuth } from '../../hooks/useAuth';
 

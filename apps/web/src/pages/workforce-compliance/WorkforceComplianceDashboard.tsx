@@ -15,7 +15,7 @@ import {
   AlertOctagon,
 } from 'lucide-react';
 import { supabase } from '@triton/supabase-client';
-import './WorkforceComplianceDashboard.css';
+
 
 interface ComplianceStats {
   totalEmployees: number;
@@ -280,258 +280,281 @@ export function WorkforceComplianceDashboard() {
 
   if (isLoading) {
     return (
-      <div className="wc-dashboard loading">
-        <div className="loading-spinner" />
-        <p>Loading compliance data...</p>
+      <div className="flex items-center justify-center min-h-[400px] text-cyan-400">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-current" />
+        <p className="mt-4 font-mono text-sm tracking-widest uppercase">Loading compliance data...</p>
       </div>
     );
   }
 
   return (
-    <div className="wc-dashboard">
-      <header className="wc-header">
-        <div className="header-title">
-          <Shield size={32} />
-          <div>
-            <h1>Workforce Compliance</h1>
-            <p>Real-time compliance monitoring and safety management</p>
-          </div>
-        </div>
-        <div className="header-actions">
-          <button className="btn btn-secondary">
-            <FileText size={18} />
-            Export Report
-          </button>
-          <button className="btn btn-primary">
-            <Users size={18} />
-            Add Employee
-          </button>
-        </div>
-      </header>
-
-      {/* Active Overrides Alert */}
-      {activeOverrides.length > 0 && (
-        <div className="override-alert">
-          <AlertOctagon size={24} />
-          <div className="override-alert-content">
-            <strong>{activeOverrides.length} Active Override{activeOverrides.length > 1 ? 's' : ''}</strong>
-            <span>Emergency overrides are in effect and require review</span>
-          </div>
-          <button className="btn btn-warning">Review Overrides</button>
-        </div>
-      )}
-
-      {/* Stats Cards */}
-      <div className="stats-grid">
-        <div className="stat-card employees">
-          <div className="stat-icon">
-            <Users size={24} />
-          </div>
-          <div className="stat-content">
-            <div className="stat-value">{stats?.totalEmployees || 0}</div>
-            <div className="stat-label">Active Employees</div>
-            <div className="stat-detail">
-              <span className={`compliance-rate ${getCompliancePercentage() >= 90 ? 'good' : getCompliancePercentage() >= 70 ? 'warning' : 'critical'}`}>
-                {getCompliancePercentage()}% Compliant
-              </span>
+    <div className="min-h-screen">
+      <div className="border-b border-white/10 bg-void-mid pt-20 pb-6 shadow-2xl">
+        <div className="max-w-[1600px] mx-auto px-6">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-cyan-500/10 rounded-xl border border-cyan-500/20 shadow-[0_0_15px_rgba(46,196,182,0.2)]">
+                <Shield className="w-8 h-8 text-cyan-400" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-white tracking-tight drop-shadow-lg">Workforce Compliance</h1>
+                <p className="text-cyan-400/80 font-mono tracking-widest uppercase mt-1 text-sm">Real-time compliance monitoring and safety management</p>
+              </div>
             </div>
-          </div>
-        </div>
-
-        <div className="stat-card subcontractors">
-          <div className="stat-icon">
-            <Building2 size={24} />
-          </div>
-          <div className="stat-content">
-            <div className="stat-value">{stats?.totalSubcontractors || 0}</div>
-            <div className="stat-label">Subcontractors</div>
-            <div className="stat-detail">
-              <span className={`compliance-rate ${getSubCompliancePercentage() >= 90 ? 'good' : getSubCompliancePercentage() >= 70 ? 'warning' : 'critical'}`}>
-                {getSubCompliancePercentage()}% COI Valid
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="stat-card expiring">
-          <div className="stat-icon">
-            <Clock size={24} />
-          </div>
-          <div className="stat-content">
-            <div className="stat-value">{stats?.expiringSoon || 0}</div>
-            <div className="stat-label">Expiring in 30 Days</div>
-            <div className="stat-detail">
-              <span className={expiringItems.filter(i => i.urgency === 'critical').length > 0 ? 'critical' : 'warning'}>
-                {expiringItems.filter(i => i.urgency === 'critical').length} expired
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="stat-card safety">
-          <div className="stat-icon">
-            <HardHat size={24} />
-          </div>
-          <div className="stat-content">
-            <div className="stat-value">{stats?.incidentsYTD || 0}</div>
-            <div className="stat-label">Incidents YTD</div>
-            <div className="stat-detail">
-              <TrendingUp size={14} />
-              <span>Safety metrics</span>
+            <div className="flex gap-3">
+              <button className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-300 hover:bg-white/10 hover:text-white transition-colors">
+                <FileText size={18} />
+                <span>Export Report</span>
+              </button>
+              <button className="flex items-center gap-2 px-4 py-2 bg-cyan-500/20 border border-cyan-500/50 rounded-lg text-cyan-400 hover:bg-cyan-500/30 transition-colors shadow-[0_0_10px_rgba(46,196,182,0.2)]">
+                <Users size={18} />
+                <span>Add Employee</span>
+              </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Main Content Grid */}
-      <div className="content-grid">
-        {/* Expiring Items */}
-        <div className="panel expiring-panel">
-          <div className="panel-header">
-            <h3>
-              <AlertTriangle size={20} />
-              Expiring Credentials & Insurance
-            </h3>
-            <span className="badge">{expiringItems.length}</span>
-          </div>
-          <div className="panel-content">
-            {expiringItems.length === 0 ? (
-              <div className="empty-state">
-                <CheckCircle size={32} />
-                <p>No items expiring in the next 30 days</p>
-              </div>
-            ) : (
-              <div className="expiring-list">
-                {expiringItems.slice(0, 10).map(item => (
-                  <div key={item.id} className={`expiring-item ${item.urgency}`}>
-                    <div className="expiring-icon">
-                      {item.type === 'certification' && <ClipboardCheck size={18} />}
-                      {item.type === 'insurance' && <Shield size={18} />}
-                      {item.type === 'license' && <FileText size={18} />}
-                      {item.type === 'medical_card' && <FileText size={18} />}
-                    </div>
-                    <div className="expiring-details">
-                      <div className="expiring-name">{item.entityName}</div>
-                      <div className="expiring-item-name">{item.itemName}</div>
-                    </div>
-                    <div className="expiring-date">
-                      {item.daysUntilExpiry <= 0 ? (
-                        <span className="expired-badge">EXPIRED</span>
-                      ) : (
-                        <span className={`days-badge ${item.urgency}`}>
-                          {item.daysUntilExpiry}d
-                        </span>
-                      )}
-                      <span className="date-text">{formatDate(item.expirationDate)}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Recent Incidents */}
-        <div className="panel incidents-panel">
-          <div className="panel-header">
-            <h3>
-              <AlertOctagon size={20} />
-              Recent Incidents
-            </h3>
-            <button className="btn btn-link">View All</button>
-          </div>
-          <div className="panel-content">
-            {recentIncidents.length === 0 ? (
-              <div className="empty-state">
-                <CheckCircle size={32} />
-                <p>No recent incidents</p>
-              </div>
-            ) : (
-              <div className="incidents-list">
-                {recentIncidents.map(incident => (
-                  <div key={incident.id} className="incident-item">
-                    <div className={`incident-classification ${incident.classification}`}>
-                      {incident.classification.replace(/_/g, ' ')}
-                    </div>
-                    <div className="incident-details">
-                      <div className="incident-number">{incident.incidentNumber ?? 'N/A'}</div>
-                      <div className="incident-description">{incident.description}</div>
-                      <div className="incident-meta">
-                        <Calendar size={12} />
-                        {formatDate(incident.incidentDate)}
-                        <span className={`status-badge ${incident.status ?? 'unknown'}`}>{incident.status ?? 'unknown'}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Active Overrides */}
+      <div className="max-w-[1600px] mx-auto px-6 py-8">
+        {/* Active Overrides Alert */}
         {activeOverrides.length > 0 && (
-          <div className="panel overrides-panel">
-            <div className="panel-header">
-              <h3>
-                <AlertOctagon size={20} />
-                Active Overrides
-              </h3>
-              <span className="badge warning">{activeOverrides.length}</span>
+          <div className="flex items-center gap-4 p-4 mb-6 bg-red-500/10 border border-red-500/30 rounded-xl shadow-[0_0_15px_rgba(239,68,68,0.1)]">
+            <AlertOctagon className="w-6 h-6 text-red-400 flex-shrink-0" />
+            <div className="flex-1">
+              <strong className="block text-red-400 font-bold uppercase tracking-wider text-sm">
+                {activeOverrides.length} Active Override{activeOverrides.length > 1 ? 's' : ''}
+              </strong>
+              <span className="text-red-400/80 text-xs font-mono">Emergency overrides are in effect and require review</span>
             </div>
-            <div className="panel-content">
-              <div className="overrides-list">
-                {activeOverrides.map(override => (
-                  <div key={override.id} className="override-item">
-                    <div className="override-type">{override.overrideType.replace(/_/g, ' ')}</div>
-                    <div className="override-details">
-                      <div className="override-action">{override.blockedAction ?? 'N/A'}</div>
-                      <div className="override-meta">
-                        <span className="project">{override.projectName}</span>
-                        <span className="expires">
-                          Expires in {override.expiresAt ? formatTimeRemaining(override.expiresAt) : 'N/A'}
-                        </span>
-                      </div>
-                    </div>
-                    <button className="btn btn-sm btn-warning">Review</button>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <button className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 text-sm font-bold shadow-lg">
+              Review Overrides
+            </button>
           </div>
         )}
 
-        {/* Quick Actions */}
-        <div className="panel actions-panel">
-          <div className="panel-header">
-            <h3>Quick Actions</h3>
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+          <div className="gravity-card p-6 border-cyan-500/30 bg-cyan-500/5">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-cyan-500/10 rounded-lg border border-cyan-500/20">
+                <Users className="w-6 h-6 text-cyan-400" />
+              </div>
+              <span className={`px-2 py-1 rounded text-xs font-mono font-bold ${getCompliancePercentage() >= 90 ? 'text-green-400 bg-green-500/10 border border-green-500/20' :
+                getCompliancePercentage() >= 70 ? 'text-yellow-400 bg-yellow-500/10 border border-yellow-500/20' :
+                  'text-red-400 bg-red-500/10 border border-red-500/20'
+                }`}>
+                {getCompliancePercentage()}% Compliant
+              </span>
+            </div>
+            <div className="text-4xl font-bold text-white font-mono tracking-tighter drop-shadow-md">{stats?.totalEmployees || 0}</div>
+            <div className="text-sm text-gray-400 mt-1 uppercase tracking-widest font-bold">Active Employees</div>
           </div>
-          <div className="panel-content">
-            <div className="quick-actions">
-              <button className="action-btn">
-                <Users size={24} />
-                <span>Add Employee</span>
-              </button>
-              <button className="action-btn">
-                <Building2 size={24} />
-                <span>Add Subcontractor</span>
-              </button>
-              <button className="action-btn">
-                <ClipboardCheck size={24} />
-                <span>Record Training</span>
-              </button>
-              <button className="action-btn">
-                <AlertOctagon size={24} />
-                <span>Report Incident</span>
-              </button>
-              <button className="action-btn">
-                <Truck size={24} />
-                <span>Fleet Status</span>
-              </button>
-              <button className="action-btn">
-                <HardHat size={24} />
-                <span>Safety Meeting</span>
-              </button>
+
+          <div className="gravity-card p-6 border-purple-500/30 bg-purple-500/5">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-purple-500/10 rounded-lg border border-purple-500/20">
+                <Building2 className="w-6 h-6 text-purple-400" />
+              </div>
+              <span className={`px-2 py-1 rounded text-xs font-mono font-bold ${getSubCompliancePercentage() >= 90 ? 'text-green-400 bg-green-500/10 border border-green-500/20' :
+                getSubCompliancePercentage() >= 70 ? 'text-yellow-400 bg-yellow-500/10 border border-yellow-500/20' :
+                  'text-red-400 bg-red-500/10 border border-red-500/20'
+                }`}>
+                {getSubCompliancePercentage()}% COI Valid
+              </span>
+            </div>
+            <div className="text-4xl font-bold text-white font-mono tracking-tighter drop-shadow-md">{stats?.totalSubcontractors || 0}</div>
+            <div className="text-sm text-gray-400 mt-1 uppercase tracking-widest font-bold">Subcontractors</div>
+          </div>
+
+          <div className="gravity-card p-6 border-orange-500/30 bg-orange-500/5">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-orange-500/10 rounded-lg border border-orange-500/20">
+                <Clock className="w-6 h-6 text-orange-400" />
+              </div>
+              <span className={`px-2 py-1 rounded text-xs font-mono font-bold ${expiringItems.filter(i => i.urgency === 'critical').length > 0
+                ? 'text-red-400 bg-red-500/10 border border-red-500/20'
+                : 'text-orange-400 bg-orange-500/10 border border-orange-500/20'
+                }`}>
+                {expiringItems.filter(i => i.urgency === 'critical').length} expired
+              </span>
+            </div>
+            <div className="text-4xl font-bold text-white font-mono tracking-tighter drop-shadow-md">{stats?.expiringSoon || 0}</div>
+            <div className="text-sm text-gray-400 mt-1 uppercase tracking-widest font-bold">Expiring in 30 Days</div>
+          </div>
+
+          <div className="gravity-card p-6 border-green-500/30 bg-green-500/5">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-green-500/10 rounded-lg border border-green-500/20">
+                <HardHat className="w-6 h-6 text-green-400" />
+              </div>
+              <div className="flex items-center gap-1 text-xs text-green-400">
+                <TrendingUp size={12} />
+                <span className="font-mono">Metrics</span>
+              </div>
+            </div>
+            <div className="text-4xl font-bold text-white font-mono tracking-tighter drop-shadow-md">{stats?.incidentsYTD || 0}</div>
+            <div className="text-sm text-gray-400 mt-1 uppercase tracking-widest font-bold">Incidents YTD</div>
+          </div>
+        </div>
+
+        {/* Main Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Expiring Items */}
+          <div className="gravity-card flex flex-col h-[500px]">
+            <div className="p-5 border-b border-white/10 bg-white/5 flex justify-between items-center">
+              <h3 className="flex items-center gap-2 text-sm font-bold text-white uppercase tracking-widest">
+                <AlertTriangle className="w-5 h-5 text-orange-400" />
+                Expiring Credentials
+              </h3>
+              <span className="px-2 py-1 bg-blue-500 text-white text-xs font-bold rounded-full shadow-lg">
+                {expiringItems.length}
+              </span>
+            </div>
+            <div className="p-4 overflow-y-auto custom-scrollbar flex-1">
+              {expiringItems.length === 0 ? (
+                <div className="flex flex-col items-center justify-center h-full text-gray-500 gap-3">
+                  <CheckCircle size={32} className="text-green-500/50" />
+                  <p className="font-mono text-sm">No items expiring in the next 30 days</p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {expiringItems.slice(0, 10).map(item => (
+                    <div key={item.id} className={`flex items-center gap-4 p-3 rounded-lg border bg-void-deep transition-all hover:bg-white/5 ${item.urgency === 'critical' ? 'border-red-500/40 shadow-[0_0_10px_rgba(239,68,68,0.1)]' :
+                      item.urgency === 'high' ? 'border-orange-500/40 shadow-[0_0_10px_rgba(249,115,22,0.1)]' :
+                        'border-white/10'
+                      }`}>
+                      <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0 text-gray-400">
+                        {item.type === 'certification' && <ClipboardCheck size={20} />}
+                        {item.type === 'insurance' && <Shield size={20} />}
+                        {item.type === 'license' && <FileText size={20} />}
+                        {item.type === 'medical_card' && <FileText size={20} />}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-bold text-white truncate">{item.entityName}</div>
+                        <div className="text-xs text-gray-400 truncate mt-0.5">{item.itemName}</div>
+                      </div>
+                      <div className="flex flex-col items-end gap-1">
+                        {item.daysUntilExpiry <= 0 ? (
+                          <span className="px-1.5 py-0.5 bg-red-500 text-white text-[10px] font-bold rounded uppercase tracking-wider">Expired</span>
+                        ) : (
+                          <span className={`px-1.5 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider border ${item.urgency === 'critical' ? 'bg-red-500/20 text-red-400 border-red-500/30' :
+                            item.urgency === 'high' ? 'bg-orange-500/20 text-orange-400 border-orange-500/30' :
+                              'bg-blue-500/20 text-blue-400 border-blue-500/30'
+                            }`}>
+                            {item.daysUntilExpiry}d
+                          </span>
+                        )}
+                        <span className="text-[10px] text-gray-500 font-mono">{formatDate(item.expirationDate)}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Recent Incidents */}
+          <div className="gravity-card flex flex-col h-[500px]">
+            <div className="p-5 border-b border-white/10 bg-white/5 flex justify-between items-center">
+              <h3 className="flex items-center gap-2 text-sm font-bold text-white uppercase tracking-widest">
+                <AlertOctagon className="w-5 h-5 text-red-400" />
+                Recent Incidents
+              </h3>
+              <button className="text-cyan-400 text-xs hover:text-white transition-colors uppercase tracking-wider font-bold">View All</button>
+            </div>
+            <div className="p-4 overflow-y-auto custom-scrollbar flex-1">
+              {recentIncidents.length === 0 ? (
+                <div className="flex flex-col items-center justify-center h-full text-gray-500 gap-3">
+                  <CheckCircle size={32} className="text-green-500/50" />
+                  <p className="font-mono text-sm">No recent incidents</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {recentIncidents.map(incident => (
+                    <div key={incident.id} className="flex gap-4 p-3 rounded-lg border border-white/5 bg-white/5 hover:border-white/20 transition-all">
+                      <div className={`writing-mode-vertical rotate-180 text-[10px] font-bold uppercase tracking-wider px-1 py-2 rounded flex items-center justify-center whitespace-nowrap min-h-[80px] ${incident.classification.includes('recordable') ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
+                        incident.classification.includes('first_aid') ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30' :
+                          incident.classification.includes('near_miss') ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' :
+                            'bg-gray-500/20 text-gray-400 border border-gray-500/30'
+                        }`}>
+                        {incident.classification.replace(/_/g, ' ')}
+                      </div>
+                      <div className="flex-1 py-1">
+                        <div className="flex justify-between items-start mb-2">
+                          <span className="text-xs font-mono text-cyan-400">{incident.incidentNumber ?? 'N/A'}</span>
+                          <span className={`text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${incident.status === 'closed' ? 'bg-green-500/10 text-green-400 border-green-500/20' : 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'
+                            }`}>
+                            {incident.status ?? 'unknown'}
+                          </span>
+                        </div>
+                        <div className="text-sm text-gray-300 line-clamp-2 leading-relaxed mb-3">{incident.description}</div>
+                        <div className="flex items-center gap-2 text-xs text-gray-500">
+                          <Calendar size={12} />
+                          <span className="font-mono">{formatDate(incident.incidentDate)}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Active Overrides */}
+          {activeOverrides.length > 0 && (
+            <div className="gravity-card flex flex-col">
+              <div className="p-5 border-b border-white/10 bg-white/5 flex justify-between items-center">
+                <h3 className="flex items-center gap-2 text-sm font-bold text-white uppercase tracking-widest">
+                  <AlertOctagon className="w-5 h-5 text-yellow-400" />
+                  Active Overrides
+                </h3>
+                <span className="px-2 py-1 bg-yellow-500 text-black text-xs font-bold rounded-full">
+                  {activeOverrides.length}
+                </span>
+              </div>
+              <div className="p-4 space-y-3">
+                {activeOverrides.map(override => (
+                  <div key={override.id} className="flex items-center gap-4 p-3 rounded-lg bg-yellow-500/5 border border-yellow-500/20 hover:bg-yellow-500/10 transition-colors">
+                    <div className="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded bg-yellow-500 text-black whitespace-nowrap">
+                      {override.overrideType.replace(/_/g, ' ')}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-medium text-yellow-100 truncate">{override.blockedAction ?? 'N/A'}</div>
+                      <div className="flex gap-3 mt-1 text-xs text-yellow-500/70 font-mono">
+                        <span>{override.projectName}</span>
+                        <span className="text-yellow-500">Expires in {override.expiresAt ? formatTimeRemaining(override.expiresAt) : 'N/A'}</span>
+                      </div>
+                    </div>
+                    <button className="px-3 py-1.5 bg-yellow-500/20 hover:bg-yellow-500/40 text-yellow-400 text-xs font-bold uppercase rounded transition-colors border border-yellow-500/30">
+                      Review
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Quick Actions */}
+          <div className="gravity-card flex flex-col">
+            <div className="p-5 border-b border-white/10 bg-white/5">
+              <h3 className="text-sm font-bold text-white uppercase tracking-widest">Quick Actions</h3>
+            </div>
+            <div className="p-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {[
+                  { icon: Users, label: 'Add Employee' },
+                  { icon: Building2, label: 'Add Subcontractor' },
+                  { icon: ClipboardCheck, label: 'Record Training' },
+                  { icon: AlertOctagon, label: 'Report Incident' },
+                  { icon: Truck, label: 'Fleet Status' },
+                  { icon: HardHat, label: 'Safety Meeting' }
+                ].map((action, i) => (
+                  <button key={i} className="flex flex-col items-center justify-center gap-3 p-4 rounded-lg bg-white/5 border border-white/10 hover:bg-cyan-500/10 hover:border-cyan-500/50 hover:text-cyan-400 transition-all group">
+                    <action.icon size={24} className="text-gray-400 group-hover:text-cyan-400 transition-colors" />
+                    <span className="text-xs font-medium text-gray-400 group-hover:text-white transition-colors">{action.label}</span>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>

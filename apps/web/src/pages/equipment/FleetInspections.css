@@ -21,8 +21,13 @@
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Page Header */
@@ -905,10 +910,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.25);
   display: flex;
   justify-content: flex-end;
   z-index: 1000;
+  backdrop-filter: blur(1px);
 }
 
 .fleet-inspections-page .detail-panel {
@@ -918,6 +924,17 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
 }
 
 .fleet-inspections-page .panel-header {
