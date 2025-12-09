@@ -444,7 +444,6 @@ function AIQueryPageContent() {
       const { data, error: fetchError } = await supabase
         .from('projects')
         .select('id, name, project_number, organization_id')
-        .select('id, name, project_number, organization_id')
         .order('name');
 
       if (fetchError) throw new Error(`Failed to load projects: ${fetchError.message}`);
@@ -599,7 +598,7 @@ function AIQueryPageContent() {
         body: {
           project_id: selectedProjectId,
           conversation_id: currentConversation?.id,
-          message: messageContent,
+          query: messageContent,
           client_message_id: optimisticId,
         },
       });
