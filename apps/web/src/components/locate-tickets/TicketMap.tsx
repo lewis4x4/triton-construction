@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
+import { BaseMap, MapRef } from '../maps/BaseMap';
 import { type TicketStatus } from './StatusBadge';
 
-// Mapbox access token
-mapboxgl.accessToken = 'pk.eyJ1IjoibGV3aXM0eDQiLCJhIjoiY21pZGp5aGJkMDczNTJpcHQ3ZmFiNDEwbiJ9.MfYe1QhQxfwGAFltutpADw';
+// Mapbox access token handled by BaseMap via env
 
 export interface MapTicket {
   id: string;
@@ -39,13 +38,15 @@ const statusColors: Record<TicketStatus, string> = {
 };
 
 export function TicketMap({ tickets, onTicketClick, center, zoom = 10 }: TicketMapProps) {
-  const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
+  const mapRef = useRef<MapRef>(null);
   const popup = useRef<mapboxgl.Popup | null>(null);
   const userLocationMarker = useRef<mapboxgl.Marker | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const [isLocating, setIsLocating] = useState(false);
+
+  // We need access to the map instance for layers/sources
+  const [mapInstance, setMapInstance] = useState<mapboxgl.Map | null>(null);
 
   // Convert tickets to GeoJSON for clustering
   const ticketsToGeoJSON = useCallback((tickets: MapTicket[]) => {
@@ -90,9 +91,7 @@ export function TicketMap({ tickets, onTicketClick, center, zoom = 10 }: TicketM
         setUserLocation(loc);
         setIsLocating(false);
 
-        if (map.current) {
-          map.current.flyTo({ center: loc, zoom: 14 });
-        }
+        mapRef.current?.flyTo(loc, 14);
       },
       (error) => {
         console.error('Location error:', error);
@@ -102,23 +101,8 @@ export function TicketMap({ tickets, onTicketClick, center, zoom = 10 }: TicketM
     );
   }, []);
 
-  // Initialize map
-  useEffect(() => {
-    if (!mapContainer.current || map.current) return;
-
-    // Default center to West Virginia
-    const defaultCenter: [number, number] = center || [-80.5, 38.9];
-
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/satellite-streets-v12', // Satellite hybrid for field crews
-      center: defaultCenter,
-      zoom: zoom,
-    });
-
-    // Add navigation controls
-    map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
-    map.current.addControl(new mapboxgl.FullscreenControl(), 'top-right');
+  const handleMapLoad = (map: mapboxgl.Map) => {
+    setMapInstance(map);
 
     // Create popup for ticket info
     popup.current = new mapboxgl.Popup({
@@ -128,138 +112,133 @@ export function TicketMap({ tickets, onTicketClick, center, zoom = 10 }: TicketM
       offset: 15,
     });
 
-    map.current.on('load', () => {
-      if (!map.current) return;
+    // Add cluster source
+    map.addSource('tickets', {
+      type: 'geojson',
+      data: ticketsToGeoJSON([]),
+      cluster: true,
+      clusterMaxZoom: 14,
+      clusterRadius: 50,
+    });
 
-      // Add cluster source
-      map.current.addSource('tickets', {
-        type: 'geojson',
-        data: ticketsToGeoJSON([]),
-        cluster: true,
-        clusterMaxZoom: 14,
-        clusterRadius: 50,
-      });
+    // Cluster circles layer
+    map.addLayer({
+      id: 'clusters',
+      type: 'circle',
+      source: 'tickets',
+      filter: ['has', 'point_count'],
+      paint: {
+        'circle-color': [
+          'step',
+          ['get', 'point_count'],
+          '#3b82f6',
+          10,
+          '#f59e0b',
+          25,
+          '#ef4444',
+        ],
+        'circle-radius': [
+          'step',
+          ['get', 'point_count'],
+          20,
+          10,
+          25,
+          25,
+          30,
+        ],
+        'circle-stroke-width': 3,
+        'circle-stroke-color': '#ffffff',
+      },
+    });
 
-      // Cluster circles layer
-      map.current.addLayer({
-        id: 'clusters',
-        type: 'circle',
-        source: 'tickets',
-        filter: ['has', 'point_count'],
-        paint: {
-          'circle-color': [
-            'step',
-            ['get', 'point_count'],
-            '#3b82f6', // blue for small clusters
-            10,
-            '#f59e0b', // amber for medium
-            25,
-            '#ef4444', // red for large
-          ],
-          'circle-radius': [
-            'step',
-            ['get', 'point_count'],
-            20,
-            10,
-            25,
-            25,
-            30,
-          ],
-          'circle-stroke-width': 3,
-          'circle-stroke-color': '#ffffff',
-        },
-      });
+    // Cluster count labels
+    map.addLayer({
+      id: 'cluster-count',
+      type: 'symbol',
+      source: 'tickets',
+      filter: ['has', 'point_count'],
+      layout: {
+        'text-field': '{point_count_abbreviated}',
+        'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+        'text-size': 14,
+      },
+      paint: {
+        'text-color': '#ffffff',
+      },
+    });
 
-      // Cluster count labels
-      map.current.addLayer({
-        id: 'cluster-count',
-        type: 'symbol',
-        source: 'tickets',
-        filter: ['has', 'point_count'],
-        layout: {
-          'text-field': '{point_count_abbreviated}',
-          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-          'text-size': 14,
-        },
-        paint: {
-          'text-color': '#ffffff',
-        },
-      });
+    // Individual unclustered points
+    map.addLayer({
+      id: 'unclustered-point',
+      type: 'circle',
+      source: 'tickets',
+      filter: ['!', ['has', 'point_count']],
+      paint: {
+        'circle-color': ['get', 'color'],
+        'circle-radius': 12,
+        'circle-stroke-width': [
+          'case',
+          ['get', 'isHighRisk'],
+          4,
+          3,
+        ],
+        'circle-stroke-color': [
+          'case',
+          ['get', 'isHighRisk'],
+          '#ef4444',
+          '#ffffff',
+        ],
+      },
+    });
 
-      // Individual unclustered points
-      map.current.addLayer({
-        id: 'unclustered-point',
-        type: 'circle',
-        source: 'tickets',
-        filter: ['!', ['has', 'point_count']],
-        paint: {
-          'circle-color': ['get', 'color'],
-          'circle-radius': 12,
-          'circle-stroke-width': [
-            'case',
-            ['get', 'isHighRisk'],
-            4,
-            3,
-          ],
-          'circle-stroke-color': [
-            'case',
-            ['get', 'isHighRisk'],
-            '#ef4444',
-            '#ffffff',
-          ],
-        },
-      });
+    // High risk indicator (! symbol)
+    map.addLayer({
+      id: 'high-risk-indicator',
+      type: 'symbol',
+      source: 'tickets',
+      filter: ['all', ['!', ['has', 'point_count']], ['get', 'isHighRisk']],
+      layout: {
+        'text-field': '!',
+        'text-font': ['DIN Offc Pro Bold', 'Arial Unicode MS Bold'],
+        'text-size': 14,
+        'text-allow-overlap': true,
+      },
+      paint: {
+        'text-color': '#ffffff',
+      },
+    });
 
-      // High risk indicator (! symbol)
-      map.current.addLayer({
-        id: 'high-risk-indicator',
-        type: 'symbol',
-        source: 'tickets',
-        filter: ['all', ['!', ['has', 'point_count']], ['get', 'isHighRisk']],
-        layout: {
-          'text-field': '!',
-          'text-font': ['DIN Offc Pro Bold', 'Arial Unicode MS Bold'],
-          'text-size': 14,
-          'text-allow-overlap': true,
-        },
-        paint: {
-          'text-color': '#ffffff',
-        },
-      });
+    // Click on cluster to zoom
+    map.on('click', 'clusters', (e) => {
+      const features = map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
+      const clusterId = features[0]?.properties?.cluster_id;
+      if (!clusterId || !features[0]) return;
 
-      // Click on cluster to zoom
-      map.current.on('click', 'clusters', (e) => {
-        if (!map.current) return;
-        const features = map.current.queryRenderedFeatures(e.point, { layers: ['clusters'] });
-        const clusterId = features[0]?.properties?.cluster_id;
-        if (!clusterId || !features[0]) return;
-
-        (map.current.getSource('tickets') as mapboxgl.GeoJSONSource).getClusterExpansionZoom(
-          clusterId,
-          (err, zoomLevel) => {
-            if (err || !map.current || zoomLevel == null) return;
-            map.current.easeTo({
-              center: (features[0]!.geometry as GeoJSON.Point).coordinates as [number, number],
-              zoom: zoomLevel,
-            });
-          }
-        );
-      });
-
-      // Click on individual point to show popup
-      map.current.on('click', 'unclustered-point', (e) => {
-        if (!map.current || !popup.current || !e.features?.[0]) return;
-
-        const coordinates = (e.features[0].geometry as GeoJSON.Point).coordinates.slice() as [number, number];
-        const props = e.features[0].properties;
-
-        // Handle dateline wrapping
-        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      (map.getSource('tickets') as mapboxgl.GeoJSONSource).getClusterExpansionZoom(
+        clusterId,
+        (err, zoomLevel) => {
+          if (err || zoomLevel == null) return;
+          map.easeTo({
+            center: (features[0]!.geometry as GeoJSON.Point).coordinates as [number, number],
+            zoom: zoomLevel,
+          });
         }
+      );
+    });
 
-        const popupContent = `
-          <div style="padding: 12px;">
+    // Click on individual point to show popup
+    map.on('click', 'unclustered-point', (e) => {
+      if (!popup.current || !e.features?.[0]) return;
+
+      const coordinates = (e.features[0].geometry as GeoJSON.Point).coordinates.slice() as [number, number];
+      const props = e.features[0].properties;
+
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
+
+      const popupContent = `
+          <div style="padding: 12px; color: black;">
             <strong style="font-size: 15px; color: #1e293b;">${props?.ticket_number || 'Unknown'}</strong>
             <div style="font-size: 13px; color: #64748b; margin: 6px 0 8px;">
               ${props?.dig_site_address || ''}${props?.dig_site_city ? `, ${props.dig_site_city}` : ''}
@@ -302,44 +281,32 @@ export function TicketMap({ tickets, onTicketClick, center, zoom = 10 }: TicketM
           </div>
         `;
 
-        popup.current.setLngLat(coordinates).setHTML(popupContent).addTo(map.current);
-      });
-
-      // Change cursor on hover
-      map.current.on('mouseenter', 'clusters', () => {
-        if (map.current) map.current.getCanvas().style.cursor = 'pointer';
-      });
-      map.current.on('mouseleave', 'clusters', () => {
-        if (map.current) map.current.getCanvas().style.cursor = '';
-      });
-      map.current.on('mouseenter', 'unclustered-point', () => {
-        if (map.current) map.current.getCanvas().style.cursor = 'pointer';
-      });
-      map.current.on('mouseleave', 'unclustered-point', () => {
-        if (map.current) map.current.getCanvas().style.cursor = '';
-      });
-
-      setMapLoaded(true);
+      popup.current.setLngLat(coordinates).setHTML(popupContent).addTo(map);
     });
 
-    return () => {
-      popup.current?.remove();
-      userLocationMarker.current?.remove();
-      map.current?.remove();
-      map.current = null;
-    };
-  }, [center, zoom, ticketsToGeoJSON]);
+    // Cursor handling
+    const layers = ['clusters', 'unclustered-point'];
+    layers.forEach(layer => {
+      map.on('mouseenter', layer, () => {
+        map.getCanvas().style.cursor = 'pointer';
+      });
+      map.on('mouseleave', layer, () => {
+        map.getCanvas().style.cursor = '';
+      });
+    });
+
+    setMapLoaded(true);
+  };
 
   // Update map data when tickets change
   useEffect(() => {
-    if (!map.current || !mapLoaded) return;
+    if (!mapInstance || !mapLoaded) return;
 
-    const source = map.current.getSource('tickets') as mapboxgl.GeoJSONSource;
+    const source = mapInstance.getSource('tickets') as mapboxgl.GeoJSONSource;
     if (source) {
       source.setData(ticketsToGeoJSON(tickets));
     }
 
-    // Fit bounds to show all points
     const ticketsWithCoords = tickets.filter((t) => t.latitude != null && t.longitude != null);
     if (ticketsWithCoords.length > 1) {
       const bounds = new mapboxgl.LngLatBounds();
@@ -348,36 +315,35 @@ export function TicketMap({ tickets, onTicketClick, center, zoom = 10 }: TicketM
           bounds.extend([t.longitude, t.latitude]);
         }
       });
-      map.current.fitBounds(bounds, { padding: 60, maxZoom: 14 });
+      // use BaseMap helper or direct map instance
+      mapRef.current?.fitBounds(bounds, 60);
     } else if (ticketsWithCoords.length === 1) {
       const t = ticketsWithCoords[0]!;
       if (t && t.longitude != null && t.latitude != null) {
-        map.current.flyTo({ center: [t.longitude, t.latitude], zoom: 14 });
+        mapRef.current?.flyTo([t.longitude, t.latitude], 14);
       }
     }
-  }, [tickets, mapLoaded, ticketsToGeoJSON]);
+  }, [tickets, mapLoaded, ticketsToGeoJSON, mapInstance]);
 
   // Update user location marker
   useEffect(() => {
-    if (!map.current || !mapLoaded || !userLocation) return;
+    if (!mapInstance || !mapLoaded || !userLocation) return;
 
     if (userLocationMarker.current) {
       userLocationMarker.current.setLngLat(userLocation);
     } else {
-      // Create user location marker with pulsing effect
       const el = document.createElement('div');
-      el.className = 'user-location-marker';
       el.innerHTML = `
         <div class="user-location-pulse"></div>
         <div class="user-location-dot"></div>
-      `;
+       `;
+      el.className = 'user-location-marker';
       el.style.cssText = `
         position: relative;
         width: 24px;
         height: 24px;
-      `;
+       `;
 
-      // Add styles for the marker
       const style = document.createElement('style');
       style.textContent = `
         .user-location-dot {
@@ -408,21 +374,26 @@ export function TicketMap({ tickets, onTicketClick, center, zoom = 10 }: TicketM
           100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
         }
       `;
-      document.head.appendChild(style);
+
+      if (!document.getElementById('user-location-style')) {
+        style.id = 'user-location-style';
+        document.head.appendChild(style);
+      }
 
       userLocationMarker.current = new mapboxgl.Marker(el)
         .setLngLat(userLocation)
-        .addTo(map.current);
+        .addTo(mapInstance);
     }
-  }, [userLocation, mapLoaded]);
 
-  // Set up click handler for popup button
+  }, [userLocation, mapLoaded, mapInstance]);
+
+  // Click handler setup
   useEffect(() => {
     if (onTicketClick) {
-      (window as unknown as { ticketMapClick: (id: string) => void }).ticketMapClick = onTicketClick;
+      (window as any).ticketMapClick = onTicketClick;
     }
     return () => {
-      delete (window as unknown as { ticketMapClick?: (id: string) => void }).ticketMapClick;
+      delete (window as any).ticketMapClick;
     };
   }, [onTicketClick]);
 
@@ -430,7 +401,14 @@ export function TicketMap({ tickets, onTicketClick, center, zoom = 10 }: TicketM
 
   return (
     <div className="ticket-map-container" style={{ width: '100%', height: '100%', minHeight: '400px', position: 'relative' }}>
-      <div ref={mapContainer} style={{ width: '100%', height: '100%' }} />
+      <BaseMap
+        ref={mapRef}
+        initialCenter={center}
+        initialZoom={zoom}
+        style="satellite"
+        className="w-full h-full"
+        onLoad={handleMapLoad}
+      />
 
       {/* Current Location Button */}
       <button
@@ -466,7 +444,6 @@ export function TicketMap({ tickets, onTicketClick, center, zoom = 10 }: TicketM
         )}
       </button>
 
-      {/* Unmapped tickets warning */}
       {ticketsWithoutCoords.length > 0 && (
         <div style={{
           position: 'absolute',
@@ -485,13 +462,12 @@ export function TicketMap({ tickets, onTicketClick, center, zoom = 10 }: TicketM
         </div>
       )}
 
-      {/* Spin animation style */}
       <style>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
+            @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+            }
+        `}</style>
     </div>
   );
 }

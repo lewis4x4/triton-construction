@@ -97,6 +97,8 @@ import { EnhancedGeofenceManagement } from './pages/geofences';
 import { ExecutiveDashboard } from './pages/executive/ExecutiveDashboard';
 // Time Tracking Module
 import { TimeTrackingDashboard, TimeEntryPage, TimesheetApproval, WeeklyTimesheet } from './pages/time-tracking';
+// Compliance Module
+import { WageRateManagement } from './pages/compliance';
 import './styles/index.css';
 
 function App() {
@@ -609,6 +611,18 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <PayPeriodDetail />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Compliance routes */}
+          <Route
+            path="/compliance/wage-rates"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <WageRateManagement />
                 </Layout>
               </ProtectedRoute>
             }

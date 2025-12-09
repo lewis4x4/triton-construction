@@ -1,13 +1,14 @@
 /* ============================================================================
    ENHANCED IFTA REPORTING - ENTERPRISE STYLES
    International Fuel Tax Agreement Compliance Dashboard
+   Forest Green Theme with Warm Neutrals
    ============================================================================ */
 
 /* Base Layout */
 .enhanced-ifta-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  color: #e2e8f0;
+  background: var(--bg-page);
+  color: var(--text-primary);
   padding: 0;
 }
 
@@ -18,7 +19,7 @@
   justify-content: center;
   min-height: 60vh;
   gap: 16px;
-  color: #94a3b8;
+  color: var(--text-secondary);
 }
 
 .spinning {
@@ -31,98 +32,98 @@
 }
 
 /* Header */
-.page-header {
+.enhanced-ifta-page .page-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   padding: 24px 32px;
-  background: rgba(15, 23, 42, 0.8);
-  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
-  backdrop-filter: blur(10px);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-olive) 100%);
+  border-bottom: 1px solid var(--border-color);
 }
 
-.header-left {
+.enhanced-ifta-page .header-left {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.back-link {
+.enhanced-ifta-page .back-link {
   display: flex;
   align-items: center;
   gap: 4px;
-  color: #94a3b8;
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
   font-size: 14px;
   transition: color 0.2s;
 }
 
-.back-link:hover {
-  color: #60a5fa;
+.enhanced-ifta-page .back-link:hover {
+  color: var(--text-inverse);
 }
 
-.header-title {
+.enhanced-ifta-page .header-title {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.header-title h1 {
+.enhanced-ifta-page .header-title h1 {
   display: flex;
   align-items: center;
   gap: 12px;
   font-size: 28px;
   font-weight: 700;
   margin: 0;
-  color: #f1f5f9;
+  color: var(--text-inverse);
 }
 
-.header-title h1 svg {
-  color: #10b981;
+.enhanced-ifta-page .header-title h1 svg {
+  color: var(--text-inverse);
 }
 
-.header-title p {
+.enhanced-ifta-page .header-title p {
   margin: 0;
-  color: #94a3b8;
+  color: rgba(255, 255, 255, 0.8);
   font-size: 14px;
 }
 
-.header-actions {
+.enhanced-ifta-page .header-actions {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
 /* Buttons */
-.btn-primary {
+.enhanced-ifta-page .btn-primary {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 10px 20px;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: white;
+  background: var(--text-inverse);
+  color: var(--accent-primary);
   border: none;
   border-radius: 8px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  box-shadow: var(--shadow-md);
 }
 
-.btn-primary:hover {
-  background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+.enhanced-ifta-page .btn-primary:hover {
+  background: var(--bg-secondary);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+  box-shadow: var(--shadow-lg);
 }
 
-.btn-secondary {
+.enhanced-ifta-page .btn-secondary {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 10px 20px;
-  background: rgba(51, 65, 85, 0.5);
-  color: #e2e8f0;
-  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--text-inverse);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 8px;
   font-size: 14px;
   font-weight: 500;
@@ -130,32 +131,31 @@
   transition: all 0.2s;
 }
 
-.btn-secondary:hover {
-  background: rgba(51, 65, 85, 0.8);
-  border-color: rgba(148, 163, 184, 0.3);
+.enhanced-ifta-page .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
-.btn-icon {
+.enhanced-ifta-page .btn-icon {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 40px;
   height: 40px;
-  background: rgba(51, 65, 85, 0.5);
-  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 8px;
-  color: #94a3b8;
+  color: var(--text-inverse);
   cursor: pointer;
   transition: all 0.2s;
   position: relative;
 }
 
-.btn-icon:hover {
-  background: rgba(51, 65, 85, 0.8);
-  color: #e2e8f0;
+.enhanced-ifta-page .btn-icon:hover {
+  background: rgba(255, 255, 255, 0.25);
 }
 
-.btn-icon-sm {
+.enhanced-ifta-page .btn-icon-sm {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -164,38 +164,38 @@
   background: transparent;
   border: none;
   border-radius: 6px;
-  color: #94a3b8;
+  color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.btn-icon-sm:hover {
-  background: rgba(59, 130, 246, 0.2);
-  color: #60a5fa;
+.enhanced-ifta-page .btn-icon-sm:hover {
+  background: var(--accent-primary-light);
+  color: var(--accent-primary);
 }
 
-.btn-link {
+.enhanced-ifta-page .btn-link {
   background: none;
   border: none;
-  color: #60a5fa;
+  color: var(--accent-primary);
   font-size: 14px;
   cursor: pointer;
   padding: 0;
   transition: color 0.2s;
 }
 
-.btn-link:hover {
-  color: #93c5fd;
+.enhanced-ifta-page .btn-link:hover {
+  color: var(--accent-olive);
 }
 
-.notification-badge {
+.enhanced-ifta-page .notification-badge {
   position: absolute;
   top: -4px;
   right: -4px;
   min-width: 18px;
   height: 18px;
   padding: 0 5px;
-  background: #f59e0b;
+  background: var(--status-overdue-text);
   color: white;
   font-size: 11px;
   font-weight: 600;
@@ -206,19 +206,20 @@
 }
 
 /* KPI Section */
-.kpi-section {
+.enhanced-ifta-page .kpi-section {
   padding: 24px 32px;
+  background: var(--bg-page);
 }
 
-.kpi-grid {
+.enhanced-ifta-page .kpi-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 20px;
 }
 
-.kpi-card {
-  background: rgba(30, 41, 59, 0.6);
-  border: 1px solid rgba(148, 163, 184, 0.1);
+.enhanced-ifta-page .kpi-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
   padding: 20px;
   display: flex;
@@ -227,59 +228,62 @@
   position: relative;
   overflow: hidden;
   transition: all 0.3s;
+  box-shadow: var(--shadow-sm);
 }
 
-.kpi-card::before {
+.enhanced-ifta-page .kpi-card::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 3px;
-  background: var(--accent-color);
+  background: var(--accent-primary);
   opacity: 0.8;
 }
 
-.kpi-card:hover {
+.enhanced-ifta-page .kpi-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  border-color: var(--accent-color);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--accent-primary);
 }
 
-.kpi-icon {
+.enhanced-ifta-page .kpi-icon {
   width: 48px;
   height: 48px;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: var(--stat-green-bg);
+  color: var(--stat-green-icon);
 }
 
-.kpi-content {
+.enhanced-ifta-page .kpi-content {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.kpi-value {
+.enhanced-ifta-page .kpi-value {
   font-size: 28px;
   font-weight: 700;
-  color: #f1f5f9;
+  color: var(--text-primary);
   line-height: 1;
 }
 
-.kpi-label {
+.enhanced-ifta-page .kpi-label {
   font-size: 13px;
-  color: #94a3b8;
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
-.kpi-subtitle {
+.enhanced-ifta-page .kpi-subtitle {
   font-size: 12px;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
-.kpi-change {
+.enhanced-ifta-page .kpi-change {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -290,20 +294,20 @@
   right: 16px;
 }
 
-.kpi-change.positive {
-  color: #10b981;
+.enhanced-ifta-page .kpi-change.positive {
+  color: var(--stat-green-icon);
 }
 
-.kpi-change.negative {
-  color: #ef4444;
+.enhanced-ifta-page .kpi-change.negative {
+  color: var(--stat-rust-icon);
 }
 
-.kpi-change.neutral {
-  color: #94a3b8;
+.enhanced-ifta-page .kpi-change.neutral {
+  color: var(--text-secondary);
 }
 
 /* Alert Banner */
-.alert-banner {
+.enhanced-ifta-page .alert-banner {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -313,33 +317,34 @@
   font-size: 14px;
 }
 
-.alert-banner.warning {
-  background: rgba(245, 158, 11, 0.15);
-  border: 1px solid rgba(245, 158, 11, 0.3);
-  color: #fcd34d;
+.enhanced-ifta-page .alert-banner.warning {
+  background: var(--status-pending-bg);
+  border: 1px solid var(--status-pending-text);
+  color: var(--text-primary);
 }
 
-.alert-banner svg {
-  color: #f59e0b;
+.enhanced-ifta-page .alert-banner svg {
+  color: var(--status-pending-text);
 }
 
 /* Tabs */
-.tabs-nav {
+.enhanced-ifta-page .tabs-nav {
   display: flex;
   gap: 4px;
   padding: 0 32px;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  border-bottom: 1px solid var(--border-color);
   margin-bottom: 24px;
+  background: var(--bg-card);
 }
 
-.tab {
+.enhanced-ifta-page .tab {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 14px 20px;
   background: transparent;
   border: none;
-  color: #94a3b8;
+  color: var(--text-secondary);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -347,30 +352,30 @@
   transition: all 0.2s;
 }
 
-.tab:hover {
-  color: #e2e8f0;
-  background: rgba(51, 65, 85, 0.3);
+.enhanced-ifta-page .tab:hover {
+  color: var(--text-primary);
+  background: var(--bg-secondary);
 }
 
-.tab.active {
-  color: #10b981;
+.enhanced-ifta-page .tab.active {
+  color: var(--accent-primary);
 }
 
-.tab.active::after {
+.enhanced-ifta-page .tab.active::after {
   content: '';
   position: absolute;
   bottom: -1px;
   left: 0;
   right: 0;
   height: 2px;
-  background: #10b981;
+  background: var(--accent-primary);
 }
 
-.tab-badge {
+.enhanced-ifta-page .tab-badge {
   min-width: 20px;
   height: 20px;
   padding: 0 6px;
-  background: #f59e0b;
+  background: var(--status-overdue-text);
   color: white;
   font-size: 11px;
   font-weight: 600;
@@ -381,236 +386,239 @@
 }
 
 /* Main Content */
-.main-content {
+.enhanced-ifta-page .main-content {
   padding: 0 32px 32px;
 }
 
 /* Overview Grid */
-.overview-grid {
+.enhanced-ifta-page .overview-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
 }
 
 /* Cards */
-.card {
-  background: rgba(30, 41, 59, 0.6);
-  border: 1px solid rgba(148, 163, 184, 0.1);
+.enhanced-ifta-page .card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
-.card-header {
+.enhanced-ifta-page .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 16px 20px;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
 }
 
-.card-header h3 {
+.enhanced-ifta-page .card-header h3 {
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 15px;
   font-weight: 600;
   margin: 0;
-  color: #f1f5f9;
+  color: var(--text-primary);
 }
 
-.card-header h3 svg {
-  color: #10b981;
+.enhanced-ifta-page .card-header h3 svg {
+  color: var(--accent-primary);
 }
 
-.card-header select {
+.enhanced-ifta-page .card-header select {
   padding: 6px 12px;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 6px;
-  color: #e2e8f0;
+  color: var(--text-primary);
   font-size: 13px;
   cursor: pointer;
 }
 
-.card-content {
+.enhanced-ifta-page .card-content {
   padding: 20px;
 }
 
 /* Tax Summary */
-.tax-breakdown {
+.enhanced-ifta-page .tax-breakdown {
   display: flex;
   flex-direction: column;
   gap: 12px;
   margin-bottom: 20px;
 }
 
-.tax-row {
+.enhanced-ifta-page .tax-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
-  background: rgba(51, 65, 85, 0.3);
+  background: var(--bg-secondary);
   border-radius: 8px;
 }
 
-.tax-row.total {
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.2);
+.enhanced-ifta-page .tax-row.total {
+  background: var(--stat-green-bg);
+  border: 1px solid var(--accent-primary);
 }
 
-.tax-label {
+.enhanced-ifta-page .tax-label {
   font-size: 14px;
-  color: #94a3b8;
+  color: var(--text-secondary);
 }
 
-.tax-value {
+.enhanced-ifta-page .tax-value {
   font-size: 18px;
   font-weight: 700;
 }
 
-.tax-value.owed {
-  color: #fcd34d;
+.enhanced-ifta-page .tax-value.owed {
+  color: var(--stat-amber-icon);
 }
 
-.tax-value.credit {
-  color: #10b981;
+.enhanced-ifta-page .tax-value.credit {
+  color: var(--stat-green-icon);
 }
 
-.tax-row.total .tax-label,
-.tax-row.total .tax-value {
-  color: #f1f5f9;
+.enhanced-ifta-page .tax-row.total .tax-label,
+.enhanced-ifta-page .tax-row.total .tax-value {
+  color: var(--text-primary);
 }
 
-.tax-stats {
+.enhanced-ifta-page .tax-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
 }
 
-.stat-item {
+.enhanced-ifta-page .stat-item {
   text-align: center;
   padding: 12px;
-  background: rgba(51, 65, 85, 0.3);
+  background: var(--bg-secondary);
   border-radius: 8px;
 }
 
-.stat-value {
+.enhanced-ifta-page .stat-value {
   display: block;
   font-size: 20px;
   font-weight: 700;
-  color: #f1f5f9;
+  color: var(--text-primary);
 }
 
-.stat-label {
+.enhanced-ifta-page .stat-label {
   display: block;
   font-size: 12px;
-  color: #64748b;
+  color: var(--text-muted);
   margin-top: 4px;
 }
 
 /* Jurisdiction Bars */
-.jurisdiction-bars {
+.enhanced-ifta-page .jurisdiction-bars {
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
 
-.jurisdiction-bar-item {
+.enhanced-ifta-page .jurisdiction-bar-item {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.jurisdiction-bar-item .bar-header {
+.enhanced-ifta-page .jurisdiction-bar-item .bar-header {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.jurisdiction-code {
+.enhanced-ifta-page .jurisdiction-code {
   padding: 2px 8px;
-  background: rgba(59, 130, 246, 0.2);
-  color: #93c5fd;
+  background: var(--stat-navy-bg);
+  color: var(--stat-navy-icon);
   border-radius: 4px;
   font-size: 11px;
   font-weight: 600;
 }
 
-.jurisdiction-name {
+.enhanced-ifta-page .jurisdiction-name {
   flex: 1;
   font-size: 13px;
-  color: #e2e8f0;
+  color: var(--text-primary);
 }
 
-.jurisdiction-tax {
+.enhanced-ifta-page .jurisdiction-tax {
   font-size: 13px;
   font-weight: 600;
 }
 
-.jurisdiction-tax.owed {
-  color: #fcd34d;
+.enhanced-ifta-page .jurisdiction-tax.owed {
+  color: var(--stat-amber-icon);
 }
 
-.jurisdiction-tax.credit {
-  color: #10b981;
+.enhanced-ifta-page .jurisdiction-tax.credit {
+  color: var(--stat-green-icon);
 }
 
-.bar-track {
+.enhanced-ifta-page .bar-track {
   height: 6px;
-  background: rgba(51, 65, 85, 0.6);
+  background: var(--bg-secondary);
   border-radius: 3px;
   overflow: hidden;
 }
 
-.bar-fill {
+.enhanced-ifta-page .bar-fill {
   height: 100%;
   border-radius: 3px;
   transition: width 0.5s ease-out;
+  background: var(--accent-primary);
 }
 
-.bar-details {
+.enhanced-ifta-page .bar-details {
   display: flex;
   justify-content: space-between;
   font-size: 11px;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 /* Quarters List */
-.quarters-list {
+.enhanced-ifta-page .quarters-list {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.quarter-item {
+.enhanced-ifta-page .quarter-item {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 14px 16px;
-  background: rgba(51, 65, 85, 0.3);
+  background: var(--bg-secondary);
   border-radius: 10px;
   cursor: pointer;
   transition: background 0.2s;
 }
 
-.quarter-item:hover {
-  background: rgba(51, 65, 85, 0.5);
+.enhanced-ifta-page .quarter-item:hover {
+  background: var(--accent-primary-light);
 }
 
-.quarter-info {
+.enhanced-ifta-page .quarter-info {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.quarter-name {
+.enhanced-ifta-page .quarter-name {
   font-size: 15px;
   font-weight: 600;
-  color: #f1f5f9;
+  color: var(--text-primary);
 }
 
-.quarter-status {
+.enhanced-ifta-page .quarter-status {
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -621,133 +629,134 @@
   width: fit-content;
 }
 
-.quarter-details {
+.enhanced-ifta-page .quarter-details {
   text-align: right;
   display: flex;
   flex-direction: column;
   gap: 2px;
   font-size: 13px;
-  color: #94a3b8;
+  color: var(--text-secondary);
 }
 
-.chevron {
-  color: #64748b;
+.enhanced-ifta-page .chevron {
+  color: var(--text-muted);
   transition: transform 0.2s;
 }
 
-.quarter-item:hover .chevron {
+.enhanced-ifta-page .quarter-item:hover .chevron {
   transform: translateX(4px);
-  color: #10b981;
+  color: var(--accent-primary);
 }
 
 /* Fleet Efficiency */
-.efficiency-donut {
+.enhanced-ifta-page .efficiency-donut {
   display: flex;
   justify-content: center;
   padding: 10px 0;
 }
 
-.donut-chart {
+.enhanced-ifta-page .donut-chart {
   width: 160px;
   height: 160px;
 }
 
-.donut-value {
+.enhanced-ifta-page .donut-value {
   font-size: 24px;
   font-weight: 700;
-  fill: #f1f5f9;
+  fill: var(--text-primary);
 }
 
-.donut-label {
+.enhanced-ifta-page .donut-label {
   font-size: 10px;
-  fill: #94a3b8;
+  fill: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.efficiency-stats {
+.enhanced-ifta-page .efficiency-stats {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-top: 16px;
 }
 
-.efficiency-item {
+.enhanced-ifta-page .efficiency-item {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 10px 14px;
-  background: rgba(51, 65, 85, 0.3);
+  background: var(--bg-secondary);
   border-radius: 8px;
 }
 
-.efficiency-item svg {
-  color: #64748b;
+.enhanced-ifta-page .efficiency-item svg {
+  color: var(--text-muted);
 }
 
-.efficiency-item.best svg {
-  color: #10b981;
+.enhanced-ifta-page .efficiency-item.best svg {
+  color: var(--stat-green-icon);
 }
 
-.efficiency-item.worst svg {
-  color: #ef4444;
+.enhanced-ifta-page .efficiency-item.worst svg {
+  color: var(--stat-rust-icon);
 }
 
-.efficiency-label {
+.enhanced-ifta-page .efficiency-label {
   flex: 1;
   font-size: 13px;
-  color: #94a3b8;
+  color: var(--text-secondary);
 }
 
-.efficiency-value {
+.enhanced-ifta-page .efficiency-value {
   font-size: 13px;
   font-weight: 500;
-  color: #e2e8f0;
+  color: var(--text-primary);
 }
 
 /* Quarters Section */
-.quarters-section {
+.enhanced-ifta-page .quarters-section {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.quarters-grid {
+.enhanced-ifta-page .quarters-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 20px;
 }
 
-.quarter-card {
-  background: rgba(30, 41, 59, 0.6);
-  border: 1px solid rgba(148, 163, 184, 0.1);
+.enhanced-ifta-page .quarter-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 14px;
   padding: 20px;
   cursor: pointer;
   transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
 }
 
-.quarter-card:hover {
-  border-color: rgba(16, 185, 129, 0.3);
+.enhanced-ifta-page .quarter-card:hover {
+  border-color: var(--accent-primary);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-lg);
 }
 
-.quarter-header {
+.enhanced-ifta-page .quarter-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
 }
 
-.quarter-header h3 {
+.enhanced-ifta-page .quarter-header h3 {
   font-size: 20px;
   font-weight: 700;
   margin: 0;
-  color: #f1f5f9;
+  color: var(--text-primary);
 }
 
-.status-badge {
+.enhanced-ifta-page .status-badge {
   display: flex;
   align-items: center;
   gap: 5px;
@@ -757,493 +766,517 @@
   font-weight: 600;
 }
 
-.quarter-metrics {
+.enhanced-ifta-page .status-badge.active {
+  background: var(--status-active-bg);
+  color: var(--status-active-text);
+}
+
+.enhanced-ifta-page .status-badge.pending {
+  background: var(--status-pending-bg);
+  color: var(--status-pending-text);
+}
+
+.enhanced-ifta-page .status-badge.completed {
+  background: var(--status-active-bg);
+  color: var(--status-active-text);
+}
+
+.enhanced-ifta-page .status-badge.overdue {
+  background: var(--status-overdue-bg);
+  color: var(--status-overdue-text);
+}
+
+.enhanced-ifta-page .quarter-metrics {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
   margin-bottom: 16px;
 }
 
-.metric {
+.enhanced-ifta-page .metric {
   text-align: center;
   padding: 12px;
-  background: rgba(51, 65, 85, 0.3);
+  background: var(--bg-secondary);
   border-radius: 8px;
 }
 
-.metric.highlight {
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.2);
+.enhanced-ifta-page .metric.highlight {
+  background: var(--stat-green-bg);
+  border: 1px solid var(--accent-primary);
 }
 
-.metric-value {
+.enhanced-ifta-page .metric-value {
   display: block;
   font-size: 18px;
   font-weight: 700;
-  color: #f1f5f9;
+  color: var(--text-primary);
 }
 
-.metric.highlight .metric-value {
-  color: #10b981;
+.enhanced-ifta-page .metric.highlight .metric-value {
+  color: var(--accent-primary);
 }
 
-.metric-label {
+.enhanced-ifta-page .metric-label {
   display: block;
   font-size: 11px;
-  color: #64748b;
+  color: var(--text-muted);
   margin-top: 4px;
 }
 
-.quarter-footer {
+.enhanced-ifta-page .quarter-footer {
   display: flex;
   justify-content: space-between;
   padding-top: 12px;
-  border-top: 1px solid rgba(148, 163, 184, 0.1);
+  border-top: 1px solid var(--border-color);
 }
 
-.footer-item {
+.enhanced-ifta-page .footer-item {
   display: flex;
   align-items: center;
   gap: 5px;
   font-size: 12px;
-  color: #94a3b8;
+  color: var(--text-secondary);
 }
 
-.footer-item svg {
-  color: #64748b;
+.enhanced-ifta-page .footer-item svg {
+  color: var(--text-muted);
 }
 
 /* Jurisdictions Section */
-.jurisdictions-section {
+.enhanced-ifta-page .jurisdictions-section {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.filters-bar {
+.enhanced-ifta-page .filters-bar {
   display: flex;
   align-items: center;
   gap: 16px;
   padding: 16px 20px;
-  background: rgba(30, 41, 59, 0.6);
-  border: 1px solid rgba(148, 163, 184, 0.1);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
+  box-shadow: var(--shadow-sm);
 }
 
-.search-box {
+.enhanced-ifta-page .search-box {
   flex: 1;
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 10px 14px;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
 }
 
-.search-box svg {
-  color: #64748b;
+.enhanced-ifta-page .search-box svg {
+  color: var(--text-muted);
 }
 
-.search-box input {
+.enhanced-ifta-page .search-box input {
   flex: 1;
   background: transparent;
   border: none;
-  color: #e2e8f0;
+  color: var(--text-primary);
   font-size: 14px;
   outline: none;
 }
 
-.search-box input::placeholder {
-  color: #64748b;
+.enhanced-ifta-page .search-box input::placeholder {
+  color: var(--text-muted);
 }
 
-.filter-group {
+.enhanced-ifta-page .filter-group {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 0 12px;
   height: 40px;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
 }
 
-.filter-group svg {
-  color: #64748b;
+.enhanced-ifta-page .filter-group svg {
+  color: var(--text-muted);
 }
 
-.filter-group select {
+.enhanced-ifta-page .filter-group select {
   background: transparent;
   border: none;
-  color: #e2e8f0;
+  color: var(--text-primary);
   font-size: 14px;
   cursor: pointer;
   outline: none;
 }
 
-.filter-group select option {
-  background: #1e293b;
-  color: #e2e8f0;
+.enhanced-ifta-page .filter-group select option {
+  background: var(--bg-card);
+  color: var(--text-primary);
 }
 
-.results-count {
+.enhanced-ifta-page .results-count {
   font-size: 13px;
-  color: #94a3b8;
+  color: var(--text-secondary);
   padding-left: 16px;
-  border-left: 1px solid rgba(148, 163, 184, 0.2);
+  border-left: 1px solid var(--border-color);
 }
 
 /* Tables */
-.jurisdictions-table,
-.receipts-table,
-.audit-table {
-  background: rgba(30, 41, 59, 0.6);
-  border: 1px solid rgba(148, 163, 184, 0.1);
+.enhanced-ifta-page .jurisdictions-table,
+.enhanced-ifta-page .receipts-table,
+.enhanced-ifta-page .audit-table {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
-.table-header {
+.enhanced-ifta-page .table-header {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   gap: 12px;
   padding: 14px 20px;
-  background: rgba(15, 23, 42, 0.5);
-  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
   font-size: 12px;
   font-weight: 600;
-  color: #94a3b8;
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.table-row {
+.enhanced-ifta-page .table-row {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   gap: 12px;
   padding: 14px 20px;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.05);
+  border-bottom: 1px solid var(--border-color);
   align-items: center;
   font-size: 13px;
-  color: #e2e8f0;
+  color: var(--text-primary);
   transition: background 0.2s;
 }
 
-.table-row:hover {
-  background: rgba(51, 65, 85, 0.3);
+.enhanced-ifta-page .table-row:hover {
+  background: var(--bg-secondary);
 }
 
-.table-footer {
+.enhanced-ifta-page .table-footer {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   gap: 12px;
   padding: 14px 20px;
-  background: rgba(15, 23, 42, 0.5);
+  background: var(--bg-secondary);
   font-size: 13px;
   font-weight: 600;
-  color: #f1f5f9;
+  color: var(--text-primary);
 }
 
-.jurisdiction-col {
+.enhanced-ifta-page .jurisdiction-col {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.code-badge {
+.enhanced-ifta-page .code-badge {
   padding: 3px 8px;
-  background: rgba(59, 130, 246, 0.2);
-  color: #93c5fd;
+  background: var(--stat-navy-bg);
+  color: var(--stat-navy-icon);
   border-radius: 4px;
   font-size: 11px;
   font-weight: 600;
 }
 
-.positive {
-  color: #10b981;
+.enhanced-ifta-page .positive {
+  color: var(--stat-green-icon);
 }
 
-.negative {
-  color: #ef4444;
+.enhanced-ifta-page .negative {
+  color: var(--stat-rust-icon);
 }
 
-.tax-due.owed {
-  color: #fcd34d;
+.enhanced-ifta-page .tax-due.owed {
+  color: var(--stat-amber-icon);
   font-weight: 600;
 }
 
-.tax-due.credit {
-  color: #10b981;
+.enhanced-ifta-page .tax-due.credit {
+  color: var(--stat-green-icon);
   font-weight: 600;
 }
 
 /* Vehicles Section */
-.vehicles-section {
+.enhanced-ifta-page .vehicles-section {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.vehicles-grid {
+.enhanced-ifta-page .vehicles-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 16px;
 }
 
-.vehicle-card {
-  background: rgba(30, 41, 59, 0.6);
-  border: 1px solid rgba(148, 163, 184, 0.1);
+.enhanced-ifta-page .vehicle-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 16px;
   transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
 }
 
-.vehicle-card:hover {
-  border-color: rgba(16, 185, 129, 0.3);
+.enhanced-ifta-page .vehicle-card:hover {
+  border-color: var(--accent-primary);
 }
 
-.vehicle-header {
+.enhanced-ifta-page .vehicle-header {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 12px;
 }
 
-.vehicle-header svg {
-  color: #64748b;
+.enhanced-ifta-page .vehicle-header svg {
+  color: var(--text-muted);
 }
 
-.vehicle-info {
+.enhanced-ifta-page .vehicle-info {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.vehicle-number {
+.enhanced-ifta-page .vehicle-number {
   font-size: 15px;
   font-weight: 600;
-  color: #f1f5f9;
+  color: var(--text-primary);
 }
 
-.vehicle-unit {
+.enhanced-ifta-page .vehicle-unit {
   font-size: 12px;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
-.mpg-badge {
+.enhanced-ifta-page .mpg-badge {
   padding: 4px 10px;
   border-radius: 6px;
   font-size: 12px;
   font-weight: 600;
 }
 
-.mpg-badge.good {
-  background: rgba(16, 185, 129, 0.2);
-  color: #6ee7b7;
+.enhanced-ifta-page .mpg-badge.good {
+  background: var(--status-active-bg);
+  color: var(--status-active-text);
 }
 
-.mpg-badge.average {
-  background: rgba(245, 158, 11, 0.2);
-  color: #fcd34d;
+.enhanced-ifta-page .mpg-badge.average {
+  background: var(--status-pending-bg);
+  color: var(--status-pending-text);
 }
 
-.mpg-badge.poor {
-  background: rgba(239, 68, 68, 0.2);
-  color: #fca5a5;
+.enhanced-ifta-page .mpg-badge.poor {
+  background: var(--status-overdue-bg);
+  color: var(--status-overdue-text);
 }
 
-.vehicle-stats {
+.enhanced-ifta-page .vehicle-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
   margin-bottom: 12px;
 }
 
-.vehicle-stats .stat {
+.enhanced-ifta-page .vehicle-stats .stat {
   text-align: center;
   padding: 8px;
-  background: rgba(51, 65, 85, 0.3);
+  background: var(--bg-secondary);
   border-radius: 6px;
 }
 
-.vehicle-stats .stat-value {
+.enhanced-ifta-page .vehicle-stats .stat-value {
   font-size: 14px;
 }
 
-.vehicle-stats .stat-label {
+.enhanced-ifta-page .vehicle-stats .stat-label {
   font-size: 10px;
 }
 
-.vehicle-jurisdictions {
+.enhanced-ifta-page .vehicle-jurisdictions {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
 }
 
-.jurisdiction-tag {
+.enhanced-ifta-page .jurisdiction-tag {
   padding: 3px 8px;
-  background: rgba(59, 130, 246, 0.2);
-  color: #93c5fd;
+  background: var(--stat-navy-bg);
+  color: var(--stat-navy-icon);
   border-radius: 4px;
   font-size: 10px;
   font-weight: 600;
 }
 
 /* Receipts Section */
-.receipts-section {
+.enhanced-ifta-page .receipts-section {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.receipts-table .table-header {
+.enhanced-ifta-page .receipts-table .table-header {
   grid-template-columns: 100px 100px 120px 1.5fr 80px 80px 100px 100px 80px;
 }
 
-.receipts-table .table-row {
+.enhanced-ifta-page .receipts-table .table-row {
   grid-template-columns: 100px 100px 120px 1.5fr 80px 80px 100px 100px 80px;
 }
 
-.receipts-table .table-row.unverified {
-  background: rgba(245, 158, 11, 0.05);
+.enhanced-ifta-page .receipts-table .table-row.unverified {
+  background: var(--status-pending-bg);
 }
 
-.vehicle-col {
+.enhanced-ifta-page .vehicle-col {
   font-weight: 500;
-  color: #60a5fa;
+  color: var(--accent-primary);
 }
 
-.location-col {
+.enhanced-ifta-page .location-col {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #94a3b8;
+  color: var(--text-secondary);
 }
 
-.location-col svg {
-  color: #64748b;
+.enhanced-ifta-page .location-col svg {
+  color: var(--text-muted);
 }
 
-.amount-col {
+.enhanced-ifta-page .amount-col {
   font-weight: 600;
-  color: #f1f5f9;
+  color: var(--text-primary);
 }
 
-.verified-badge {
+.enhanced-ifta-page .verified-badge {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   padding: 3px 8px;
-  background: rgba(16, 185, 129, 0.2);
-  color: #6ee7b7;
+  background: var(--status-active-bg);
+  color: var(--status-active-text);
   border-radius: 4px;
   font-size: 11px;
   font-weight: 500;
 }
 
-.unverified-badge {
+.enhanced-ifta-page .unverified-badge {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   padding: 3px 8px;
-  background: rgba(245, 158, 11, 0.2);
-  color: #fcd34d;
+  background: var(--status-pending-bg);
+  color: var(--status-pending-text);
   border-radius: 4px;
   font-size: 11px;
   font-weight: 500;
 }
 
-.actions-col {
+.enhanced-ifta-page .actions-col {
   display: flex;
   gap: 6px;
 }
 
 /* Audit Section */
-.audit-section {
+.enhanced-ifta-page .audit-section {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.audit-filters {
+.enhanced-ifta-page .audit-filters {
   display: flex;
   gap: 16px;
 }
 
-.audit-filters .search-box {
+.enhanced-ifta-page .audit-filters .search-box {
   flex: 1;
   max-width: 400px;
 }
 
-.audit-filters select {
+.enhanced-ifta-page .audit-filters select {
   padding: 10px 14px;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  color: #e2e8f0;
+  color: var(--text-primary);
   font-size: 14px;
   cursor: pointer;
 }
 
-.audit-filters select option {
-  background: #1e293b;
+.enhanced-ifta-page .audit-filters select option {
+  background: var(--bg-card);
 }
 
-.audit-table .table-header {
+.enhanced-ifta-page .audit-table .table-header {
   grid-template-columns: 160px 150px 100px 1fr 120px;
 }
 
-.audit-table .table-row {
+.enhanced-ifta-page .audit-table .table-row {
   grid-template-columns: 160px 150px 100px 1fr 120px;
 }
 
-.timestamp {
+.enhanced-ifta-page .timestamp {
   font-family: 'SF Mono', Monaco, monospace;
   font-size: 12px;
-  color: #94a3b8;
+  color: var(--text-secondary);
 }
 
-.action-badge {
+.enhanced-ifta-page .action-badge {
   display: inline-flex;
   padding: 4px 10px;
-  background: rgba(16, 185, 129, 0.2);
-  color: #6ee7b7;
+  background: var(--stat-green-bg);
+  color: var(--stat-green-icon);
   border-radius: 6px;
   font-size: 12px;
   font-weight: 500;
 }
 
-.details {
-  color: #94a3b8;
+.enhanced-ifta-page .details {
+  color: var(--text-secondary);
 }
 
-.user {
-  color: #64748b;
+.enhanced-ifta-page .user {
+  color: var(--text-muted);
 }
 
 /* Detail Panel */
-.detail-panel-overlay {
+.enhanced-ifta-page .detail-panel-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: flex-end;
   z-index: 100;
   backdrop-filter: blur(4px);
 }
 
-.detail-panel {
+.enhanced-ifta-page .detail-panel {
   width: 560px;
   max-width: 100%;
   height: 100%;
-  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-  border-left: 1px solid rgba(148, 163, 184, 0.1);
+  background: var(--bg-card);
+  border-left: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   animation: slideIn 0.3s ease-out;
+  box-shadow: var(--shadow-xl);
 }
 
 @keyframes slideIn {
@@ -1257,43 +1290,43 @@
   }
 }
 
-.panel-header {
+.enhanced-ifta-page .panel-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   padding: 24px;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-olive) 100%);
 }
 
-.panel-title {
+.enhanced-ifta-page .panel-title {
   display: flex;
   align-items: center;
   gap: 16px;
 }
 
-.panel-title svg {
-  color: #10b981;
+.enhanced-ifta-page .panel-title svg {
+  color: var(--text-inverse);
 }
 
-.panel-title h2 {
+.enhanced-ifta-page .panel-title h2 {
   font-size: 20px;
   font-weight: 700;
   margin: 0;
-  color: #f1f5f9;
+  color: var(--text-inverse);
 }
 
-.panel-subtitle {
+.enhanced-ifta-page .panel-subtitle {
   font-size: 13px;
-  color: #64748b;
+  color: rgba(255, 255, 255, 0.8);
 }
 
-.close-btn {
+.enhanced-ifta-page .close-btn {
   width: 36px;
   height: 36px;
-  background: rgba(51, 65, 85, 0.5);
+  background: rgba(255, 255, 255, 0.15);
   border: none;
   border-radius: 8px;
-  color: #94a3b8;
+  color: var(--text-inverse);
   font-size: 24px;
   cursor: pointer;
   display: flex;
@@ -1302,20 +1335,20 @@
   transition: all 0.2s;
 }
 
-.close-btn:hover {
-  background: rgba(239, 68, 68, 0.2);
-  color: #fca5a5;
+.enhanced-ifta-page .close-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
 }
 
-.panel-status-bar {
+.enhanced-ifta-page .panel-status-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 16px 24px;
-  background: rgba(15, 23, 42, 0.5);
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
 }
 
-.status-indicator {
+.enhanced-ifta-page .status-indicator {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1326,15 +1359,23 @@
   font-weight: 600;
 }
 
-.filing-deadline {
+.enhanced-ifta-page .status-indicator.active {
+  background: var(--status-active-text);
+}
+
+.enhanced-ifta-page .status-indicator.pending {
+  background: var(--status-pending-text);
+}
+
+.enhanced-ifta-page .filing-deadline {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  color: #94a3b8;
+  color: var(--text-secondary);
 }
 
-.panel-content {
+.enhanced-ifta-page .panel-content {
   flex: 1;
   overflow-y: auto;
   padding: 24px;
@@ -1343,171 +1384,171 @@
   gap: 24px;
 }
 
-.panel-section {
+.enhanced-ifta-page .panel-section {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.panel-section h3 {
+.enhanced-ifta-page .panel-section h3 {
   font-size: 14px;
   font-weight: 600;
-  color: #94a3b8;
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin: 0;
   padding-bottom: 8px;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  border-bottom: 1px solid var(--border-color);
 }
 
-.summary-grid {
+.enhanced-ifta-page .summary-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
 
-.summary-item {
+.enhanced-ifta-page .summary-item {
   padding: 14px;
-  background: rgba(51, 65, 85, 0.3);
+  background: var(--bg-secondary);
   border-radius: 10px;
 }
 
-.summary-item.highlight {
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.2);
+.enhanced-ifta-page .summary-item.highlight {
+  background: var(--stat-green-bg);
+  border: 1px solid var(--accent-primary);
 }
 
-.summary-label {
+.enhanced-ifta-page .summary-label {
   display: block;
   font-size: 12px;
-  color: #64748b;
+  color: var(--text-muted);
   margin-bottom: 4px;
 }
 
-.summary-value {
+.enhanced-ifta-page .summary-value {
   display: block;
   font-size: 20px;
   font-weight: 700;
-  color: #f1f5f9;
+  color: var(--text-primary);
 }
 
-.summary-item.highlight .summary-value {
-  color: #10b981;
+.enhanced-ifta-page .summary-item.highlight .summary-value {
+  color: var(--accent-primary);
 }
 
-.info-grid {
+.enhanced-ifta-page .info-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
 
-.info-item {
+.enhanced-ifta-page .info-item {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.info-label {
+.enhanced-ifta-page .info-label {
   font-size: 12px;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
-.info-value {
+.enhanced-ifta-page .info-value {
   font-size: 14px;
-  color: #e2e8f0;
+  color: var(--text-primary);
   font-weight: 500;
 }
 
 /* Checklist */
-.checklist {
+.enhanced-ifta-page .checklist {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.checklist-item {
+.enhanced-ifta-page .checklist-item {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 10px 14px;
-  background: rgba(51, 65, 85, 0.3);
+  background: var(--bg-secondary);
   border-radius: 8px;
   font-size: 13px;
 }
 
-.checklist-item.complete {
-  color: #6ee7b7;
+.enhanced-ifta-page .checklist-item.complete {
+  color: var(--stat-green-icon);
 }
 
-.checklist-item.complete svg {
-  color: #10b981;
+.enhanced-ifta-page .checklist-item.complete svg {
+  color: var(--stat-green-icon);
 }
 
-.checklist-item.incomplete {
-  color: #fcd34d;
+.enhanced-ifta-page .checklist-item.incomplete {
+  color: var(--stat-amber-icon);
 }
 
-.checklist-item.incomplete svg {
-  color: #f59e0b;
+.enhanced-ifta-page .checklist-item.incomplete svg {
+  color: var(--stat-amber-icon);
 }
 
-.panel-footer {
+.enhanced-ifta-page .panel-footer {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
   padding: 16px 24px;
-  border-top: 1px solid rgba(148, 163, 184, 0.1);
-  background: rgba(15, 23, 42, 0.8);
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-secondary);
 }
 
 /* Responsive */
 @media (max-width: 1400px) {
-  .kpi-grid {
+  .enhanced-ifta-page .kpi-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (max-width: 1200px) {
-  .overview-grid {
+  .enhanced-ifta-page .overview-grid {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 768px) {
-  .page-header {
+  .enhanced-ifta-page .page-header {
     flex-direction: column;
     gap: 16px;
     padding: 16px;
   }
 
-  .header-actions {
+  .enhanced-ifta-page .header-actions {
     width: 100%;
     flex-wrap: wrap;
   }
 
-  .kpi-section {
+  .enhanced-ifta-page .kpi-section {
     padding: 16px;
   }
 
-  .kpi-grid {
+  .enhanced-ifta-page .kpi-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .tabs-nav {
+  .enhanced-ifta-page .tabs-nav {
     padding: 0 16px;
     overflow-x: auto;
   }
 
-  .main-content {
+  .enhanced-ifta-page .main-content {
     padding: 0 16px 16px;
   }
 
-  .quarters-grid,
-  .vehicles-grid {
+  .enhanced-ifta-page .quarters-grid,
+  .enhanced-ifta-page .vehicles-grid {
     grid-template-columns: 1fr;
   }
 
-  .detail-panel {
+  .enhanced-ifta-page .detail-panel {
     width: 100%;
   }
 }

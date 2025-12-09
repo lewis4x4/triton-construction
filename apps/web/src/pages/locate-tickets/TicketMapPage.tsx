@@ -28,8 +28,8 @@ export function TicketMapPage() {
 
     try {
       let query = supabase
-        .from('wv811_tickets')
-        .select('id, ticket_number, dig_site_address, dig_site_city, status, legal_dig_date, ticket_expires_at, dig_site_location, risk_score, has_gas_utility, has_electric_utility')
+        .from('v_wv811_tickets_with_coords')
+        .select('id, ticket_number, dig_site_address, dig_site_city, status, legal_dig_date, ticket_expires_at, latitude, longitude, risk_score, has_gas_utility, has_electric_utility')
         .not('status', 'in', '("EXPIRED","CANCELLED")');
 
       if (filter !== 'ALL' && filter !== 'HIGH_RISK') {
@@ -43,35 +43,17 @@ export function TicketMapPage() {
       if (fetchError) throw fetchError;
 
       // Transform data to MapTicket format
-      // dig_site_location is a PostGIS POINT - extract coords if present
       const mapTickets: MapTicket[] = (data || []).map((t) => {
-        let latitude: number | null = null;
-        let longitude: number | null = null;
-
-        // PostGIS returns geometry as GeoJSON or WKT - try to parse
-        if (t.dig_site_location) {
-          try {
-            // If it's a GeoJSON point: { type: "Point", coordinates: [lng, lat] }
-            const location = t.dig_site_location as any;
-            if (typeof location === 'object' && location.coordinates) {
-              longitude = location.coordinates[0];
-              latitude = location.coordinates[1];
-            }
-          } catch {
-            // Ignore parsing errors
-          }
-        }
-
         return {
-          id: t.id,
-          ticket_number: t.ticket_number,
-          dig_site_address: t.dig_site_address,
-          dig_site_city: t.dig_site_city,
-          status: t.status as TicketStatus,
-          legal_dig_date: t.legal_dig_date,
-          ticket_expires_at: t.ticket_expires_at,
-          latitude,
-          longitude,
+          id: t.id || '',
+          ticket_number: t.ticket_number || '',
+          dig_site_address: t.dig_site_address || '',
+          dig_site_city: t.dig_site_city || null,
+          status: (t.status || 'RECEIVED') as TicketStatus,
+          legal_dig_date: t.legal_dig_date || '',
+          ticket_expires_at: t.ticket_expires_at || '',
+          latitude: t.latitude,
+          longitude: t.longitude,
           risk_score: t.risk_score || 0,
           has_gas_utility: t.has_gas_utility || false,
           has_electric_utility: t.has_electric_utility || false,

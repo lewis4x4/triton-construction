@@ -1,37 +1,45 @@
+/* ============================================
+   DQF Management - Unified Forest Green Theme
+   ============================================ */
+
 .dqf-management-page {
   padding: 24px;
-  background: #f8fafc;
+  background: var(--bg-page);
   min-height: 100vh;
 }
 
-.page-header {
+.dqf-management-page .page-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 24px;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-olive) 100%);
+  padding: 1.5rem 2rem;
+  border-radius: 1rem;
+  color: var(--text-inverse);
 }
 
-.header-content h1 {
+.dqf-management-page .header-content h1 {
   display: flex;
   align-items: center;
   gap: 12px;
   font-size: 28px;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--text-inverse);
   margin: 0 0 8px 0;
 }
 
-.header-content p {
-  color: #64748b;
+.dqf-management-page .header-content p {
+  color: rgba(255, 255, 255, 0.8);
   margin: 0;
 }
 
-.header-actions {
+.dqf-management-page .header-actions {
   display: flex;
   gap: 12px;
 }
 
-.btn {
+.dqf-management-page .btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -43,72 +51,74 @@
   border: none;
 }
 
-.btn-primary {
-  background: #3b82f6;
-  color: white;
+.dqf-management-page .btn-primary {
+  background: var(--text-inverse);
+  color: var(--accent-primary);
 }
 
-.btn-primary:hover {
-  background: #2563eb;
+.dqf-management-page .btn-primary:hover {
+  background: var(--bg-page);
+  transform: translateY(-1px);
 }
 
-.btn-secondary {
-  background: white;
-  color: #374151;
-  border: 1px solid #e5e7eb;
+.dqf-management-page .btn-secondary {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--text-inverse);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.btn-secondary:hover {
-  background: #f9fafb;
+.dqf-management-page .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.25);
 }
 
-.btn-icon {
+.dqf-management-page .btn-icon {
   width: 32px;
   height: 32px;
   border-radius: 6px;
   border: none;
-  background: #f1f5f9;
-  color: #64748b;
+  background: var(--bg-secondary);
+  color: var(--text-muted);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.btn-icon:hover {
-  background: #e2e8f0;
-  color: #3b82f6;
+.dqf-management-page .btn-icon:hover {
+  background: var(--border-color);
+  color: var(--accent-primary);
 }
 
 /* Stats Grid */
-.stats-grid {
+.dqf-management-page .stats-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 16px;
   margin-bottom: 24px;
 }
 
-.stat-card {
-  background: white;
+.dqf-management-page .stat-card {
+  background: var(--bg-card);
   border-radius: 12px;
   padding: 20px;
   display: flex;
   align-items: center;
   gap: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
 }
 
-.stat-card.alert {
-  border-left: 4px solid #ef4444;
-  background: #fef2f2;
+.dqf-management-page .stat-card.alert {
+  border-left: 4px solid var(--stat-rust-icon);
+  background: var(--stat-rust-bg);
 }
 
-.stat-card.warning {
-  border-left: 4px solid #f59e0b;
-  background: #fffbeb;
+.dqf-management-page .stat-card.warning {
+  border-left: 4px solid var(--stat-amber-icon);
+  background: var(--stat-amber-bg);
 }
 
-.stat-icon {
+.dqf-management-page .stat-icon {
   width: 48px;
   height: 48px;
   border-radius: 12px;
@@ -117,149 +127,170 @@
   justify-content: center;
 }
 
-.stat-icon.total { background: #e0f2fe; color: #0284c7; }
-.stat-icon.compliant { background: #dcfce7; color: #16a34a; }
-.stat-icon.expiring { background: #fef3c7; color: #d97706; }
-.stat-icon.non-compliant { background: #fee2e2; color: #dc2626; }
-.stat-icon.mvr { background: #dbeafe; color: #2563eb; }
+.dqf-management-page .stat-icon.total {
+  background: var(--stat-teal-bg);
+  color: var(--stat-teal-icon);
+}
 
-.stat-content {
+.dqf-management-page .stat-icon.compliant {
+  background: var(--stat-green-bg);
+  color: var(--stat-green-icon);
+}
+
+.dqf-management-page .stat-icon.expiring {
+  background: var(--stat-amber-bg);
+  color: var(--stat-amber-icon);
+}
+
+.dqf-management-page .stat-icon.non-compliant {
+  background: var(--stat-rust-bg);
+  color: var(--stat-rust-icon);
+}
+
+.dqf-management-page .stat-icon.mvr {
+  background: var(--stat-navy-bg);
+  color: var(--stat-navy-icon);
+}
+
+.dqf-management-page .stat-content {
   display: flex;
   flex-direction: column;
 }
 
-.stat-value {
+.dqf-management-page .stat-value {
   font-size: 24px;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
-.stat-label {
+.dqf-management-page .stat-label {
   font-size: 13px;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 /* Filters */
-.filters-bar {
+.dqf-management-page .filters-bar {
   display: flex;
   gap: 16px;
   margin-bottom: 24px;
   flex-wrap: wrap;
 }
 
-.search-box {
+.dqf-management-page .search-box {
   flex: 1;
   min-width: 300px;
   display: flex;
   align-items: center;
   gap: 12px;
-  background: white;
-  border: 1px solid #e5e7eb;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 0 16px;
 }
 
-.search-box input {
+.dqf-management-page .search-box input {
   flex: 1;
   border: none;
   padding: 12px 0;
   font-size: 14px;
   outline: none;
+  background: transparent;
+  color: var(--text-primary);
 }
 
-.search-box svg {
-  color: #9ca3af;
+.dqf-management-page .search-box svg {
+  color: var(--text-muted);
 }
 
-.filter-group {
+.dqf-management-page .filter-group {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: white;
+  background: var(--bg-card);
   padding: 8px 16px;
   border-radius: 8px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
 }
 
-.filter-group svg {
-  color: #6b7280;
+.dqf-management-page .filter-group svg {
+  color: var(--text-muted);
 }
 
-.filter-group select {
+.dqf-management-page .filter-group select {
   border: none;
   background: transparent;
   font-size: 14px;
-  color: #374151;
+  color: var(--text-primary);
   cursor: pointer;
   outline: none;
   padding: 4px 8px;
 }
 
 /* DQF List */
-.dqf-list {
+.dqf-management-page .dqf-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.dqf-card {
-  background: white;
+.dqf-management-page .dqf-card {
+  background: var(--bg-card);
   border-radius: 12px;
   padding: 16px 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
   transition: all 0.2s;
   border: 2px solid transparent;
 }
 
-.dqf-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.dqf-management-page .dqf-card:hover {
+  box-shadow: var(--shadow-md);
 }
 
-.dqf-card.selected {
-  border-color: #3b82f6;
+.dqf-management-page .dqf-card.selected {
+  border-color: var(--accent-primary);
 }
 
-.dqf-header {
+.dqf-management-page .dqf-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
 }
 
-.dqf-identity {
+.dqf-management-page .dqf-identity {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.driver-avatar {
+.dqf-management-page .driver-avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #e0f2fe;
-  color: #0284c7;
+  background: var(--accent-subtle);
+  color: var(--accent-primary);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.driver-info {
+.dqf-management-page .driver-info {
   display: flex;
   flex-direction: column;
 }
 
-.driver-name {
+.dqf-management-page .driver-name {
   font-weight: 600;
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
-.employee-number {
+.dqf-management-page .employee-number {
   font-size: 12px;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
-.status-badge {
+.dqf-management-page .status-badge {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -270,69 +301,88 @@
   text-transform: capitalize;
 }
 
-.status-compliant { background: #dcfce7; color: #166534; }
-.status-expiring { background: #fef3c7; color: #92400e; }
-.status-non-compliant { background: #fee2e2; color: #991b1b; }
-.status-expired { background: #fee2e2; color: #991b1b; }
-.status-unknown { background: #f1f5f9; color: #6b7280; }
+.dqf-management-page .status-compliant {
+  background: var(--status-active-bg);
+  color: var(--status-active-text);
+}
 
-.chevron {
-  color: #9ca3af;
+.dqf-management-page .status-expiring {
+  background: var(--status-pending-bg);
+  color: var(--status-pending-text);
+}
+
+.dqf-management-page .status-non-compliant {
+  background: var(--status-overdue-bg);
+  color: var(--status-overdue-text);
+}
+
+.dqf-management-page .status-expired {
+  background: var(--status-overdue-bg);
+  color: var(--status-overdue-text);
+}
+
+.dqf-management-page .status-unknown {
+  background: var(--bg-secondary);
+  color: var(--text-muted);
+}
+
+.dqf-management-page .chevron {
+  color: var(--text-muted);
   transition: transform 0.2s;
 }
 
-.dqf-card:hover .chevron {
+.dqf-management-page .dqf-card:hover .chevron {
   transform: translateX(4px);
-  color: #3b82f6;
+  color: var(--accent-primary);
 }
 
-.dqf-credentials {
+.dqf-management-page .dqf-credentials {
   display: flex;
   gap: 24px;
   flex-wrap: wrap;
   margin-bottom: 12px;
 }
 
-.credential-item {
+.dqf-management-page .credential-item {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
-.credential-label {
+.dqf-management-page .credential-label {
   font-weight: 500;
-  color: #475569;
+  color: var(--text-secondary);
 }
 
-.credential-value {
-  color: #1e293b;
+.dqf-management-page .credential-value {
+  color: var(--text-primary);
 }
 
-.exp-date {
+.dqf-management-page .exp-date {
   font-size: 12px;
 }
 
-.exp-date.expiring {
-  color: #d97706;
+.dqf-management-page .exp-date.expiring {
+  color: var(--stat-amber-icon);
   font-weight: 500;
 }
 
-.exp-date.expired {
-  color: #dc2626;
+.dqf-management-page .exp-date.expired {
+  color: var(--stat-rust-icon);
   font-weight: 500;
 }
 
-.endorsements {
+.dqf-management-page .endorsements {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
 }
 
-.endorsement-tag {
-  background: #dbeafe;
-  color: #1e40af;
+.dqf-management-page .endorsement-tag {
+  background: var(--stat-navy-bg);
+  color: var(--stat-navy-icon);
   padding: 2px 10px;
   border-radius: 12px;
   font-size: 11px;
@@ -340,23 +390,23 @@
 }
 
 /* Loading & Empty States */
-.loading-state,
-.empty-state {
+.dqf-management-page .loading-state,
+.dqf-management-page .empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 80px 20px;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
-.loading-state svg,
-.empty-state svg {
+.dqf-management-page .loading-state svg,
+.dqf-management-page .empty-state svg {
   margin-bottom: 16px;
-  color: #94a3b8;
+  color: var(--text-muted);
 }
 
-.spinning {
+.dqf-management-page .spinning {
   animation: spin 1s linear infinite;
 }
 
@@ -366,41 +416,43 @@
 }
 
 /* Detail Panel */
-.detail-panel {
+.dqf-management-page .detail-panel {
   position: fixed;
   top: 0;
   right: 0;
   width: 520px;
   height: 100vh;
-  background: white;
+  background: var(--bg-card);
   box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   display: flex;
   flex-direction: column;
 }
 
-.panel-header {
+.dqf-management-page .panel-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px 24px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--accent-primary);
+  color: var(--text-inverse);
 }
 
-.panel-header h2 {
+.dqf-management-page .panel-header h2 {
   font-size: 20px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--text-inverse);
   margin: 0;
 }
 
-.close-btn {
+.dqf-management-page .close-btn {
   width: 32px;
   height: 32px;
   border-radius: 8px;
   border: none;
-  background: #f1f5f9;
-  color: #64748b;
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--text-inverse);
   font-size: 20px;
   cursor: pointer;
   display: flex;
@@ -408,24 +460,24 @@
   justify-content: center;
 }
 
-.close-btn:hover {
-  background: #e2e8f0;
+.dqf-management-page .close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
-.panel-content {
+.dqf-management-page .panel-content {
   flex: 1;
   overflow-y: auto;
   padding: 24px;
 }
 
-.driver-status-banner {
+.dqf-management-page .driver-status-banner {
   padding: 16px;
   border-radius: 12px;
   margin-bottom: 24px;
-  background: #f8fafc;
+  background: var(--bg-secondary);
 }
 
-.status-indicator {
+.dqf-management-page .status-indicator {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -434,89 +486,100 @@
   text-transform: capitalize;
 }
 
-.status-indicator.status-compliant { color: #166534; }
-.status-indicator.status-expiring { color: #92400e; }
-.status-indicator.status-non-compliant { color: #991b1b; }
-.status-indicator.status-expired { color: #991b1b; }
-
-.status-reason {
-  margin: 8px 0 0;
-  font-size: 14px;
-  color: #64748b;
+.dqf-management-page .status-indicator.status-compliant {
+  color: var(--status-active-text);
 }
 
-.detail-section {
+.dqf-management-page .status-indicator.status-expiring {
+  color: var(--status-pending-text);
+}
+
+.dqf-management-page .status-indicator.status-non-compliant {
+  color: var(--status-overdue-text);
+}
+
+.dqf-management-page .status-indicator.status-expired {
+  color: var(--status-overdue-text);
+}
+
+.dqf-management-page .status-reason {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.dqf-management-page .detail-section {
   margin-bottom: 24px;
 }
 
-.detail-section h3 {
+.dqf-management-page .detail-section h3 {
   font-size: 14px;
   font-weight: 600;
-  color: #64748b;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin: 0 0 16px 0;
 }
 
-.detail-grid {
+.dqf-management-page .detail-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
 }
 
-.detail-item {
+.dqf-management-page .detail-item {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.detail-item.full {
+.dqf-management-page .detail-item.full {
   grid-column: span 2;
 }
 
-.detail-item label {
+.dqf-management-page .detail-item label {
   font-size: 12px;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
-.detail-item span {
+.dqf-management-page .detail-item span {
   font-size: 14px;
   font-weight: 500;
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
-.expired-text {
-  color: #dc2626 !important;
+.dqf-management-page .expired-text {
+  color: var(--stat-rust-icon) !important;
 }
 
-.tag-list {
+.dqf-management-page .tag-list {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
 }
 
-.tag {
-  background: #dbeafe;
-  color: #1e40af;
+.dqf-management-page .tag {
+  background: var(--stat-navy-bg);
+  color: var(--stat-navy-icon);
   padding: 4px 12px;
   border-radius: 6px;
   font-size: 12px;
   font-weight: 500;
 }
 
-.tag.warning {
-  background: #fef3c7;
-  color: #92400e;
+.dqf-management-page .tag.warning {
+  background: var(--stat-amber-bg);
+  color: var(--stat-amber-icon);
 }
 
 /* Compliance Checklist */
-.compliance-checklist {
+.dqf-management-page .compliance-checklist {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.checklist-item {
+.dqf-management-page .checklist-item {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -525,119 +588,129 @@
   font-size: 14px;
 }
 
-.checklist-item.complete {
-  background: #f0fdf4;
-  color: #166534;
+.dqf-management-page .checklist-item.complete {
+  background: var(--stat-green-bg);
+  color: var(--stat-green-icon);
 }
 
-.checklist-item.incomplete {
-  background: #fef2f2;
-  color: #991b1b;
+.dqf-management-page .checklist-item.incomplete {
+  background: var(--stat-rust-bg);
+  color: var(--stat-rust-icon);
 }
 
 /* Documents */
-.no-docs {
-  color: #64748b;
+.dqf-management-page .no-docs {
+  color: var(--text-muted);
   font-size: 14px;
   text-align: center;
   padding: 20px;
 }
 
-.documents-list {
+.dqf-management-page .documents-list {
   display: flex;
   flex-direction: column;
   gap: 8px;
   margin-bottom: 12px;
 }
 
-.document-item {
+.dqf-management-page .document-item {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 12px;
-  background: #f8fafc;
+  background: var(--bg-secondary);
   border-radius: 8px;
 }
 
-.doc-info {
+.dqf-management-page .doc-info {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.doc-type {
+.dqf-management-page .doc-type {
   font-size: 14px;
   font-weight: 500;
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
-.doc-expiry {
+.dqf-management-page .doc-expiry {
   font-size: 12px;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
-.doc-expiry.expired {
-  color: #dc2626;
+.dqf-management-page .doc-expiry.expired {
+  color: var(--stat-rust-icon);
 }
 
-.verified-badge {
+.dqf-management-page .verified-badge {
   display: flex;
   align-items: center;
   gap: 4px;
   font-size: 11px;
-  color: #166534;
-  background: #dcfce7;
+  color: var(--stat-green-icon);
+  background: var(--stat-green-bg);
   padding: 2px 8px;
   border-radius: 4px;
 }
 
-.upload-btn {
+.dqf-management-page .upload-btn {
   width: 100%;
   justify-content: center;
 }
 
-.panel-actions {
+.dqf-management-page .panel-actions {
   padding: 16px 24px;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--border-color);
   display: flex;
   gap: 12px;
+  background: var(--bg-card);
 }
 
-.panel-actions .btn {
+.dqf-management-page .panel-actions .btn {
   flex: 1;
+}
+
+.dqf-management-page .panel-actions .btn-primary {
+  background: var(--accent-primary);
+  color: var(--text-inverse);
+}
+
+.dqf-management-page .panel-actions .btn-primary:hover {
+  background: var(--accent-olive);
 }
 
 /* Responsive */
 @media (max-width: 1200px) {
-  .stats-grid {
+  .dqf-management-page .stats-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (max-width: 768px) {
-  .page-header {
+  .dqf-management-page .page-header {
     flex-direction: column;
     gap: 16px;
   }
 
-  .stats-grid {
+  .dqf-management-page .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .filters-bar {
+  .dqf-management-page .filters-bar {
     flex-direction: column;
   }
 
-  .search-box {
+  .dqf-management-page .search-box {
     min-width: 100%;
   }
 
-  .detail-panel {
+  .dqf-management-page .detail-panel {
     width: 100%;
   }
 
-  .dqf-credentials {
+  .dqf-management-page .dqf-credentials {
     flex-direction: column;
     gap: 8px;
   }

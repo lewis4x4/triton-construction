@@ -1,6 +1,11 @@
+/* =====================================================
+   MAINTENANCE DASHBOARD
+   Triton AI Platform - Unified Forest Green Theme
+   ===================================================== */
+
 .maintenance-dashboard-page {
   padding: 24px;
-  background: linear-gradient(135deg, #0f1219 0%, #1a1f2e 100%);
+  background: var(--bg-page);
   min-height: 100vh;
 }
 
@@ -11,12 +16,12 @@
   align-items: center;
   justify-content: center;
   height: 60vh;
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 .maintenance-dashboard-page .loading-state .spinning {
   animation: spin 1s linear infinite;
-  color: #8b5cf6;
+  color: var(--accent-primary);
   margin-bottom: 16px;
 }
 
@@ -31,6 +36,9 @@
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 24px;
+  padding: 24px 32px;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-olive) 100%);
+  border-radius: 16px;
   flex-wrap: wrap;
   gap: 16px;
 }
@@ -44,7 +52,7 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  color: #9ca3af;
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
   font-size: 14px;
   margin-bottom: 8px;
@@ -52,7 +60,7 @@
 }
 
 .maintenance-dashboard-page .back-link:hover {
-  color: #8b5cf6;
+  color: var(--text-inverse);
 }
 
 .maintenance-dashboard-page .header-content h1 {
@@ -61,16 +69,16 @@
   gap: 12px;
   font-size: 28px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-inverse);
   margin: 0 0 8px 0;
 }
 
 .maintenance-dashboard-page .header-content h1 svg {
-  color: #8b5cf6;
+  color: var(--text-inverse);
 }
 
 .maintenance-dashboard-page .header-content p {
-  color: #9ca3af;
+  color: rgba(255, 255, 255, 0.8);
   margin: 0;
   font-size: 14px;
 }
@@ -87,19 +95,24 @@
   align-items: center;
   gap: 8px;
   padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
-  color: #e5e7eb;
+  color: var(--text-inverse);
 }
 
 .maintenance-dashboard-page .date-range-selector select {
   background: transparent;
   border: none;
-  color: #e5e7eb;
+  color: var(--text-inverse);
   font-size: 14px;
   cursor: pointer;
   outline: none;
+}
+
+.maintenance-dashboard-page .date-range-selector select option {
+  background: var(--bg-card);
+  color: var(--text-primary);
 }
 
 .maintenance-dashboard-page .btn {
@@ -116,23 +129,24 @@
 }
 
 .maintenance-dashboard-page .btn-secondary {
-  background: rgba(255, 255, 255, 0.05);
-  color: #e5e7eb;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--text-inverse);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .maintenance-dashboard-page .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .maintenance-dashboard-page .btn-primary {
-  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-  color: #ffffff;
+  background: var(--text-inverse);
+  color: var(--accent-primary);
+  box-shadow: var(--shadow-md);
 }
 
 .maintenance-dashboard-page .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+  box-shadow: var(--shadow-lg);
 }
 
 /* Alert Banner */
@@ -146,32 +160,32 @@
 }
 
 .maintenance-dashboard-page .alert-banner.critical {
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.1));
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: var(--status-overdue-bg);
+  border: 1px solid rgba(185, 83, 64, 0.3);
 }
 
 .maintenance-dashboard-page .alert-content {
   display: flex;
   align-items: center;
   gap: 12px;
-  color: #fca5a5;
+  color: var(--status-overdue-text);
 }
 
 .maintenance-dashboard-page .alert-content svg {
-  color: #ef4444;
+  color: #B95340;
 }
 
 .maintenance-dashboard-page .alert-content strong {
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .maintenance-dashboard-page .alert-action {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: rgba(239, 68, 68, 0.2);
+  background: rgba(185, 83, 64, 0.2);
   border: none;
-  color: #ef4444;
+  color: #B95340;
   padding: 8px 16px;
   border-radius: 8px;
   font-weight: 500;
@@ -181,7 +195,7 @@
 }
 
 .maintenance-dashboard-page .alert-action:hover {
-  background: rgba(239, 68, 68, 0.3);
+  background: rgba(185, 83, 64, 0.3);
 }
 
 /* KPI Grid */
@@ -193,16 +207,18 @@
 }
 
 .maintenance-dashboard-page .kpi-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
   padding: 20px;
   transition: all 0.3s;
+  box-shadow: var(--shadow-sm);
 }
 
 .maintenance-dashboard-page .kpi-card:hover {
   transform: translateY(-2px);
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: var(--accent-primary);
+  box-shadow: var(--shadow-md);
 }
 
 .maintenance-dashboard-page .kpi-header {
@@ -221,6 +237,31 @@
   justify-content: center;
 }
 
+.maintenance-dashboard-page .kpi-icon.green {
+  background: var(--stat-green-bg);
+  color: var(--stat-green-icon);
+}
+
+.maintenance-dashboard-page .kpi-icon.amber {
+  background: var(--stat-amber-bg);
+  color: var(--stat-amber-icon);
+}
+
+.maintenance-dashboard-page .kpi-icon.rust {
+  background: var(--stat-rust-bg);
+  color: var(--stat-rust-icon);
+}
+
+.maintenance-dashboard-page .kpi-icon.navy {
+  background: var(--stat-navy-bg);
+  color: var(--stat-navy-icon);
+}
+
+.maintenance-dashboard-page .kpi-icon.plum {
+  background: var(--stat-plum-bg);
+  color: var(--stat-plum-icon);
+}
+
 .maintenance-dashboard-page .kpi-change {
   display: flex;
   align-items: center;
@@ -232,36 +273,36 @@
 }
 
 .maintenance-dashboard-page .kpi-change.positive {
-  background: rgba(16, 185, 129, 0.15);
-  color: #10b981;
+  background: var(--stat-green-bg);
+  color: var(--stat-green-icon);
 }
 
 .maintenance-dashboard-page .kpi-change.negative {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
+  background: var(--stat-rust-bg);
+  color: var(--stat-rust-icon);
 }
 
 .maintenance-dashboard-page .kpi-change.neutral {
-  background: rgba(156, 163, 175, 0.15);
-  color: #9ca3af;
+  background: var(--bg-secondary);
+  color: var(--text-muted);
 }
 
 .maintenance-dashboard-page .kpi-value {
   font-size: 28px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-primary);
   margin-bottom: 4px;
 }
 
 .maintenance-dashboard-page .kpi-label {
   font-size: 14px;
-  color: #9ca3af;
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
 .maintenance-dashboard-page .kpi-subtitle {
   font-size: 12px;
-  color: #6b7280;
+  color: var(--text-muted);
   margin-top: 4px;
 }
 
@@ -271,7 +312,7 @@
   gap: 8px;
   margin-bottom: 24px;
   padding: 4px;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--bg-secondary);
   border-radius: 12px;
   width: fit-content;
 }
@@ -284,7 +325,7 @@
   background: transparent;
   border: none;
   border-radius: 8px;
-  color: #9ca3af;
+  color: var(--text-secondary);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -293,18 +334,18 @@
 }
 
 .maintenance-dashboard-page .tab-navigation .tab:hover {
-  color: #e5e7eb;
-  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  background: var(--bg-card);
 }
 
 .maintenance-dashboard-page .tab-navigation .tab.active {
-  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-  color: #ffffff;
+  background: var(--accent-primary);
+  color: var(--text-inverse);
 }
 
 .maintenance-dashboard-page .tab-badge {
-  background: #ef4444;
-  color: #ffffff;
+  background: #B95340;
+  color: var(--text-inverse);
   font-size: 10px;
   font-weight: 700;
   padding: 2px 6px;
@@ -331,10 +372,11 @@
 
 /* Dashboard Cards */
 .maintenance-dashboard-page .dashboard-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
   padding: 20px;
+  box-shadow: var(--shadow-sm);
 }
 
 .maintenance-dashboard-page .card-header {
@@ -350,19 +392,19 @@
   gap: 10px;
   font-size: 16px;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .maintenance-dashboard-page .card-header h3 svg {
-  color: #8b5cf6;
+  color: var(--accent-primary);
 }
 
 .maintenance-dashboard-page .view-all-link {
   display: flex;
   align-items: center;
   gap: 4px;
-  color: #8b5cf6;
+  color: var(--accent-primary);
   text-decoration: none;
   font-size: 13px;
   font-weight: 500;
@@ -370,7 +412,7 @@
 }
 
 .maintenance-dashboard-page .view-all-link:hover {
-  color: #a78bfa;
+  color: var(--accent-olive);
 }
 
 /* Vehicle Status Card */
@@ -394,23 +436,23 @@
 }
 
 .maintenance-dashboard-page .status-item.good {
-  background: rgba(16, 185, 129, 0.1);
-  color: #10b981;
+  background: var(--stat-green-bg);
+  color: var(--stat-green-icon);
 }
 
 .maintenance-dashboard-page .status-item.due-soon {
-  background: rgba(245, 158, 11, 0.1);
-  color: #f59e0b;
+  background: var(--stat-amber-bg);
+  color: var(--stat-amber-icon);
 }
 
 .maintenance-dashboard-page .status-item.overdue {
-  background: rgba(239, 68, 68, 0.1);
-  color: #ef4444;
+  background: var(--stat-rust-bg);
+  color: var(--stat-rust-icon);
 }
 
 .maintenance-dashboard-page .status-item.in-service {
-  background: rgba(59, 130, 246, 0.1);
-  color: #3b82f6;
+  background: var(--stat-navy-bg);
+  color: var(--stat-navy-icon);
 }
 
 .maintenance-dashboard-page .status-item .count {
@@ -434,26 +476,26 @@
   align-items: center;
   justify-content: space-between;
   padding: 12px;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--bg-secondary);
   border-radius: 10px;
   border-left: 3px solid transparent;
 }
 
 .maintenance-dashboard-page .vehicle-item.good {
-  border-left-color: #10b981;
+  border-left-color: var(--stat-green-icon);
 }
 
 .maintenance-dashboard-page .vehicle-item.due_soon {
-  border-left-color: #f59e0b;
+  border-left-color: var(--stat-amber-icon);
 }
 
 .maintenance-dashboard-page .vehicle-item.overdue {
-  border-left-color: #ef4444;
-  background: rgba(239, 68, 68, 0.05);
+  border-left-color: var(--stat-rust-icon);
+  background: var(--stat-rust-bg);
 }
 
 .maintenance-dashboard-page .vehicle-item.in_service {
-  border-left-color: #3b82f6;
+  border-left-color: var(--stat-navy-icon);
 }
 
 .maintenance-dashboard-page .vehicle-info {
@@ -463,13 +505,13 @@
 
 .maintenance-dashboard-page .vehicle-number {
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 14px;
 }
 
 .maintenance-dashboard-page .vehicle-type {
   font-size: 12px;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .maintenance-dashboard-page .service-info {
@@ -479,20 +521,20 @@
 .maintenance-dashboard-page .next-service {
   display: block;
   font-size: 13px;
-  color: #e5e7eb;
+  color: var(--text-primary);
 }
 
 .maintenance-dashboard-page .service-due {
   font-size: 11px;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .maintenance-dashboard-page .service-due.soon {
-  color: #f59e0b;
+  color: var(--stat-amber-icon);
 }
 
 .maintenance-dashboard-page .service-due.overdue {
-  color: #ef4444;
+  color: var(--stat-rust-icon);
   font-weight: 600;
 }
 
@@ -503,20 +545,20 @@
 }
 
 .maintenance-dashboard-page .status-indicator.good {
-  background: #10b981;
+  background: var(--stat-green-icon);
 }
 
 .maintenance-dashboard-page .status-indicator.due_soon {
-  background: #f59e0b;
+  background: var(--stat-amber-icon);
 }
 
 .maintenance-dashboard-page .status-indicator.overdue {
-  background: #ef4444;
+  background: var(--stat-rust-icon);
   animation: pulse 1.5s infinite;
 }
 
 .maintenance-dashboard-page .status-indicator.in_service {
-  background: #3b82f6;
+  background: var(--stat-navy-icon);
 }
 
 @keyframes pulse {
@@ -538,7 +580,7 @@
 .maintenance-dashboard-page .cost-total {
   text-align: center;
   padding: 16px;
-  background: rgba(139, 92, 246, 0.1);
+  background: rgba(61, 107, 79, 0.1);
   border-radius: 12px;
 }
 
@@ -546,12 +588,12 @@
   display: block;
   font-size: 28px;
   font-weight: 700;
-  color: #8b5cf6;
+  color: var(--accent-primary);
 }
 
 .maintenance-dashboard-page .total-label {
   font-size: 12px;
-  color: #9ca3af;
+  color: var(--text-secondary);
 }
 
 .maintenance-dashboard-page .cost-bars {
@@ -577,7 +619,7 @@
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  color: #e5e7eb;
+  color: var(--text-primary);
 }
 
 .maintenance-dashboard-page .color-dot {
@@ -589,12 +631,12 @@
 .maintenance-dashboard-page .category-amount {
   font-size: 13px;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .maintenance-dashboard-page .cost-bar {
   height: 8px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--bg-secondary);
   border-radius: 4px;
   overflow: hidden;
 }
@@ -609,7 +651,7 @@
   display: flex;
   justify-content: space-between;
   font-size: 11px;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 /* Technician Card */
@@ -628,7 +670,7 @@
   align-items: center;
   gap: 12px;
   padding: 10px;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--bg-secondary);
   border-radius: 10px;
 }
 
@@ -636,13 +678,13 @@
   width: 40px;
   height: 40px;
   border-radius: 10px;
-  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-olive));
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
   font-size: 12px;
-  color: #ffffff;
+  color: var(--text-inverse);
 }
 
 .maintenance-dashboard-page .tech-info {
@@ -653,14 +695,14 @@
 .maintenance-dashboard-page .tech-name {
   display: block;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 14px;
 }
 
 .maintenance-dashboard-page .tech-stats {
   display: block;
   font-size: 11px;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .maintenance-dashboard-page .tech-metrics {
@@ -672,21 +714,21 @@
 .maintenance-dashboard-page .efficiency-meter {
   width: 50px;
   height: 6px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--bg-card);
   border-radius: 3px;
   overflow: hidden;
 }
 
 .maintenance-dashboard-page .efficiency-fill {
   height: 100%;
-  background: linear-gradient(90deg, #10b981, #34d399);
+  background: linear-gradient(90deg, var(--stat-green-icon), #4A9C6D);
   border-radius: 3px;
 }
 
 .maintenance-dashboard-page .efficiency-value {
   font-size: 11px;
   font-weight: 600;
-  color: #10b981;
+  color: var(--stat-green-icon);
   min-width: 32px;
 }
 
@@ -699,18 +741,18 @@
 }
 
 .maintenance-dashboard-page .tech-status.available {
-  background: rgba(16, 185, 129, 0.15);
-  color: #10b981;
+  background: var(--stat-green-bg);
+  color: var(--stat-green-icon);
 }
 
 .maintenance-dashboard-page .tech-status.busy {
-  background: rgba(245, 158, 11, 0.15);
-  color: #f59e0b;
+  background: var(--stat-amber-bg);
+  color: var(--stat-amber-icon);
 }
 
 .maintenance-dashboard-page .tech-status.offline {
-  background: rgba(107, 114, 128, 0.15);
-  color: #9ca3af;
+  background: var(--bg-secondary);
+  color: var(--text-muted);
 }
 
 /* Recent Work Orders Card */
@@ -728,13 +770,14 @@
   display: flex;
   gap: 12px;
   padding: 14px;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--bg-secondary);
   border-radius: 10px;
   transition: background 0.2s;
 }
 
 .maintenance-dashboard-page .work-order-item:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
 }
 
 .maintenance-dashboard-page .wo-priority {
@@ -755,7 +798,7 @@
 
 .maintenance-dashboard-page .wo-number {
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 13px;
 }
 
@@ -768,39 +811,39 @@
 }
 
 .maintenance-dashboard-page .wo-status.open {
-  background: rgba(245, 158, 11, 0.15);
-  color: #f59e0b;
+  background: var(--stat-amber-bg);
+  color: var(--stat-amber-icon);
 }
 
 .maintenance-dashboard-page .wo-status.in_progress {
-  background: rgba(59, 130, 246, 0.15);
-  color: #3b82f6;
+  background: var(--stat-navy-bg);
+  color: var(--stat-navy-icon);
 }
 
 .maintenance-dashboard-page .wo-status.pending_parts {
-  background: rgba(236, 72, 153, 0.15);
-  color: #ec4899;
+  background: var(--stat-plum-bg);
+  color: var(--stat-plum-icon);
 }
 
 .maintenance-dashboard-page .wo-status.completed {
-  background: rgba(16, 185, 129, 0.15);
-  color: #10b981;
+  background: var(--stat-green-bg);
+  color: var(--stat-green-icon);
 }
 
 .maintenance-dashboard-page .wo-status.on_hold {
-  background: rgba(107, 114, 128, 0.15);
-  color: #9ca3af;
+  background: var(--bg-secondary);
+  color: var(--text-muted);
 }
 
 .maintenance-dashboard-page .wo-vehicle {
   font-size: 12px;
-  color: #9ca3af;
+  color: var(--text-secondary);
   margin-bottom: 4px;
 }
 
 .maintenance-dashboard-page .wo-description {
   font-size: 13px;
-  color: #e5e7eb;
+  color: var(--text-primary);
   margin-bottom: 8px;
   line-height: 1.4;
 }
@@ -809,7 +852,7 @@
   display: flex;
   gap: 16px;
   font-size: 11px;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .maintenance-dashboard-page .wo-footer span {
@@ -833,13 +876,13 @@
   display: flex;
   gap: 16px;
   padding: 12px;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--bg-secondary);
   border-radius: 10px;
 }
 
 .maintenance-dashboard-page .calendar-item.overdue {
-  background: rgba(239, 68, 68, 0.08);
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  background: var(--stat-rust-bg);
+  border: 1px solid rgba(185, 83, 64, 0.2);
 }
 
 .maintenance-dashboard-page .calendar-date {
@@ -849,28 +892,28 @@
   justify-content: center;
   width: 50px;
   padding: 8px;
-  background: rgba(139, 92, 246, 0.15);
+  background: rgba(61, 107, 79, 0.15);
   border-radius: 8px;
 }
 
 .maintenance-dashboard-page .calendar-item.overdue .calendar-date {
-  background: rgba(239, 68, 68, 0.2);
+  background: rgba(185, 83, 64, 0.2);
 }
 
 .maintenance-dashboard-page .date-day {
   font-size: 20px;
   font-weight: 700;
-  color: #8b5cf6;
+  color: var(--accent-primary);
   line-height: 1;
 }
 
 .maintenance-dashboard-page .calendar-item.overdue .date-day {
-  color: #ef4444;
+  color: var(--stat-rust-icon);
 }
 
 .maintenance-dashboard-page .date-month {
   font-size: 10px;
-  color: #9ca3af;
+  color: var(--text-secondary);
   text-transform: uppercase;
 }
 
@@ -887,7 +930,7 @@
 
 .maintenance-dashboard-page .maintenance-type {
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 14px;
 }
 
@@ -900,28 +943,28 @@
 }
 
 .maintenance-dashboard-page .priority-badge.critical {
-  background: rgba(220, 38, 38, 0.2);
-  color: #dc2626;
+  background: rgba(185, 83, 64, 0.2);
+  color: #B95340;
 }
 
 .maintenance-dashboard-page .priority-badge.high {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
+  background: var(--stat-rust-bg);
+  color: var(--stat-rust-icon);
 }
 
 .maintenance-dashboard-page .priority-badge.medium {
-  background: rgba(245, 158, 11, 0.15);
-  color: #f59e0b;
+  background: var(--stat-amber-bg);
+  color: var(--stat-amber-icon);
 }
 
 .maintenance-dashboard-page .priority-badge.low {
-  background: rgba(59, 130, 246, 0.15);
-  color: #3b82f6;
+  background: var(--stat-navy-bg);
+  color: var(--stat-navy-icon);
 }
 
 .maintenance-dashboard-page .calendar-vehicle {
   font-size: 12px;
-  color: #9ca3af;
+  color: var(--text-secondary);
   margin-bottom: 6px;
 }
 
@@ -929,7 +972,7 @@
   display: flex;
   gap: 12px;
   font-size: 11px;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .maintenance-dashboard-page .calendar-details span {
@@ -959,28 +1002,28 @@
   align-items: center;
   gap: 10px;
   padding: 10px 16px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 10px;
   flex: 1;
   max-width: 400px;
 }
 
 .maintenance-dashboard-page .search-box svg {
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .maintenance-dashboard-page .search-box input {
   background: transparent;
   border: none;
-  color: #e5e7eb;
+  color: var(--text-primary);
   font-size: 14px;
   width: 100%;
   outline: none;
 }
 
 .maintenance-dashboard-page .search-box input::placeholder {
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .maintenance-dashboard-page .filter-group {
@@ -990,25 +1033,26 @@
 }
 
 .maintenance-dashboard-page .filter-group svg {
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .maintenance-dashboard-page .filter-group select {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 10px 16px;
-  color: #e5e7eb;
+  color: var(--text-primary);
   font-size: 14px;
   cursor: pointer;
 }
 
 /* Maintenance Table */
 .maintenance-dashboard-page .maintenance-table {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
 .maintenance-dashboard-page .maintenance-table table {
@@ -1021,26 +1065,26 @@
   padding: 14px 16px;
   font-size: 11px;
   font-weight: 600;
-  color: #6b7280;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  background: rgba(255, 255, 255, 0.03);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .maintenance-dashboard-page .maintenance-table td {
   padding: 14px 16px;
   font-size: 14px;
-  color: #e5e7eb;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .maintenance-dashboard-page .maintenance-table tr:hover td {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--bg-secondary);
 }
 
 .maintenance-dashboard-page .maintenance-table .overdue-row td {
-  background: rgba(239, 68, 68, 0.05);
+  background: var(--stat-rust-bg);
 }
 
 .maintenance-dashboard-page .vehicle-cell {
@@ -1050,7 +1094,7 @@
 
 .maintenance-dashboard-page .vehicle-num {
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .maintenance-dashboard-page .category-badge {
@@ -1063,23 +1107,23 @@
 }
 
 .maintenance-dashboard-page .category-badge.preventive {
-  background: rgba(16, 185, 129, 0.15);
-  color: #10b981;
+  background: var(--stat-green-bg);
+  color: var(--stat-green-icon);
 }
 
 .maintenance-dashboard-page .category-badge.corrective {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
+  background: var(--stat-rust-bg);
+  color: var(--stat-rust-icon);
 }
 
 .maintenance-dashboard-page .category-badge.inspection {
-  background: rgba(59, 130, 246, 0.15);
-  color: #3b82f6;
+  background: var(--stat-navy-bg);
+  color: var(--stat-navy-icon);
 }
 
 .maintenance-dashboard-page .category-badge.recall {
-  background: rgba(236, 72, 153, 0.15);
-  color: #ec4899;
+  background: var(--stat-plum-bg);
+  color: var(--stat-plum-icon);
 }
 
 .maintenance-dashboard-page .priority-dot {
@@ -1100,28 +1144,28 @@
 }
 
 .maintenance-dashboard-page .status-badge.scheduled {
-  background: rgba(139, 92, 246, 0.15);
-  color: #8b5cf6;
+  background: rgba(61, 107, 79, 0.15);
+  color: var(--accent-primary);
 }
 
 .maintenance-dashboard-page .status-badge.in_progress {
-  background: rgba(59, 130, 246, 0.15);
-  color: #3b82f6;
+  background: var(--stat-navy-bg);
+  color: var(--stat-navy-icon);
 }
 
 .maintenance-dashboard-page .status-badge.completed {
-  background: rgba(16, 185, 129, 0.15);
-  color: #10b981;
+  background: var(--stat-green-bg);
+  color: var(--stat-green-icon);
 }
 
 .maintenance-dashboard-page .status-badge.overdue {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
+  background: var(--stat-rust-bg);
+  color: var(--stat-rust-icon);
 }
 
 .maintenance-dashboard-page .status-badge.cancelled {
-  background: rgba(107, 114, 128, 0.15);
-  color: #9ca3af;
+  background: var(--bg-secondary);
+  color: var(--text-muted);
 }
 
 .maintenance-dashboard-page .action-buttons {
@@ -1133,9 +1177,9 @@
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #9ca3af;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1144,8 +1188,9 @@
 }
 
 .maintenance-dashboard-page .action-btn:hover {
-  background: rgba(139, 92, 246, 0.15);
-  color: #8b5cf6;
+  background: var(--accent-primary);
+  color: var(--text-inverse);
+  border-color: var(--accent-primary);
 }
 
 /* Work Orders Content */
@@ -1171,19 +1216,20 @@
   flex-direction: column;
   align-items: center;
   padding: 12px 20px;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 10px;
 }
 
 .maintenance-dashboard-page .wo-stat .stat-value {
   font-size: 24px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .maintenance-dashboard-page .wo-stat .stat-label {
   font-size: 12px;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .maintenance-dashboard-page .wo-grid {
@@ -1193,27 +1239,28 @@
 }
 
 .maintenance-dashboard-page .wo-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 16px;
   border-top: 3px solid;
+  box-shadow: var(--shadow-sm);
 }
 
 .maintenance-dashboard-page .wo-card.critical {
-  border-top-color: #dc2626;
+  border-top-color: #B95340;
 }
 
 .maintenance-dashboard-page .wo-card.high {
-  border-top-color: #ef4444;
+  border-top-color: var(--stat-rust-icon);
 }
 
 .maintenance-dashboard-page .wo-card.medium {
-  border-top-color: #f59e0b;
+  border-top-color: var(--stat-amber-icon);
 }
 
 .maintenance-dashboard-page .wo-card.low {
-  border-top-color: #3b82f6;
+  border-top-color: var(--stat-navy-icon);
 }
 
 .maintenance-dashboard-page .wo-card-header {
@@ -1225,7 +1272,7 @@
 
 .maintenance-dashboard-page .wo-card-header .wo-number {
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 14px;
 }
 
@@ -1238,23 +1285,23 @@
 }
 
 .maintenance-dashboard-page .wo-card-header .wo-priority.critical {
-  background: rgba(220, 38, 38, 0.2);
-  color: #dc2626;
+  background: rgba(185, 83, 64, 0.2);
+  color: #B95340;
 }
 
 .maintenance-dashboard-page .wo-card-header .wo-priority.high {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
+  background: var(--stat-rust-bg);
+  color: var(--stat-rust-icon);
 }
 
 .maintenance-dashboard-page .wo-card-header .wo-priority.medium {
-  background: rgba(245, 158, 11, 0.15);
-  color: #f59e0b;
+  background: var(--stat-amber-bg);
+  color: var(--stat-amber-icon);
 }
 
 .maintenance-dashboard-page .wo-card-header .wo-priority.low {
-  background: rgba(59, 130, 246, 0.15);
-  color: #3b82f6;
+  background: var(--stat-navy-bg);
+  color: var(--stat-navy-icon);
 }
 
 .maintenance-dashboard-page .wo-card-vehicle {
@@ -1262,13 +1309,13 @@
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  color: #9ca3af;
+  color: var(--text-secondary);
   margin-bottom: 8px;
 }
 
 .maintenance-dashboard-page .wo-card-description {
   font-size: 14px;
-  color: #e5e7eb;
+  color: var(--text-primary);
   margin: 0 0 12px 0;
   line-height: 1.4;
 }
@@ -1285,7 +1332,7 @@
   align-items: center;
   gap: 4px;
   font-size: 12px;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .maintenance-dashboard-page .wo-card-footer {
@@ -1293,7 +1340,7 @@
   justify-content: space-between;
   align-items: center;
   padding-top: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--border-color);
 }
 
 .maintenance-dashboard-page .wo-card-footer .wo-date {
@@ -1301,7 +1348,7 @@
   align-items: center;
   gap: 4px;
   font-size: 11px;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 /* History Content */
@@ -1312,10 +1359,11 @@
 }
 
 .maintenance-dashboard-page .history-table {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
   overflow-x: auto;
+  box-shadow: var(--shadow-sm);
 }
 
 .maintenance-dashboard-page .history-table table {
@@ -1329,33 +1377,33 @@
   padding: 14px 16px;
   font-size: 11px;
   font-weight: 600;
-  color: #6b7280;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  background: rgba(255, 255, 255, 0.03);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .maintenance-dashboard-page .history-table td {
   padding: 14px 16px;
   font-size: 14px;
-  color: #e5e7eb;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .maintenance-dashboard-page .history-table tr:hover td {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--bg-secondary);
 }
 
 .maintenance-dashboard-page .history-table .total-cell {
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .maintenance-dashboard-page .history-table tfoot td {
   font-weight: 600;
-  background: rgba(255, 255, 255, 0.03);
-  border-top: 2px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-secondary);
+  border-top: 2px solid var(--border-color);
 }
 
 /* Quick Actions Footer */
@@ -1363,9 +1411,10 @@
   display: flex;
   gap: 16px;
   padding: 20px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
+  box-shadow: var(--shadow-sm);
 }
 
 .maintenance-dashboard-page .quick-action {
@@ -1373,10 +1422,10 @@
   align-items: center;
   gap: 10px;
   padding: 14px 24px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 10px;
-  color: #e5e7eb;
+  color: var(--text-primary);
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
@@ -1384,13 +1433,13 @@
 }
 
 .maintenance-dashboard-page .quick-action:hover {
-  background: rgba(139, 92, 246, 0.1);
-  border-color: rgba(139, 92, 246, 0.3);
-  color: #8b5cf6;
+  background: rgba(61, 107, 79, 0.1);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
 }
 
 .maintenance-dashboard-page .quick-action svg {
-  color: #8b5cf6;
+  color: var(--accent-primary);
 }
 
 /* Responsive Styles */
@@ -1450,6 +1499,7 @@
 
   .maintenance-dashboard-page .page-header {
     flex-direction: column;
+    padding: 20px;
   }
 
   .maintenance-dashboard-page .header-actions {

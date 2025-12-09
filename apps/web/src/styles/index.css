@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import 'mapbox-gl/dist/mapbox-gl.css';
 
 /* ============================================
    TRITON DESIGN SYSTEM
@@ -20,18 +21,22 @@
   --bg-elevated: #FFFFFF;
   --bg-hover: #E8E8E2;
   --bg-sidebar: #FAFAF8;
+  --bg-card: #FFFFFF;
+  --bg-input: #F5F5F0;
 
   /* Borders - Soft definition */
   --border-subtle: rgba(0, 0, 0, 0.06);
   --border-default: rgba(0, 0, 0, 0.1);
   --border-strong: rgba(0, 0, 0, 0.15);
   --border-focus: rgba(61, 107, 79, 0.5);
+  --border-color: rgba(0, 0, 0, 0.1);
 
   /* Text - Rich dark tones */
   --text-primary: #1A1A2E;
   --text-secondary: #4A5568;
   --text-tertiary: #6B7280;
   --text-muted: #9CA3AF;
+  --text-inverse: #FFFFFF;
 
   /* Accent - Forest Green (Primary Brand Color) */
   --accent-primary: #3D6B4F;
@@ -46,18 +51,102 @@
   --accent-sage: #8BA888;
   --accent-cream: #F5F3E7;
 
+  /* Secondary Accent Colors - Harmonized with Forest Green */
+  --color-teal: #2A9D8F;
+  --color-teal-subtle: rgba(42, 157, 143, 0.1);
+  --color-teal-text: #1F7A6F;
+  --color-amber: #C9A227;
+  --color-amber-subtle: rgba(201, 162, 39, 0.1);
+  --color-amber-text: #8B6914;
+  --color-rust: #C45D3A;
+  --color-rust-subtle: rgba(196, 93, 58, 0.1);
+  --color-rust-text: #9B4A2F;
+  --color-navy: #3D5A80;
+  --color-navy-subtle: rgba(61, 90, 128, 0.1);
+  --color-navy-text: #2D4460;
+  --color-plum: #7B5E7B;
+  --color-plum-subtle: rgba(123, 94, 123, 0.1);
+  --color-plum-text: #5D475D;
+
   /* Semantic Colors - Harmonized with green theme */
   --success: #3D6B4F;
   --success-subtle: rgba(61, 107, 79, 0.1);
   --success-text: #2D5A3D;
+  --success-bg: rgba(61, 107, 79, 0.08);
   --warning: #C9A227;
   --warning-subtle: rgba(201, 162, 39, 0.1);
   --warning-text: #8B6914;
+  --warning-bg: rgba(201, 162, 39, 0.08);
   --error: #C53030;
   --error-subtle: rgba(197, 48, 48, 0.1);
   --error-text: #9B2C2C;
-  --info: #3D6B4F;
-  --info-subtle: rgba(61, 107, 79, 0.1);
+  --error-bg: rgba(197, 48, 48, 0.08);
+  --info: #3D5A80;
+  --info-subtle: rgba(61, 90, 128, 0.1);
+  --info-text: #2D4460;
+  --info-bg: rgba(61, 90, 128, 0.08);
+
+  /* Stat Icon Color Palettes - Earth-toned for consistency */
+  --stat-green-bg: rgba(61, 107, 79, 0.12);
+  --stat-green-icon: #3D6B4F;
+  --stat-amber-bg: rgba(201, 162, 39, 0.12);
+  --stat-amber-icon: #C9A227;
+  --stat-teal-bg: rgba(42, 157, 143, 0.12);
+  --stat-teal-icon: #2A9D8F;
+  --stat-rust-bg: rgba(196, 93, 58, 0.12);
+  --stat-rust-icon: #C45D3A;
+  --stat-navy-bg: rgba(61, 90, 128, 0.12);
+  --stat-navy-icon: #3D5A80;
+  --stat-plum-bg: rgba(123, 94, 123, 0.12);
+  --stat-plum-icon: #7B5E7B;
+  --stat-gray-bg: rgba(107, 114, 128, 0.12);
+  --stat-gray-icon: #6B7280;
+
+  /* Status Badge Colors */
+  --status-active-bg: rgba(61, 107, 79, 0.12);
+  --status-active-text: #3D6B4F;
+  --status-pending-bg: rgba(201, 162, 39, 0.12);
+  --status-pending-text: #8B6914;
+  --status-completed-bg: rgba(42, 157, 143, 0.12);
+  --status-completed-text: #1F7A6F;
+  --status-draft-bg: rgba(107, 114, 128, 0.12);
+  --status-draft-text: #6B7280;
+  --status-overdue-bg: rgba(197, 48, 48, 0.12);
+  --status-overdue-text: #9B2C2C;
+  --status-approved-bg: rgba(61, 107, 79, 0.12);
+  --status-approved-text: #2D5A3D;
+  --status-rejected-bg: rgba(197, 48, 48, 0.12);
+  --status-rejected-text: #9B2C2C;
+
+  /* Legacy Color Compatibility - For components using old variable names */
+  --red-50: rgba(254, 242, 242, 1);
+  --red-100: rgba(254, 226, 226, 1);
+  --red-200: rgba(254, 202, 202, 1);
+  --red-500: #C53030;
+  --red-600: #B92B2B;
+  --red-700: #9B2C2C;
+  --blue-50: rgba(239, 246, 255, 1);
+  --blue-100: rgba(219, 234, 254, 1);
+  --blue-500: #3D5A80;
+  --blue-600: #2D4460;
+  --green-50: rgba(236, 253, 245, 1);
+  --green-100: rgba(209, 250, 229, 1);
+  --green-500: #3D6B4F;
+  --green-600: #2D5A3D;
+  --green-700: #1F4A2F;
+  --yellow-50: rgba(255, 251, 235, 1);
+  --yellow-100: rgba(254, 243, 199, 1);
+  --yellow-500: #C9A227;
+  --gray-50: #FAFAF8;
+  --gray-100: #F5F5F0;
+  --gray-200: #EEEEE8;
+  --gray-300: #E8E8E2;
+  --gray-400: #9CA3AF;
+  --gray-500: #6B7280;
+  --gray-600: #4A5568;
+  --gray-700: #374151;
+  --gray-800: #1F2937;
+  --gray-900: #1A1A2E;
 
   /* Typography */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;

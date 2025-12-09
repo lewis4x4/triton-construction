@@ -1,7 +1,14 @@
+/* =====================================================
+   PAY PERIOD DETAIL
+   Triton AI Platform - Unified Forest Green Theme
+   ===================================================== */
+
 .pay-period-detail {
   padding: 1.5rem;
   max-width: 1200px;
   margin: 0 auto;
+  background: var(--bg-page);
+  min-height: 100vh;
 }
 
 .pay-period-detail.loading,
@@ -15,15 +22,15 @@
 }
 
 .pay-period-detail.loading svg {
-  color: #3b82f6;
+  color: var(--accent-primary);
 }
 
 .pay-period-detail.error svg {
-  color: #ef4444;
+  color: var(--stat-rust-icon);
 }
 
 /* Header */
-.detail-header {
+.pay-period-detail .detail-header {
   display: flex;
   align-items: flex-start;
   gap: 1rem;
@@ -31,45 +38,45 @@
   flex-wrap: wrap;
 }
 
-.back-button {
+.pay-period-detail .back-button {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0.75rem;
   font-size: 0.875rem;
-  color: #6b7280;
-  background: white;
-  border: 1px solid #d1d5db;
+  color: var(--text-muted);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.15s;
 }
 
-.back-button:hover {
-  background: #f9fafb;
-  color: #374151;
+.pay-period-detail .back-button:hover {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
 }
 
-.header-info {
+.pay-period-detail .header-info {
   flex: 1;
   min-width: 0;
 }
 
-.header-title {
+.pay-period-detail .header-title {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   flex-wrap: wrap;
 }
 
-.header-title h1 {
+.pay-period-detail .header-title h1 {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   margin: 0;
 }
 
-.status-badge {
+.pay-period-detail .status-badge {
   display: inline-flex;
   align-items: center;
   padding: 0.25rem 0.75rem;
@@ -78,49 +85,49 @@
   border-radius: 9999px;
 }
 
-.header-meta {
+.pay-period-detail .header-meta {
   display: flex;
   align-items: center;
   gap: 1rem;
   margin-top: 0.5rem;
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-muted);
   flex-wrap: wrap;
 }
 
-.header-meta span {
+.pay-period-detail .header-meta span {
   display: flex;
   align-items: center;
   gap: 0.375rem;
 }
 
-.project-name {
+.pay-period-detail .project-name {
   font-weight: 500;
-  color: #374151;
+  color: var(--text-secondary);
 }
 
-.btn-secondary {
+.pay-period-detail .btn-secondary {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #374151;
-  background: white;
-  border: 1px solid #d1d5db;
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.15s;
 }
 
-.btn-secondary:hover {
-  background: #f9fafb;
-  border-color: #9ca3af;
+.pay-period-detail .btn-secondary:hover {
+  background: var(--bg-secondary);
+  border-color: var(--text-muted);
 }
 
-.btn-primary {
+.pay-period-detail .btn-primary {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -128,7 +135,7 @@
   font-size: 0.875rem;
   font-weight: 500;
   color: white;
-  background: #3b82f6;
+  background: var(--accent-primary);
   border: none;
   border-radius: 8px;
   text-decoration: none;
@@ -136,26 +143,26 @@
   transition: all 0.15s;
 }
 
-.btn-primary:hover {
-  background: #2563eb;
+.pay-period-detail .btn-primary:hover {
+  background: var(--accent-olive);
 }
 
 /* Demo Banner */
-.demo-banner {
+.pay-period-detail .demo-banner {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1rem;
-  background: #fef3c7;
-  border: 1px solid #fde047;
+  background: var(--stat-amber-bg);
+  border: 1px solid rgba(180, 130, 60, 0.3);
   border-radius: 8px;
   margin-bottom: 1.5rem;
   font-size: 0.875rem;
-  color: #92400e;
+  color: var(--stat-amber-icon);
 }
 
 /* Deadline Banner */
-.deadline-banner {
+.pay-period-detail .deadline-banner {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -164,440 +171,441 @@
   margin-bottom: 1.5rem;
 }
 
-.deadline-banner.ok {
-  background: #d1fae5;
-  border: 1px solid #6ee7b7;
+.pay-period-detail .deadline-banner.ok {
+  background: var(--stat-green-bg);
+  border: 1px solid var(--stat-green-icon);
 }
 
-.deadline-banner.ok svg {
-  color: #059669;
+.pay-period-detail .deadline-banner.ok svg {
+  color: var(--stat-green-icon);
 }
 
-.deadline-banner.warning {
-  background: #fef3c7;
-  border: 1px solid #fde047;
+.pay-period-detail .deadline-banner.warning {
+  background: var(--stat-amber-bg);
+  border: 1px solid rgba(180, 130, 60, 0.3);
 }
 
-.deadline-banner.warning svg {
-  color: #d97706;
+.pay-period-detail .deadline-banner.warning svg {
+  color: var(--stat-amber-icon);
 }
 
-.deadline-banner.urgent {
-  background: #fed7aa;
-  border: 1px solid #fb923c;
+.pay-period-detail .deadline-banner.urgent {
+  background: rgba(234, 88, 12, 0.15);
+  border: 1px solid rgba(234, 88, 12, 0.4);
 }
 
-.deadline-banner.urgent svg {
+.pay-period-detail .deadline-banner.urgent svg {
   color: #ea580c;
 }
 
-.deadline-banner.overdue {
-  background: #fee2e2;
-  border: 1px solid #fca5a5;
+.pay-period-detail .deadline-banner.overdue {
+  background: var(--stat-rust-bg);
+  border: 1px solid var(--stat-rust-icon);
 }
 
-.deadline-banner.overdue svg {
-  color: #dc2626;
+.pay-period-detail .deadline-banner.overdue svg {
+  color: var(--stat-rust-icon);
 }
 
-.deadline-content {
+.pay-period-detail .deadline-content {
   flex: 1;
 }
 
-.deadline-title {
+.pay-period-detail .deadline-title {
   display: block;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   font-size: 0.875rem;
 }
 
-.deadline-date {
+.pay-period-detail .deadline-date {
   font-size: 0.875rem;
-  color: #4b5563;
+  color: var(--text-secondary);
 }
 
-.deadline-action {
+.pay-period-detail .deadline-action {
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
   font-weight: 500;
   color: white;
-  background: #3b82f6;
+  background: var(--accent-primary);
   border-radius: 6px;
   text-decoration: none;
   transition: background 0.15s;
 }
 
-.deadline-action:hover {
-  background: #2563eb;
+.pay-period-detail .deadline-action:hover {
+  background: var(--accent-olive);
 }
 
 /* Sections */
-.section {
-  background: white;
+.pay-period-detail .section {
+  background: var(--bg-card);
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
   margin-bottom: 1rem;
   overflow: hidden;
 }
 
-.section-header {
+.pay-period-detail .section-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.25rem;
-  background: white;
+  background: var(--bg-card);
   border: none;
   width: 100%;
   text-align: left;
 }
 
-.section-header.collapsible {
+.pay-period-detail .section-header.collapsible {
   cursor: pointer;
   transition: background 0.15s;
 }
 
-.section-header.collapsible:hover {
-  background: #f9fafb;
+.pay-period-detail .section-header.collapsible:hover {
+  background: var(--bg-secondary);
 }
 
-.section-header h2 {
+.pay-period-detail .section-header h2 {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   font-size: 1rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   margin: 0;
 }
 
-.section-header h2 svg {
-  color: #6b7280;
+.pay-period-detail .section-header h2 svg {
+  color: var(--accent-primary);
 }
 
-.section-content {
+.pay-period-detail .section-content {
   padding: 0 1.25rem 1.25rem;
 }
 
 /* Summary Grid */
-.summary-grid {
+.pay-period-detail .summary-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
 
-.summary-card {
+.pay-period-detail .summary-card {
   padding: 1rem;
-  background: #f9fafb;
+  background: var(--bg-secondary);
   border-radius: 8px;
 }
 
-.summary-card .label {
+.pay-period-detail .summary-card .label {
   display: block;
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--text-muted);
   margin-bottom: 0.25rem;
 }
 
-.summary-card .value {
+.pay-period-detail .summary-card .value {
   display: block;
   font-size: 1rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   font-family: 'SF Mono', 'Menlo', monospace;
 }
 
-.summary-card.primary {
-  background: #dbeafe;
+.pay-period-detail .summary-card.primary {
+  background: rgba(61, 107, 79, 0.1);
 }
 
-.summary-card.primary .value {
-  color: #1d4ed8;
+.pay-period-detail .summary-card.primary .value {
+  color: var(--accent-primary);
 }
 
-.summary-card.highlight {
-  background: #d1fae5;
+.pay-period-detail .summary-card.highlight {
+  background: var(--stat-green-bg);
 }
 
-.summary-card.highlight .value {
-  color: #047857;
+.pay-period-detail .summary-card.highlight .value {
+  color: var(--stat-green-icon);
 }
 
-.summary-card.negative .value {
-  color: #dc2626;
+.pay-period-detail .summary-card.negative .value {
+  color: var(--stat-rust-icon);
 }
 
-.summary-card.positive .value {
-  color: #059669;
+.pay-period-detail .summary-card.positive .value {
+  color: var(--stat-green-icon);
 }
 
 /* Cumulative Totals */
-.cumulative-totals {
+.pay-period-detail .cumulative-totals {
   padding: 1rem;
-  background: #f3f4f6;
+  background: var(--bg-secondary);
   border-radius: 8px;
   margin-bottom: 1.5rem;
 }
 
-.cumulative-totals h3 {
+.pay-period-detail .cumulative-totals h3 {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #374151;
+  color: var(--text-secondary);
   margin: 0 0 0.75rem 0;
 }
 
-.cumulative-row {
+.pay-period-detail .cumulative-row {
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 0;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.cumulative-row:last-child {
+.pay-period-detail .cumulative-row:last-child {
   border-bottom: none;
 }
 
-.cumulative-row .label {
-  color: #6b7280;
+.pay-period-detail .cumulative-row .label {
+  color: var(--text-muted);
   font-size: 0.875rem;
 }
 
-.cumulative-row .value {
+.pay-period-detail .cumulative-row .value {
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   font-family: 'SF Mono', 'Menlo', monospace;
 }
 
 /* Timeline */
-.timeline h3 {
+.pay-period-detail .timeline h3 {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #374151;
+  color: var(--text-secondary);
   margin: 0 0 1rem 0;
 }
 
-.timeline-items {
+.pay-period-detail .timeline-items {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
 }
 
-.timeline-item {
+.pay-period-detail .timeline-item {
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
-  background: #f9fafb;
+  background: var(--bg-secondary);
   border-radius: 8px;
   min-width: 180px;
 }
 
-.timeline-dot {
+.pay-period-detail .timeline-dot {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: #d1d5db;
+  background: var(--border-color);
   margin-top: 2px;
   flex-shrink: 0;
 }
 
-.timeline-item.completed .timeline-dot {
-  background: #10b981;
+.pay-period-detail .timeline-item.completed .timeline-dot {
+  background: var(--stat-green-icon);
 }
 
-.timeline-content {
+.pay-period-detail .timeline-content {
   display: flex;
   flex-direction: column;
 }
 
-.timeline-label {
+.pay-period-detail .timeline-label {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
-.timeline-date {
+.pay-period-detail .timeline-date {
   font-size: 0.875rem;
   font-weight: 500;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 /* Tables */
-.table-container {
+.pay-period-detail .table-container {
   overflow-x: auto;
   margin: -0.25rem;
   padding: 0.25rem;
 }
 
-.data-table {
+.pay-period-detail .data-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.875rem;
 }
 
-.data-table th {
+.pay-period-detail .data-table th {
   text-align: left;
   padding: 0.75rem 0.5rem;
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #6b7280;
-  background: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
+  color: var(--text-muted);
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
   white-space: nowrap;
 }
 
-.data-table td {
+.pay-period-detail .data-table td {
   padding: 0.75rem 0.5rem;
-  border-bottom: 1px solid #f3f4f6;
-  color: #374151;
+  border-bottom: 1px solid var(--bg-secondary);
+  color: var(--text-secondary);
 }
 
-.data-table tbody tr:hover {
-  background: #f9fafb;
+.pay-period-detail .data-table tbody tr:hover {
+  background: var(--bg-secondary);
 }
 
-.data-table .mono {
+.pay-period-detail .data-table .mono {
   font-family: 'SF Mono', 'Menlo', monospace;
   font-size: 0.8125rem;
 }
 
-.data-table .amount {
+.pay-period-detail .data-table .amount {
   font-family: 'SF Mono', 'Menlo', monospace;
   text-align: right;
 }
 
-.data-table .negative {
-  color: #dc2626;
+.pay-period-detail .data-table .negative {
+  color: var(--stat-rust-icon);
 }
 
-.data-table .positive {
-  color: #059669;
+.pay-period-detail .data-table .positive {
+  color: var(--stat-green-icon);
 }
 
-.data-table .highlight {
+.pay-period-detail .data-table .highlight {
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
-.data-table tfoot td {
+.pay-period-detail .data-table tfoot td {
   font-weight: 600;
-  background: #f3f4f6;
-  border-top: 2px solid #e5e7eb;
+  background: var(--bg-secondary);
+  border-top: 2px solid var(--border-color);
   border-bottom: none;
 }
 
-.sub-name {
+.pay-period-detail .sub-name {
   font-weight: 500;
 }
 
-.status-pill {
+.pay-period-detail .status-pill {
   display: inline-flex;
   padding: 0.25rem 0.625rem;
   font-size: 0.75rem;
   font-weight: 500;
   border-radius: 9999px;
-  background: #f3f4f6;
-  color: #6b7280;
+  background: var(--bg-secondary);
+  color: var(--text-muted);
 }
 
-.status-pill.pending-approval {
-  background: #fef3c7;
-  color: #d97706;
+.pay-period-detail .status-pill.pending-approval {
+  background: var(--stat-amber-bg);
+  color: var(--stat-amber-icon);
 }
 
-.status-pill.approved {
-  background: #d1fae5;
-  color: #059669;
+.pay-period-detail .status-pill.approved {
+  background: var(--stat-green-bg);
+  color: var(--stat-green-icon);
 }
 
-.status-pill.draft {
-  background: #e0e7ff;
-  color: #4f46e5;
+.pay-period-detail .status-pill.draft {
+  background: rgba(61, 107, 79, 0.1);
+  color: var(--accent-primary);
 }
 
 /* IMR Cards */
-.imr-list {
+.pay-period-detail .imr-list {
   display: grid;
   gap: 1rem;
 }
 
-.imr-card {
+.pay-period-detail .imr-card {
   padding: 1rem;
-  background: #fef3c7;
-  border: 1px solid #fde047;
+  background: var(--stat-amber-bg);
+  border: 1px solid rgba(180, 130, 60, 0.3);
   border-radius: 8px;
 }
 
-.imr-header {
+.pay-period-detail .imr-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.5rem;
 }
 
-.imr-header .item-number {
+.pay-period-detail .imr-header .item-number {
   font-family: 'SF Mono', 'Menlo', monospace;
   font-weight: 600;
-  color: #92400e;
+  color: var(--stat-amber-icon);
 }
 
-.imr-status {
+.pay-period-detail .imr-status {
   padding: 0.25rem 0.625rem;
   font-size: 0.75rem;
   font-weight: 500;
   border-radius: 9999px;
-  background: #fef9c3;
-  color: #854d0e;
+  background: rgba(180, 130, 60, 0.2);
+  color: var(--stat-amber-icon);
 }
 
-.imr-status.resolved-released {
-  background: #d1fae5;
-  color: #047857;
+.pay-period-detail .imr-status.resolved-released {
+  background: var(--stat-green-bg);
+  color: var(--stat-green-icon);
 }
 
-.imr-status.documentation-submitted {
-  background: #dbeafe;
-  color: #1d4ed8;
+.pay-period-detail .imr-status.documentation-submitted {
+  background: rgba(61, 107, 79, 0.1);
+  color: var(--accent-primary);
 }
 
-.imr-description {
+.pay-period-detail .imr-description {
   font-size: 0.875rem;
-  color: #78350f;
+  color: var(--stat-amber-icon);
   margin: 0 0 0.75rem 0;
 }
 
-.imr-details {
+.pay-period-detail .imr-details {
   display: flex;
   gap: 1.5rem;
   flex-wrap: wrap;
 }
 
-.imr-detail {
+.pay-period-detail .imr-detail {
   display: flex;
   flex-direction: column;
 }
 
-.imr-detail .label {
+.pay-period-detail .imr-detail .label {
   font-size: 0.75rem;
-  color: #92400e;
+  color: var(--stat-amber-icon);
 }
 
-.imr-detail .value {
+.pay-period-detail .imr-detail .value {
   font-weight: 600;
-  color: #78350f;
+  color: var(--stat-amber-icon);
 }
 
-.imr-detail .value.negative {
-  color: #dc2626;
+.pay-period-detail .imr-detail .value.negative {
+  color: var(--stat-rust-icon);
 }
 
-.imr-detail .value.positive {
-  color: #059669;
+.pay-period-detail .imr-detail .value.positive {
+  color: var(--stat-green-icon);
 }
 
 /* Empty State */
-.empty-state {
+.pay-period-detail .empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -605,27 +613,27 @@
   text-align: center;
 }
 
-.empty-state svg {
-  color: #9ca3af;
+.pay-period-detail .empty-state svg {
+  color: var(--text-muted);
   margin-bottom: 0.75rem;
 }
 
-.empty-state p {
-  color: #6b7280;
+.pay-period-detail .empty-state p {
+  color: var(--text-muted);
   margin: 0 0 1rem 0;
 }
 
 /* Section Actions */
-.section-actions {
+.pay-period-detail .section-actions {
   display: flex;
   justify-content: flex-end;
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--border-color);
 }
 
 /* Animations */
-.spin {
+.pay-period-detail .spin {
   animation: spin 1s linear infinite;
 }
 
@@ -644,30 +652,30 @@
     padding: 1rem;
   }
 
-  .detail-header {
+  .pay-period-detail .detail-header {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .back-button {
+  .pay-period-detail .back-button {
     align-self: flex-start;
   }
 
-  .summary-grid {
+  .pay-period-detail .summary-grid {
     grid-template-columns: 1fr 1fr;
   }
 
-  .timeline-items {
+  .pay-period-detail .timeline-items {
     flex-direction: column;
   }
 
-  .deadline-banner {
+  .pay-period-detail .deadline-banner {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.75rem;
   }
 
-  .deadline-action {
+  .pay-period-detail .deadline-action {
     width: 100%;
     text-align: center;
   }

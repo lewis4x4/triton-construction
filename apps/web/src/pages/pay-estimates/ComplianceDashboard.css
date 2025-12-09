@@ -1,7 +1,14 @@
+/* =====================================================
+   COMPLIANCE DASHBOARD
+   Triton AI Platform - Unified Forest Green Theme
+   ===================================================== */
+
 .compliance-dashboard {
   padding: 1.5rem;
   max-width: 1200px;
   margin: 0 auto;
+  background: var(--bg-page);
+  min-height: 100vh;
 }
 
 .compliance-dashboard.loading {
@@ -14,85 +21,88 @@
 }
 
 .compliance-dashboard.loading svg {
-  color: #3b82f6;
+  color: var(--accent-primary);
 }
 
 /* Header */
-.dashboard-header {
+.compliance-dashboard .dashboard-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 1.5rem;
   gap: 1rem;
   flex-wrap: wrap;
+  padding: 24px 32px;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-olive) 100%);
+  border-radius: 16px;
 }
 
-.header-content h1 {
+.compliance-dashboard .header-content h1 {
   font-size: 1.75rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-inverse);
   margin: 0 0 0.25rem 0;
 }
 
-.header-content p {
-  color: #6b7280;
+.compliance-dashboard .header-content p {
+  color: rgba(255, 255, 255, 0.8);
   margin: 0;
   font-size: 0.875rem;
 }
 
-.btn-secondary {
+.compliance-dashboard .btn-secondary {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.625rem 1rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #374151;
-  background: white;
-  border: 1px solid #d1d5db;
+  color: var(--text-inverse);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.15s;
 }
 
-.btn-secondary:hover {
-  background: #f9fafb;
-  border-color: #9ca3af;
+.compliance-dashboard .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.25);
 }
 
 /* Demo Banner */
-.demo-banner {
+.compliance-dashboard .demo-banner {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1rem;
-  background: #fef3c7;
-  border: 1px solid #fde047;
+  background: var(--stat-amber-bg);
+  border: 1px solid rgba(180, 130, 60, 0.3);
   border-radius: 8px;
   margin-bottom: 1.5rem;
   font-size: 0.875rem;
-  color: #92400e;
+  color: var(--stat-amber-icon);
 }
 
 /* Stats Grid */
-.stats-grid {
+.compliance-dashboard .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 1rem;
   margin-bottom: 2rem;
 }
 
-.stat-card {
+.compliance-dashboard .stat-card {
   display: flex;
   align-items: center;
   gap: 1rem;
   padding: 1.25rem;
-  background: white;
+  background: var(--bg-card);
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
 }
 
-.stat-icon {
+.compliance-dashboard .stat-icon {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -102,90 +112,90 @@
   flex-shrink: 0;
 }
 
-.stat-card.overdue .stat-icon {
-  background: #fee2e2;
-  color: #dc2626;
+.compliance-dashboard .stat-card.overdue .stat-icon {
+  background: var(--stat-rust-bg);
+  color: var(--stat-rust-icon);
 }
 
-.stat-card.urgent .stat-icon {
-  background: #fed7aa;
+.compliance-dashboard .stat-card.urgent .stat-icon {
+  background: rgba(234, 88, 12, 0.15);
   color: #ea580c;
 }
 
-.stat-card.warning .stat-icon {
-  background: #fef3c7;
-  color: #d97706;
+.compliance-dashboard .stat-card.warning .stat-icon {
+  background: var(--stat-amber-bg);
+  color: var(--stat-amber-icon);
 }
 
-.stat-card.on-track .stat-icon {
-  background: #d1fae5;
-  color: #059669;
+.compliance-dashboard .stat-card.on-track .stat-icon {
+  background: var(--stat-green-bg);
+  color: var(--stat-green-icon);
 }
 
-.stat-card.total .stat-icon {
-  background: #dbeafe;
-  color: #2563eb;
+.compliance-dashboard .stat-card.total .stat-icon {
+  background: var(--stat-navy-bg);
+  color: var(--stat-navy-icon);
 }
 
-.stat-content {
+.compliance-dashboard .stat-content {
   display: flex;
   flex-direction: column;
   min-width: 0;
 }
 
-.stat-value {
+.compliance-dashboard .stat-value {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   line-height: 1.2;
 }
 
-.stat-label {
+.compliance-dashboard .stat-label {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-muted);
   margin-top: 0.125rem;
 }
 
 /* Escalations Section */
-.escalations-section {
+.compliance-dashboard .escalations-section {
   margin-bottom: 2rem;
 }
 
-.escalations-section h2 {
+.compliance-dashboard .escalations-section h2 {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   font-size: 1.125rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   margin: 0 0 1rem 0;
 }
 
-.escalations-section h2 svg {
-  color: #dc2626;
+.compliance-dashboard .escalations-section h2 svg {
+  color: var(--stat-rust-icon);
 }
 
-.escalation-list {
+.compliance-dashboard .escalation-list {
   display: grid;
   gap: 1rem;
 }
 
-.escalation-card {
-  background: white;
+.compliance-dashboard .escalation-card {
+  background: var(--bg-card);
   border-radius: 10px;
   border-left: 4px solid;
   padding: 1rem 1.25rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
 }
 
-.escalation-header {
+.compliance-dashboard .escalation-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.5rem;
 }
 
-.escalation-badge {
+.compliance-dashboard .escalation-badge {
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
@@ -195,92 +205,93 @@
   border-radius: 9999px;
 }
 
-.escalation-date {
+.compliance-dashboard .escalation-date {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
-.escalation-message {
+.compliance-dashboard .escalation-message {
   font-size: 0.875rem;
-  color: #374151;
+  color: var(--text-secondary);
   margin: 0 0 0.75rem 0;
   line-height: 1.5;
 }
 
-.escalation-meta {
+.compliance-dashboard .escalation-meta {
   display: flex;
   gap: 1rem;
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--text-muted);
   margin-bottom: 0.75rem;
 }
 
-.escalation-actions {
+.compliance-dashboard .escalation-actions {
   display: flex;
   gap: 1rem;
   align-items: center;
 }
 
-.link-action {
+.compliance-dashboard .link-action {
   display: flex;
   align-items: center;
   gap: 0.375rem;
   font-size: 0.8125rem;
-  color: #3b82f6;
+  color: var(--accent-primary);
   text-decoration: none;
 }
 
-.link-action:hover {
+.compliance-dashboard .link-action:hover {
   text-decoration: underline;
 }
 
-.btn-acknowledge {
+.compliance-dashboard .btn-acknowledge {
   padding: 0.375rem 0.75rem;
   font-size: 0.8125rem;
   font-weight: 500;
-  color: #374151;
-  background: #f3f4f6;
-  border: 1px solid #d1d5db;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.15s;
 }
 
-.btn-acknowledge:hover {
-  background: #e5e7eb;
+.compliance-dashboard .btn-acknowledge:hover {
+  background: var(--border-color);
 }
 
 /* Timeline Section */
-.timeline-section {
-  background: white;
+.compliance-dashboard .timeline-section {
+  background: var(--bg-card);
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
 }
 
-.timeline-section > h2 {
+.compliance-dashboard .timeline-section > h2 {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   font-size: 1.125rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   margin: 0 0 1.5rem 0;
 }
 
-.timeline-section > h2 svg {
-  color: #6b7280;
+.compliance-dashboard .timeline-section > h2 svg {
+  color: var(--accent-primary);
 }
 
-.timeline-group {
+.compliance-dashboard .timeline-group {
   margin-bottom: 1.5rem;
 }
 
-.timeline-group:last-child {
+.compliance-dashboard .timeline-group:last-child {
   margin-bottom: 0;
 }
 
-.timeline-group h3 {
+.compliance-dashboard .timeline-group h3 {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -291,57 +302,57 @@
   border-radius: 6px;
 }
 
-.timeline-group.overdue h3 {
-  background: #fee2e2;
-  color: #991b1b;
+.compliance-dashboard .timeline-group.overdue h3 {
+  background: var(--stat-rust-bg);
+  color: var(--stat-rust-icon);
 }
 
-.timeline-group.urgent h3 {
-  background: #fed7aa;
+.compliance-dashboard .timeline-group.urgent h3 {
+  background: rgba(234, 88, 12, 0.15);
   color: #c2410c;
 }
 
-.timeline-group.warning h3 {
-  background: #fef3c7;
-  color: #92400e;
+.compliance-dashboard .timeline-group.warning h3 {
+  background: var(--stat-amber-bg);
+  color: var(--stat-amber-icon);
 }
 
-.timeline-group.on-track h3 {
-  background: #d1fae5;
-  color: #065f46;
+.compliance-dashboard .timeline-group.on-track h3 {
+  background: var(--stat-green-bg);
+  color: var(--stat-green-icon);
 }
 
-.deadline-list {
+.compliance-dashboard .deadline-list {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
 /* Deadline Card */
-.deadline-card {
+.compliance-dashboard .deadline-card {
   display: flex;
   align-items: center;
   gap: 1rem;
   padding: 1rem;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   text-decoration: none;
   color: inherit;
   transition: all 0.15s;
 }
 
-.deadline-card:hover {
-  background: white;
-  border-color: #3b82f6;
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+.compliance-dashboard .deadline-card:hover {
+  background: var(--bg-card);
+  border-color: var(--accent-primary);
+  box-shadow: 0 2px 8px rgba(61, 107, 79, 0.1);
 }
 
-.deadline-progress {
+.compliance-dashboard .deadline-progress {
   flex-shrink: 0;
 }
 
-.progress-indicator {
+.compliance-dashboard .progress-indicator {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -352,105 +363,105 @@
   text-align: center;
 }
 
-.progress-indicator .days {
+.compliance-dashboard .progress-indicator .days {
   font-size: 1.25rem;
   font-weight: 700;
   line-height: 1;
 }
 
-.progress-indicator .label {
+.compliance-dashboard .progress-indicator .label {
   font-size: 0.625rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
-.progress-indicator.overdue {
-  background: #fee2e2;
-  color: #dc2626;
+.compliance-dashboard .progress-indicator.overdue {
+  background: var(--stat-rust-bg);
+  color: var(--stat-rust-icon);
 }
 
-.progress-indicator.urgent {
-  background: #fed7aa;
+.compliance-dashboard .progress-indicator.urgent {
+  background: rgba(234, 88, 12, 0.15);
   color: #ea580c;
 }
 
-.progress-indicator.warning {
-  background: #fef3c7;
-  color: #d97706;
+.compliance-dashboard .progress-indicator.warning {
+  background: var(--stat-amber-bg);
+  color: var(--stat-amber-icon);
 }
 
-.progress-indicator.on-track {
-  background: #d1fae5;
-  color: #059669;
+.compliance-dashboard .progress-indicator.on-track {
+  background: var(--stat-green-bg);
+  color: var(--stat-green-icon);
 }
 
-.deadline-info {
+.compliance-dashboard .deadline-info {
   flex: 1;
   min-width: 0;
 }
 
-.deadline-project {
+.compliance-dashboard .deadline-project {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 0.25rem;
 }
 
-.deadline-project svg {
-  color: #6b7280;
+.compliance-dashboard .deadline-project svg {
+  color: var(--text-muted);
   flex-shrink: 0;
 }
 
-.deadline-project .project-name {
+.compliance-dashboard .deadline-project .project-name {
   font-weight: 500;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
-.deadline-project .contract {
+.compliance-dashboard .deadline-project .contract {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
-.deadline-details {
+.compliance-dashboard .deadline-details {
   display: flex;
   gap: 1rem;
   font-size: 0.8125rem;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
-.deadline-amount {
+.compliance-dashboard .deadline-amount {
   text-align: right;
   flex-shrink: 0;
 }
 
-.deadline-amount .amount {
+.compliance-dashboard .deadline-amount .amount {
   display: block;
   font-size: 1rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   font-family: 'SF Mono', 'Menlo', monospace;
 }
 
-.deadline-amount .sub-status {
+.compliance-dashboard .deadline-amount .sub-status {
   display: block;
   font-size: 0.75rem;
-  color: #d97706;
+  color: var(--stat-amber-icon);
   margin-top: 0.25rem;
 }
 
-.deadline-card .chevron {
-  color: #9ca3af;
+.compliance-dashboard .deadline-card .chevron {
+  color: var(--text-muted);
   flex-shrink: 0;
   transition: transform 0.15s;
 }
 
-.deadline-card:hover .chevron {
-  color: #3b82f6;
+.compliance-dashboard .deadline-card:hover .chevron {
+  color: var(--accent-primary);
   transform: translateX(2px);
 }
 
 /* Empty State */
-.empty-state {
+.compliance-dashboard .empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -458,35 +469,31 @@
   text-align: center;
 }
 
-.empty-state svg {
-  color: #10b981;
+.compliance-dashboard .empty-state svg {
+  color: var(--stat-green-icon);
   margin-bottom: 1rem;
 }
 
-.empty-state h3 {
+.compliance-dashboard .empty-state h3 {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   margin: 0 0 0.5rem 0;
 }
 
-.empty-state p {
-  color: #6b7280;
+.compliance-dashboard .empty-state p {
+  color: var(--text-muted);
   margin: 0;
 }
 
 /* Animation */
-.spin {
+.compliance-dashboard .spin {
   animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* Responsive */
@@ -495,19 +502,24 @@
     padding: 1rem;
   }
 
-  .stats-grid {
+  .compliance-dashboard .dashboard-header {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .compliance-dashboard .stats-grid {
     grid-template-columns: 1fr 1fr;
   }
 
-  .deadline-card {
+  .compliance-dashboard .deadline-card {
     flex-wrap: wrap;
   }
 
-  .deadline-amount {
+  .compliance-dashboard .deadline-amount {
     width: 100%;
     text-align: left;
     margin-top: 0.5rem;
     padding-top: 0.5rem;
-    border-top: 1px solid #e5e7eb;
+    border-top: 1px solid var(--border-color);
   }
 }

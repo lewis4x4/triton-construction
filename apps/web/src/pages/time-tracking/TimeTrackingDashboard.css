@@ -1,103 +1,116 @@
+/* =====================================================
+   TIME TRACKING DASHBOARD
+   Triton AI Platform - Unified Forest Green Theme
+   ===================================================== */
+
 .time-tracking-page {
-  padding: 24px;
+  padding: 1.5rem;
   max-width: 1600px;
   margin: 0 auto;
+  background: var(--bg-page);
+  min-height: 100vh;
 }
 
-.page-header {
+.time-tracking-page .page-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
+  padding: 24px 32px;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-olive) 100%);
+  border-radius: 16px;
 }
 
-.header-content h1 {
+.time-tracking-page .header-content h1 {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 28px;
+  gap: 0.75rem;
+  font-size: 1.75rem;
   font-weight: 600;
-  color: #1a1a2e;
-  margin: 0 0 8px 0;
+  color: var(--text-inverse);
+  margin: 0 0 0.5rem 0;
 }
 
-.header-content p {
-  color: #6b7280;
+.time-tracking-page .header-content p {
+  color: rgba(255, 255, 255, 0.8);
   margin: 0;
 }
 
-.header-actions {
+.time-tracking-page .header-actions {
   display: flex;
-  gap: 12px;
+  gap: 0.75rem;
   align-items: center;
 }
 
-.period-select {
-  padding: 10px 16px;
-  border: 1px solid #e5e7eb;
+.time-tracking-page .period-select {
+  padding: 0.625rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
-  background: white;
-  font-size: 14px;
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--text-inverse);
+  font-size: 0.875rem;
   cursor: pointer;
 }
 
-.btn {
+.time-tracking-page .btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
   border-radius: 8px;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 0.875rem;
   cursor: pointer;
   border: none;
   transition: all 0.2s;
   text-decoration: none;
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, #4f46e5, #6366f1);
-  color: white;
+.time-tracking-page .btn-primary {
+  background: var(--text-inverse);
+  color: var(--accent-primary);
+  box-shadow: var(--shadow-md);
 }
 
-.btn-primary:hover {
+.time-tracking-page .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  box-shadow: var(--shadow-lg);
 }
 
-.btn-secondary {
-  background: white;
-  color: #374151;
-  border: 1px solid #e5e7eb;
+.time-tracking-page .btn-secondary {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--text-inverse);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.btn-secondary:hover {
-  background: #f9fafb;
+.time-tracking-page .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.25);
 }
 
 /* Stats Grid */
-.stats-grid {
+.time-tracking-page .stats-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-.stat-card {
-  background: white;
+.time-tracking-page .stat-card {
+  background: var(--bg-card);
   border-radius: 12px;
-  padding: 20px;
+  padding: 1.25rem;
   display: flex;
   align-items: center;
-  gap: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  gap: 1rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
 }
 
-.stat-card.warning {
-  border-left: 4px solid #f59e0b;
+.time-tracking-page .stat-card.warning {
+  border-left: 4px solid var(--stat-amber-icon);
 }
 
-.stat-icon {
+.time-tracking-page .stat-icon {
   width: 48px;
   height: 48px;
   border-radius: 12px;
@@ -106,351 +119,392 @@
   justify-content: center;
 }
 
-.stat-icon.hours { background: #e0e7ff; color: #4f46e5; }
-.stat-icon.workers { background: #dbeafe; color: #2563eb; }
-.stat-icon.pending { background: #fef3c7; color: #d97706; }
-.stat-icon.overtime { background: #fce7f3; color: #db2777; }
-.stat-icon.cost { background: #d1fae5; color: #059669; }
+.time-tracking-page .stat-icon.hours {
+  background: rgba(61, 107, 79, 0.1);
+  color: var(--accent-primary);
+}
 
-.stat-content {
+.time-tracking-page .stat-icon.workers {
+  background: var(--stat-navy-bg);
+  color: var(--stat-navy-icon);
+}
+
+.time-tracking-page .stat-icon.pending {
+  background: var(--stat-amber-bg);
+  color: var(--stat-amber-icon);
+}
+
+.time-tracking-page .stat-icon.overtime {
+  background: var(--stat-plum-bg);
+  color: var(--stat-plum-icon);
+}
+
+.time-tracking-page .stat-icon.cost {
+  background: var(--stat-green-bg);
+  color: var(--stat-green-icon);
+}
+
+.time-tracking-page .stat-content {
   display: flex;
   flex-direction: column;
 }
 
-.stat-value {
-  font-size: 24px;
+.time-tracking-page .stat-value {
+  font-size: 1.5rem;
   font-weight: 700;
-  color: #1a1a2e;
+  color: var(--text-primary);
 }
 
-.stat-label {
-  font-size: 12px;
-  color: #6b7280;
+.time-tracking-page .stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 /* Quick Actions */
-.quick-actions {
+.time-tracking-page .quick-actions {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-.action-card {
-  background: white;
+.time-tracking-page .action-card {
+  background: var(--bg-card);
   border-radius: 12px;
-  padding: 20px;
+  padding: 1.25rem;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 1rem;
   text-decoration: none;
   color: inherit;
   transition: all 0.2s;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
   border: 2px solid transparent;
 }
 
-.action-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.time-tracking-page .action-card:hover {
+  box-shadow: var(--shadow-md);
   transform: translateY(-2px);
+  border-color: var(--accent-primary);
 }
 
-.action-card.highlight {
-  border-color: #f59e0b;
-  background: linear-gradient(135deg, #fffbeb, #fef3c7);
+.time-tracking-page .action-card.highlight {
+  border-color: var(--stat-amber-icon);
+  background: var(--stat-amber-bg);
 }
 
-.action-icon {
+.time-tracking-page .action-icon {
   width: 48px;
   height: 48px;
   border-radius: 12px;
-  background: #f3f4f6;
+  background: var(--bg-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #4f46e5;
+  color: var(--accent-primary);
 }
 
-.action-card.highlight .action-icon {
-  background: #fef3c7;
-  color: #d97706;
+.time-tracking-page .action-card.highlight .action-icon {
+  background: rgba(180, 130, 60, 0.2);
+  color: var(--stat-amber-icon);
 }
 
-.action-content {
+.time-tracking-page .action-content {
   flex: 1;
 }
 
-.action-content h3 {
-  margin: 0 0 4px 0;
-  font-size: 16px;
+.time-tracking-page .action-content h3 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
   font-weight: 600;
-  color: #1a1a2e;
+  color: var(--text-primary);
 }
 
-.action-content p {
+.time-tracking-page .action-content p {
   margin: 0;
-  font-size: 13px;
-  color: #6b7280;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
 }
 
-.action-card svg:last-child {
-  color: #9ca3af;
+.time-tracking-page .action-card svg:last-child {
+  color: var(--text-muted);
 }
 
 /* Dashboard Grid */
-.dashboard-grid {
+.time-tracking-page .dashboard-grid {
   display: grid;
   grid-template-columns: 350px 1fr;
-  gap: 24px;
-  margin-bottom: 24px;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
-.dashboard-card {
-  background: white;
+.time-tracking-page .dashboard-card {
+  background: var(--bg-card);
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
   overflow: hidden;
 }
 
-.dashboard-card.wide {
+.time-tracking-page .dashboard-card.wide {
   grid-column: span 1;
 }
 
-.card-header {
+.time-tracking-page .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 20px;
-  border-bottom: 1px solid #e5e7eb;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.card-header h2 {
+.time-tracking-page .card-header h2 {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
   margin: 0;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
-  color: #1a1a2e;
+  color: var(--text-primary);
 }
 
-.count-badge {
-  font-size: 12px;
-  padding: 4px 10px;
-  background: #d1fae5;
-  color: #059669;
+.time-tracking-page .count-badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.625rem;
+  background: var(--stat-green-bg);
+  color: var(--stat-green-icon);
   border-radius: 20px;
   font-weight: 600;
 }
 
-.view-all-link {
+.time-tracking-page .view-all-link {
   display: flex;
   align-items: center;
-  gap: 4px;
-  font-size: 13px;
-  color: #4f46e5;
+  gap: 0.25rem;
+  font-size: 0.8125rem;
+  color: var(--accent-primary);
   text-decoration: none;
   font-weight: 500;
 }
 
-.view-all-link:hover {
+.time-tracking-page .view-all-link:hover {
   text-decoration: underline;
 }
 
 /* Active Clocks List */
-.active-clocks-list {
-  padding: 12px;
+.time-tracking-page .active-clocks-list {
+  padding: 0.75rem;
 }
 
-.clock-item {
+.time-tracking-page .clock-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px;
-  background: #f9fafb;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: var(--bg-secondary);
   border-radius: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
 }
 
-.clock-item:last-child {
+.time-tracking-page .clock-item:last-child {
   margin-bottom: 0;
 }
 
-.clock-info {
+.time-tracking-page .clock-info {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.worker-name {
+.time-tracking-page .worker-name {
   font-weight: 600;
-  font-size: 14px;
-  color: #1a1a2e;
+  font-size: 0.875rem;
+  color: var(--text-primary);
 }
 
-.project-name {
-  font-size: 12px;
-  color: #6b7280;
+.time-tracking-page .project-name {
+  font-size: 0.75rem;
+  color: var(--text-muted);
 }
 
-.clock-time {
+.time-tracking-page .clock-time {
   text-align: right;
 }
 
-.clock-in {
+.time-tracking-page .clock-in {
   display: block;
-  font-size: 12px;
-  color: #6b7280;
+  font-size: 0.75rem;
+  color: var(--text-muted);
 }
 
-.duration {
+.time-tracking-page .duration {
   display: block;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
-  color: #059669;
+  color: var(--stat-green-icon);
 }
 
-.btn-icon {
+.time-tracking-page .btn-icon {
   width: 32px;
   height: 32px;
   border-radius: 6px;
   border: none;
-  background: #fee2e2;
-  color: #dc2626;
+  background: var(--stat-rust-bg);
+  color: var(--stat-rust-icon);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.btn-icon:hover {
-  background: #fecaca;
+.time-tracking-page .btn-icon:hover {
+  background: rgba(183, 99, 89, 0.3);
 }
 
-.empty-state-small {
-  padding: 20px;
+.time-tracking-page .empty-state-small {
+  padding: 1.25rem;
   text-align: center;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 /* Entries Table */
-.entries-table {
+.time-tracking-page .entries-table {
   overflow-x: auto;
 }
 
-.entries-table table {
+.time-tracking-page .entries-table table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.entries-table th,
-.entries-table td {
-  padding: 12px 16px;
+.time-tracking-page .entries-table th,
+.time-tracking-page .entries-table td {
+  padding: 0.75rem 1rem;
   text-align: left;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.entries-table th {
-  font-size: 11px;
+.time-tracking-page .entries-table th {
+  font-size: 0.6875rem;
   font-weight: 600;
   text-transform: uppercase;
-  color: #6b7280;
-  background: #f9fafb;
+  color: var(--text-muted);
+  background: var(--bg-secondary);
 }
 
-.entries-table td {
-  font-size: 14px;
-  color: #374151;
+.time-tracking-page .entries-table td {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
 }
 
-.worker-cell {
+.time-tracking-page .worker-cell {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.worker-cell .name {
+.time-tracking-page .worker-cell .name {
   font-weight: 500;
-  color: #1a1a2e;
+  color: var(--text-primary);
 }
 
-.worker-cell .trade {
-  font-size: 12px;
-  color: #6b7280;
+.time-tracking-page .worker-cell .trade {
+  font-size: 0.75rem;
+  color: var(--text-muted);
 }
 
-.entries-table td.overtime {
-  color: #db2777;
+.time-tracking-page .entries-table td.overtime {
+  color: var(--stat-plum-icon);
   font-weight: 600;
 }
 
-.status-badge {
+.time-tracking-page .status-badge {
   display: inline-block;
-  padding: 4px 10px;
+  padding: 0.25rem 0.625rem;
   border-radius: 20px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   text-transform: uppercase;
 }
 
-.status-approved { background: #d1fae5; color: #065f46; }
-.status-pending { background: #fef3c7; color: #92400e; }
-.status-rejected { background: #fee2e2; color: #991b1b; }
-.status-submitted { background: #dbeafe; color: #1e40af; }
-.status-unknown { background: #f3f4f6; color: #6b7280; }
-
-/* Weekly Summary */
-.weekly-summary {
-  background: white;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+.time-tracking-page .status-approved {
+  background: var(--stat-green-bg);
+  color: var(--stat-green-icon);
 }
 
-.summary-header {
+.time-tracking-page .status-pending {
+  background: var(--stat-amber-bg);
+  color: var(--stat-amber-icon);
+}
+
+.time-tracking-page .status-rejected {
+  background: var(--stat-rust-bg);
+  color: var(--stat-rust-icon);
+}
+
+.time-tracking-page .status-submitted {
+  background: rgba(61, 107, 79, 0.1);
+  color: var(--accent-primary);
+}
+
+.time-tracking-page .status-unknown {
+  background: var(--bg-secondary);
+  color: var(--text-muted);
+}
+
+/* Weekly Summary */
+.time-tracking-page .weekly-summary {
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+
+.time-tracking-page .summary-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
 }
 
-.summary-header h2 {
+.time-tracking-page .summary-header h2 {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
   margin: 0;
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 600;
-  color: #1a1a2e;
+  color: var(--text-primary);
 }
 
-.summary-bars {
+.time-tracking-page .summary-bars {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   height: 200px;
-  gap: 16px;
+  gap: 1rem;
 }
 
-.day-bar {
+.time-tracking-page .day-bar {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
-.day-bar.today .bar-fill {
-  background: linear-gradient(180deg, #4f46e5, #6366f1);
+.time-tracking-page .day-bar.today .bar-fill {
+  background: linear-gradient(180deg, var(--accent-primary), var(--accent-olive));
 }
 
-.bar-container {
+.time-tracking-page .bar-container {
   width: 100%;
   height: 150px;
-  background: #f3f4f6;
+  background: var(--bg-secondary);
   border-radius: 8px;
   position: relative;
   overflow: hidden;
@@ -458,41 +512,42 @@
   align-items: flex-end;
 }
 
-.bar-fill {
+.time-tracking-page .bar-fill {
   width: 100%;
-  background: linear-gradient(180deg, #818cf8, #a5b4fc);
+  background: linear-gradient(180deg, rgba(61, 107, 79, 0.6), rgba(61, 107, 79, 0.3));
   border-radius: 8px;
   transition: height 0.3s ease;
 }
 
-.day-label {
-  font-size: 12px;
+.time-tracking-page .day-label {
+  font-size: 0.75rem;
   font-weight: 600;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
-.day-bar.today .day-label {
-  color: #4f46e5;
+.time-tracking-page .day-bar.today .day-label {
+  color: var(--accent-primary);
 }
 
-.hours-label {
-  font-size: 11px;
-  color: #9ca3af;
+.time-tracking-page .hours-label {
+  font-size: 0.6875rem;
+  color: var(--text-muted);
 }
 
 /* Loading State */
-.loading-state {
+.time-tracking-page .loading-state {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 20px;
-  color: #6b7280;
+  padding: 3.75rem 1.25rem;
+  color: var(--text-muted);
 }
 
-.loading-state .spinning {
+.time-tracking-page .loading-state .spinning {
   animation: spin 1s linear infinite;
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
+  color: var(--accent-primary);
 }
 
 @keyframes spin {
@@ -502,38 +557,39 @@
 
 /* Responsive */
 @media (max-width: 1200px) {
-  .stats-grid {
+  .time-tracking-page .stats-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .quick-actions {
+  .time-tracking-page .quick-actions {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .dashboard-grid {
+  .time-tracking-page .dashboard-grid {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 768px) {
   .time-tracking-page {
-    padding: 16px;
+    padding: 1rem;
   }
 
-  .page-header {
+  .time-tracking-page .page-header {
     flex-direction: column;
-    gap: 16px;
+    gap: 1rem;
+    padding: 20px;
   }
 
-  .stats-grid {
+  .time-tracking-page .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .quick-actions {
+  .time-tracking-page .quick-actions {
     grid-template-columns: 1fr;
   }
 
-  .summary-bars {
-    gap: 8px;
+  .time-tracking-page .summary-bars {
+    gap: 0.5rem;
   }
 }

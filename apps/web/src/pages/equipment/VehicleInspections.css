@@ -1,37 +1,45 @@
+/* ============================================
+   Vehicle Inspections - Unified Forest Green Theme
+   ============================================ */
+
 .vehicle-inspections-page {
   padding: 24px;
-  background: #f8fafc;
+  background: var(--bg-page);
   min-height: 100vh;
 }
 
-.page-header {
+.vehicle-inspections-page .page-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 24px;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-olive) 100%);
+  padding: 1.5rem 2rem;
+  border-radius: 1rem;
+  color: var(--text-inverse);
 }
 
-.header-content h1 {
+.vehicle-inspections-page .header-content h1 {
   display: flex;
   align-items: center;
   gap: 12px;
   font-size: 28px;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--text-inverse);
   margin: 0 0 8px 0;
 }
 
-.header-content p {
-  color: #64748b;
+.vehicle-inspections-page .header-content p {
+  color: rgba(255, 255, 255, 0.8);
   margin: 0;
 }
 
-.header-actions {
+.vehicle-inspections-page .header-actions {
   display: flex;
   gap: 12px;
 }
 
-.btn {
+.vehicle-inspections-page .btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -43,49 +51,51 @@
   border: none;
 }
 
-.btn-primary {
-  background: #3b82f6;
-  color: white;
+.vehicle-inspections-page .btn-primary {
+  background: var(--text-inverse);
+  color: var(--accent-primary);
 }
 
-.btn-primary:hover {
-  background: #2563eb;
+.vehicle-inspections-page .btn-primary:hover {
+  background: var(--bg-page);
+  transform: translateY(-1px);
 }
 
-.btn-secondary {
-  background: white;
-  color: #374151;
-  border: 1px solid #e5e7eb;
+.vehicle-inspections-page .btn-secondary {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--text-inverse);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.btn-secondary:hover {
-  background: #f9fafb;
+.vehicle-inspections-page .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.25);
 }
 
 /* Stats Grid */
-.stats-grid {
+.vehicle-inspections-page .stats-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 16px;
   margin-bottom: 24px;
 }
 
-.stat-card {
-  background: white;
+.vehicle-inspections-page .stat-card {
+  background: var(--bg-card);
   border-radius: 12px;
   padding: 20px;
   display: flex;
   align-items: center;
   gap: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
 }
 
-.stat-card.alert {
-  border-left: 4px solid #ef4444;
-  background: #fef2f2;
+.vehicle-inspections-page .stat-card.alert {
+  border-left: 4px solid var(--stat-rust-icon);
+  background: var(--stat-rust-bg);
 }
 
-.stat-icon {
+.vehicle-inspections-page .stat-icon {
   width: 48px;
   height: 48px;
   border-radius: 12px;
@@ -94,30 +104,49 @@
   justify-content: center;
 }
 
-.stat-icon.total { background: #e0f2fe; color: #0284c7; }
-.stat-icon.passed { background: #dcfce7; color: #16a34a; }
-.stat-icon.failed { background: #fee2e2; color: #dc2626; }
-.stat-icon.upcoming { background: #fef3c7; color: #d97706; }
-.stat-icon.overdue { background: #fee2e2; color: #dc2626; }
+.vehicle-inspections-page .stat-icon.total {
+  background: var(--stat-teal-bg);
+  color: var(--stat-teal-icon);
+}
 
-.stat-content {
+.vehicle-inspections-page .stat-icon.passed {
+  background: var(--stat-green-bg);
+  color: var(--stat-green-icon);
+}
+
+.vehicle-inspections-page .stat-icon.failed {
+  background: var(--stat-rust-bg);
+  color: var(--stat-rust-icon);
+}
+
+.vehicle-inspections-page .stat-icon.upcoming {
+  background: var(--stat-amber-bg);
+  color: var(--stat-amber-icon);
+}
+
+.vehicle-inspections-page .stat-icon.overdue {
+  background: var(--stat-rust-bg);
+  color: var(--stat-rust-icon);
+}
+
+.vehicle-inspections-page .stat-content {
   display: flex;
   flex-direction: column;
 }
 
-.stat-value {
+.vehicle-inspections-page .stat-value {
   font-size: 24px;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
-.stat-label {
+.vehicle-inspections-page .stat-label {
   font-size: 13px;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 /* Filters */
-.filters-bar {
+.vehicle-inspections-page .filters-bar {
   display: flex;
   gap: 16px;
   margin-bottom: 24px;
@@ -125,133 +154,136 @@
   align-items: center;
 }
 
-.search-box {
+.vehicle-inspections-page .search-box {
   flex: 1;
   min-width: 300px;
   display: flex;
   align-items: center;
   gap: 12px;
-  background: white;
-  border: 1px solid #e5e7eb;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 0 16px;
 }
 
-.search-box input {
+.vehicle-inspections-page .search-box input {
   flex: 1;
   border: none;
   padding: 12px 0;
   font-size: 14px;
   outline: none;
+  background: transparent;
+  color: var(--text-primary);
 }
 
-.search-box svg {
-  color: #9ca3af;
+.vehicle-inspections-page .search-box svg {
+  color: var(--text-muted);
 }
 
-.filter-group {
+.vehicle-inspections-page .filter-group {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: white;
+  background: var(--bg-card);
   padding: 8px 16px;
   border-radius: 8px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
 }
 
-.filter-group svg {
-  color: #6b7280;
+.vehicle-inspections-page .filter-group svg {
+  color: var(--text-muted);
 }
 
-.filter-group select {
+.vehicle-inspections-page .filter-group select {
   border: none;
   background: transparent;
   font-size: 14px;
-  color: #374151;
+  color: var(--text-primary);
   cursor: pointer;
   outline: none;
   padding: 4px 8px;
 }
 
-.view-toggle {
+.vehicle-inspections-page .view-toggle {
   display: flex;
-  background: white;
-  border: 1px solid #e5e7eb;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   overflow: hidden;
 }
 
-.view-toggle button {
+.vehicle-inspections-page .view-toggle button {
   padding: 10px 16px;
   border: none;
   background: none;
   font-size: 14px;
   cursor: pointer;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
-.view-toggle button.active {
-  background: #3b82f6;
-  color: white;
+.vehicle-inspections-page .view-toggle button.active {
+  background: var(--accent-primary);
+  color: var(--text-inverse);
 }
 
 /* Inspection List */
-.inspection-list {
+.vehicle-inspections-page .inspection-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.inspection-card {
-  background: white;
+.vehicle-inspections-page .inspection-card {
+  background: var(--bg-card);
   border-radius: 12px;
   padding: 16px 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
   transition: all 0.2s;
+  border: 1px solid var(--border-color);
 }
 
-.inspection-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.vehicle-inspections-page .inspection-card:hover {
+  box-shadow: var(--shadow-md);
 }
 
-.inspection-card.out-of-service {
-  border-left: 4px solid #ef4444;
-  background: #fef2f2;
+.vehicle-inspections-page .inspection-card.out-of-service {
+  border-left: 4px solid var(--stat-rust-icon);
+  background: var(--stat-rust-bg);
 }
 
-.inspection-header {
+.vehicle-inspections-page .inspection-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
 }
 
-.inspection-identity {
+.vehicle-inspections-page .inspection-identity {
   display: flex;
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
 }
 
-.inspection-type {
+.vehicle-inspections-page .inspection-type {
   font-weight: 600;
-  color: #1e293b;
+  color: var(--text-primary);
   font-size: 15px;
 }
 
-.vehicle-number {
+.vehicle-inspections-page .vehicle-number {
   display: flex;
   align-items: center;
   gap: 4px;
-  background: #f1f5f9;
+  background: var(--bg-secondary);
   padding: 4px 10px;
   border-radius: 6px;
   font-size: 13px;
-  color: #475569;
+  color: var(--text-secondary);
 }
 
-.result-badge {
+.vehicle-inspections-page .result-badge {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -262,75 +294,90 @@
   text-transform: capitalize;
 }
 
-.result-passed { background: #dcfce7; color: #166534; }
-.result-failed { background: #fee2e2; color: #991b1b; }
-.result-conditional { background: #fef3c7; color: #92400e; }
-.result-unknown { background: #f1f5f9; color: #6b7280; }
+.vehicle-inspections-page .result-passed {
+  background: var(--status-active-bg);
+  color: var(--status-active-text);
+}
 
-.oos-badge {
+.vehicle-inspections-page .result-failed {
+  background: var(--status-overdue-bg);
+  color: var(--status-overdue-text);
+}
+
+.vehicle-inspections-page .result-conditional {
+  background: var(--status-pending-bg);
+  color: var(--status-pending-text);
+}
+
+.vehicle-inspections-page .result-unknown {
+  background: var(--bg-secondary);
+  color: var(--text-muted);
+}
+
+.vehicle-inspections-page .oos-badge {
   display: flex;
   align-items: center;
   gap: 4px;
-  background: #fee2e2;
-  color: #dc2626;
+  background: var(--stat-rust-bg);
+  color: var(--stat-rust-icon);
   padding: 4px 10px;
   border-radius: 6px;
   font-size: 12px;
   font-weight: 600;
 }
 
-.chevron {
-  color: #9ca3af;
+.vehicle-inspections-page .chevron {
+  color: var(--text-muted);
   transition: transform 0.2s;
 }
 
-.inspection-card:hover .chevron {
+.vehicle-inspections-page .inspection-card:hover .chevron {
   transform: translateX(4px);
-  color: #3b82f6;
+  color: var(--accent-primary);
 }
 
-.inspection-info {
+.vehicle-inspections-page .inspection-info {
   display: flex;
   gap: 24px;
   flex-wrap: wrap;
   margin-bottom: 12px;
 }
 
-.info-item {
+.vehicle-inspections-page .info-item {
   display: flex;
   align-items: center;
   gap: 6px;
   font-size: 13px;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
-.info-item.expired {
-  color: #dc2626;
+.vehicle-inspections-page .info-item.expired {
+  color: var(--stat-rust-icon);
   font-weight: 500;
 }
 
-.info-item.expiring {
-  color: #d97706;
+.vehicle-inspections-page .info-item.expiring {
+  color: var(--stat-amber-icon);
   font-weight: 500;
 }
 
-.defects-summary {
+.vehicle-inspections-page .defects-summary {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 10px 12px;
-  background: #fef3c7;
+  background: var(--stat-amber-bg);
   border-radius: 8px;
   font-size: 13px;
-  color: #92400e;
+  color: var(--stat-amber-icon);
 }
 
-.corrected-badge {
+.vehicle-inspections-page .corrected-badge {
   display: flex;
   align-items: center;
   gap: 4px;
-  background: #dcfce7;
-  color: #166534;
+  background: var(--stat-green-bg);
+  color: var(--stat-green-icon);
   padding: 2px 8px;
   border-radius: 12px;
   font-size: 11px;
@@ -338,23 +385,23 @@
 }
 
 /* Loading & Empty States */
-.loading-state,
-.empty-state {
+.vehicle-inspections-page .loading-state,
+.vehicle-inspections-page .empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 80px 20px;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
-.loading-state svg,
-.empty-state svg {
+.vehicle-inspections-page .loading-state svg,
+.vehicle-inspections-page .empty-state svg {
   margin-bottom: 16px;
-  color: #94a3b8;
+  color: var(--text-muted);
 }
 
-.spinning {
+.vehicle-inspections-page .spinning {
   animation: spin 1s linear infinite;
 }
 
@@ -364,41 +411,43 @@
 }
 
 /* Detail Panel */
-.detail-panel {
+.vehicle-inspections-page .detail-panel {
   position: fixed;
   top: 0;
   right: 0;
   width: 480px;
   height: 100vh;
-  background: white;
+  background: var(--bg-card);
   box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   display: flex;
   flex-direction: column;
 }
 
-.panel-header {
+.vehicle-inspections-page .panel-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px 24px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--accent-primary);
+  color: var(--text-inverse);
 }
 
-.panel-header h2 {
+.vehicle-inspections-page .panel-header h2 {
   font-size: 20px;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--text-inverse);
   margin: 0;
 }
 
-.close-btn {
+.vehicle-inspections-page .close-btn {
   width: 32px;
   height: 32px;
   border-radius: 8px;
   border: none;
-  background: #f1f5f9;
-  color: #64748b;
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--text-inverse);
   font-size: 20px;
   cursor: pointer;
   display: flex;
@@ -406,187 +455,208 @@
   justify-content: center;
 }
 
-.close-btn:hover {
-  background: #e2e8f0;
+.vehicle-inspections-page .close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
-.panel-content {
+.vehicle-inspections-page .panel-content {
   flex: 1;
   overflow-y: auto;
   padding: 24px;
 }
 
-.oos-alert {
+.vehicle-inspections-page .oos-alert {
   display: flex;
   align-items: flex-start;
   gap: 12px;
   padding: 16px;
-  background: #fee2e2;
+  background: var(--stat-rust-bg);
   border-radius: 12px;
   margin-bottom: 24px;
-  color: #991b1b;
+  color: var(--stat-rust-icon);
 }
 
-.oos-alert strong {
+.vehicle-inspections-page .oos-alert strong {
   display: block;
   margin-bottom: 4px;
 }
 
-.oos-alert p {
+.vehicle-inspections-page .oos-alert p {
   margin: 0;
   font-size: 14px;
 }
 
-.detail-section {
+.vehicle-inspections-page .detail-section {
   margin-bottom: 24px;
 }
 
-.detail-section h3 {
+.vehicle-inspections-page .detail-section h3 {
   font-size: 14px;
   font-weight: 600;
-  color: #64748b;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin: 0 0 16px 0;
 }
 
-.detail-grid {
+.vehicle-inspections-page .detail-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
 }
 
-.detail-item {
+.vehicle-inspections-page .detail-item {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.detail-item.full {
+.vehicle-inspections-page .detail-item.full {
   grid-column: span 2;
 }
 
-.detail-item label {
+.vehicle-inspections-page .detail-item label {
   font-size: 12px;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
-.detail-item span {
+.vehicle-inspections-page .detail-item span {
   font-size: 14px;
   font-weight: 500;
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
-.expired-text {
-  color: #dc2626 !important;
+.vehicle-inspections-page .expired-text {
+  color: var(--stat-rust-icon) !important;
 }
 
-.defects-list {
+.vehicle-inspections-page .defects-list {
   display: flex;
   flex-direction: column;
   gap: 8px;
   margin-bottom: 12px;
 }
 
-.defect-item {
+.vehicle-inspections-page .defect-item {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 12px;
-  background: #fef3c7;
+  background: var(--stat-amber-bg);
   border-radius: 8px;
 }
 
-.defect-category {
+.vehicle-inspections-page .defect-category {
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
-  color: #92400e;
-  background: rgba(146, 64, 14, 0.1);
+  color: var(--stat-amber-icon);
+  background: rgba(201, 162, 39, 0.2);
   padding: 2px 8px;
   border-radius: 4px;
 }
 
-.defect-description {
+.vehicle-inspections-page .defect-description {
   flex: 1;
   font-size: 14px;
-  color: #78350f;
+  color: var(--text-primary);
 }
 
-.defect-severity {
+.vehicle-inspections-page .defect-severity {
   font-size: 11px;
   font-weight: 600;
   padding: 2px 8px;
   border-radius: 4px;
 }
 
-.defect-severity.critical { background: #fee2e2; color: #991b1b; }
-.defect-severity.major { background: #fef3c7; color: #92400e; }
-.defect-severity.minor { background: #e0f2fe; color: #0369a1; }
+.vehicle-inspections-page .defect-severity.critical {
+  background: var(--stat-rust-bg);
+  color: var(--stat-rust-icon);
+}
 
-.defects-status {
+.vehicle-inspections-page .defect-severity.major {
+  background: var(--stat-amber-bg);
+  color: var(--stat-amber-icon);
+}
+
+.vehicle-inspections-page .defect-severity.minor {
+  background: var(--stat-teal-bg);
+  color: var(--stat-teal-icon);
+}
+
+.vehicle-inspections-page .defects-status {
   padding: 12px;
   border-radius: 8px;
 }
 
-.defects-status .corrected {
+.vehicle-inspections-page .defects-status .corrected {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #166534;
+  color: var(--stat-green-icon);
 }
 
-.defects-status .pending {
+.vehicle-inspections-page .defects-status .pending {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #92400e;
+  color: var(--stat-amber-icon);
 }
 
-.notes-text {
+.vehicle-inspections-page .notes-text {
   font-size: 14px;
-  color: #475569;
+  color: var(--text-secondary);
   line-height: 1.6;
   margin: 0;
 }
 
-.panel-actions {
+.vehicle-inspections-page .panel-actions {
   padding: 16px 24px;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--border-color);
   display: flex;
   gap: 12px;
+  background: var(--bg-card);
 }
 
-.panel-actions .btn {
+.vehicle-inspections-page .panel-actions .btn {
   flex: 1;
+}
+
+.vehicle-inspections-page .panel-actions .btn-primary {
+  background: var(--accent-primary);
+  color: var(--text-inverse);
+}
+
+.vehicle-inspections-page .panel-actions .btn-primary:hover {
+  background: var(--accent-olive);
 }
 
 /* Responsive */
 @media (max-width: 1200px) {
-  .stats-grid {
+  .vehicle-inspections-page .stats-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (max-width: 768px) {
-  .page-header {
+  .vehicle-inspections-page .page-header {
     flex-direction: column;
     gap: 16px;
   }
 
-  .stats-grid {
+  .vehicle-inspections-page .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .filters-bar {
+  .vehicle-inspections-page .filters-bar {
     flex-direction: column;
   }
 
-  .search-box {
+  .vehicle-inspections-page .search-box {
     min-width: 100%;
   }
 
-  .detail-panel {
+  .vehicle-inspections-page .detail-panel {
     width: 100%;
   }
 }
