@@ -155,7 +155,26 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   const signOut = useCallback(async () => {
-    await supabase.auth.signOut();
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('Error signing out:', error);
+      }
+    } catch (err) {
+      console.error('Exception signing out:', err);
+    } finally {
+      // Force clear state to ensure UI updates even if the event listener fails
+      setState({
+        user: null,
+        session: null,
+        profile: null,
+        isLoading: false,
+        isAuthenticated: false,
+      });
+      // Clear any persisted data if needed (optional)
+      localStorage.removeItem('sb-access-token');
+      localStorage.removeItem('sb-refresh-token');
+    }
   }, []);
 
   const value: AuthContextType = {
