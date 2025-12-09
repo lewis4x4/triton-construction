@@ -17,6 +17,7 @@ import { supabase } from '@triton/supabase-client';
 import { KPICard } from '../../components/executive/KPICard';
 import { KPITrendChart } from '../../components/executive/KPITrendChart';
 import { AlertSummaryWidget } from '../../components/executive/AlertSummaryWidget';
+import './ExecutiveDashboard.css';
 
 interface DashboardKPIs {
   activeProjects: number;
