@@ -1,10 +1,13 @@
-/* EnhancedLocationMap.css - Advanced Mapbox map with terrain, styles, and overlays */
+/* =====================================================
+   ENHANCED LOCATION MAP
+   Triton AI Platform - Unified Forest Green Theme
+   ===================================================== */
 
 .enhanced-map-container {
   position: relative;
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid var(--border-color, #e5e7eb);
+  border: 1px solid var(--border-color);
   background: #1a1a2e;
 }
 
@@ -48,33 +51,33 @@
   justify-content: center;
   gap: 12px;
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  border: 1px solid var(--border-color, #2d3748);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
-  color: #a0aec0;
+  color: var(--text-muted);
 }
 
 .enhanced-map-loading .spin {
-  animation: spin 1s linear infinite;
+  animation: enhancedMapSpin 1s linear infinite;
 }
 
-@keyframes spin {
+@keyframes enhancedMapSpin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
 .enhanced-map-error {
-  background: linear-gradient(135deg, #2d1f1f 0%, #1a1a2e 100%);
-  border-color: #ef4444;
+  background: linear-gradient(135deg, rgba(183, 99, 89, 0.1) 0%, #1a1a2e 100%);
+  border-color: var(--stat-rust-icon);
 }
 
-.map-error-actions {
+.enhanced-map-container .map-error-actions {
   display: flex;
   gap: 8px;
   margin-top: 8px;
 }
 
-.btn-retry,
-.btn-external {
+.enhanced-map-container .btn-retry,
+.enhanced-map-container .btn-external {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -86,23 +89,23 @@
   transition: all 0.15s ease;
 }
 
-.btn-retry {
-  background: var(--primary-color, #2563eb);
+.enhanced-map-container .btn-retry {
+  background: var(--accent-primary);
   color: white;
   border: none;
 }
 
-.btn-retry:hover {
-  background: var(--primary-hover, #1d4ed8);
+.enhanced-map-container .btn-retry:hover {
+  background: var(--accent-olive);
 }
 
-.btn-external {
+.enhanced-map-container .btn-external {
   background: rgba(255, 255, 255, 0.1);
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.btn-external:hover {
+.enhanced-map-container .btn-external:hover {
   background: rgba(255, 255, 255, 0.2);
 }
 
@@ -123,32 +126,32 @@
   justify-content: center;
   width: 36px;
   height: 36px;
-  background: white;
+  background: var(--bg-card);
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  color: #374151;
+  box-shadow: var(--shadow-md);
+  color: var(--text-secondary);
   transition: all 0.15s ease;
 }
 
 .control-btn:hover {
-  background: #f3f4f6;
+  background: var(--bg-secondary);
   transform: scale(1.05);
 }
 
 .control-btn.active {
-  background: var(--primary-color, #2563eb);
+  background: var(--accent-primary);
   color: white;
 }
 
 .control-btn.expand-btn {
-  background: var(--primary-color, #2563eb);
+  background: var(--accent-primary);
   color: white;
 }
 
 .control-btn.expand-btn:hover {
-  background: var(--primary-hover, #1d4ed8);
+  background: var(--accent-olive);
 }
 
 /* Style Switcher Menu */
@@ -160,15 +163,15 @@
   position: absolute;
   left: 44px;
   top: 0;
-  background: white;
+  background: var(--bg-card);
   border-radius: 10px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-lg);
   overflow: hidden;
   min-width: 140px;
-  animation: slideIn 0.15s ease;
+  animation: styleMenuSlideIn 0.15s ease;
 }
 
-@keyframes slideIn {
+@keyframes styleMenuSlideIn {
   from {
     opacity: 0;
     transform: translateX(-8px);
@@ -188,18 +191,18 @@
   background: none;
   border: none;
   font-size: 14px;
-  color: #374151;
+  color: var(--text-secondary);
   cursor: pointer;
   transition: background 0.15s ease;
 }
 
 .style-menu button:hover {
-  background: #f3f4f6;
+  background: var(--bg-secondary);
 }
 
 .style-menu button.active {
-  background: #eff6ff;
-  color: var(--primary-color, #2563eb);
+  background: rgba(61, 107, 79, 0.1);
+  color: var(--accent-primary);
   font-weight: 500;
 }
 
@@ -215,26 +218,26 @@
   z-index: 10;
 }
 
-.btn-google-maps {
+.enhanced-map-container .btn-google-maps {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 8px 14px;
   font-size: 13px;
   font-weight: 500;
-  background: white;
-  color: #374151;
+  background: var(--bg-card);
+  color: var(--text-secondary);
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-md);
   transition: all 0.15s ease;
 }
 
-.btn-google-maps:hover {
-  background: #f3f4f6;
+.enhanced-map-container .btn-google-maps:hover {
+  background: var(--bg-secondary);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-lg);
 }
 
 /* Safe Zone Indicator */
@@ -243,37 +246,37 @@
   align-items: center;
   gap: 8px;
   padding: 8px 14px;
-  background: white;
+  background: var(--bg-card);
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-md);
   font-size: 13px;
   font-weight: 500;
-  color: #374151;
+  color: var(--text-secondary);
 }
 
 .indicator-dot {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  animation: pulse 2s ease-in-out infinite;
+  animation: indicatorPulse 2s ease-in-out infinite;
 }
 
 .indicator-dot.safe {
-  background: #22c55e;
-  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.3);
+  background: var(--stat-green-icon);
+  box-shadow: 0 0 0 2px rgba(61, 94, 72, 0.3);
 }
 
 .indicator-dot.warning {
-  background: #eab308;
-  box-shadow: 0 0 0 2px rgba(234, 179, 8, 0.3);
+  background: var(--stat-amber-icon);
+  box-shadow: 0 0 0 2px rgba(180, 130, 60, 0.3);
 }
 
 .indicator-dot.danger {
-  background: #ef4444;
-  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3);
+  background: var(--stat-rust-icon);
+  box-shadow: 0 0 0 2px rgba(183, 99, 89, 0.3);
 }
 
-@keyframes pulse {
+@keyframes indicatorPulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.6; }
 }
@@ -283,10 +286,10 @@
   position: absolute;
   bottom: 120px;
   right: 12px;
-  background: white;
+  background: var(--bg-card);
   border-radius: 10px;
   padding: 12px 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-lg);
   z-index: 10;
   min-width: 180px;
 }
@@ -297,10 +300,10 @@
   gap: 6px;
   font-size: 13px;
   font-weight: 600;
-  color: #374151;
+  color: var(--text-secondary);
   margin-bottom: 10px;
   padding-bottom: 8px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .legend-items {
@@ -314,7 +317,7 @@
   align-items: center;
   gap: 10px;
   font-size: 12px;
-  color: #4b5563;
+  color: var(--text-muted);
 }
 
 .legend-swatch {
@@ -325,18 +328,18 @@
 }
 
 .legend-swatch.safe-zone {
-  background: rgba(34, 197, 94, 0.3);
-  border: 2px solid #22c55e;
+  background: rgba(61, 94, 72, 0.3);
+  border: 2px solid var(--stat-green-icon);
 }
 
 .legend-swatch.buffer-zone {
-  background: rgba(234, 179, 8, 0.2);
-  border: 2px dashed #eab308;
+  background: rgba(180, 130, 60, 0.2);
+  border: 2px dashed var(--stat-amber-icon);
 }
 
 .legend-swatch.unknown-zone {
   background: rgba(156, 163, 175, 0.2);
-  border: 2px solid #9ca3af;
+  border: 2px solid var(--text-muted);
 }
 
 /* Close Button for Expanded Mode */
@@ -349,18 +352,18 @@
   justify-content: center;
   width: 48px;
   height: 48px;
-  background: white;
+  background: var(--bg-card);
   border: none;
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-  color: #374151;
+  box-shadow: var(--shadow-lg);
+  color: var(--text-secondary);
   z-index: 20;
   transition: all 0.15s ease;
 }
 
 .close-expanded-btn:hover {
-  background: #f3f4f6;
+  background: var(--bg-secondary);
   transform: scale(1.1);
 }
 
@@ -377,12 +380,12 @@
   transform: translate(-50%, -50%);
   width: 40px;
   height: 40px;
-  background: rgba(37, 99, 235, 0.3);
+  background: rgba(61, 107, 79, 0.3);
   border-radius: 50%;
-  animation: markerPulse 2s ease-out infinite;
+  animation: enhancedMarkerPulse 2s ease-out infinite;
 }
 
-@keyframes markerPulse {
+@keyframes enhancedMarkerPulse {
   0% {
     transform: translate(-50%, -50%) scale(0.5);
     opacity: 1;
@@ -415,10 +418,10 @@
   justify-content: center;
   width: 28px;
   height: 28px;
-  background: #f97316;
+  background: var(--stat-amber-icon);
   border-radius: 50%;
   border: 2px solid white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-md);
 }
 
 /* Map Popup */
@@ -428,13 +431,13 @@
 
 .map-popup strong {
   font-size: 14px;
-  color: #111827;
+  color: var(--text-primary);
 }
 
 .map-popup p {
   margin: 4px 0 0;
   font-size: 13px;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 /* Mapbox Overrides */
@@ -446,7 +449,7 @@
 .mapboxgl-popup-content {
   padding: 12px 16px !important;
   border-radius: 10px !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: var(--shadow-lg) !important;
 }
 
 .mapboxgl-popup-close-button {
@@ -455,7 +458,7 @@
 
 .mapboxgl-ctrl-group {
   border-radius: 8px !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: var(--shadow-md) !important;
 }
 
 .mapboxgl-ctrl-group button {
@@ -494,7 +497,7 @@
     gap: 8px;
   }
 
-  .btn-google-maps,
+  .enhanced-map-container .btn-google-maps,
   .safe-zone-indicator {
     width: 100%;
     justify-content: center;

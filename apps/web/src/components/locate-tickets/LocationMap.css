@@ -1,10 +1,13 @@
-/* LocationMap.css - Styles for the location map component */
+/* =====================================================
+   LOCATION MAP
+   Triton AI Platform - Unified Forest Green Theme
+   ===================================================== */
 
 .location-map-container {
   position: relative;
   border-radius: 8px;
   overflow: hidden;
-  border: 1px solid var(--border-color, #e5e7eb);
+  border: 1px solid var(--border-color);
 }
 
 .location-map {
@@ -19,17 +22,17 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  background: var(--bg-secondary, #f9fafb);
-  border: 1px dashed var(--border-color, #d1d5db);
+  background: var(--bg-secondary);
+  border: 1px dashed var(--border-color);
   border-radius: 8px;
-  color: var(--text-secondary, #6b7280);
+  color: var(--text-secondary);
 }
 
 .location-map-loading .spin {
-  animation: spin 1s linear infinite;
+  animation: locationMapSpin 1s linear infinite;
 }
 
-@keyframes spin {
+@keyframes locationMapSpin {
   from {
     transform: rotate(0deg);
   }
@@ -39,8 +42,8 @@
 }
 
 .location-map-error {
-  background: var(--bg-warning, #fef3c7);
-  border-color: var(--border-warning, #f59e0b);
+  background: var(--stat-amber-bg);
+  border-color: var(--stat-amber-icon);
 }
 
 .map-error-actions {
@@ -63,24 +66,24 @@
 }
 
 .btn-retry {
-  background: var(--primary-color, #2563eb);
+  background: var(--accent-primary);
   color: white;
   border: none;
 }
 
 .btn-retry:hover {
-  background: var(--primary-hover, #1d4ed8);
+  background: var(--accent-olive);
 }
 
 .btn-external {
-  background: white;
-  color: var(--text-primary, #374151);
-  border: 1px solid var(--border-color, #d1d5db);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
 }
 
 .btn-external:hover {
-  background: var(--bg-secondary, #f9fafb);
-  border-color: var(--border-hover, #9ca3af);
+  background: var(--bg-secondary);
+  border-color: var(--text-muted);
 }
 
 .map-actions {
@@ -97,18 +100,18 @@
   padding: 8px 12px;
   font-size: 12px;
   font-weight: 500;
-  background: white;
-  color: var(--text-primary, #374151);
-  border: 1px solid var(--border-color, #d1d5db);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
   transition: all 0.15s ease;
 }
 
 .btn-google-maps:hover {
-  background: var(--bg-secondary, #f9fafb);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  background: var(--bg-secondary);
+  box-shadow: var(--shadow-md);
 }
 
 /* Mapbox overrides */
@@ -119,7 +122,7 @@
 .mapboxgl-popup-content {
   padding: 12px !important;
   border-radius: 8px !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: var(--shadow-lg) !important;
 }
 
 .mapboxgl-popup-close-button {

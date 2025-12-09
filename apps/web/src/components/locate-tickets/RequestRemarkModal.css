@@ -1,12 +1,15 @@
-/* RequestRemarkModal.css - Re-mark request modal styles */
+/* =====================================================
+   REQUEST RE-MARK MODAL
+   Triton AI Platform - Unified Forest Green Theme
+   ===================================================== */
 
-.modal-overlay {
+.remark-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -15,7 +18,7 @@
 }
 
 .remark-modal {
-  background: white;
+  background: var(--bg-card);
   border-radius: 12px;
   width: 100%;
   max-width: 520px;
@@ -23,49 +26,49 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-xl);
 }
 
-.modal-header {
+.remark-modal .modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 16px 20px;
-  border-bottom: 1px solid var(--border-color, #e5e7eb);
+  border-bottom: 1px solid var(--border-color);
 }
 
-.modal-header h2 {
+.remark-modal .modal-header h2 {
   display: flex;
   align-items: center;
   gap: 10px;
   margin: 0;
   font-size: 18px;
   font-weight: 600;
-  color: var(--text-primary, #111827);
+  color: var(--text-primary);
 }
 
-.close-btn {
+.remark-modal .close-btn {
   background: none;
   border: none;
   padding: 8px;
   cursor: pointer;
   border-radius: 6px;
-  color: var(--text-secondary, #6b7280);
+  color: var(--text-muted);
   transition: all 0.15s ease;
 }
 
-.close-btn:hover {
-  background: var(--bg-secondary, #f3f4f6);
-  color: var(--text-primary, #111827);
+.remark-modal .close-btn:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
-.modal-body {
+.remark-modal .modal-body {
   padding: 20px;
   overflow-y: auto;
   flex: 1;
 }
 
-.success-message {
+.remark-modal .success-message {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -74,199 +77,201 @@
   text-align: center;
 }
 
-.success-message svg {
-  color: #22c55e;
+.remark-modal .success-message svg {
+  color: var(--stat-green-icon);
   margin-bottom: 16px;
 }
 
-.success-message h3 {
+.remark-modal .success-message h3 {
   margin: 0 0 8px;
   font-size: 20px;
-  color: var(--text-primary, #111827);
+  color: var(--text-primary);
 }
 
-.success-message p {
+.remark-modal .success-message p {
   margin: 0;
-  color: var(--text-secondary, #6b7280);
+  color: var(--text-muted);
 }
 
-.ticket-info {
-  background: var(--bg-secondary, #f9fafb);
+.remark-modal .ticket-info {
+  background: var(--bg-secondary);
   border-radius: 8px;
   padding: 12px 16px;
   margin-bottom: 20px;
 }
 
-.ticket-info .info-item {
+.remark-modal .ticket-info .info-item {
   display: flex;
   gap: 8px;
   font-size: 14px;
 }
 
-.ticket-info .info-item:not(:last-child) {
+.remark-modal .ticket-info .info-item:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.ticket-info .label {
-  color: var(--text-secondary, #6b7280);
+.remark-modal .ticket-info .label {
+  color: var(--text-muted);
   font-weight: 500;
 }
 
-.ticket-info .value {
-  color: var(--text-primary, #111827);
+.remark-modal .ticket-info .value {
+  color: var(--text-primary);
   font-weight: 600;
 }
 
-.form-group {
+.remark-modal .form-group {
   margin-bottom: 20px;
 }
 
-.form-group label {
+.remark-modal .form-group label {
   display: block;
   font-size: 14px;
   font-weight: 500;
-  color: var(--text-primary, #111827);
+  color: var(--text-primary);
   margin-bottom: 8px;
 }
 
-.form-group label.required::after {
+.remark-modal .form-group label.required::after {
   content: ' *';
-  color: #ef4444;
+  color: var(--stat-rust-icon);
 }
 
-.reason-options {
+.remark-modal .reason-options {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.reason-option {
+.remark-modal .reason-option {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 10px 12px;
-  background: var(--bg-secondary, #f9fafb);
-  border: 1px solid var(--border-color, #e5e7eb);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
-.reason-option:hover {
-  border-color: var(--primary-color, #2563eb);
-  background: #f0f7ff;
+.remark-modal .reason-option:hover {
+  border-color: var(--accent-primary);
+  background: rgba(61, 107, 79, 0.05);
 }
 
-.reason-option:has(input:checked) {
-  border-color: var(--primary-color, #2563eb);
-  background: #eff6ff;
+.remark-modal .reason-option:has(input:checked) {
+  border-color: var(--accent-primary);
+  background: rgba(61, 107, 79, 0.1);
 }
 
-.reason-option input[type="radio"] {
-  accent-color: var(--primary-color, #2563eb);
+.remark-modal .reason-option input[type="radio"] {
+  accent-color: var(--accent-primary);
 }
 
-.radio-label {
+.remark-modal .radio-label {
   font-size: 14px;
-  color: var(--text-primary, #111827);
+  color: var(--text-primary);
 }
 
-.urgency-options {
+.remark-modal .urgency-options {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
 
-.urgency-option {
+.remark-modal .urgency-option {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
   padding: 16px 12px;
-  background: var(--bg-secondary, #f9fafb);
-  border: 2px solid var(--border-color, #e5e7eb);
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.15s ease;
   text-align: center;
 }
 
-.urgency-option input[type="radio"] {
+.remark-modal .urgency-option input[type="radio"] {
   display: none;
 }
 
-.urgency-option span {
+.remark-modal .urgency-option span {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-primary, #111827);
+  color: var(--text-primary);
 }
 
-.urgency-option small {
+.remark-modal .urgency-option small {
   font-size: 12px;
-  color: var(--text-secondary, #6b7280);
+  color: var(--text-muted);
 }
 
-.urgency-option:hover {
-  border-color: var(--primary-color, #2563eb);
+.remark-modal .urgency-option:hover {
+  border-color: var(--accent-primary);
 }
 
-.urgency-option.selected {
-  border-color: var(--primary-color, #2563eb);
-  background: #eff6ff;
+.remark-modal .urgency-option.selected {
+  border-color: var(--accent-primary);
+  background: rgba(61, 107, 79, 0.1);
 }
 
-.urgency-option.urgent.selected {
-  border-color: #f59e0b;
-  background: #fffbeb;
+.remark-modal .urgency-option.urgent.selected {
+  border-color: var(--stat-amber-icon);
+  background: var(--stat-amber-bg);
 }
 
-.urgency-option.urgent svg {
-  color: #f59e0b;
+.remark-modal .urgency-option.urgent svg {
+  color: var(--stat-amber-icon);
 }
 
-.form-group textarea {
+.remark-modal .form-group textarea {
   width: 100%;
   padding: 12px;
-  border: 1px solid var(--border-color, #d1d5db);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   font-size: 14px;
   font-family: inherit;
   resize: vertical;
+  background: var(--bg-card);
+  color: var(--text-primary);
   transition: border-color 0.15s ease;
 }
 
-.form-group textarea:focus {
+.remark-modal .form-group textarea:focus {
   outline: none;
-  border-color: var(--primary-color, #2563eb);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(61, 107, 79, 0.15);
 }
 
-.form-group textarea::placeholder {
-  color: var(--text-muted, #9ca3af);
+.remark-modal .form-group textarea::placeholder {
+  color: var(--text-muted);
 }
 
-.error-banner {
+.remark-modal .error-banner {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 12px;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
+  background: var(--stat-rust-bg);
+  border: 1px solid rgba(183, 99, 89, 0.3);
   border-radius: 8px;
-  color: #dc2626;
+  color: var(--stat-rust-icon);
   font-size: 14px;
 }
 
-.modal-footer {
+.remark-modal .modal-footer {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
   padding: 16px 20px;
-  border-top: 1px solid var(--border-color, #e5e7eb);
-  background: var(--bg-secondary, #f9fafb);
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-secondary);
 }
 
-.modal-footer .btn {
+.remark-modal .modal-footer .btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -278,36 +283,36 @@
   transition: all 0.15s ease;
 }
 
-.modal-footer .btn-secondary {
-  background: white;
-  color: var(--text-primary, #374151);
-  border: 1px solid var(--border-color, #d1d5db);
+.remark-modal .modal-footer .btn-secondary {
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
 }
 
-.modal-footer .btn-secondary:hover:not(:disabled) {
-  background: var(--bg-secondary, #f9fafb);
+.remark-modal .modal-footer .btn-secondary:hover:not(:disabled) {
+  background: var(--bg-page);
 }
 
-.modal-footer .btn-primary {
-  background: var(--primary-color, #2563eb);
+.remark-modal .modal-footer .btn-primary {
+  background: var(--accent-primary);
   color: white;
   border: none;
 }
 
-.modal-footer .btn-primary:hover:not(:disabled) {
-  background: var(--primary-hover, #1d4ed8);
+.remark-modal .modal-footer .btn-primary:hover:not(:disabled) {
+  background: var(--accent-olive);
 }
 
-.modal-footer .btn:disabled {
+.remark-modal .modal-footer .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.modal-footer .btn .spin {
-  animation: spin 1s linear infinite;
+.remark-modal .modal-footer .btn .spin {
+  animation: remarkSpin 1s linear infinite;
 }
 
-@keyframes spin {
+@keyframes remarkSpin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
@@ -319,15 +324,15 @@
     border-radius: 0;
   }
 
-  .urgency-options {
+  .remark-modal .urgency-options {
     grid-template-columns: 1fr;
   }
 
-  .modal-footer {
+  .remark-modal .modal-footer {
     flex-direction: column;
   }
 
-  .modal-footer .btn {
+  .remark-modal .modal-footer .btn {
     width: 100%;
     justify-content: center;
   }
