@@ -229,68 +229,7 @@
   transform: translateX(0);
 }
 
-/* Checklist */
-.checklist {
-  padding: var(--space-2);
-}
 
-.checklist-item {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  color: var(--text-secondary);
-  text-decoration: none;
-  border-radius: var(--radius-lg);
-  transition: all var(--duration-fast);
-}
-
-.checklist-item:hover {
-  background: var(--bg-hover);
-  color: var(--text-primary);
-}
-
-.check-icon {
-  width: 28px;
-  height: 28px;
-  border-radius: var(--radius-full);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--bg-tertiary);
-  border: 2px solid var(--border-default);
-  flex-shrink: 0;
-}
-
-.check-icon.done {
-  background: var(--success);
-  border-color: var(--success);
-  color: white;
-}
-
-.check-number {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-tertiary);
-}
-
-.check-label {
-  flex: 1;
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.checklist-item .arrow {
-  opacity: 0;
-  transform: translateX(-4px);
-  transition: all var(--duration-fast);
-  color: var(--accent-primary);
-}
-
-.checklist-item:hover .arrow {
-  opacity: 1;
-  transform: translateX(0);
-}
 
 /* Empty State */
 .empty-state-inline {

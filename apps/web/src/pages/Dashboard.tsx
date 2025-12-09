@@ -5,7 +5,6 @@ import {
   Clock,
   AlertCircle,
   ArrowRight,
-  CheckCircle2,
   TrendingUp,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -46,18 +45,19 @@ export function Dashboard() {
     },
   ];
 
+  /* Expanded Quick Actions List */
   const quickActions = [
     { label: 'Create Bid Package', path: '/bids/create', icon: <FolderKanban size={18} /> },
     { label: 'View Specifications', path: '/specs', icon: <ClipboardList size={18} /> },
     { label: 'Time Entry', path: '/time', icon: <Clock size={18} /> },
+    { label: 'New Daily Report', path: '/reports/new', icon: <ClipboardList size={18} /> },
+    { label: 'Safety Incident', path: '/safety/incidents/new', icon: <AlertCircle size={18} /> },
+    { label: 'Equipment Check-in', path: '/equipment/check-in', icon: <FolderKanban size={18} /> }, // Using FolderKanban as placeholder if Truck icon not imported
+    { label: 'Material Request', path: '/materials/request', icon: <ClipboardList size={18} /> },
+    { label: 'View Schedule', path: '/schedule', icon: <Clock size={18} /> },
   ];
 
-  const nextSteps = [
-    { label: 'Complete organization setup', path: '/settings', done: false },
-    { label: 'Create your first project', path: '/projects', done: false },
-    { label: 'Add crew members', path: '/crew', done: false },
-    { label: 'Submit your first daily report', path: '/reports', done: false },
-  ];
+  /* Removed nextSteps array as Getting Started is moved */
 
   return (
     <>
@@ -101,39 +101,16 @@ export function Dashboard() {
 
       {/* Main Content Grid */}
       <div className="dashboard-grid">
-        {/* Quick Actions */}
-        <div className="dashboard-card">
+        {/* Quick Actions - Now spanning 2 columns */}
+        <div className="dashboard-card span-2">
           <div className="card-header">
             <h3>Quick Actions</h3>
           </div>
-          <div className="quick-actions">
+          <div className="quick-actions grid grid-cols-2 md:grid-cols-4 gap-4">
             {quickActions.map((action) => (
               <Link key={action.path} to={action.path} className="quick-action-btn">
                 {action.icon}
                 <span>{action.label}</span>
-                <ArrowRight size={16} className="arrow" />
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        {/* Getting Started */}
-        <div className="dashboard-card">
-          <div className="card-header">
-            <h3>Getting Started</h3>
-            <span className="card-badge">0/4 Complete</span>
-          </div>
-          <div className="checklist">
-            {nextSteps.map((step, index) => (
-              <Link key={index} to={step.path} className="checklist-item">
-                <span className={`check-icon ${step.done ? 'done' : ''}`}>
-                  {step.done ? (
-                    <CheckCircle2 size={20} />
-                  ) : (
-                    <span className="check-number">{index + 1}</span>
-                  )}
-                </span>
-                <span className="check-label">{step.label}</span>
                 <ArrowRight size={16} className="arrow" />
               </Link>
             ))}

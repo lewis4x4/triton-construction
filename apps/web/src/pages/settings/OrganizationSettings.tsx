@@ -217,6 +217,35 @@ export function OrganizationSettings() {
       {error && <div className="error-message">{error}</div>}
       {success && <div className="success-message">{success}</div>}
 
+      {/* Getting Started Checklist */}
+      <div className="getting-started-section">
+        <div className="section-header">
+          <h2>Getting Started</h2>
+          <span className="checklist-progress">0/4 Complete</span>
+        </div>
+        <div className="checklist-grid">
+          {[
+            { label: 'Complete organization setup', done: false },
+            { label: 'Create your first project', done: false },
+            { label: 'Add crew members', done: false },
+            { label: 'Submit your first daily report', done: false },
+          ].map((step, index) => (
+            <div key={index} className="checklist-item-row">
+              <span className={`check-icon-circle ${step.done ? 'done' : ''}`}>
+                {step.done ? (
+                  <svg className="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                ) : (
+                  <span className="step-number">{index + 1}</span>
+                )}
+              </span>
+              <span className="step-label">{step.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <form onSubmit={handleSubmit} className="settings-form">
         {/* Company Information */}
         <div className="form-section">
