@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@triton/supabase-client';
+import './SafetyDashboard.css';
 
 interface SafetyStats {
   trir: number;
@@ -179,7 +180,6 @@ export function SafetyDashboard() {
 
 
 
-  import './SafetyDashboard.css';
 
   if (loading && projects.length === 0) {
     return (
