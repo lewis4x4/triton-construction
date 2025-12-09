@@ -727,17 +727,18 @@ export function VoiceDailyReportPage() {
   const isPaused = recordingState.status === 'paused';
 
   return (
-    <div className="min-h-screen bg-void-deep text-white p-6">
-      <div className="max-w-[1200px] mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
-            Voice Daily Report
-          </h1>
-          <p className="text-gray-400 font-mono text-sm mt-2 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>
-            Record your daily report and let AI structure it for you
-          </p>
+    <div className="min-h-screen text-white">
+      {/* Header */}
+      <header className="page-header">
+        <div className="header-left">
+          <div className="header-title">
+            <h1>Voice Daily Report</h1>
+            <p className="header-subtitle">Record your daily report and let AI structure it for you</p>
+          </div>
         </div>
+      </header>
+
+      <div className="max-w-[1200px] mx-auto p-6">
 
         {/* Offline Banner */}
         {!isOnlineStatus && (

@@ -190,27 +190,27 @@ export function SafetyDashboard() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <div className="border-b border-white/10 bg-void-mid pt-20 pb-6 shadow-2xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-3xl font-bold text-white tracking-tight drop-shadow-lg">Safety Management</h1>
-              <p className="text-cyan-400/80 font-mono tracking-widest uppercase mt-1 text-sm">Monitor safety metrics, violations, JSAs, and toolbox talks</p>
-            </div>
-            <select
-              value={selectedProjectId}
-              onChange={(e) => setSelectedProjectId(e.target.value)}
-              className="px-4 py-2 border border-white/10 rounded-lg focus:ring-1 focus:ring-cyan-500 bg-void-deep text-white text-sm"
-            >
-              {projects.map(project => (
-                <option key={project.id} value={project.id} className="bg-void-deep">
-                  {project.project_number} - {project.name}
-                </option>
-              ))}
-            </select>
+      <header className="page-header">
+        <div className="header-left">
+          <div className="header-title">
+            <h1>Safety Management</h1>
+            <p className="header-subtitle">Monitor safety metrics, violations, JSAs, and toolbox talks</p>
           </div>
         </div>
-      </div>
+        <div className="header-actions">
+          <select
+            value={selectedProjectId}
+            onChange={(e) => setSelectedProjectId(e.target.value)}
+            className="px-4 py-2 border border-white/10 rounded-lg focus:ring-1 focus:ring-cyan-500 bg-void-deep text-white text-sm"
+          >
+            {projects.map(project => (
+              <option key={project.id} value={project.id} className="bg-void-deep">
+                {project.project_number} - {project.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Stats Grid */}
