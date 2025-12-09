@@ -5,8 +5,6 @@ import {
   Truck,
   FileCheck,
   AlertTriangle,
-  TrendingUp,
-  TrendingDown,
   Clock,
   CheckCircle,
   XCircle,
@@ -1165,7 +1163,7 @@ export function EnhancedMaterialsDashboard() {
                     <div className="delivery-item-status">
                       {getStatusBadge(ticket.status)}
                       {ticket.buy_america_compliant && (
-                        <Flag size={14} className="buy-america-flag" title="Buy America Compliant" />
+                        <span title="Buy America Compliant"><Flag size={14} className="buy-america-flag" /></span>
                       )}
                     </div>
                   </div>
@@ -1285,7 +1283,7 @@ export function EnhancedMaterialsDashboard() {
                         <div className="status-cell">
                           {getStatusBadge(ticket.status)}
                           {ticket.buy_america_compliant && (
-                            <Flag size={14} className="buy-america-flag" title="Buy America" />
+                            <span title="Buy America"><Flag size={14} className="buy-america-flag" /></span>
                           )}
                         </div>
                       </td>

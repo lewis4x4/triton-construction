@@ -4,18 +4,14 @@ import {
   FileText,
   DollarSign,
   Clock,
-  TrendingUp,
-  TrendingDown,
   CheckCircle,
   XCircle,
-  AlertTriangle,
   Plus,
   Filter,
   Search,
   BarChart3,
   PieChart,
   Calendar,
-  ArrowUpRight,
   ArrowDownRight,
   RefreshCw,
   Eye,
@@ -24,16 +20,10 @@ import {
   ChevronRight,
   Send,
   X,
-  AlertCircle,
   FileCheck,
-  Briefcase,
   Scale,
-  Target,
-  Percent,
   Activity,
-  History,
-  Users,
-  Building
+  History
 } from 'lucide-react';
 import './EnhancedChangeOrderDashboard.css';
 
@@ -153,7 +143,7 @@ export function EnhancedChangeOrderDashboard() {
   const [showFilters, setShowFilters] = useState(false);
   const [selectedPCR, setSelectedPCR] = useState<ChangeOrderRequest | null>(null);
   const [selectedCO, setSelectedCO] = useState<ChangeOrder | null>(null);
-  const [showNewPCRModal, setShowNewPCRModal] = useState(false);
+  const [_showNewPCRModal, setShowNewPCRModal] = useState(false);
   const [filters, setFilters] = useState({
     status: 'all',
     type: 'all',
@@ -713,7 +703,7 @@ export function EnhancedChangeOrderDashboard() {
 function OverviewPanel({
   pcrs,
   changeOrders,
-  timeExtensions,
+  timeExtensions: _timeExtensions,
   monthlyTrends,
   maxTrendAmount,
   metrics,
@@ -1039,7 +1029,7 @@ function TimeExtensionsPanel({ timeExtensions, getStatusConfig }: any) {
   );
 }
 
-function AnalyticsPanel({ metrics, monthlyTrends, pcrs, changeOrders, formatCurrency, maxTrendAmount }: any) {
+function AnalyticsPanel({ metrics, monthlyTrends, pcrs, changeOrders: _changeOrders, formatCurrency, maxTrendAmount }: any) {
   const typeDistribution = pcrs.reduce((acc: any, pcr: ChangeOrderRequest) => {
     acc[pcr.change_type] = (acc[pcr.change_type] || 0) + 1;
     return acc;
@@ -1051,7 +1041,7 @@ function AnalyticsPanel({ metrics, monthlyTrends, pcrs, changeOrders, formatCurr
         <div className="analytics-card">
           <h3>Change Order Trends</h3>
           <div className="trend-chart-large">
-            {monthlyTrends.map((month: MonthlyTrend, index: number) => (
+            {monthlyTrends.map((month: MonthlyTrend, _index: number) => (
               <div key={month.month} className="trend-bar-group">
                 <div className="trend-bar-wrapper">
                   <div

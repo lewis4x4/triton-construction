@@ -8,15 +8,12 @@ import {
   CheckCircle,
   Clock,
   BarChart3,
-  Calendar,
   Users,
   Building,
   Search,
-  Filter,
   Download,
   RefreshCw,
   X,
-  ChevronRight,
   Eye,
   MoreVertical,
   Shield,
@@ -25,15 +22,12 @@ import {
   FileText,
   Zap,
   AlertCircle,
-  XCircle,
   Info,
   Mail,
-  MessageSquare,
   Smartphone,
   Plus,
   Edit2,
   Trash2,
-  Volume2,
   VolumeX,
   BellOff,
   Target,
@@ -89,15 +83,6 @@ interface EscalationRule {
   notifyChannels: string[];
   notifyUsers: string[];
   isActive: boolean;
-}
-
-interface NotificationPreference {
-  category: string;
-  email: boolean;
-  sms: boolean;
-  push: boolean;
-  inApp: boolean;
-  minSeverity: string;
 }
 
 interface TrendData {
@@ -353,7 +338,7 @@ export function EnhancedPlatformAlerts() {
   const [filterCategory, setFilterCategory] = useState<string>('all');
   const [filterStatus, setFilterStatus] = useState<string>('active');
   const [selectedAlert, setSelectedAlert] = useState<PlatformAlert | null>(null);
-  const [escalationRules, setEscalationRules] = useState<EscalationRule[]>(demoEscalationRules);
+  const [escalationRules, _setEscalationRules] = useState<EscalationRule[]>(demoEscalationRules);
   const [showNewRuleModal, setShowNewRuleModal] = useState(false);
 
   useEffect(() => {
@@ -790,10 +775,11 @@ export function EnhancedPlatformAlerts() {
               <div className="alerts-list">
                 {filteredAlerts.map(alert => {
                   const categoryConfig = getCategoryConfig(alert.category);
-                  const severityConfig = getSeverityConfig(alert.severity);
+                  const _severityConfig = getSeverityConfig(alert.severity);
                   const statusConfig = getStatusConfig(alert.status);
                   const slaStatus = getSLAStatus(alert);
                   const CategoryIcon = categoryConfig.icon;
+                  void _severityConfig; // Reserved for future severity-based styling
 
                   return (
                     <div

@@ -13,14 +13,11 @@ import {
   X,
   ChevronRight,
   Circle,
-  Square,
-  Pentagon,
   Navigation,
   Truck,
   Users,
   Clock,
   Gauge,
-  AlertCircle,
   CheckCircle,
   XCircle,
   TrendingUp,
@@ -28,7 +25,6 @@ import {
   Eye,
   Edit2,
   Trash2,
-  Settings,
   Bell,
   Target,
   Layers,
@@ -99,15 +95,6 @@ interface HourlyActivity {
   entries: number;
   exits: number;
   speeding: number;
-}
-
-interface AlertConfig {
-  id: string;
-  name: string;
-  type: 'entry' | 'exit' | 'speeding' | 'dwell';
-  enabled: boolean;
-  recipients: string[];
-  geofence_ids: string[];
 }
 
 // Demo data

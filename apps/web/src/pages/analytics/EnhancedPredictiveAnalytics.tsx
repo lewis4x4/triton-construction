@@ -5,7 +5,6 @@ import {
   TrendingUp,
   TrendingDown,
   AlertTriangle,
-  Target,
   Clock,
   DollarSign,
   Shield,
@@ -13,17 +12,13 @@ import {
   Cloud,
   BarChart3,
   LineChart,
-  PieChart,
   Activity,
   Zap,
   ArrowRight,
-  ArrowUpRight,
-  ArrowDownRight,
   CheckCircle,
   XCircle,
   Info,
   ChevronRight,
-  Calendar,
   Users,
   Wrench,
   Package,
@@ -34,18 +29,8 @@ import {
   Filter,
   Lightbulb,
   Gauge,
-  MapPin,
-  ThermometerSun,
-  CloudRain,
-  Wind,
-  Eye,
-  RotateCcw,
   Play,
-  Pause,
-  FileText,
-  Layers,
-  GitBranch,
-  Circle
+  GitBranch
 } from 'lucide-react';
 import './EnhancedPredictiveAnalytics.css';
 
@@ -226,13 +211,15 @@ export function EnhancedPredictiveAnalytics() {
   }, [selectedProjectId]);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval> | undefined;
     if (autoRefresh) {
       interval = setInterval(() => {
         loadData();
       }, 60000);
     }
-    return () => clearInterval(interval);
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, [autoRefresh, selectedProjectId]);
 
   async function loadProjects() {
@@ -245,14 +232,14 @@ export function EnhancedPredictiveAnalytics() {
 
       if (data && data.length > 0) {
         setProjects(data);
-        setSelectedProjectId(data[0].id);
+        setSelectedProjectId(data[0]?.id ?? '');
       } else {
         setProjects(demoProjects);
-        setSelectedProjectId(demoProjects[0].id);
+        setSelectedProjectId(demoProjects[0]?.id ?? '');
       }
     } catch {
       setProjects(demoProjects);
-      setSelectedProjectId(demoProjects[0].id);
+      setSelectedProjectId(demoProjects[0]?.id ?? '');
     }
     setLoading(false);
   }
@@ -319,8 +306,9 @@ export function EnhancedPredictiveAnalytics() {
       const noise = Math.random() * 10 - 5;
       const trend = i * 0.5;
       const predicted = baseValue + trend + noise;
+      const dateStr = date.toISOString().split('T')[0] ?? date.toISOString().slice(0, 10);
       data.push({
-        date: date.toISOString().split('T')[0],
+        date: dateStr,
         actual: i <= 0 ? predicted + (Math.random() * 6 - 3) : undefined,
         predicted: predicted,
         lower_bound: predicted - 10,
@@ -645,7 +633,7 @@ export function EnhancedPredictiveAnalytics() {
                     {/* Confidence Band */}
                     <path
                       d={`
-                        M 60 ${250 - forecastData[0].lower_bound * 2}
+                        M 60 ${250 - (forecastData[0]?.lower_bound ?? 0) * 2}
                         ${forecastData.map((d, i) => `L ${60 + (i / forecastData.length) * 720} ${250 - d.lower_bound * 2}`).join(' ')}
                         ${forecastData.slice().reverse().map((d, i) => `L ${780 - (i / forecastData.length) * 720} ${250 - d.upper_bound * 2}`).join(' ')}
                         Z
@@ -656,7 +644,7 @@ export function EnhancedPredictiveAnalytics() {
 
                     {/* Predicted Line */}
                     <path
-                      d={`M 60 ${250 - forecastData[0].predicted * 2} ${forecastData.map((d, i) => `L ${60 + (i / forecastData.length) * 720} ${250 - d.predicted * 2}`).join(' ')}`}
+                      d={`M 60 ${250 - (forecastData[0]?.predicted ?? 0) * 2} ${forecastData.map((d, i) => `L ${60 + (i / forecastData.length) * 720} ${250 - d.predicted * 2}`).join(' ')}`}
                       fill="none"
                       stroke="#3b82f6"
                       strokeWidth="2"
@@ -665,7 +653,7 @@ export function EnhancedPredictiveAnalytics() {
 
                     {/* Actual Line */}
                     <path
-                      d={`M 60 ${250 - (forecastData[0].actual || 0) * 2} ${forecastData.filter(d => d.actual !== undefined).map((d, i) => `L ${60 + (i / forecastData.length) * 720} ${250 - (d.actual || 0) * 2}`).join(' ')}`}
+                      d={`M 60 ${250 - (forecastData[0]?.actual ?? 0) * 2} ${forecastData.filter(d => d.actual !== undefined).map((d, i) => `L ${60 + (i / forecastData.length) * 720} ${250 - (d.actual || 0) * 2}`).join(' ')}`}
                       fill="none"
                       stroke="#10b981"
                       strokeWidth="2.5"

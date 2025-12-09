@@ -1,13 +1,9 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@triton/supabase-client';
 import {
   Building2,
-  Users,
   FileText,
   ShieldCheck,
   AlertTriangle,
-  TrendingUp,
-  TrendingDown,
   Clock,
   CheckCircle,
   XCircle,
@@ -29,14 +25,11 @@ import {
   RefreshCw,
   Eye,
   Briefcase,
-  Target,
-  PieChart,
   ArrowUpRight,
   ArrowDownRight,
   Minus,
   AlertCircle,
   Flag,
-  Percent,
   Receipt,
   ClipboardList
 } from 'lucide-react';

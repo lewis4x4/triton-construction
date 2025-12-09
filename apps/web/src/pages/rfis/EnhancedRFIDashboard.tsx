@@ -17,21 +17,14 @@ import {
   RefreshCw,
   BarChart3,
   TrendingUp,
-  TrendingDown,
   ArrowUpRight,
   ArrowDownRight,
-  Calendar,
-  User,
-  Users,
   FileText,
   DollarSign,
   Timer,
   AlertCircle,
-  ChevronRight,
   X,
   Paperclip,
-  Link as LinkIcon,
-  ExternalLink,
   MoreVertical
 } from 'lucide-react';
 import './EnhancedRFIDashboard.css';
@@ -812,14 +805,14 @@ function RFIsTable({
   );
 }
 
-function AnalyticsPanel({ metrics, monthlyTrends, maxTrendSubmitted }: any) {
+function AnalyticsPanel({ metrics, monthlyTrends, maxTrendSubmitted: _maxTrendSubmitted }: any) {
   return (
     <div className="analytics-panel">
       <div className="analytics-grid">
         <div className="analytics-card large">
           <h3>Response Time Trend</h3>
           <div className="response-trend">
-            {monthlyTrends.map((month: MonthlyTrend, index: number) => (
+            {monthlyTrends.map((month: MonthlyTrend, _index: number) => (
               <div key={month.month} className="response-month">
                 <div className="response-bar-wrapper">
                   <div
@@ -1050,7 +1043,7 @@ function RFIDetailPanel({ rfi, onClose, getStatusConfig, getPriorityConfig, isOv
   );
 }
 
-function NewRFIModal({ projectId, onClose, onSave }: { projectId: string; onClose: () => void; onSave: () => void }) {
+function NewRFIModal({ projectId: _projectId, onClose, onSave }: { projectId: string; onClose: () => void; onSave: () => void }) {
   const [formData, setFormData] = useState({
     subject: '',
     question: '',

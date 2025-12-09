@@ -82,7 +82,8 @@ export const BaseMap = forwardRef<MapRef, BaseMapProps>(({
     // Update style if it changes
     useEffect(() => {
         if (map.current && style) {
-            map.current.setStyle(STYLES[style]);
+            const styleUrl = STYLES[style] ?? STYLES['satellite'] ?? 'mapbox://styles/mapbox/satellite-streets-v12';
+            map.current.setStyle(styleUrl);
         }
     }, [style]);
 

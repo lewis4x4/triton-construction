@@ -7,17 +7,13 @@ import {
   Calendar,
   AlertTriangle,
   CheckCircle,
-  Clock,
   MapPin,
   Building2,
   Briefcase,
-  TrendingUp,
-  TrendingDown,
   Download,
   Upload,
   Plus,
   Search,
-  Filter,
   Edit,
   Trash2,
   Copy,
@@ -26,15 +22,10 @@ import {
   ChevronDown,
   XCircle,
   Shield,
-  Award,
   FileSpreadsheet,
   ExternalLink,
   RefreshCw,
-  History,
-  Layers,
-  BarChart3,
-  Target,
-  Info
+  History
 } from 'lucide-react';
 import './WageRateManagement.css';
 
@@ -110,16 +101,8 @@ const WORK_CLASSIFICATIONS = [
   { value: 'other', label: 'Other', group: 'Other' },
 ];
 
-const WV_COUNTIES = [
-  'Barbour', 'Berkeley', 'Boone', 'Braxton', 'Brooke', 'Cabell', 'Calhoun', 'Clay',
-  'Doddridge', 'Fayette', 'Gilmer', 'Grant', 'Greenbrier', 'Hampshire', 'Hancock',
-  'Hardy', 'Harrison', 'Jackson', 'Jefferson', 'Kanawha', 'Lewis', 'Lincoln',
-  'Logan', 'Marion', 'Marshall', 'Mason', 'McDowell', 'Mercer', 'Mineral', 'Mingo',
-  'Monongalia', 'Monroe', 'Morgan', 'Nicholas', 'Ohio', 'Pendleton', 'Pleasants',
-  'Pocahontas', 'Preston', 'Putnam', 'Raleigh', 'Randolph', 'Ritchie', 'Roane',
-  'Summers', 'Taylor', 'Tucker', 'Tyler', 'Upshur', 'Wayne', 'Webster', 'Wetzel',
-  'Wirt', 'Wood', 'Wyoming'
-];
+// WV Counties available if needed in future:
+// Barbour, Berkeley, Boone, Braxton, Brooke, Cabell, Calhoun, Clay, etc.
 
 export function WageRateManagement() {
   const [rates, setRates] = useState<WageRate[]>([]);
@@ -132,8 +115,8 @@ export function WageRateManagement() {
   const [filterClassification, setFilterClassification] = useState('');
   const [filterDetermination, setFilterDetermination] = useState('');
   const [filterProject, setFilterProject] = useState('');
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showImportModal, setShowImportModal] = useState(false);
+  const [_showAddModal, setShowAddModal] = useState(false);
+  const [_showImportModal, setShowImportModal] = useState(false);
   const [selectedRate, setSelectedRate] = useState<WageRate | null>(null);
   const [expandedClassifications, setExpandedClassifications] = useState<string[]>([]);
 

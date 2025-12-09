@@ -66,45 +66,59 @@ async function processBidxFile(
   }
 }
 
-// Process PDF file - basic text extraction (placeholder for Claude integration)
+// Process PDF file using Claude AI via analyze-bid-document function
 async function processPdfFile(
-  supabase: ReturnType<typeof createClient>,
   documentId: string,
   projectId: string,
-  documentType: string,
-  fileContent: Uint8Array
+  documentType: string
 ): Promise<ProcessingResult> {
-  // For Phase 2, we just mark as needing OCR/AI processing
-  // Phase 4 will add Claude integration for full PDF analysis
+  try {
+    // Call the analyze-bid-document edge function
+    const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
+    const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 
-  // Update document to indicate it needs AI processing
-  const { error: updateError } = await supabase
-    .from('bid_documents')
-    .update({
-      processing_status: 'NEEDS_OCR',
-      extracted_text: null, // Will be populated by AI processing
-      extracted_metadata: {
-        documentType,
-        awaitingAiProcessing: true,
-        fileSize: fileContent.length
+    const response = await fetch(`${supabaseUrl}/functions/v1/analyze-bid-document`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${serviceRoleKey}`,
       },
-    })
-    .eq('id', documentId);
+      body: JSON.stringify({
+        document_id: documentId,
+        analysis_type: 'FULL_EXTRACTION',
+      }),
+    });
 
-  if (updateError) {
+    const result = await response.json();
+
+    if (!response.ok) {
+      return {
+        documentId,
+        success: false,
+        message: result.error || result.message || `AI analysis failed with status ${response.status}`,
+      };
+    }
+
+    return {
+      documentId,
+      success: true,
+      message: `AI analysis completed: ${result.analysis?.key_findings?.length || 0} key findings extracted`,
+      extractedData: {
+        summary: result.analysis?.summary,
+        document_category: result.analysis?.document_category,
+        key_findings_count: result.analysis?.key_findings?.length || 0,
+        confidence_score: result.analysis?.confidence_score,
+        tokens_used: result.usage?.input_tokens + result.usage?.output_tokens,
+      },
+    };
+  } catch (error) {
+    console.error('PDF AI analysis error:', error);
     return {
       documentId,
       success: false,
-      message: `Failed to update document: ${updateError.message}`,
+      message: `AI analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
     };
   }
-
-  return {
-    documentId,
-    success: true,
-    message: `PDF document queued for AI analysis (Document type: ${documentType})`,
-    extractedData: { awaitingAiProcessing: true },
-  };
 }
 
 serve(async (req) => {
@@ -211,13 +225,11 @@ serve(async (req) => {
           const textContent = await fileData.text();
           result = await processBidxFile(doc.id, doc.bid_project_id, textContent);
         } else if (doc.mime_type === 'application/pdf') {
-          const arrayBuffer = await fileData.arrayBuffer();
+          // PDF files are analyzed by Claude AI
           result = await processPdfFile(
-            supabase,
             doc.id,
             doc.bid_project_id,
-            doc.document_type,
-            new Uint8Array(arrayBuffer)
+            doc.document_type
           );
         } else {
           // Other file types - mark as completed without processing
@@ -230,21 +242,21 @@ serve(async (req) => {
 
         results.push(result);
 
-        // Update final status
-        const finalStatus = result.success ?
-          (doc.document_type === 'BIDX' ? 'COMPLETED' :
-           doc.mime_type === 'application/pdf' ? 'NEEDS_OCR' : 'COMPLETED')
-          : 'FAILED';
+        // Update final status - PDFs are now fully processed by AI
+        // Only update status if processPdfFile didn't already update it
+        if (doc.document_type === 'BIDX' || doc.mime_type !== 'application/pdf') {
+          const finalStatus = result.success ? 'COMPLETED' : 'FAILED';
 
-        await supabase
-          .from('bid_documents')
-          .update({
-            processing_status: finalStatus,
-            processing_error: result.success ? null : result.message,
-            processing_completed_at: new Date().toISOString(),
-            extracted_metadata: result.extractedData ? result.extractedData : undefined,
-          })
-          .eq('id', doc.id);
+          await supabase
+            .from('bid_documents')
+            .update({
+              processing_status: finalStatus,
+              processing_error: result.success ? null : result.message,
+              processing_completed_at: new Date().toISOString(),
+            })
+            .eq('id', doc.id);
+        }
+        // For PDFs, analyze-bid-document already updates the status
 
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown processing error';

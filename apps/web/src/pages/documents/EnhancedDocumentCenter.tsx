@@ -13,11 +13,8 @@ import {
   CheckCircle,
   XCircle,
   AlertTriangle,
-  BarChart3,
   Grid,
   List,
-  ChevronRight,
-  ChevronDown,
   MoreVertical,
   Star,
   Share2,
@@ -28,19 +25,13 @@ import {
   Tag,
   Brain,
   HardDrive,
-  Users,
-  Calendar,
   FileImage,
   FileSpreadsheet,
   FileCode,
   File,
   ArrowUpRight,
-  ArrowDownRight,
-  TrendingUp,
   RefreshCw,
-  Settings,
   Lock,
-  Unlock,
   X,
   Plus,
   Send
@@ -151,7 +142,7 @@ export function EnhancedDocumentCenter() {
   const [activities, setActivities] = useState<ActivityItem[]>([]);
   const [storageStats, setStorageStats] = useState<StorageStats | null>(null);
   const [currentFolder, setCurrentFolder] = useState<string | null>(null);
-  const [folderPath, setFolderPath] = useState<FolderItem[]>([]);
+  const [_folderPath, _setFolderPath] = useState<FolderItem[]>([]);
   const [projects, setProjects] = useState<{ id: string; name: string; project_number: string }[]>([]);
   const [selectedProjectId, setSelectedProjectId] = useState('all');
   const [loading, setLoading] = useState(true);
@@ -1040,7 +1031,7 @@ function SubmittalsTable({
 
 function TransmittalsTable({
   transmittals,
-  getStatusConfig
+  getStatusConfig: _getStatusConfig
 }: {
   transmittals: Transmittal[];
   getStatusConfig: (status: string) => { color: string; icon: any; label: string };
@@ -1263,7 +1254,7 @@ function DocumentDetailPanel({
 }
 
 function UploadModal({
-  projectId,
+  projectId: _projectId,
   folders,
   onClose,
   onUpload

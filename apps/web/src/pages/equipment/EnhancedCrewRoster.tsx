@@ -17,30 +17,22 @@ import {
   Download,
   Eye,
   Award,
-  Calendar,
   AlertTriangle,
-  AlertCircle,
-  TrendingUp,
   ArrowUpRight,
   ArrowDownRight,
   BarChart3,
   HardHat,
-  Wrench,
-  Settings,
   Bell,
   Edit,
   Printer,
   Mail,
   Phone,
-  MapPin,
   Briefcase,
   GraduationCap,
   FileText,
   Star,
   Activity,
-  Target,
   Building,
-  Truck,
 } from 'lucide-react';
 import { supabase } from '@triton/supabase-client';
 import './EnhancedCrewRoster.css';
@@ -265,8 +257,8 @@ export function EnhancedCrewRoster() {
     ];
 
     sampleNames.forEach((name, i) => {
-      const trade = trades[i % trades.length];
-      const project = projects[Math.floor(Math.random() * projects.length)];
+      const trade = trades[i % trades.length] ?? 'Laborer';
+      const project = projects[Math.floor(Math.random() * projects.length)] ?? 'Unassigned';
       const yearsOfService = 1 + Math.floor(Math.random() * 20);
       const complianceScore = 85 + Math.floor(Math.random() * 15);
 
@@ -331,7 +323,7 @@ export function EnhancedCrewRoster() {
         hourlyRate: 28 + Math.floor(Math.random() * 25),
         currentProject: project,
         currentProjectId: `proj-${Math.floor(Math.random() * 4) + 1}`,
-        supervisor: i < 5 ? undefined : sampleNames[Math.floor(i / 5)].last,
+        supervisor: i < 5 ? undefined : sampleNames[Math.floor(i / 5)]?.last,
         department: trade === 'Operator' ? 'Equipment' : 'Field',
         union: Math.random() > 0.5 ? 'Laborers International' : undefined,
         unionLocal: Math.random() > 0.5 ? 'Local 1353' : undefined,
@@ -346,14 +338,14 @@ export function EnhancedCrewRoster() {
         emergencyContact: {
           name: `${['Sarah', 'Mary', 'Jennifer', 'Linda'][Math.floor(Math.random() * 4)]} ${name.last}`,
           phone: `304-555-${String(2000 + i).slice(-4)}`,
-          relationship: ['Spouse', 'Parent', 'Sibling'][Math.floor(Math.random() * 3)],
+          relationship: ['Spouse', 'Parent', 'Sibling'][Math.floor(Math.random() * 3)] ?? 'Other',
         },
       });
     });
 
     // Add more crew members
     for (let i = 15; i < 30; i++) {
-      const trade = trades[Math.floor(Math.random() * trades.length)];
+      const trade = trades[Math.floor(Math.random() * trades.length)] ?? 'Laborer';
       members.push({
         id: (i + 1).toString(),
         employeeId: `EMP-${String(1000 + i).padStart(4, '0')}`,
@@ -368,7 +360,7 @@ export function EnhancedCrewRoster() {
         hireDate: '2022-01-15',
         yearsOfService: 2,
         hourlyRate: 30,
-        currentProject: projects[Math.floor(Math.random() * projects.length)],
+        currentProject: projects[Math.floor(Math.random() * projects.length)] ?? 'Unassigned',
         department: 'Field',
         skills: [],
         certifications: [
@@ -397,7 +389,7 @@ export function EnhancedCrewRoster() {
         trade,
         count,
         percentage: (count / members.length) * 100,
-        color: tradeColors[index % tradeColors.length],
+        color: tradeColors[index % tradeColors.length] ?? '#3b82f6',
       }))
       .sort((a, b) => b.count - a.count);
 

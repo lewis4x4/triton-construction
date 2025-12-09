@@ -39,8 +39,11 @@ const PROCESSING_STATUS_CONFIG: Record<
   { label: string; className: string; icon: string }
 > = {
   PENDING: { label: 'Pending', className: 'status-pending', icon: '⏳' },
+  QUEUED: { label: 'Queued', className: 'status-pending', icon: '📋' },
   PROCESSING: { label: 'Processing', className: 'status-processing', icon: '⚙️' },
-  COMPLETED: { label: 'Completed', className: 'status-completed', icon: '✓' },
+  AI_ANALYZING: { label: 'AI Analyzing', className: 'status-processing', icon: '🤖' },
+  COMPLETED: { label: 'Processed', className: 'status-completed', icon: '✓' },
+  AI_ANALYZED: { label: 'AI Complete', className: 'status-ai-complete', icon: '🤖' },
   FAILED: { label: 'Failed', className: 'status-failed', icon: '✕' },
   NEEDS_OCR: { label: 'Needs AI', className: 'status-needs-ocr', icon: '🤖' },
 };
@@ -50,6 +53,8 @@ export function DocumentList({ projectId }: DocumentListProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedDoc, setSelectedDoc] = useState<Document | null>(null);
+  const [isAnalyzingAll, setIsAnalyzingAll] = useState(false);
+  const [analyzingDocId, setAnalyzingDocId] = useState<string | null>(null);
 
   const fetchDocuments = useCallback(async () => {
     setIsLoading(true);
@@ -200,6 +205,104 @@ export function DocumentList({ projectId }: DocumentListProps) {
     }
   };
 
+  const triggerAIAnalysis = async (doc: Document) => {
+    setAnalyzingDocId(doc.id);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error('Not authenticated');
+
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/analyze-bid-document`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({
+            document_id: doc.id,
+            analysis_type: 'FULL_EXTRACTION',
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const result = await response.json();
+        throw new Error(result.error || 'AI analysis failed');
+      }
+
+      // Refresh list
+      fetchDocuments();
+    } catch (err) {
+      console.error('AI analysis error:', err);
+      alert('Failed to trigger AI analysis');
+    } finally {
+      setAnalyzingDocId(null);
+    }
+  };
+
+  const triggerAnalyzeAll = async () => {
+    const docsToAnalyze = documents.filter(
+      (doc) =>
+        doc.processing_status === 'COMPLETED' ||
+        doc.processing_status === 'PENDING' ||
+        doc.processing_status === 'FAILED'
+    );
+
+    if (docsToAnalyze.length === 0) {
+      alert('No documents to analyze');
+      return;
+    }
+
+    setIsAnalyzingAll(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error('Not authenticated');
+
+      // Process documents sequentially to avoid overwhelming the API
+      for (const doc of docsToAnalyze) {
+        setAnalyzingDocId(doc.id);
+        try {
+          const response = await fetch(
+            `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/analyze-bid-document`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${session.access_token}`,
+              },
+              body: JSON.stringify({
+                document_id: doc.id,
+                analysis_type: 'FULL_EXTRACTION',
+              }),
+            }
+          );
+
+          if (!response.ok) {
+            console.error(`Failed to analyze ${doc.file_name}`);
+          }
+        } catch (docErr) {
+          console.error(`Error analyzing ${doc.file_name}:`, docErr);
+        }
+      }
+
+      // Refresh list after all done
+      fetchDocuments();
+    } catch (err) {
+      console.error('Analyze all error:', err);
+      alert('Failed to analyze documents');
+    } finally {
+      setIsAnalyzingAll(false);
+      setAnalyzingDocId(null);
+    }
+  };
+
+  const pendingAnalysisCount = documents.filter(
+    (doc) =>
+      doc.processing_status !== 'AI_ANALYZED' &&
+      doc.processing_status !== 'AI_ANALYZING'
+  ).length;
+
   if (isLoading) {
     return (
       <div className="document-list">
@@ -237,9 +340,27 @@ export function DocumentList({ projectId }: DocumentListProps) {
     <div className="document-list">
       <div className="document-list-header">
         <h3>Uploaded Documents ({documents.length})</h3>
-        <button onClick={fetchDocuments} className="btn btn-icon" title="Refresh">
-          🔄
-        </button>
+        <div className="header-actions">
+          {pendingAnalysisCount > 0 && (
+            <button
+              onClick={triggerAnalyzeAll}
+              className="btn btn-primary btn-sm"
+              disabled={isAnalyzingAll}
+            >
+              {isAnalyzingAll ? (
+                <>
+                  <span className="btn-spinner" />
+                  Analyzing...
+                </>
+              ) : (
+                <>🤖 Analyze All ({pendingAnalysisCount})</>
+              )}
+            </button>
+          )}
+          <button onClick={fetchDocuments} className="btn btn-icon" title="Refresh">
+            🔄
+          </button>
+        </div>
       </div>
 
       <div className="document-table-container">
@@ -301,6 +422,17 @@ export function DocumentList({ projectId }: DocumentListProps) {
                         title="Process"
                       >
                         ▶️
+                      </button>
+                    )}
+                    {doc.processing_status !== 'AI_ANALYZED' &&
+                      doc.processing_status !== 'AI_ANALYZING' && (
+                      <button
+                        className={`btn btn-icon ${analyzingDocId === doc.id ? 'analyzing' : ''}`}
+                        onClick={() => triggerAIAnalysis(doc)}
+                        title="Analyze with AI"
+                        disabled={analyzingDocId === doc.id || isAnalyzingAll}
+                      >
+                        {analyzingDocId === doc.id ? '⏳' : '🤖'}
                       </button>
                     )}
                     <button

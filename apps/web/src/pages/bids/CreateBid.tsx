@@ -5,17 +5,32 @@ import './CreateBid.css';
 
 import { useAuth } from '../../hooks/useAuth';
 
+// West Virginia counties for dropdown
+const WV_COUNTIES = [
+  'Barbour', 'Berkeley', 'Boone', 'Braxton', 'Brooke', 'Cabell', 'Calhoun',
+  'Clay', 'Doddridge', 'Fayette', 'Gilmer', 'Grant', 'Greenbrier', 'Hampshire',
+  'Hancock', 'Hardy', 'Harrison', 'Jackson', 'Jefferson', 'Kanawha', 'Lewis',
+  'Lincoln', 'Logan', 'Marion', 'Marshall', 'Mason', 'McDowell', 'Mercer',
+  'Mineral', 'Mingo', 'Monongalia', 'Monroe', 'Morgan', 'Nicholas', 'Ohio',
+  'Pendleton', 'Pleasants', 'Pocahontas', 'Preston', 'Putnam', 'Raleigh',
+  'Randolph', 'Ritchie', 'Roane', 'Summers', 'Taylor', 'Tucker', 'Tyler',
+  'Upshur', 'Wayne', 'Webster', 'Wetzel', 'Wirt', 'Wood', 'Wyoming'
+];
+
 interface FormData {
   project_name: string;
-  contract_number: string;
+  state_project_number: string;
+  federal_project_number: string;
   owner: string;
   county: string;
-  state_route: string;
+  route: string;
+  location_description: string;
   letting_date: string;
   bid_due_date: string;
-  project_description: string;
-  estimated_value_low: string;
-  estimated_value_high: string;
+  contract_time_days: string;
+  dbe_goal_percentage: string;
+  is_federal_aid: boolean;
+  liquidated_damages_per_day: string;
 }
 
 export function CreateBid() {
@@ -26,22 +41,30 @@ export function CreateBid() {
 
   const [formData, setFormData] = useState<FormData>({
     project_name: '',
-    contract_number: '',
+    state_project_number: '',
+    federal_project_number: '',
     owner: 'WVDOH',
     county: '',
-    state_route: '',
+    route: '',
+    location_description: '',
     letting_date: '',
     bid_due_date: '',
-    project_description: '',
-    estimated_value_low: '',
-    estimated_value_high: '',
+    contract_time_days: '',
+    dbe_goal_percentage: '',
+    is_federal_aid: false,
+    liquidated_damages_per_day: '',
   });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type } = e.target;
+    if (type === 'checkbox') {
+      const checked = (e.target as HTMLInputElement).checked;
+      setFormData((prev) => ({ ...prev, [name]: checked }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -64,20 +87,25 @@ export function CreateBid() {
         .insert({
           organization_id: profile.organization_id,
           project_name: formData.project_name.trim(),
-          contract_number: formData.contract_number.trim() || null,
-          owner: formData.owner.trim() || null,
-          county: formData.county.trim() || null,
-          state_route: formData.state_route.trim() || null,
+          state_project_number: formData.state_project_number.trim() || null,
+          federal_project_number: formData.federal_project_number.trim() || null,
+          owner: formData.owner.trim() || 'WVDOH',
+          county: formData.county || null,
+          route: formData.route.trim() || null,
+          location_description: formData.location_description.trim() || null,
           letting_date: formData.letting_date || null,
           bid_due_date: formData.bid_due_date || null,
-          project_description: formData.project_description.trim() || null,
-          estimated_value_low: formData.estimated_value_low
-            ? parseFloat(formData.estimated_value_low)
+          contract_time_days: formData.contract_time_days
+            ? parseInt(formData.contract_time_days, 10)
             : null,
-          estimated_value_high: formData.estimated_value_high
-            ? parseFloat(formData.estimated_value_high)
+          dbe_goal_percentage: formData.dbe_goal_percentage
+            ? parseFloat(formData.dbe_goal_percentage)
             : null,
-          status: 'DRAFT',
+          is_federal_aid: formData.is_federal_aid,
+          liquidated_damages_per_day: formData.liquidated_damages_per_day
+            ? parseFloat(formData.liquidated_damages_per_day)
+            : null,
+          status: 'IDENTIFIED',
         })
         .select()
         .single();
@@ -99,7 +127,7 @@ export function CreateBid() {
       <div className="page-header">
         <div className="page-header-content">
           <h1>Create Bid Project</h1>
-          <p>Set up a new bid package for estimation</p>
+          <p>Set up a new bid package for AI-powered estimation</p>
         </div>
       </div>
 
@@ -127,17 +155,31 @@ export function CreateBid() {
 
             <div className="form-row">
               <div className="form-group">
-                <label htmlFor="contract_number">Contract Number</label>
+                <label htmlFor="state_project_number">State Project Number</label>
                 <input
                   type="text"
-                  id="contract_number"
-                  name="contract_number"
-                  value={formData.contract_number}
+                  id="state_project_number"
+                  name="state_project_number"
+                  value={formData.state_project_number}
                   onChange={handleChange}
-                  placeholder="e.g., DOH-2024-0123"
+                  placeholder="e.g., S310-48-0.00"
                 />
               </div>
 
+              <div className="form-group">
+                <label htmlFor="federal_project_number">Federal Project Number</label>
+                <input
+                  type="text"
+                  id="federal_project_number"
+                  name="federal_project_number"
+                  value={formData.federal_project_number}
+                  onChange={handleChange}
+                  placeholder="e.g., NHPP-0048(123)D"
+                />
+              </div>
+            </div>
+
+            <div className="form-row">
               <div className="form-group">
                 <label htmlFor="owner">Owner/Agency</label>
                 <select
@@ -154,43 +196,46 @@ export function CreateBid() {
                   <option value="Other">Other</option>
                 </select>
               </div>
-            </div>
 
-            <div className="form-row">
               <div className="form-group">
                 <label htmlFor="county">County</label>
-                <input
-                  type="text"
+                <select
                   id="county"
                   name="county"
                   value={formData.county}
                   onChange={handleChange}
-                  placeholder="e.g., Kanawha"
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="state_route">State Route</label>
-                <input
-                  type="text"
-                  id="state_route"
-                  name="state_route"
-                  value={formData.state_route}
-                  onChange={handleChange}
-                  placeholder="e.g., US-48"
-                />
+                >
+                  <option value="">Select County...</option>
+                  {WV_COUNTIES.map((county) => (
+                    <option key={county} value={county}>
+                      {county}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 
             <div className="form-group">
-              <label htmlFor="project_description">Project Description</label>
+              <label htmlFor="route">Route Number</label>
+              <input
+                type="text"
+                id="route"
+                name="route"
+                value={formData.route}
+                onChange={handleChange}
+                placeholder="e.g., US-48, WV-2, I-79"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="location_description">Location Description</label>
               <textarea
-                id="project_description"
-                name="project_description"
-                value={formData.project_description}
+                id="location_description"
+                name="location_description"
+                value={formData.location_description}
                 onChange={handleChange}
                 rows={3}
-                placeholder="Brief description of the project scope..."
+                placeholder="Brief description of the project location and scope..."
               />
             </div>
           </div>
@@ -221,38 +266,70 @@ export function CreateBid() {
                 />
               </div>
             </div>
-          </div>
-
-          <div className="form-section">
-            <h2>Estimated Value Range</h2>
 
             <div className="form-row">
               <div className="form-group">
-                <label htmlFor="estimated_value_low">Low Estimate ($)</label>
+                <label htmlFor="contract_time_days">Contract Time (Days)</label>
                 <input
                   type="number"
-                  id="estimated_value_low"
-                  name="estimated_value_low"
-                  value={formData.estimated_value_low}
+                  id="contract_time_days"
+                  name="contract_time_days"
+                  value={formData.contract_time_days}
                   onChange={handleChange}
-                  min="0"
-                  step="1000"
-                  placeholder="e.g., 1000000"
+                  min="1"
+                  placeholder="e.g., 180"
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="estimated_value_high">High Estimate ($)</label>
+                <label htmlFor="liquidated_damages_per_day">Liquidated Damages ($/day)</label>
                 <input
                   type="number"
-                  id="estimated_value_high"
-                  name="estimated_value_high"
-                  value={formData.estimated_value_high}
+                  id="liquidated_damages_per_day"
+                  name="liquidated_damages_per_day"
+                  value={formData.liquidated_damages_per_day}
                   onChange={handleChange}
                   min="0"
-                  step="1000"
-                  placeholder="e.g., 1500000"
+                  step="100"
+                  placeholder="e.g., 2500"
                 />
+              </div>
+            </div>
+          </div>
+
+          <div className="form-section">
+            <h2>Compliance Requirements</h2>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label htmlFor="dbe_goal_percentage">DBE Goal (%)</label>
+                <input
+                  type="number"
+                  id="dbe_goal_percentage"
+                  name="dbe_goal_percentage"
+                  value={formData.dbe_goal_percentage}
+                  onChange={handleChange}
+                  min="0"
+                  max="100"
+                  step="0.1"
+                  placeholder="e.g., 8.5"
+                />
+              </div>
+
+              <div className="form-group checkbox-group">
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    id="is_federal_aid"
+                    name="is_federal_aid"
+                    checked={formData.is_federal_aid}
+                    onChange={handleChange}
+                  />
+                  <span className="checkbox-text">Federal Aid Project</span>
+                </label>
+                <p className="form-hint">
+                  Requires Davis-Bacon prevailing wages and Buy America compliance
+                </p>
               </div>
             </div>
           </div>

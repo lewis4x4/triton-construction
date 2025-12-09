@@ -8,7 +8,6 @@ import {
   Search,
   Filter,
   RefreshCw,
-  Plus,
   ChevronRight,
   ChevronLeft,
   Clock,
@@ -26,17 +25,13 @@ import {
   Fuel,
   Truck,
   MapPin,
-  Settings,
   Bell,
   Edit,
   Printer,
   DollarSign,
   Map,
-  PieChart,
   Activity,
   Send,
-  FileCheck,
-  Building,
 } from 'lucide-react';
 import { supabase } from '@triton/supabase-client';
 import './EnhancedIFTAReporting.css';
@@ -359,17 +354,20 @@ export function EnhancedIFTAReporting() {
         id: i.toString(),
         date: `2024-${String(10 + Math.floor(Math.random() * 3)).padStart(2, '0')}-${String(1 + Math.floor(Math.random() * 28)).padStart(2, '0')}`,
         vehicleNumber: `TRK-${String(1 + Math.floor(Math.random() * 20)).padStart(3, '0')}`,
-        location: `${['Charleston', 'Huntington', 'Morgantown', 'Wheeling', 'Richmond', 'Columbus', 'Pittsburgh'][Math.floor(Math.random() * 7)]}, ${['WV', 'VA', 'OH', 'PA'][Math.floor(Math.random() * 4)]}`,
-        jurisdiction: ['WV', 'VA', 'OH', 'PA', 'KY', 'MD'][Math.floor(Math.random() * 6)],
+        location: `${['Charleston', 'Huntington', 'Morgantown', 'Wheeling', 'Richmond', 'Columbus', 'Pittsburgh'][Math.floor(Math.random() * 7)] ?? 'Charleston'}, ${['WV', 'VA', 'OH', 'PA'][Math.floor(Math.random() * 4)] ?? 'WV'}`,
+        jurisdiction: ['WV', 'VA', 'OH', 'PA', 'KY', 'MD'][Math.floor(Math.random() * 6)] ?? 'WV',
         gallons: 80 + Math.floor(Math.random() * 120),
         pricePerGallon: 3.20 + Math.random() * 0.80,
         totalAmount: 0,
         receiptNumber: `R-${100000 + i}`,
-        vendor: vendors[Math.floor(Math.random() * vendors.length)],
+        vendor: vendors[Math.floor(Math.random() * vendors.length)] ?? 'Unknown',
         fuelType: 'Diesel',
         verified: Math.random() > 0.15,
       });
-      receipts[i - 1].totalAmount = receipts[i - 1].gallons * receipts[i - 1].pricePerGallon;
+      const lastReceipt = receipts[i - 1];
+      if (lastReceipt) {
+        lastReceipt.totalAmount = lastReceipt.gallons * lastReceipt.pricePerGallon;
+      }
     }
     setFuelReceipts(receipts);
 
@@ -506,7 +504,7 @@ export function EnhancedIFTAReporting() {
         <div className="alert-banner warning">
           <AlertTriangle size={20} />
           <span><strong>Q4 2024 Filing Due:</strong> January 31, 2025 - 23 days remaining</span>
-          <button className="btn-link" onClick={() => handleSelectReport(quarterlyReports[0])}>Review & Submit</button>
+          <button className="btn-link" onClick={() => { const report = quarterlyReports[0]; if (report) handleSelectReport(report); }}>Review & Submit</button>
         </div>
       )}
 
@@ -609,7 +607,7 @@ export function EnhancedIFTAReporting() {
                         <div
                           className="bar-fill"
                           style={{
-                            width: `${(j.totalMiles / jurisdictionData[0].totalMiles) * 100}%`,
+                            width: `${(j.totalMiles / (jurisdictionData[0]?.totalMiles ?? 1)) * 100}%`,
                             backgroundColor: index === 0 ? '#3b82f6' : index < 3 ? '#60a5fa' : '#94a3b8'
                           }}
                         />

@@ -48,10 +48,11 @@ interface DashboardMetrics {
   estimated_completion_pct: number | null;
 }
 
-type TabId = 'overview' | 'documents' | 'line-items' | 'risks' | 'questions' | 'work-packages';
+type TabId = 'overview' | 'executive-snapshot' | 'documents' | 'line-items' | 'risks' | 'questions' | 'work-packages';
 
 const TABS: { id: TabId; label: string; icon: string }[] = [
   { id: 'overview', label: 'Overview', icon: '📊' },
+  { id: 'executive-snapshot', label: 'AI Summary', icon: '🤖' },
   { id: 'documents', label: 'Documents', icon: '📄' },
   { id: 'line-items', label: 'Line Items', icon: '📋' },
   { id: 'risks', label: 'Risks', icon: '⚠️' },
@@ -227,6 +228,9 @@ export function BidDetail() {
           {activeTab === 'overview' && (
             <OverviewTab project={project} metrics={metrics} />
           )}
+          {activeTab === 'executive-snapshot' && (
+            <ExecutiveSnapshotTab projectId={project.id} projectName={project.project_name} />
+          )}
           {activeTab === 'documents' && (
             <DocumentsTab projectId={project.id} onDocumentsChange={fetchProject} />
           )}
@@ -248,6 +252,9 @@ function OverviewTab({
   project: BidProject;
   metrics: DashboardMetrics | null;
 }) {
+  const [aiOperations, setAiOperations] = useState<Record<string, boolean>>({});
+  const [aiErrors, setAiErrors] = useState<Record<string, string>>({});
+
   const formatCurrency = (value: number | null | undefined) => {
     if (value == null) return '-';
     return new Intl.NumberFormat('en-US', {
@@ -258,8 +265,161 @@ function OverviewTab({
     }).format(value);
   };
 
+  const runAiOperation = async (operation: string, endpoint: string, body: Record<string, unknown>) => {
+    setAiOperations((prev) => ({ ...prev, [operation]: true }));
+    setAiErrors((prev) => {
+      const newErrors = { ...prev };
+      delete newErrors[operation];
+      return newErrors;
+    });
+
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const token = sessionData?.session?.access_token;
+
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/${endpoint}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(body),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `${operation} failed`);
+      }
+
+      return true;
+    } catch (err) {
+      console.error(`${operation} error:`, err);
+      setAiErrors((prev) => ({
+        ...prev,
+        [operation]: err instanceof Error ? err.message : 'Operation failed',
+      }));
+      return false;
+    } finally {
+      setAiOperations((prev) => ({ ...prev, [operation]: false }));
+    }
+  };
+
+  const handleExtractRisks = () => runAiOperation(
+    'risks',
+    'extract-project-risks',
+    { bid_project_id: project.id }
+  );
+
+  const handleGenerateQuestions = () => runAiOperation(
+    'questions',
+    'generate-prebid-questions',
+    { bid_project_id: project.id }
+  );
+
+  const handleCategorizeItems = () => runAiOperation(
+    'categorize',
+    'categorize-line-items',
+    { bid_project_id: project.id }
+  );
+
+  const handleRunAllAi = async () => {
+    setAiOperations((prev) => ({ ...prev, all: true }));
+    try {
+      await handleExtractRisks();
+      await handleGenerateQuestions();
+      await handleCategorizeItems();
+    } finally {
+      setAiOperations((prev) => ({ ...prev, all: false }));
+    }
+  };
+
+  const isAnyRunning = Object.values(aiOperations).some(Boolean);
+
   return (
     <div className="overview-tab">
+      {/* AI Pipeline Actions */}
+      <div className="ai-pipeline-section">
+        <div className="ai-pipeline-header">
+          <h3>🤖 AI Analysis Pipeline</h3>
+          <button
+            className="btn btn-primary"
+            onClick={handleRunAllAi}
+            disabled={isAnyRunning}
+          >
+            {aiOperations.all ? (
+              <>
+                <span className="btn-spinner" />
+                Running All...
+              </>
+            ) : (
+              'Run Full Analysis'
+            )}
+          </button>
+        </div>
+
+        <div className="ai-pipeline-grid">
+          <div className="ai-pipeline-card">
+            <div className="pipeline-card-header">
+              <span className="pipeline-icon">⚠️</span>
+              <h4>Extract Risks</h4>
+            </div>
+            <p>Analyze documents and extract project risks, hazards, and concerns.</p>
+            <div className="pipeline-card-footer">
+              <span className="pipeline-count">{metrics?.total_risks || 0} risks found</span>
+              <button
+                className="btn btn-secondary btn-sm"
+                onClick={handleExtractRisks}
+                disabled={isAnyRunning}
+              >
+                {aiOperations.risks ? 'Running...' : 'Run'}
+              </button>
+            </div>
+            {aiErrors.risks && <div className="pipeline-error">{aiErrors.risks}</div>}
+          </div>
+
+          <div className="ai-pipeline-card">
+            <div className="pipeline-card-header">
+              <span className="pipeline-icon">❓</span>
+              <h4>Generate Questions</h4>
+            </div>
+            <p>Create pre-bid questions based on ambiguities and unclear specifications.</p>
+            <div className="pipeline-card-footer">
+              <span className="pipeline-count">{metrics?.total_questions || 0} questions</span>
+              <button
+                className="btn btn-secondary btn-sm"
+                onClick={handleGenerateQuestions}
+                disabled={isAnyRunning}
+              >
+                {aiOperations.questions ? 'Running...' : 'Run'}
+              </button>
+            </div>
+            {aiErrors.questions && <div className="pipeline-error">{aiErrors.questions}</div>}
+          </div>
+
+          <div className="ai-pipeline-card">
+            <div className="pipeline-card-header">
+              <span className="pipeline-icon">📋</span>
+              <h4>Categorize Items</h4>
+            </div>
+            <p>Match line items to WVDOH master items and assign work categories.</p>
+            <div className="pipeline-card-footer">
+              <span className="pipeline-count">{metrics?.total_line_items || 0} line items</span>
+              <button
+                className="btn btn-secondary btn-sm"
+                onClick={handleCategorizeItems}
+                disabled={isAnyRunning}
+              >
+                {aiOperations.categorize ? 'Running...' : 'Run'}
+              </button>
+            </div>
+            {aiErrors.categorize && <div className="pipeline-error">{aiErrors.categorize}</div>}
+          </div>
+        </div>
+      </div>
+
       {/* Metrics Cards */}
       <div className="metrics-grid">
         <div className="metric-card">
@@ -393,6 +553,298 @@ function DocumentsTab({
     <div className="documents-tab">
       <DocumentUpload projectId={projectId} onUploadComplete={onDocumentsChange} />
       <DocumentList projectId={projectId} />
+    </div>
+  );
+}
+
+// Executive Snapshot Tab Component
+interface ExecutiveSnapshot {
+  id: string;
+  version_number: number;
+  snapshot_date: string;
+  project_overview: string | null;
+  key_quantities_summary: string | null;
+  risk_summary: string | null;
+  environmental_summary: string | null;
+  schedule_summary: string | null;
+  cost_considerations: string | null;
+  recommendations: string | null;
+  total_line_items: number | null;
+  total_estimated_value: number | null;
+  critical_risks_count: number | null;
+  high_risks_count: number | null;
+  work_packages_count: number | null;
+  environmental_commitments_count: number | null;
+  hazmat_findings_count: number | null;
+  prebid_questions_count: number | null;
+  ai_model_used: string | null;
+  is_current: boolean;
+  reviewed: boolean;
+  created_at: string;
+}
+
+function ExecutiveSnapshotTab({
+  projectId,
+  projectName,
+}: {
+  projectId: string;
+  projectName: string;
+}) {
+  const [snapshot, setSnapshot] = useState<ExecutiveSnapshot | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [generateError, setGenerateError] = useState<string | null>(null);
+
+  const fetchSnapshot = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const { data, error: fetchError } = await supabase
+        .from('bid_executive_snapshots')
+        .select('*')
+        .eq('bid_project_id', projectId)
+        .eq('is_current', true)
+        .single();
+
+      if (fetchError && fetchError.code !== 'PGRST116') {
+        // PGRST116 = no rows returned, which is fine
+        throw fetchError;
+      }
+
+      setSnapshot(data as ExecutiveSnapshot | null);
+    } catch (err) {
+      console.error('Error fetching executive snapshot:', err);
+      setError('Failed to load executive summary');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [projectId]);
+
+  useEffect(() => {
+    fetchSnapshot();
+  }, [fetchSnapshot]);
+
+  const handleGenerate = async () => {
+    setIsGenerating(true);
+    setGenerateError(null);
+
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const token = sessionData?.session?.access_token;
+
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-executive-snapshot`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ bid_project_id: projectId }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to generate summary');
+      }
+
+      // Refresh snapshot data
+      await fetchSnapshot();
+    } catch (err) {
+      console.error('Error generating executive snapshot:', err);
+      setGenerateError(err instanceof Error ? err.message : 'Failed to generate summary');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const formatDate = (dateStr: string) => {
+    return new Date(dateStr).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
+
+  const formatCurrency = (value: number | null) => {
+    if (value == null) return '-';
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(value);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="executive-snapshot-tab">
+        <div className="loading-container">
+          <div className="loading-spinner" />
+          <span>Loading AI summary...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="executive-snapshot-tab">
+        <div className="error-container">
+          <p>{error}</p>
+          <button className="btn btn-primary" onClick={fetchSnapshot}>
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="executive-snapshot-tab">
+      {/* Header with Generate Button */}
+      <div className="snapshot-header">
+        <div className="snapshot-header-left">
+          <h2>AI Executive Summary</h2>
+          {snapshot && (
+            <span className="snapshot-meta">
+              Version {snapshot.version_number} • Generated {formatDate(snapshot.created_at)}
+              {snapshot.ai_model_used && ` • ${snapshot.ai_model_used}`}
+            </span>
+          )}
+        </div>
+        <div className="snapshot-header-right">
+          <button
+            className={`btn ${snapshot ? 'btn-secondary' : 'btn-primary'}`}
+            onClick={handleGenerate}
+            disabled={isGenerating}
+          >
+            {isGenerating ? (
+              <>
+                <span className="btn-spinner" />
+                Generating...
+              </>
+            ) : snapshot ? (
+              'Regenerate Summary'
+            ) : (
+              'Generate AI Summary'
+            )}
+          </button>
+        </div>
+      </div>
+
+      {generateError && (
+        <div className="form-error">{generateError}</div>
+      )}
+
+      {!snapshot ? (
+        <div className="no-snapshot">
+          <div className="no-snapshot-icon">🤖</div>
+          <h3>No AI Summary Generated</h3>
+          <p>
+            Click "Generate AI Summary" to analyze all project documents, risks, and line items
+            to create an executive summary for {projectName}.
+          </p>
+          <p className="no-snapshot-hint">
+            This uses Claude AI to synthesize information from your uploaded bid documents.
+          </p>
+        </div>
+      ) : (
+        <>
+          {/* Quick Metrics */}
+          <div className="snapshot-metrics">
+            <div className="snapshot-metric">
+              <span className="metric-value">{snapshot.total_line_items ?? 0}</span>
+              <span className="metric-label">Line Items</span>
+            </div>
+            <div className="snapshot-metric">
+              <span className="metric-value">{formatCurrency(snapshot.total_estimated_value)}</span>
+              <span className="metric-label">Est. Value</span>
+            </div>
+            <div className="snapshot-metric danger">
+              <span className="metric-value">{snapshot.critical_risks_count ?? 0}</span>
+              <span className="metric-label">Critical Risks</span>
+            </div>
+            <div className="snapshot-metric warning">
+              <span className="metric-value">{snapshot.high_risks_count ?? 0}</span>
+              <span className="metric-label">High Risks</span>
+            </div>
+            <div className="snapshot-metric">
+              <span className="metric-value">{snapshot.work_packages_count ?? 0}</span>
+              <span className="metric-label">Work Packages</span>
+            </div>
+            <div className="snapshot-metric">
+              <span className="metric-value">{snapshot.prebid_questions_count ?? 0}</span>
+              <span className="metric-label">Questions</span>
+            </div>
+          </div>
+
+          {/* Summary Sections */}
+          <div className="snapshot-sections">
+            {snapshot.project_overview && (
+              <div className="snapshot-section">
+                <h3>Project Overview</h3>
+                <div className="section-content">{snapshot.project_overview}</div>
+              </div>
+            )}
+
+            {snapshot.key_quantities_summary && (
+              <div className="snapshot-section">
+                <h3>Key Quantities</h3>
+                <div className="section-content">{snapshot.key_quantities_summary}</div>
+              </div>
+            )}
+
+            {snapshot.risk_summary && (
+              <div className="snapshot-section highlight-danger">
+                <h3>Risk Summary</h3>
+                <div className="section-content">{snapshot.risk_summary}</div>
+              </div>
+            )}
+
+            {snapshot.environmental_summary && (
+              <div className="snapshot-section highlight-warning">
+                <h3>Environmental Considerations</h3>
+                <div className="section-content">{snapshot.environmental_summary}</div>
+              </div>
+            )}
+
+            {snapshot.schedule_summary && (
+              <div className="snapshot-section">
+                <h3>Schedule Analysis</h3>
+                <div className="section-content">{snapshot.schedule_summary}</div>
+              </div>
+            )}
+
+            {snapshot.cost_considerations && (
+              <div className="snapshot-section">
+                <h3>Cost Considerations</h3>
+                <div className="section-content">{snapshot.cost_considerations}</div>
+              </div>
+            )}
+
+            {snapshot.recommendations && (
+              <div className="snapshot-section highlight-success">
+                <h3>AI Recommendations</h3>
+                <div className="section-content">{snapshot.recommendations}</div>
+              </div>
+            )}
+          </div>
+
+          {/* Review Status */}
+          {!snapshot.reviewed && (
+            <div className="snapshot-review-notice">
+              <span className="notice-icon">⚠️</span>
+              <span>This AI-generated summary has not been reviewed by an estimator.</span>
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }
