@@ -132,9 +132,12 @@ export function CreateBid() {
       return;
     }
 
-    // Validate file size (max 5MB for edge function limits)
-    if (file.size > 5 * 1024 * 1024) {
-      setExtractionError('File size must be less than 5MB. Try uploading just the cover page or first few pages.');
+    // Max file size: 50MB for Railway service, 5MB for edge function
+    const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
+    const EDGE_FUNCTION_LIMIT = 5 * 1024 * 1024; // 5MB
+
+    if (file.size > MAX_FILE_SIZE) {
+      setExtractionError('File size must be less than 50MB.');
       return;
     }
 
@@ -154,16 +157,34 @@ export function CreateBid() {
       const uploadData = new FormData();
       uploadData.append('file', file);
 
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/extract-bid-metadata`,
-        {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: uploadData,
-        }
-      );
+      // Use Railway service for large files, edge function for small files
+      const useRailwayService = file.size > EDGE_FUNCTION_LIMIT;
+      const railwayUrl = import.meta.env.VITE_DOCUMENT_PROCESSOR_URL;
+
+      // Determine endpoint
+      let endpoint: string;
+      if (useRailwayService && railwayUrl) {
+        endpoint = `${railwayUrl}/extract-metadata`;
+        console.log(`Using Railway service for ${(file.size / 1024 / 1024).toFixed(2)}MB file`);
+      } else if (useRailwayService && !railwayUrl) {
+        // Large file but no Railway service configured
+        setExtractionError(
+          `File is ${(file.size / 1024 / 1024).toFixed(1)}MB which exceeds the 5MB limit. Please upload a smaller file or just the cover page.`
+        );
+        setIsExtracting(false);
+        return;
+      } else {
+        endpoint = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/extract-bid-metadata`;
+        console.log(`Using edge function for ${(file.size / 1024 / 1024).toFixed(2)}MB file`);
+      }
+
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: uploadData,
+      });
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -329,7 +350,7 @@ export function CreateBid() {
                   <strong>Drop bid document here</strong> or click to browse
                 </span>
                 <span className="drop-zone-hint">
-                  Supports PDF and images (PNG, JPEG) up to 5MB
+                  Supports PDF and images (PNG, JPEG) up to 50MB
                 </span>
               </label>
             )}
