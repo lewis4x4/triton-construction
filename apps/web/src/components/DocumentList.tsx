@@ -202,8 +202,8 @@ export function DocumentList({ projectId }: DocumentListProps) {
   const [retryingDocId, setRetryingDocId] = useState<string | null>(null);
   const [isRetryingAll, setIsRetryingAll] = useState(false);
 
-  const fetchDocuments = useCallback(async () => {
-    setIsLoading(true);
+  const fetchDocuments = useCallback(async (showLoading = true) => {
+    if (showLoading) setIsLoading(true);
     setError(null);
 
     try {
@@ -219,12 +219,12 @@ export function DocumentList({ projectId }: DocumentListProps) {
       console.error('Error fetching documents:', err);
       setError('Failed to load documents');
     } finally {
-      setIsLoading(false);
+      if (showLoading) setIsLoading(false);
     }
   }, [projectId]);
 
   useEffect(() => {
-    fetchDocuments();
+    fetchDocuments(true);
 
     // Set up real-time subscription for document updates
     const channel = supabase
@@ -232,14 +232,44 @@ export function DocumentList({ projectId }: DocumentListProps) {
       .on(
         'postgres_changes',
         {
-          event: '*',
+          event: 'INSERT',
           schema: 'public',
           table: 'bid_documents',
           filter: `bid_project_id=eq.${projectId}`,
         },
-        () => {
-          // Refetch when documents change
-          fetchDocuments();
+        (payload) => {
+          // Add new document to the list
+          setDocuments((prev) => [payload.new as Document, ...prev]);
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'bid_documents',
+          filter: `bid_project_id=eq.${projectId}`,
+        },
+        (payload) => {
+          // Update existing document in place (no loading spinner)
+          setDocuments((prev) =>
+            prev.map((doc) =>
+              doc.id === payload.new.id ? (payload.new as Document) : doc
+            )
+          );
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: 'DELETE',
+          schema: 'public',
+          table: 'bid_documents',
+          filter: `bid_project_id=eq.${projectId}`,
+        },
+        (payload) => {
+          // Remove deleted document from the list
+          setDocuments((prev) => prev.filter((doc) => doc.id !== payload.old.id));
         }
       )
       .subscribe();
@@ -510,7 +540,7 @@ export function DocumentList({ projectId }: DocumentListProps) {
     return (
       <div className="document-list">
         <div className="error-message">{error}</div>
-        <button onClick={fetchDocuments} className="btn btn-secondary">
+        <button onClick={() => fetchDocuments()} className="btn btn-secondary">
           Retry
         </button>
       </div>
@@ -565,7 +595,7 @@ export function DocumentList({ projectId }: DocumentListProps) {
               )}
             </button>
           )}
-          <button onClick={fetchDocuments} className="btn btn-secondary btn-sm" title="Refresh document list">
+          <button onClick={() => fetchDocuments()} className="btn btn-secondary btn-sm" title="Refresh document list">
             ↻ Refresh
           </button>
         </div>
