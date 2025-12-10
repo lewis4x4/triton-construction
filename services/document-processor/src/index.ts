@@ -119,9 +119,191 @@ interface ExtractedMetadata {
   extraction_notes: string[];
 }
 
+// Allowed document types and their expected MIME types (matching edge function)
+const DOCUMENT_TYPE_MIME_MAP: Record<string, string[]> = {
+  PROPOSAL: ['application/pdf'],
+  BIDX: ['application/xml', 'text/xml'],
+  PLANS: ['application/pdf', 'image/tiff'],
+  EXISTING_PLANS: ['application/pdf', 'image/tiff'],
+  SPECIAL_PROVISIONS: ['application/pdf'],
+  ENVIRONMENTAL: ['application/pdf'],
+  ASBESTOS: ['application/pdf'],
+  HAZMAT: ['application/pdf'],
+  GEOTECHNICAL: ['application/pdf'],
+  TRAFFIC_STUDY: ['application/pdf'],
+  ADDENDUM: ['application/pdf'],
+  OTHER: ['application/pdf', 'application/xml', 'text/xml', 'application/vnd.ms-excel',
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          'image/png', 'image/jpeg', 'image/tiff'],
+};
+
 // Health check endpoint
 app.get('/health', (_req: Request, res: Response) => {
   res.json({ status: 'healthy', timestamp: new Date().toISOString() });
+});
+
+// Upload document endpoint (for large files that exceed edge function memory limits)
+app.post('/upload-document', upload.single('file'), async (req: Request, res: Response) => {
+  try {
+    // Verify authorization header
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      res.status(401).json({ error: 'Authorization header required' });
+      return;
+    }
+
+    // Verify the token with Supabase
+    const token = authHeader.replace('Bearer ', '');
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+
+    if (authError || !user) {
+      res.status(401).json({ error: 'Invalid authentication token' });
+      return;
+    }
+
+    // Check for file
+    if (!req.file) {
+      res.status(400).json({ error: 'File is required' });
+      return;
+    }
+
+    // Get form data
+    const bidProjectId = req.body.bidProjectId;
+    const documentType = req.body.documentType;
+
+    if (!bidProjectId || !documentType) {
+      res.status(400).json({ error: 'Missing required fields: bidProjectId, documentType' });
+      return;
+    }
+
+    // Validate document type
+    if (!DOCUMENT_TYPE_MIME_MAP[documentType]) {
+      res.status(400).json({ error: `Invalid document type: ${documentType}` });
+      return;
+    }
+
+    // Validate MIME type for document type
+    const allowedMimes = DOCUMENT_TYPE_MIME_MAP[documentType];
+    if (!allowedMimes.includes(req.file.mimetype)) {
+      res.status(400).json({
+        error: `Invalid MIME type ${req.file.mimetype} for document type ${documentType}. Allowed: ${allowedMimes.join(', ')}`
+      });
+      return;
+    }
+
+    // Verify user has access to the bid project
+    const { data: project, error: projectError } = await supabase
+      .from('bid_projects')
+      .select('id, organization_id')
+      .eq('id', bidProjectId)
+      .single();
+
+    if (projectError || !project) {
+      res.status(404).json({ error: 'Bid project not found or access denied' });
+      return;
+    }
+
+    const file = req.file;
+    const fileSize = file.size;
+
+    console.log(`Uploading file: ${file.originalname} (${(fileSize / 1024 / 1024).toFixed(2)}MB)`);
+
+    // Generate unique file path: {project_id}/{timestamp}_{sanitized_filename}
+    const timestamp = Date.now();
+    const sanitizedFileName = file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const filePath = `${bidProjectId}/${timestamp}_${sanitizedFileName}`;
+
+    // Upload to storage bucket
+    const { data: storageData, error: storageError } = await supabase.storage
+      .from('bid-documents')
+      .upload(filePath, file.buffer, {
+        contentType: file.mimetype,
+        upsert: false,
+      });
+
+    if (storageError) {
+      console.error('Storage upload error:', storageError);
+      res.status(500).json({ error: `Storage upload failed: ${storageError.message}` });
+      return;
+    }
+
+    // Create bid_documents record
+    const { data: document, error: docError } = await supabase
+      .from('bid_documents')
+      .insert({
+        bid_project_id: bidProjectId,
+        file_name: file.originalname,
+        file_path: storageData.path,
+        file_size_bytes: fileSize,
+        mime_type: file.mimetype,
+        document_type: documentType,
+        processing_status: 'PENDING',
+        uploaded_by: user.id,
+      })
+      .select()
+      .single();
+
+    if (docError) {
+      // Rollback: delete the uploaded file
+      await supabase.storage.from('bid-documents').remove([storageData.path]);
+      console.error('Document record creation error:', docError);
+      res.status(500).json({ error: `Failed to create document record: ${docError.message}` });
+      return;
+    }
+
+    // Auto-trigger document processing (async - don't wait for completion)
+    let processingTriggered = false;
+    try {
+      const supabaseUrl = process.env.SUPABASE_URL ?? '';
+      const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
+
+      // Fire and forget - call process-document-queue for this document
+      fetch(`${supabaseUrl}/functions/v1/process-document-queue`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${serviceRoleKey}`,
+        },
+        body: JSON.stringify({
+          documentIds: [document.id],
+          batchSize: 1,
+        }),
+      }).catch((err) => {
+        console.error('Auto-processing trigger failed (non-blocking):', err);
+      });
+
+      processingTriggered = true;
+    } catch (triggerErr) {
+      // Don't fail upload if auto-processing trigger fails
+      console.error('Failed to trigger auto-processing:', triggerErr);
+    }
+
+    console.log(`Upload complete: ${document.id}`);
+
+    // Return success with document info
+    res.json({
+      success: true,
+      document: {
+        id: document.id,
+        fileName: document.file_name,
+        filePath: document.file_path,
+        documentType: document.document_type,
+        processingStatus: document.processing_status,
+        createdAt: document.created_at,
+      },
+      processingTriggered,
+      message: processingTriggered
+        ? 'Document uploaded successfully. AI processing has been triggered.'
+        : 'Document uploaded successfully. Processing will begin shortly.',
+    });
+
+  } catch (error) {
+    console.error('Upload error:', error);
+    res.status(500).json({
+      error: 'An unexpected error occurred during upload',
+      message: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
 });
 
 // Main extraction endpoint

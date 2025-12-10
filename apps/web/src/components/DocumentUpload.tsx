@@ -59,6 +59,11 @@ interface UploadingFile {
   error?: string;
 }
 
+// File size threshold for using Railway service (5MB)
+const LARGE_FILE_THRESHOLD = 5 * 1024 * 1024;
+// Railway service URL (handles large files that exceed edge function memory)
+const RAILWAY_UPLOAD_URL = import.meta.env.VITE_DOCUMENT_PROCESSOR_URL || 'https://document-processor-production-b5d6.up.railway.app';
+
 export function DocumentUpload({ projectId, onUploadComplete }: DocumentUploadProps) {
   const [documentType, setDocumentType] = useState<DocumentType>('PROPOSAL');
   const [uploadingFiles, setUploadingFiles] = useState<UploadingFile[]>([]);
@@ -82,43 +87,61 @@ export function DocumentUpload({ projectId, onUploadComplete }: DocumentUploadPr
     ]);
 
     try {
-      // Read file as base64
-      const fileContent = await new Promise<string>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const result = reader.result as string;
-          // Remove data URL prefix
-          const base64 = result.split(',')[1] ?? '';
-          resolve(base64);
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-
       // Get session for auth header
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
         throw new Error('Not authenticated');
       }
 
-      // Call edge function
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/upload-bid-document`,
-        {
+      let response: Response;
+
+      // Route large files to Railway service, small files to edge function
+      if (file.size > LARGE_FILE_THRESHOLD) {
+        // Use Railway service for large files (multipart upload)
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('bidProjectId', projectId);
+        formData.append('documentType', docType);
+
+        response = await fetch(`${RAILWAY_UPLOAD_URL}/upload-document`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
             'Authorization': `Bearer ${session.access_token}`,
           },
-          body: JSON.stringify({
-            bidProjectId: projectId,
-            documentType: docType,
-            fileName: file.name,
-            fileContent,
-            mimeType: file.type,
-          }),
-        }
-      );
+          body: formData,
+        });
+      } else {
+        // Use edge function for small files (base64)
+        const fileContent = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const result = reader.result as string;
+            // Remove data URL prefix
+            const base64 = result.split(',')[1] ?? '';
+            resolve(base64);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+
+        response = await fetch(
+          `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/upload-bid-document`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${session.access_token}`,
+            },
+            body: JSON.stringify({
+              bidProjectId: projectId,
+              documentType: docType,
+              fileName: file.name,
+              fileContent,
+              mimeType: file.type,
+            }),
+          }
+        );
+      }
 
       const result = await response.json();
 
