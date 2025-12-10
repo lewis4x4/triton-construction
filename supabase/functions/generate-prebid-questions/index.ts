@@ -111,10 +111,23 @@ serve(async (req) => {
     }
 
     // Initialize Supabase clients
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const anthropicApiKey = Deno.env.get('ANTHROPIC_API_KEY')!;
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY');
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+    const anthropicApiKey = Deno.env.get('ANTHROPIC_API_KEY');
+
+    // Validate all required environment variables
+    if (!supabaseUrl || !supabaseAnonKey || !supabaseServiceKey) {
+      return new Response(
+        JSON.stringify({
+          error: 'Missing environment variables',
+          hasUrl: !!supabaseUrl,
+          hasAnonKey: !!supabaseAnonKey,
+          hasServiceKey: !!supabaseServiceKey
+        }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
     if (!anthropicApiKey) {
       throw new Error('ANTHROPIC_API_KEY not configured');
@@ -140,6 +153,26 @@ serve(async (req) => {
       auth: { autoRefreshToken: false, persistSession: false },
     });
 
+    // Quick connectivity test - try to count bid_projects
+    const { count: testCount, error: testError } = await supabase
+      .from('bid_projects')
+      .select('*', { count: 'exact', head: true });
+
+    if (testError) {
+      return new Response(
+        JSON.stringify({
+          error: `Database connectivity failed: ${testError.message}`,
+          code: testError.code,
+          hint: testError.hint
+        }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    console.log('DEBUG: Connectivity test passed, bid_projects count:', testCount);
+    console.log('DEBUG: Looking up user profile for user.id:', user.id);
+    console.log('DEBUG: bid_project_id received:', bid_project_id);
+
     // Verify user has access to this project by checking organization match
     // Using service role to bypass RLS issues with get_user_organization_id
     const { data: userProfile, error: profileError } = await supabase
@@ -150,7 +183,7 @@ serve(async (req) => {
 
     if (profileError || !userProfile) {
       return new Response(
-        JSON.stringify({ error: 'User profile not found' }),
+        JSON.stringify({ error: `User profile not found for user ${user.id}: ${profileError?.message || 'no profile'}` }),
         { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -162,8 +195,13 @@ serve(async (req) => {
       .single();
 
     if (accessError || !projectAccess) {
+      console.error('Project access error:', { bid_project_id, accessError, projectAccess });
       return new Response(
-        JSON.stringify({ error: 'Project not found' }),
+        JSON.stringify({
+          error: `Project not found: ${bid_project_id} (${accessError?.message || 'no data returned'})`,
+          bid_project_id,
+          details: accessError?.message || 'No project data returned'
+        }),
         { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -185,7 +223,7 @@ serve(async (req) => {
 
     if (projectError || !project) {
       return new Response(
-        JSON.stringify({ error: 'Project not found', details: projectError }),
+        JSON.stringify({ error: `Project details fetch failed: ${bid_project_id} (${projectError?.message || 'unknown error'})`, details: projectError }),
         { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
