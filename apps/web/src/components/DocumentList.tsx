@@ -565,8 +565,8 @@ export function DocumentList({ projectId }: DocumentListProps) {
               )}
             </button>
           )}
-          <button onClick={fetchDocuments} className="btn btn-icon" title="Refresh">
-            🔄
+          <button onClick={fetchDocuments} className="btn btn-secondary btn-sm" title="Refresh document list">
+            ↻ Refresh
           </button>
         </div>
       </div>
