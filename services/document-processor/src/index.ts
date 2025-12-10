@@ -23,8 +23,8 @@ app.use(cors({
     // Allow localhost
     if (origin.includes('localhost')) return callback(null, true);
 
-    // Allow any vercel.app domain
-    if (origin.endsWith('.vercel.app')) return callback(null, true);
+    // Allow any vercel.app or netlify.app domain
+    if (origin.endsWith('.vercel.app') || origin.endsWith('.netlify.app')) return callback(null, true);
 
     // Allow explicitly configured origins
     if (allowedOrigins.includes(origin)) return callback(null, true);
