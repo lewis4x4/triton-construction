@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { supabase } from '@triton/supabase-client';
 import './DocumentList.css';
 
@@ -17,6 +17,11 @@ interface Document {
   processing_error: string | null;
   created_at: string | null;
   extracted_metadata?: Record<string, unknown> | null;
+  // AI Analysis fields (optional - may not exist for all documents)
+  ai_summary?: string | null;
+  ai_key_findings?: Array<{ finding: string; importance: string } | string> | null;
+  ai_confidence_score?: number | null;
+  ai_document_category?: string | null;
 }
 
 const DOCUMENT_TYPE_LABELS: Record<string, string> = {
@@ -34,19 +39,158 @@ const DOCUMENT_TYPE_LABELS: Record<string, string> = {
   OTHER: 'Other',
 };
 
-const PROCESSING_STATUS_CONFIG: Record<
-  string,
-  { label: string; className: string; icon: string }
-> = {
-  PENDING: { label: 'Pending', className: 'status-pending', icon: '⏳' },
-  QUEUED: { label: 'Queued', className: 'status-pending', icon: '📋' },
-  PROCESSING: { label: 'Processing', className: 'status-processing', icon: '⚙️' },
-  AI_ANALYZING: { label: 'AI Analyzing', className: 'status-processing', icon: '🤖' },
-  COMPLETED: { label: 'Processed', className: 'status-completed', icon: '✓' },
-  AI_ANALYZED: { label: 'AI Complete', className: 'status-ai-complete', icon: '🤖' },
-  FAILED: { label: 'Failed', className: 'status-failed', icon: '✕' },
-  NEEDS_OCR: { label: 'Needs AI', className: 'status-needs-ocr', icon: '🤖' },
-};
+// ============================================================================
+// Progress Pipeline Component
+// ============================================================================
+
+type PipelineStage = 'pending' | 'processing' | 'complete' | 'failed';
+
+interface ProgressPipelineProps {
+  uploadComplete: boolean;
+  parseStatus: PipelineStage;
+  aiStatus: PipelineStage;
+  onRetryParse?: () => void;
+  onRetryAI?: () => void;
+}
+
+function ProgressPipeline({ uploadComplete, parseStatus, aiStatus, onRetryParse, onRetryAI }: ProgressPipelineProps) {
+  const getStageIcon = (stage: PipelineStage, canRetry?: () => void) => {
+    switch (stage) {
+      case 'pending':
+        return <span className="stage-icon stage-pending">○</span>;
+      case 'processing':
+        return <span className="stage-icon stage-processing">⏳</span>;
+      case 'complete':
+        return <span className="stage-icon stage-complete">✓</span>;
+      case 'failed':
+        return canRetry ? (
+          <button className="stage-icon stage-failed clickable" onClick={canRetry} title="Click to retry">
+            ✕
+          </button>
+        ) : (
+          <span className="stage-icon stage-failed">✕</span>
+        );
+    }
+  };
+
+  return (
+    <div className="progress-pipeline">
+      <div className="pipeline-stage" title="Upload">
+        <span className="stage-emoji">📤</span>
+        {uploadComplete && <span className="stage-icon stage-complete">✓</span>}
+      </div>
+      <span className="pipeline-divider">│</span>
+      <div className="pipeline-stage" title="Parse/Process">
+        <span className="stage-emoji">📄</span>
+        {getStageIcon(parseStatus, onRetryParse)}
+      </div>
+      <span className="pipeline-divider">│</span>
+      <div className="pipeline-stage" title="AI Analysis">
+        <span className="stage-emoji">🤖</span>
+        {getStageIcon(aiStatus, onRetryAI)}
+      </div>
+    </div>
+  );
+}
+
+// ============================================================================
+// Overflow Menu Component
+// ============================================================================
+
+interface OverflowMenuProps {
+  onDownload: () => void;
+  onDelete: () => void;
+  onReanalyze?: () => void;
+  hasAIAnalysis: boolean;
+}
+
+function OverflowMenu({ onDownload, onDelete, onReanalyze, hasAIAnalysis }: OverflowMenuProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <div className="overflow-menu-container" ref={menuRef}>
+      <button
+        className="overflow-menu-trigger"
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsOpen(!isOpen);
+        }}
+        title="More options"
+      >
+        ⋮
+      </button>
+      {isOpen && (
+        <div className="overflow-menu-dropdown">
+          <button onClick={() => { onDownload(); setIsOpen(false); }}>
+            <span>⬇️</span> Download
+          </button>
+          {hasAIAnalysis && onReanalyze && (
+            <button onClick={() => { onReanalyze(); setIsOpen(false); }}>
+              <span>🔄</span> Re-analyze
+            </button>
+          )}
+          <button className="danger" onClick={() => { onDelete(); setIsOpen(false); }}>
+            <span>🗑️</span> Delete
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ============================================================================
+// AI Details Expanded Row Component
+// ============================================================================
+
+interface AIDetailsRowProps {
+  doc: Document;
+}
+
+function AIDetailsRow({ doc }: AIDetailsRowProps) {
+  if (!doc.ai_summary) return null;
+
+  const findingsCount = Array.isArray(doc.ai_key_findings) ? doc.ai_key_findings.length : 0;
+  const confidence = doc.ai_confidence_score ?? 0;
+  const category = doc.ai_document_category || 'Unknown';
+
+  return (
+    <tr className="ai-details-row">
+      <td colSpan={6}>
+        <div className="ai-details-content">
+          <div className="ai-summary">
+            <span className="ai-summary-icon">📝</span>
+            <p>{doc.ai_summary}</p>
+          </div>
+          <div className="ai-meta-row">
+            <span className="ai-meta-item" title="Key findings">
+              🔍 {findingsCount} finding{findingsCount !== 1 ? 's' : ''}
+            </span>
+            <span className="ai-meta-divider">│</span>
+            <span className="ai-meta-item" title="Confidence score">
+              📊 {confidence.toFixed(0)}% confidence
+            </span>
+            <span className="ai-meta-divider">│</span>
+            <span className="ai-meta-item" title="Document category">
+              🏷️ {category}
+            </span>
+          </div>
+        </div>
+      </td>
+    </tr>
+  );
+}
 
 export function DocumentList({ projectId }: DocumentListProps) {
   const [documents, setDocuments] = useState<Document[]>([]);
@@ -434,107 +578,149 @@ export function DocumentList({ projectId }: DocumentListProps) {
               <th>File Name</th>
               <th>Type</th>
               <th>Size</th>
-              <th>Status</th>
-              <th>Uploaded</th>
-              <th>Actions</th>
+              <th>Progress</th>
+              <th>Action</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             {documents.map((doc) => {
               const status = doc.processing_status || 'PENDING';
-              const statusConfig = PROCESSING_STATUS_CONFIG[status] ?? PROCESSING_STATUS_CONFIG.PENDING;
-              const isFailed = doc.processing_status === 'FAILED';
+              const isFailed = status === 'FAILED';
               const isRetrying = retryingDocId === doc.id;
+              const isAnalyzing = analyzingDocId === doc.id;
+              const hasAISummary = !!doc.ai_summary;
+
+              // Determine pipeline stages
+              const parseStatus: PipelineStage =
+                status === 'PENDING' || status === 'QUEUED' ? 'pending' :
+                status === 'PROCESSING' ? 'processing' :
+                status === 'FAILED' ? 'failed' : 'complete';
+
+              const aiStatus: PipelineStage =
+                hasAISummary ? 'complete' :
+                status === 'AI_ANALYZING' || isAnalyzing ? 'processing' :
+                parseStatus === 'complete' ? 'pending' : 'pending';
+
+              // Determine smart action button
+              const getSmartAction = () => {
+                if (isFailed) {
+                  return (
+                    <button
+                      className="btn btn-smart btn-retry"
+                      onClick={() => triggerProcessing(doc)}
+                      disabled={isRetrying || isRetryingAll}
+                    >
+                      {isRetrying ? (
+                        <>
+                          <span className="btn-spinner" />
+                          Retrying...
+                        </>
+                      ) : (
+                        'Retry'
+                      )}
+                    </button>
+                  );
+                }
+                if (status === 'PENDING' || status === 'QUEUED') {
+                  return (
+                    <button
+                      className="btn btn-smart btn-process"
+                      onClick={() => triggerProcessing(doc)}
+                      disabled={isRetrying}
+                    >
+                      {isRetrying ? (
+                        <>
+                          <span className="btn-spinner" />
+                          Processing...
+                        </>
+                      ) : (
+                        'Process'
+                      )}
+                    </button>
+                  );
+                }
+                if (status === 'PROCESSING') {
+                  return (
+                    <button className="btn btn-smart" disabled>
+                      <span className="btn-spinner" />
+                      Processing...
+                    </button>
+                  );
+                }
+                if (status === 'AI_ANALYZING' || isAnalyzing) {
+                  return (
+                    <button className="btn btn-smart" disabled>
+                      <span className="btn-spinner" />
+                      Analyzing...
+                    </button>
+                  );
+                }
+                if (!hasAISummary && parseStatus === 'complete') {
+                  return (
+                    <button
+                      className="btn btn-smart btn-analyze"
+                      onClick={() => triggerAIAnalysis(doc)}
+                      disabled={isAnalyzingAll}
+                    >
+                      Analyze
+                    </button>
+                  );
+                }
+                // AI complete - no button needed
+                return null;
+              };
 
               return (
-                <tr
-                  key={doc.id}
-                  onClick={() => setSelectedDoc(doc)}
-                  className={isFailed ? 'row-failed' : ''}
-                >
-                  <td className="file-name-cell">
-                    <span className="file-icon">{isFailed ? '⚠️' : '📄'}</span>
-                    <div className="file-info">
-                      <span className="file-name" title={doc.file_name}>
-                        {doc.file_name}
-                      </span>
-                      {isFailed && doc.processing_error && (
-                        <span className="error-message-inline" title={doc.processing_error}>
-                          {doc.processing_error.length > 60
-                            ? doc.processing_error.substring(0, 60) + '...'
-                            : doc.processing_error}
+                <>
+                  <tr
+                    key={doc.id}
+                    onClick={() => setSelectedDoc(doc)}
+                    className={`${isFailed ? 'row-failed' : ''} ${hasAISummary ? 'row-analyzed' : ''}`}
+                  >
+                    <td className="file-name-cell">
+                      <span className="file-icon">{isFailed ? '⚠️' : '📄'}</span>
+                      <div className="file-info">
+                        <span className="file-name" title={doc.file_name}>
+                          {doc.file_name}
                         </span>
-                      )}
-                    </div>
-                  </td>
-                  <td>
-                    <span className="doc-type-badge">
-                      {DOCUMENT_TYPE_LABELS[doc.document_type] || doc.document_type}
-                    </span>
-                  </td>
-                  <td>{formatFileSize(doc.file_size_bytes)}</td>
-                  <td>
-                    <span className={`status-badge ${statusConfig?.className ?? 'status-pending'}`}>
-                      <span className="status-icon">{statusConfig?.icon ?? '⏳'}</span>
-                      {statusConfig?.label ?? 'Pending'}
-                    </span>
-                  </td>
-                  <td>{doc.created_at ? formatDate(doc.created_at) : '-'}</td>
-                  <td className="actions-cell" onClick={(e) => e.stopPropagation()}>
-                    {isFailed && (
-                      <button
-                        className="btn btn-retry btn-sm"
-                        onClick={() => triggerProcessing(doc)}
-                        title="Retry processing"
-                        disabled={isRetrying || isRetryingAll}
-                      >
-                        {isRetrying ? (
-                          <>
-                            <span className="btn-spinner" />
-                            Retrying
-                          </>
-                        ) : (
-                          <>🔄 Retry</>
+                        {isFailed && doc.processing_error && (
+                          <span className="error-message-inline" title={doc.processing_error}>
+                            {doc.processing_error.length > 50
+                              ? doc.processing_error.substring(0, 50) + '...'
+                              : doc.processing_error}
+                          </span>
                         )}
-                      </button>
-                    )}
-                    <button
-                      className="btn btn-icon"
-                      onClick={() => handleDownload(doc)}
-                      title="Download"
-                    >
-                      ⬇️
-                    </button>
-                    {doc.processing_status === 'PENDING' && (
-                      <button
-                        className="btn btn-icon"
-                        onClick={() => triggerProcessing(doc)}
-                        title="Process"
-                        disabled={isRetrying}
-                      >
-                        {isRetrying ? '⏳' : '▶️'}
-                      </button>
-                    )}
-                    {doc.processing_status !== 'AI_ANALYZED' &&
-                      doc.processing_status !== 'AI_ANALYZING' && (
-                      <button
-                        className={`btn btn-icon ${analyzingDocId === doc.id ? 'analyzing' : ''}`}
-                        onClick={() => triggerAIAnalysis(doc)}
-                        title="Analyze with AI"
-                        disabled={analyzingDocId === doc.id || isAnalyzingAll}
-                      >
-                        {analyzingDocId === doc.id ? '⏳' : '🤖'}
-                      </button>
-                    )}
-                    <button
-                      className="btn btn-icon btn-danger"
-                      onClick={() => handleDelete(doc)}
-                      title="Delete"
-                    >
-                      🗑️
-                    </button>
-                  </td>
-                </tr>
+                      </div>
+                    </td>
+                    <td>
+                      <span className="doc-type-badge">
+                        {DOCUMENT_TYPE_LABELS[doc.document_type] || doc.document_type}
+                      </span>
+                    </td>
+                    <td className="size-cell">{formatFileSize(doc.file_size_bytes)}</td>
+                    <td className="progress-cell">
+                      <ProgressPipeline
+                        uploadComplete={true}
+                        parseStatus={parseStatus}
+                        aiStatus={aiStatus}
+                        onRetryParse={isFailed ? () => triggerProcessing(doc) : undefined}
+                      />
+                    </td>
+                    <td className="action-cell" onClick={(e) => e.stopPropagation()}>
+                      {getSmartAction()}
+                    </td>
+                    <td className="overflow-cell" onClick={(e) => e.stopPropagation()}>
+                      <OverflowMenu
+                        onDownload={() => handleDownload(doc)}
+                        onDelete={() => handleDelete(doc)}
+                        onReanalyze={hasAISummary ? () => triggerAIAnalysis(doc) : undefined}
+                        hasAIAnalysis={hasAISummary}
+                      />
+                    </td>
+                  </tr>
+                  {hasAISummary && <AIDetailsRow key={`${doc.id}-ai`} doc={doc} />}
+                </>
               );
             })}
           </tbody>
@@ -576,20 +762,50 @@ export function DocumentList({ projectId }: DocumentListProps) {
               </div>
               <div className="detail-row">
                 <label>Status:</label>
-                <span
-                  className={`status-badge ${
-                    PROCESSING_STATUS_CONFIG[selectedDoc.processing_status || 'PENDING']
-                      ?.className ?? ''
-                  }`}
-                >
-                  {PROCESSING_STATUS_CONFIG[selectedDoc.processing_status || 'PENDING']?.label ?? 'Unknown'}
+                <span className="status-badge">
+                  {selectedDoc.processing_status || 'PENDING'}
                 </span>
+              </div>
+              <div className="detail-row">
+                <label>Uploaded:</label>
+                <span>{selectedDoc.created_at ? formatDate(selectedDoc.created_at) : '-'}</span>
               </div>
               {selectedDoc.processing_error && (
                 <div className="detail-row error">
                   <label>Error:</label>
                   <span>{selectedDoc.processing_error}</span>
                 </div>
+              )}
+              {selectedDoc.ai_summary && (
+                <>
+                  <div className="detail-section-header">AI Analysis</div>
+                  <div className="detail-row">
+                    <label>Summary:</label>
+                    <span>{selectedDoc.ai_summary}</span>
+                  </div>
+                  {selectedDoc.ai_document_category && (
+                    <div className="detail-row">
+                      <label>Category:</label>
+                      <span>{selectedDoc.ai_document_category}</span>
+                    </div>
+                  )}
+                  {selectedDoc.ai_confidence_score && (
+                    <div className="detail-row">
+                      <label>Confidence:</label>
+                      <span>{selectedDoc.ai_confidence_score.toFixed(0)}%</span>
+                    </div>
+                  )}
+                  {selectedDoc.ai_key_findings && selectedDoc.ai_key_findings.length > 0 && (
+                    <div className="detail-row">
+                      <label>Key Findings:</label>
+                      <ul className="findings-list">
+                        {selectedDoc.ai_key_findings.map((finding, idx) => (
+                          <li key={idx}>{typeof finding === 'string' ? finding : finding.finding}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </>
               )}
               {selectedDoc.extracted_metadata && (
                 <div className="detail-row">

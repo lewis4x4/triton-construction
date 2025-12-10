@@ -3,6 +3,322 @@
    Triton AI Platform - Unified Forest Green Theme
    ===================================================== */
 
+/* =====================================================
+   PROGRESS PIPELINE STYLES
+   ===================================================== */
+
+.progress-pipeline {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.pipeline-stage {
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+}
+
+.stage-emoji {
+  font-size: 0.875rem;
+}
+
+.stage-icon {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.stage-icon.stage-pending {
+  color: var(--text-muted, #9ca3af);
+}
+
+.stage-icon.stage-processing {
+  color: var(--stat-amber-icon, #f59e0b);
+  animation: pipelinePulse 1.5s ease-in-out infinite;
+}
+
+.stage-icon.stage-complete {
+  color: var(--stat-green-icon, #22c55e);
+}
+
+.stage-icon.stage-failed {
+  color: var(--stat-rust-icon, #ef4444);
+}
+
+.stage-icon.stage-failed.clickable {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: transform 0.15s ease;
+}
+
+.stage-icon.stage-failed.clickable:hover {
+  transform: scale(1.2);
+}
+
+.pipeline-divider {
+  color: var(--border-color, #e5e7eb);
+  font-size: 0.75rem;
+  margin: 0 0.125rem;
+}
+
+@keyframes pipelinePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* =====================================================
+   OVERFLOW MENU STYLES
+   ===================================================== */
+
+.overflow-menu-container {
+  position: relative;
+}
+
+.overflow-menu-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--text-muted);
+  font-size: 1.25rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.overflow-menu-trigger:hover {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.overflow-menu-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 50;
+  min-width: 140px;
+  margin-top: 0.25rem;
+  padding: 0.375rem;
+  background: var(--bg-card, #fff);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.overflow-menu-dropdown button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background 0.15s ease;
+  text-align: left;
+}
+
+.overflow-menu-dropdown button:hover {
+  background: var(--bg-secondary);
+}
+
+.overflow-menu-dropdown button.danger {
+  color: var(--stat-rust-icon, #ef4444);
+}
+
+.overflow-menu-dropdown button.danger:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.overflow-menu-dropdown button span {
+  font-size: 0.875rem;
+}
+
+/* =====================================================
+   AI DETAILS ROW (AUTO-EXPANDED)
+   ===================================================== */
+
+.ai-details-row {
+  background: rgba(139, 92, 246, 0.03);
+}
+
+.ai-details-row td {
+  padding: 0 !important;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.ai-details-content {
+  margin: 0.5rem 1rem 1rem;
+  padding: 0.875rem;
+  background: var(--bg-card, #fff);
+  border: 1px solid rgba(139, 92, 246, 0.15);
+  border-radius: 8px;
+  border-left: 3px solid rgba(139, 92, 246, 0.5);
+}
+
+.ai-summary {
+  display: flex;
+  gap: 0.625rem;
+  margin-bottom: 0.75rem;
+}
+
+.ai-summary-icon {
+  flex-shrink: 0;
+  font-size: 1rem;
+}
+
+.ai-summary p {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.ai-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.ai-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.ai-meta-divider {
+  color: var(--border-color);
+}
+
+/* Row with AI analysis */
+.document-table tr.row-analyzed {
+  border-bottom: none;
+}
+
+.document-table tr.row-analyzed td {
+  border-bottom: none;
+}
+
+/* =====================================================
+   SMART ACTION BUTTON STYLES
+   ===================================================== */
+
+.btn-smart {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  min-width: 80px;
+  padding: 0.375rem 0.875rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-smart.btn-process {
+  background: rgba(61, 107, 79, 0.1);
+  border: 1px solid rgba(61, 107, 79, 0.3);
+  color: var(--accent-primary, #3d6b4f);
+}
+
+.btn-smart.btn-process:hover:not(:disabled) {
+  background: rgba(61, 107, 79, 0.2);
+  border-color: rgba(61, 107, 79, 0.5);
+}
+
+.btn-smart.btn-analyze {
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  color: #8b5cf6;
+}
+
+.btn-smart.btn-analyze:hover:not(:disabled) {
+  background: rgba(139, 92, 246, 0.2);
+  border-color: rgba(139, 92, 246, 0.5);
+}
+
+.btn-smart.btn-retry {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: var(--stat-rust-icon, #ef4444);
+}
+
+.btn-smart.btn-retry:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.btn-smart:disabled {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+/* Cell widths for new layout */
+.progress-cell {
+  width: 140px;
+}
+
+.action-cell {
+  width: 100px;
+  text-align: center;
+}
+
+.overflow-cell {
+  width: 48px;
+  text-align: right;
+}
+
+.size-cell {
+  width: 80px;
+}
+
+/* =====================================================
+   MODAL ENHANCEMENTS
+   ===================================================== */
+
+.detail-section-header {
+  margin-top: 1.25rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #8b5cf6;
+}
+
+.findings-list {
+  margin: 0;
+  padding-left: 1.25rem;
+  list-style-type: disc;
+}
+
+.findings-list li {
+  margin-bottom: 0.375rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
 .document-list {
   display: flex;
   flex-direction: column;
