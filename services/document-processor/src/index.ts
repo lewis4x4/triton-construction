@@ -238,7 +238,6 @@ app.post('/upload-document', upload.single('file'), async (req: Request, res: Re
         mime_type: file.mimetype,
         document_type: documentType,
         processing_status: 'PENDING',
-        uploaded_by: user.id,
       })
       .select()
       .single();
