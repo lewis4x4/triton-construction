@@ -259,6 +259,7 @@ function OverviewTab({
 }) {
   const [aiOperations, setAiOperations] = useState<Record<string, boolean>>({});
   const [aiErrors, setAiErrors] = useState<Record<string, string>>({});
+  const [aiSuccess, setAiSuccess] = useState<Record<string, string>>({});
 
   const formatCurrency = (value: number | null | undefined) => {
     if (value == null) return '-';
@@ -277,6 +278,11 @@ function OverviewTab({
       delete newErrors[operation];
       return newErrors;
     });
+    setAiSuccess((prev) => {
+      const newSuccess = { ...prev };
+      delete newSuccess[operation];
+      return newSuccess;
+    });
 
     try {
       const { data: sessionData } = await supabase.auth.getSession();
@@ -294,15 +300,39 @@ function OverviewTab({
         }
       );
 
+      const responseData = await response.json();
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || `${operation} failed`);
+        throw new Error(responseData.error || `${operation} failed`);
       }
+
+      // Build success message from response
+      let successMsg = 'Complete!';
+      if (responseData.risks_count !== undefined) {
+        successMsg = `${responseData.risks_count} risks extracted`;
+      } else if (responseData.questions_count !== undefined) {
+        successMsg = `${responseData.questions_count} questions generated`;
+      } else if (responseData.categorized_count !== undefined) {
+        successMsg = `${responseData.categorized_count} items categorized`;
+      } else if (responseData.message) {
+        successMsg = responseData.message;
+      }
+
+      setAiSuccess((prev) => ({ ...prev, [operation]: successMsg }));
 
       // Refresh data after successful AI operation
       if (onDataRefresh) {
         await onDataRefresh();
       }
+
+      // Clear success message after 5 seconds
+      setTimeout(() => {
+        setAiSuccess((prev) => {
+          const newSuccess = { ...prev };
+          delete newSuccess[operation];
+          return newSuccess;
+        });
+      }, 5000);
 
       return true;
     } catch (err) {
@@ -388,6 +418,7 @@ function OverviewTab({
               </button>
             </div>
             {aiErrors.risks && <div className="pipeline-error">{aiErrors.risks}</div>}
+            {aiSuccess.risks && <div className="pipeline-success">✓ {aiSuccess.risks}</div>}
           </div>
 
           <div className="ai-pipeline-card">
@@ -407,6 +438,7 @@ function OverviewTab({
               </button>
             </div>
             {aiErrors.questions && <div className="pipeline-error">{aiErrors.questions}</div>}
+            {aiSuccess.questions && <div className="pipeline-success">✓ {aiSuccess.questions}</div>}
           </div>
 
           <div className="ai-pipeline-card">
@@ -426,6 +458,7 @@ function OverviewTab({
               </button>
             </div>
             {aiErrors.categorize && <div className="pipeline-error">{aiErrors.categorize}</div>}
+            {aiSuccess.categorize && <div className="pipeline-success">✓ {aiSuccess.categorize}</div>}
           </div>
         </div>
       </div>
