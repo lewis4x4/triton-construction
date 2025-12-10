@@ -159,7 +159,7 @@ export function CreateBid() {
 
       // Use Railway service for large files, edge function for small files
       const useRailwayService = file.size > EDGE_FUNCTION_LIMIT;
-      const railwayUrl = import.meta.env.VITE_DOCUMENT_PROCESSOR_URL;
+      const railwayUrl = import.meta.env.VITE_DOCUMENT_PROCESSOR_URL || 'https://document-processor-production-b5d6.up.railway.app';
 
       // Determine endpoint
       let endpoint: string;
