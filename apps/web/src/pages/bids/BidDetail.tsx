@@ -51,6 +51,16 @@ interface DashboardMetrics {
 
 type TabId = 'overview' | 'executive-snapshot' | 'documents' | 'line-items' | 'risks' | 'questions' | 'work-packages' | 'team';
 
+// Workflow stages for progress tracking
+interface WorkflowStage {
+  id: string;
+  label: string;
+  icon: string;
+  status: 'pending' | 'in-progress' | 'complete';
+  count?: number;
+  total?: number;
+}
+
 const TABS: { id: TabId; label: string; icon: string }[] = [
   { id: 'overview', label: 'Overview', icon: '📊' },
   { id: 'executive-snapshot', label: 'AI Summary', icon: '🤖' },
@@ -62,6 +72,108 @@ const TABS: { id: TabId; label: string; icon: string }[] = [
   { id: 'team', label: 'Team', icon: '👥' },
 ];
 
+// Workflow Progress Component - Shows at top of page across all tabs
+function WorkflowProgress({
+  metrics,
+  hasSnapshot,
+}: {
+  metrics: DashboardMetrics | null;
+  hasSnapshot: boolean;
+}) {
+  // Calculate workflow stages based on actual data
+  const stages: WorkflowStage[] = [
+    {
+      id: 'documents',
+      label: 'Upload',
+      icon: '📤',
+      status: (metrics?.total_documents ?? 0) > 0 ? 'complete' : 'pending',
+      count: metrics?.total_documents ?? 0,
+    },
+    {
+      id: 'processing',
+      label: 'Process',
+      icon: '📄',
+      status:
+        (metrics?.documents_processed ?? 0) > 0
+          ? (metrics?.documents_processed ?? 0) >= (metrics?.total_documents ?? 0)
+            ? 'complete'
+            : 'in-progress'
+          : 'pending',
+      count: metrics?.documents_processed ?? 0,
+      total: metrics?.total_documents ?? 0,
+    },
+    {
+      id: 'risks',
+      label: 'Risks',
+      icon: '⚠️',
+      status: (metrics?.total_risks ?? 0) > 0 ? 'complete' : 'pending',
+      count: metrics?.total_risks ?? 0,
+    },
+    {
+      id: 'questions',
+      label: 'Questions',
+      icon: '❓',
+      status: (metrics?.total_questions ?? 0) > 0 ? 'complete' : 'pending',
+      count: metrics?.total_questions ?? 0,
+    },
+    {
+      id: 'summary',
+      label: 'Summary',
+      icon: '📊',
+      status: hasSnapshot ? 'complete' : 'pending',
+    },
+  ];
+
+  // Calculate overall progress
+  const completedStages = stages.filter((s) => s.status === 'complete').length;
+  const progressPercent = Math.round((completedStages / stages.length) * 100);
+
+  const getStatusIcon = (status: WorkflowStage['status']) => {
+    switch (status) {
+      case 'complete':
+        return '✓';
+      case 'in-progress':
+        return '⏳';
+      default:
+        return '○';
+    }
+  };
+
+  return (
+    <div className="workflow-progress">
+      <div className="workflow-progress-bar">
+        <div
+          className="workflow-progress-fill"
+          style={{ width: `${progressPercent}%` }}
+        />
+      </div>
+      <div className="workflow-stages">
+        {stages.map((stage, index) => (
+          <div key={stage.id} className={`workflow-stage ${stage.status}`}>
+            <div className="stage-connector">
+              {index > 0 && <div className="connector-line" />}
+            </div>
+            <div className="stage-icon">{stage.icon}</div>
+            <div className={`stage-status ${stage.status}`}>
+              {getStatusIcon(stage.status)}
+            </div>
+            <div className="stage-label">{stage.label}</div>
+            {stage.count !== undefined && stage.status !== 'pending' && (
+              <div className="stage-count">
+                {stage.total ? `${stage.count}/${stage.total}` : stage.count}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+      <div className="workflow-summary">
+        <span className="workflow-percent">{progressPercent}%</span>
+        <span className="workflow-text">complete</span>
+      </div>
+    </div>
+  );
+}
+
 export function BidDetail() {
   const { id } = useParams<{ id: string }>();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -69,6 +181,7 @@ export function BidDetail() {
 
   const [project, setProject] = useState<BidProject | null>(null);
   const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
+  const [hasSnapshot, setHasSnapshot] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -97,6 +210,15 @@ export function BidDetail() {
         .single();
 
       setMetrics(metricsData as DashboardMetrics | null);
+
+      // Check if executive snapshot exists
+      const { count: snapshotCount } = await supabase
+        .from('bid_executive_snapshots')
+        .select('*', { count: 'exact', head: true })
+        .eq('bid_project_id', id)
+        .eq('is_current', true);
+
+      setHasSnapshot((snapshotCount ?? 0) > 0);
     } catch (err) {
       console.error('Error fetching project:', err);
       setError('Failed to load bid project');
@@ -176,6 +298,9 @@ export function BidDetail() {
   return (
     <>
       <div className="bid-detail">
+        {/* Global Workflow Progress Bar */}
+        <WorkflowProgress metrics={metrics} hasSnapshot={hasSnapshot} />
+
         {/* Header */}
         <div className="bid-detail-header">
           <div className="header-left">
