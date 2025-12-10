@@ -565,21 +565,28 @@
 }
 
 .action-btn {
-  padding: var(--space-2) var(--space-3);
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.375rem 0.875rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
   color: var(--text-secondary);
-  font-size: 0.8125rem;
-  font-weight: 500;
+  font-size: 0.75rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  white-space: nowrap;
+  min-height: 28px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .action-btn:hover:not(:disabled) {
-  background: var(--bg-hover);
-  color: var(--text-primary);
-  border-color: var(--border-strong);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .action-btn:disabled {
@@ -587,34 +594,40 @@
   cursor: not-allowed;
 }
 
+/* Lock - Amber */
 .action-btn.lock {
-  border-color: rgba(255, 159, 28, 0.3);
-  color: var(--neon-amber);
+  background: rgba(255, 159, 28, 0.15);
+  border-color: rgba(255, 159, 28, 0.4);
+  color: #fbbf24;
 }
 
 .action-btn.lock:hover:not(:disabled) {
-  background: rgba(255, 159, 28, 0.1);
-  border-color: var(--neon-amber);
+  background: rgba(255, 159, 28, 0.25);
+  border-color: rgba(255, 159, 28, 0.6);
 }
 
+/* Unlock - Cyan */
 .action-btn.unlock {
-  border-color: rgba(46, 196, 182, 0.3);
-  color: var(--neon-cyan);
+  background: rgba(46, 196, 182, 0.15);
+  border-color: rgba(46, 196, 182, 0.4);
+  color: #2dd4bf;
 }
 
 .action-btn.unlock:hover:not(:disabled) {
-  background: rgba(46, 196, 182, 0.1);
-  border-color: var(--neon-cyan);
+  background: rgba(46, 196, 182, 0.25);
+  border-color: rgba(46, 196, 182, 0.6);
 }
 
+/* Delete - Red */
 .action-btn.delete {
-  border-color: rgba(239, 68, 68, 0.3);
-  color: var(--neon-red);
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #f87171;
 }
 
 .action-btn.delete:hover:not(:disabled) {
-  background: rgba(239, 68, 68, 0.1);
-  border-color: var(--neon-red);
+  background: rgba(239, 68, 68, 0.25);
+  border-color: rgba(239, 68, 68, 0.6);
 }
 
 .remove-item-btn {

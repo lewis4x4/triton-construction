@@ -478,24 +478,25 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-1, 0.25rem);
-  padding: var(--space-2, 0.5rem) var(--space-4, 1rem);
-  background: var(--bg-tertiary, #1a1a2e);
-  border: 1px solid var(--border-default, #333);
-  border-radius: 9999px; /* Pill/round shape */
+  padding: 0.375rem 0.875rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
   color: var(--text-secondary, #a0a0a0);
-  font-size: 0.8125rem;
-  font-weight: 500;
+  font-size: 0.75rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
   flex-shrink: 0;
-  min-height: 32px;
+  min-height: 28px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .action-btn:hover:not(:disabled) {
-  background: var(--bg-hover);
-  color: var(--text-primary);
-  border-color: var(--border-strong);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .action-btn:disabled {
@@ -503,64 +504,78 @@
   cursor: not-allowed;
 }
 
+/* Mark Reviewed - Blue */
 .action-btn.review {
-  border-color: rgba(59, 130, 246, 0.3);
-  color: var(--neon-blue);
+  background: rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.4);
+  color: #60a5fa;
 }
 
 .action-btn.review:hover:not(:disabled) {
-  background: rgba(59, 130, 246, 0.1);
-  border-color: var(--neon-blue);
+  background: rgba(59, 130, 246, 0.25);
+  border-color: rgba(59, 130, 246, 0.6);
 }
 
+/* Accept - Cyan/Teal */
 .action-btn.accept {
-  border-color: rgba(46, 196, 182, 0.3);
-  color: var(--neon-cyan);
+  background: rgba(46, 196, 182, 0.15);
+  border-color: rgba(46, 196, 182, 0.4);
+  color: #2dd4bf;
 }
 
 .action-btn.accept:hover:not(:disabled) {
-  background: rgba(46, 196, 182, 0.1);
-  border-color: var(--neon-cyan);
+  background: rgba(46, 196, 182, 0.25);
+  border-color: rgba(46, 196, 182, 0.6);
 }
 
+/* Mark Mitigated - Purple */
 .action-btn.mitigate {
-  border-color: rgba(139, 92, 246, 0.3);
+  background: rgba(139, 92, 246, 0.15);
+  border-color: rgba(139, 92, 246, 0.4);
   color: #a78bfa;
 }
 
 .action-btn.mitigate:hover:not(:disabled) {
-  background: rgba(139, 92, 246, 0.1);
-  border-color: #a78bfa;
+  background: rgba(139, 92, 246, 0.25);
+  border-color: rgba(139, 92, 246, 0.6);
 }
 
+/* Archive - Gray */
 .action-btn.archive {
-  border-color: rgba(107, 114, 128, 0.3);
-  color: var(--text-tertiary);
+  background: rgba(107, 114, 128, 0.15);
+  border-color: rgba(107, 114, 128, 0.4);
+  color: #9ca3af;
 }
 
 .action-btn.archive:hover:not(:disabled) {
-  background: rgba(107, 114, 128, 0.1);
-  border-color: var(--text-tertiary);
+  background: rgba(107, 114, 128, 0.25);
+  border-color: rgba(107, 114, 128, 0.6);
 }
 
+/* Create Question - Amber/Orange */
 .action-btn.question {
-  border-color: rgba(255, 159, 28, 0.3);
-  color: var(--neon-amber);
+  background: rgba(255, 159, 28, 0.15);
+  border-color: rgba(255, 159, 28, 0.4);
+  color: #fbbf24;
 }
 
 .action-btn.question:hover:not(:disabled) {
-  background: rgba(255, 159, 28, 0.1);
-  border-color: var(--neon-amber);
+  background: rgba(255, 159, 28, 0.25);
+  border-color: rgba(255, 159, 28, 0.6);
 }
 
+/* Edit - Blue (secondary) */
+.action-btn.secondary,
 .action-btn.edit {
+  background: rgba(59, 130, 246, 0.1);
   border-color: rgba(59, 130, 246, 0.3);
-  color: var(--neon-blue);
+  color: #93c5fd;
 }
 
+.action-btn.secondary:hover:not(:disabled),
 .action-btn.edit:hover:not(:disabled) {
-  background: rgba(59, 130, 246, 0.1);
-  border-color: var(--neon-blue);
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.5);
 }
 
 /* ============================================
