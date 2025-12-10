@@ -16,6 +16,8 @@ const CONFIG = {
   PROCESSING_TIMEOUT_MINUTES: 10,
   MAX_PROCESSING_ATTEMPTS: 3,
   RETRY_DELAYS_MS: [1000, 2000, 4000], // Exponential backoff
+  LARGE_FILE_THRESHOLD_BYTES: 5 * 1024 * 1024, // 5MB - files larger than this go to Railway
+  RAILWAY_ANALYZE_URL: Deno.env.get('RAILWAY_DOCUMENT_PROCESSOR_URL') || 'https://document-processor-production-b5d6.up.railway.app',
 };
 
 // ============================================================================
@@ -116,6 +118,7 @@ serve(async (req) => {
       file_name: string;
       document_type: string;
       mime_type: string;
+      file_size_bytes: number;
       processing_attempts: number;
     }> = [];
 
@@ -130,7 +133,7 @@ serve(async (req) => {
         })
         .in('id', body.documentIds)
         .eq('processing_status', 'PENDING')
-        .select('id, bid_project_id, file_path, file_name, document_type, mime_type, processing_attempts');
+        .select('id, bid_project_id, file_path, file_name, document_type, mime_type, file_size_bytes, processing_attempts');
 
       if (error) {
         throw new Error(`Failed to claim documents: ${error.message}`);
@@ -151,7 +154,7 @@ serve(async (req) => {
         // Fallback to regular query if function doesn't exist
         const { data, error } = await supabase
           .from('bid_documents')
-          .select('id, bid_project_id, file_path, file_name, document_type, mime_type, processing_attempts')
+          .select('id, bid_project_id, file_path, file_name, document_type, mime_type, file_size_bytes, processing_attempts')
           .eq('processing_status', 'PENDING')
           .order('created_at', { ascending: true })
           .limit(batchSize);
@@ -208,8 +211,15 @@ serve(async (req) => {
           // Route to parse-bidx - it handles file download internally
           result = await processBidxDocument(supabaseUrl, supabaseServiceKey, doc);
         } else if (doc.mime_type === 'application/pdf') {
-          // Route to analyze-bid-document (AI analysis) with retry
-          result = await analyzeDocumentWithRetry(supabaseUrl, supabaseServiceKey, doc);
+          // Route large files to Railway, small files to edge function
+          const isLargeFile = (doc.file_size_bytes || 0) > CONFIG.LARGE_FILE_THRESHOLD_BYTES;
+          if (isLargeFile) {
+            console.log(`Large file detected (${(doc.file_size_bytes / 1024 / 1024).toFixed(2)}MB), routing to Railway`);
+            result = await analyzeDocumentViaRailway(supabaseServiceKey, doc);
+          } else {
+            // Route to analyze-bid-document (AI analysis) with retry
+            result = await analyzeDocumentWithRetry(supabaseUrl, supabaseServiceKey, doc);
+          }
         } else {
           // Other file types - mark as completed without processing
           result = {
@@ -340,6 +350,62 @@ async function processBidxDocument(
     message: result.message || `Extracted ${result.data?.lineItemsCreated || 0} line items`,
     extractedData: result.data,
   };
+}
+
+// Route large files to Railway service for AI analysis
+async function analyzeDocumentViaRailway(
+  serviceKey: string,
+  doc: { id: string; bid_project_id: string; file_name: string; document_type: string; file_size_bytes: number }
+): Promise<ProcessingResult> {
+  try {
+    const response = await fetch(`${CONFIG.RAILWAY_ANALYZE_URL}/analyze-document`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${serviceKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        document_id: doc.id,
+        analysis_type: 'FULL_EXTRACTION',
+      }),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      return {
+        documentId: doc.id,
+        fileName: doc.file_name,
+        documentType: doc.document_type,
+        success: false,
+        message: result.message || result.error || 'Railway analysis failed',
+      };
+    }
+
+    return {
+      documentId: doc.id,
+      fileName: doc.file_name,
+      documentType: doc.document_type,
+      success: true,
+      message: `AI analysis completed via Railway: ${result.analysis?.key_findings?.length || 0} key findings`,
+      extractedData: {
+        summary: result.analysis?.summary,
+        document_category: result.analysis?.document_category,
+        key_findings_count: result.analysis?.key_findings?.length || 0,
+        confidence_score: result.analysis?.confidence_score,
+        processed_via: 'railway',
+      },
+    };
+  } catch (err) {
+    const error = err instanceof Error ? err : new Error('Unknown error');
+    return {
+      documentId: doc.id,
+      fileName: doc.file_name,
+      documentType: doc.document_type,
+      success: false,
+      message: `Railway analysis failed: ${error.message}`,
+    };
+  }
 }
 
 async function analyzeDocumentWithRetry(

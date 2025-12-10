@@ -3,9 +3,44 @@ import cors from 'cors';
 import multer from 'multer';
 import Anthropic from '@anthropic-ai/sdk';
 import { createClient } from '@supabase/supabase-js';
+// pdf-parse v2.4.5 uses PDFParse class with load(), getInfo(), getPageText() methods
+// Note: It requires Uint8Array instead of Buffer
+// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+const { PDFParse } = require('pdf-parse');
+const pdfParse = async (buffer: Buffer): Promise<{ text: string; numpages: number }> => {
+  // Convert Buffer to Uint8Array as required by pdf-parse v2.4.5
+  const uint8Array = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+  const parser = new PDFParse(uint8Array);
+  await parser.load();
+  const info = await parser.getInfo();
+  const numPages = info?.numPages || info?.Pages || 0;
+
+  // Extract text page by page using getPageText
+  const textParts: string[] = [];
+  for (let i = 1; i <= numPages; i++) {
+    try {
+      const pageText = await parser.getPageText(i);
+      if (typeof pageText === 'string') {
+        textParts.push(pageText);
+      } else if (pageText?.text) {
+        textParts.push(pageText.text);
+      } else if (Array.isArray(pageText)) {
+        textParts.push(pageText.join(' '));
+      }
+    } catch (pageErr) {
+      console.error(`Error extracting page ${i}:`, pageErr);
+    }
+  }
+
+  await parser.destroy();
+  return { text: textParts.join('\n\n'), numpages: numPages };
+};
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Threshold for switching to text extraction (Claude API limit is ~20MB for base64)
+const TEXT_EXTRACTION_THRESHOLD_BYTES = 20 * 1024 * 1024; // 20MB
 
 // Configure multer for memory storage (up to 50MB)
 const upload = multer({
@@ -453,6 +488,524 @@ app.post('/extract-metadata', upload.single('file'), async (req: Request, res: R
     res.status(500).json({
       error: 'Extraction failed',
       message: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+});
+
+// ============================================================================
+// AI Analysis Prompts by Document Type (same as edge function)
+// ============================================================================
+
+const ANALYSIS_PROMPTS: Record<string, string> = {
+  PROPOSAL: `You are an expert construction bid analyst specializing in WVDOH (West Virginia Department of Highways) bid proposals.
+
+Analyze the provided bid proposal document and extract:
+1. Project identification (state project number, federal aid number, county, route)
+2. Key dates (letting date, pre-bid meeting, completion deadline)
+3. Contract requirements (working days, liquidated damages, DBE goals)
+4. Special provisions or unusual requirements
+5. Potential risks or concerns for bidding
+6. Any items requiring clarification (pre-bid questions)
+
+Provide a JSON response with this structure:
+{
+  "summary": "2-3 sentence executive summary of the project",
+  "document_category": "BID_PROPOSAL",
+  "key_findings": [
+    {
+      "type": "REQUIREMENT|RISK|OPPORTUNITY|DATE|FINANCIAL",
+      "title": "Brief title",
+      "description": "Detailed description",
+      "severity": "LOW|MEDIUM|HIGH|CRITICAL",
+      "page_reference": "Page X" or null,
+      "related_items": ["item codes if applicable"]
+    }
+  ],
+  "extracted_data": {
+    "state_project_number": "string or null",
+    "federal_aid_number": "string or null",
+    "county": "string or null",
+    "route": "string or null",
+    "letting_date": "YYYY-MM-DD or null",
+    "pre_bid_date": "YYYY-MM-DD or null",
+    "completion_date": "YYYY-MM-DD or null",
+    "working_days": number or null,
+    "liquidated_damages_per_day": number or null,
+    "dbe_goal_percentage": number or null,
+    "engineers_estimate": number or null,
+    "is_federal_aid": boolean,
+    "special_provisions": ["array of notable provisions"],
+    "required_certifications": ["array of required certs"],
+    "bonding_requirements": "description or null"
+  },
+  "confidence_score": 0-100
+}
+
+Always respond with valid JSON only.`,
+
+  ENVIRONMENTAL: `You are an expert environmental compliance analyst for construction projects.
+
+Analyze the provided environmental document and extract:
+1. Wetland boundaries and restrictions
+2. Endangered species considerations
+3. Stream/water body impacts and mitigation requirements
+4. Seasonal timing restrictions (bird nesting, fish spawning, etc.)
+5. Permit requirements and conditions
+6. Mitigation commitments
+7. Monitoring requirements
+
+Provide a JSON response with this structure:
+{
+  "summary": "2-3 sentence summary of environmental constraints",
+  "document_category": "ENVIRONMENTAL",
+  "key_findings": [
+    {
+      "type": "WETLAND|SPECIES|TIMING|PERMIT|MITIGATION|MONITORING",
+      "title": "Brief title",
+      "description": "Detailed description",
+      "severity": "LOW|MEDIUM|HIGH|CRITICAL",
+      "page_reference": "Page X" or null
+    }
+  ],
+  "extracted_data": {
+    "wetland_acres": number or null,
+    "stream_linear_feet": number or null,
+    "endangered_species": ["array of species"],
+    "timing_restrictions": [{"restriction": "description", "start_date": "MM-DD", "end_date": "MM-DD", "reason": "why"}],
+    "permits_required": ["array of permit types"],
+    "mitigation_requirements": ["array of requirements"],
+    "monitoring_requirements": ["array of monitoring items"],
+    "environmental_commitments": ["numbered commitments from document"]
+  },
+  "confidence_score": 0-100
+}
+
+Always respond with valid JSON only.`,
+
+  ASBESTOS: `You are an expert hazardous materials analyst for construction projects.
+
+Analyze the provided asbestos/hazmat document and extract:
+1. Asbestos-containing materials (ACM) locations and quantities
+2. Lead-based paint locations
+3. Other hazardous materials identified
+4. Recommended abatement procedures
+5. Disposal requirements
+6. Worker protection requirements
+7. Cost implications
+
+Provide a JSON response with this structure:
+{
+  "summary": "2-3 sentence summary of hazmat findings",
+  "document_category": "HAZMAT",
+  "key_findings": [
+    {
+      "type": "ASBESTOS|LEAD|PCB|PETROLEUM|OTHER",
+      "title": "Brief title",
+      "description": "Detailed description including location and quantity",
+      "severity": "LOW|MEDIUM|HIGH|CRITICAL",
+      "page_reference": "Page X" or null
+    }
+  ],
+  "extracted_data": {
+    "asbestos_present": boolean,
+    "asbestos_locations": [{"location": "description", "material_type": "pipe insulation, floor tile, etc.", "quantity": "amount with units", "condition": "good, damaged, friable"}],
+    "lead_paint_present": boolean,
+    "lead_paint_locations": ["array of locations"],
+    "other_hazmat": [{"material": "name", "location": "where", "quantity": "amount"}],
+    "abatement_required": boolean,
+    "estimated_abatement_cost": number or null,
+    "special_disposal_required": boolean,
+    "licensed_contractor_required": boolean
+  },
+  "confidence_score": 0-100
+}
+
+Always respond with valid JSON only.`,
+
+  HAZMAT: `You are an expert hazardous materials analyst for construction projects.
+
+Analyze the provided hazmat document and extract all relevant hazardous materials information including asbestos, lead, PCBs, petroleum contamination, and any other hazardous substances.
+
+Provide a JSON response with this structure:
+{
+  "summary": "2-3 sentence summary of hazmat findings",
+  "document_category": "HAZMAT",
+  "key_findings": [{"type": "ASBESTOS|LEAD|PCB|PETROLEUM|OTHER", "title": "Brief title", "description": "Detailed description", "severity": "LOW|MEDIUM|HIGH|CRITICAL", "page_reference": "Page X" or null}],
+  "extracted_data": {},
+  "confidence_score": 0-100
+}
+
+Always respond with valid JSON only.`,
+
+  GEOTECHNICAL: `You are an expert geotechnical engineer analyzing soil and foundation reports.
+
+Analyze the provided geotechnical document and extract:
+1. Soil conditions and classifications
+2. Groundwater levels and concerns
+3. Rock presence and characteristics
+4. Foundation recommendations
+5. Earthwork considerations
+6. Special construction requirements
+7. Risk factors
+
+Provide a JSON response with this structure:
+{
+  "summary": "2-3 sentence summary of geotechnical conditions",
+  "document_category": "GEOTECHNICAL",
+  "key_findings": [{"type": "SOIL|ROCK|GROUNDWATER|FOUNDATION|EARTHWORK|RISK", "title": "Brief title", "description": "Detailed description", "severity": "LOW|MEDIUM|HIGH|CRITICAL", "page_reference": "Page X" or null}],
+  "extracted_data": {
+    "predominant_soil_type": "description",
+    "rock_encountered": boolean,
+    "rock_depth_range": "X to Y feet or null",
+    "groundwater_depth": number or null,
+    "groundwater_concerns": ["array of concerns"],
+    "bearing_capacity": "value with units or null",
+    "foundation_recommendations": ["array of recommendations"],
+    "earthwork_considerations": ["array of considerations"],
+    "unsuitable_material_expected": boolean,
+    "dewatering_required": boolean,
+    "special_equipment_needed": ["array of equipment"]
+  },
+  "confidence_score": 0-100
+}
+
+Always respond with valid JSON only.`,
+
+  DEFAULT: `You are an expert construction document analyst for WVDOH bid packages.
+
+Analyze the provided document and extract all relevant information for bid estimation and project planning. Identify:
+1. Key requirements and specifications
+2. Quantities and measurements
+3. Special conditions or constraints
+4. Potential risks or concerns
+5. Items that may need clarification
+
+Provide a JSON response with this structure:
+{
+  "summary": "2-3 sentence summary of document contents",
+  "document_category": "inferred category",
+  "key_findings": [{"type": "REQUIREMENT|SPECIFICATION|QUANTITY|RISK|CONSTRAINT|CLARIFICATION", "title": "Brief title", "description": "Detailed description", "severity": "LOW|MEDIUM|HIGH|CRITICAL", "page_reference": "Page X" or null}],
+  "extracted_data": {},
+  "confidence_score": 0-100
+}
+
+Always respond with valid JSON only.`
+};
+
+// ============================================================================
+// Analyze Document Endpoint (for large files that exceed edge function memory)
+// ============================================================================
+
+interface AnalyzeDocumentRequest {
+  document_id: string;
+  analysis_type?: 'FULL_EXTRACTION' | 'QUICK_SCAN' | 'TARGETED';
+}
+
+interface DocumentAnalysis {
+  summary: string;
+  document_category: string;
+  key_findings: Array<{
+    type: string;
+    title: string;
+    description: string;
+    severity?: string;
+    page_reference?: string;
+  }>;
+  extracted_data: Record<string, unknown>;
+  confidence_score: number;
+}
+
+app.post('/analyze-document', express.json(), async (req: Request, res: Response) => {
+  const startTime = Date.now();
+
+  try {
+    // Verify authorization - accept service role key or user token
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      res.status(401).json({ error: 'Authorization header required' });
+      return;
+    }
+
+    const token = authHeader.replace('Bearer ', '');
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+
+    // Check if this is a service-to-service call
+    // Accept: 1) matching service role key, 2) JWT with service_role claim, 3) JWT from our Supabase instance
+    // 4) sb_secret_ format tokens (Supabase edge function service role tokens)
+    let isServiceCall = false;
+
+    // Check for Supabase secret format (sb_secret_...) - used by edge functions
+    if (token.startsWith('sb_secret_')) {
+      // Verify this token can access admin endpoints by making a test call
+      try {
+        const testClient = createClient(
+          process.env.SUPABASE_URL || '',
+          token
+        );
+        // Try to access admin functionality - this will fail if token is invalid
+        const { error } = await testClient.auth.admin.listUsers({ page: 1, perPage: 1 });
+        if (!error) {
+          isServiceCall = true;
+          console.log('Service call authenticated via sb_secret token');
+        }
+      } catch {
+        // Token verification failed
+      }
+    }
+
+    if (!isServiceCall) {
+      try {
+        // JWT structure: header.payload.signature
+        const payload = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+        // Accept if role is service_role OR if it's from our Supabase instance (same ref)
+        isServiceCall = payload.role === 'service_role' ||
+                        (payload.iss === 'supabase' && payload.ref === 'gablgsruyuhvjurhtcxx');
+
+        if (isServiceCall) {
+          console.log('Service call authenticated via JWT');
+        }
+      } catch {
+        // Not a valid JWT, try direct comparison as fallback
+        isServiceCall = token === serviceRoleKey;
+        if (isServiceCall) {
+          console.log('Service call authenticated via direct key match');
+        }
+      }
+    }
+
+    if (!isServiceCall) {
+      // Verify user token
+      const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+      if (authError || !user) {
+        console.log('Auth failed for token starting with:', token.substring(0, 50));
+        res.status(401).json({ error: 'Invalid authentication token' });
+        return;
+      }
+    }
+
+    // Parse request
+    const { document_id, analysis_type = 'FULL_EXTRACTION' }: AnalyzeDocumentRequest = req.body;
+
+    if (!document_id) {
+      res.status(400).json({ error: 'document_id is required' });
+      return;
+    }
+
+    console.log(`Analyzing document: ${document_id} (type: ${analysis_type})`);
+
+    // Get document details
+    const { data: document, error: docError } = await supabase
+      .from('bid_documents')
+      .select('id, bid_project_id, file_name, file_path, mime_type, document_type, file_size_bytes')
+      .eq('id', document_id)
+      .single();
+
+    if (docError || !document) {
+      res.status(404).json({ error: 'Document not found', details: docError });
+      return;
+    }
+
+    console.log(`Document: ${document.file_name} (${(document.file_size_bytes / 1024 / 1024).toFixed(2)}MB)`);
+
+    // Update status to PROCESSING
+    await supabase
+      .from('bid_documents')
+      .update({
+        processing_status: 'PROCESSING',
+        processing_started_at: new Date().toISOString(),
+      })
+      .eq('id', document_id);
+
+    // Download the document from storage
+    const { data: fileData, error: downloadError } = await supabase.storage
+      .from('bid-documents')
+      .download(document.file_path);
+
+    if (downloadError || !fileData) {
+      throw new Error(`Failed to download document: ${downloadError?.message}`);
+    }
+
+    // Convert to buffer
+    const arrayBuffer = await fileData.arrayBuffer();
+    const pdfBuffer = Buffer.from(arrayBuffer);
+    const fileSizeBytes = pdfBuffer.length;
+
+    // Determine the appropriate system prompt
+    const docType = document.document_type as string;
+    const systemPrompt = ANALYSIS_PROMPTS[docType] || ANALYSIS_PROMPTS.DEFAULT;
+
+    // Prepare message content based on file type and size
+    let messageContent: Array<Record<string, unknown>>;
+    const mimeType = document.mime_type || 'application/pdf';
+    let usedTextExtraction = false;
+
+    // For large PDFs (>20MB), extract text first to avoid Claude API size limits
+    if (mimeType === 'application/pdf' && fileSizeBytes > TEXT_EXTRACTION_THRESHOLD_BYTES) {
+      console.log(`Large file (${(fileSizeBytes / 1024 / 1024).toFixed(1)}MB) - using text extraction`);
+
+      try {
+        const pdfData = await pdfParse(pdfBuffer);
+        const extractedText = pdfData.text;
+        usedTextExtraction = true;
+
+        console.log(`Extracted ${extractedText.length} characters of text from ${pdfData.numpages} pages`);
+
+        // Store the extracted text
+        await supabase
+          .from('bid_documents')
+          .update({ extracted_text: extractedText.substring(0, 500000) }) // Limit to 500KB
+          .eq('id', document_id);
+
+        messageContent = [
+          {
+            type: 'text',
+            text: `Analyze this ${docType} document and extract all relevant information.
+
+Document filename: ${document.file_name}
+Total pages: ${pdfData.numpages}
+
+--- DOCUMENT TEXT START ---
+${extractedText.substring(0, 200000)}
+--- DOCUMENT TEXT END ---
+
+Note: This text was extracted from a large PDF (${(fileSizeBytes / 1024 / 1024).toFixed(1)}MB). Some formatting may be lost.`,
+          },
+        ];
+      } catch (pdfError) {
+        console.error('PDF text extraction failed:', pdfError);
+        throw new Error(`Failed to extract text from large PDF: ${pdfError instanceof Error ? pdfError.message : 'Unknown error'}`);
+      }
+    } else if (mimeType === 'application/pdf') {
+      // Small PDFs - send as base64 document
+      const base64Content = pdfBuffer.toString('base64');
+      console.log(`Small file (${(fileSizeBytes / 1024 / 1024).toFixed(1)}MB) - using base64 PDF`);
+
+      messageContent = [
+        {
+          type: 'document',
+          source: {
+            type: 'base64',
+            media_type: 'application/pdf',
+            data: base64Content,
+          },
+        },
+        {
+          type: 'text',
+          text: `Analyze this ${docType} document and extract all relevant information. Document filename: ${document.file_name}`,
+        },
+      ];
+    } else if (mimeType.startsWith('image/')) {
+      const base64Content = pdfBuffer.toString('base64');
+      messageContent = [
+        {
+          type: 'image',
+          source: {
+            type: 'base64',
+            media_type: mimeType,
+            data: base64Content,
+          },
+        },
+        {
+          type: 'text',
+          text: `Analyze this ${docType} document image and extract all relevant information. Document filename: ${document.file_name}`,
+        },
+      ];
+    } else {
+      throw new Error(`Unsupported file type for AI analysis: ${mimeType}`);
+    }
+
+    console.log(`Sending to Claude API... (text extraction: ${usedTextExtraction})`);
+
+    // Call Claude API
+    const claudeResponse = await anthropic.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 8000,
+      system: systemPrompt,
+      messages: [
+        {
+          role: 'user',
+          content: messageContent as unknown as Anthropic.MessageCreateParams['messages'][0]['content'],
+        },
+      ],
+    });
+
+    const analysisText = claudeResponse.content[0].type === 'text' ? claudeResponse.content[0].text : '';
+
+    if (!analysisText) {
+      throw new Error('No analysis text in Claude response');
+    }
+
+    // Parse the JSON response
+    let analysis: DocumentAnalysis;
+    try {
+      const jsonMatch = analysisText.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        throw new Error('No JSON found in response');
+      }
+      analysis = JSON.parse(jsonMatch[0]);
+    } catch (parseError) {
+      console.error('Failed to parse Claude response:', analysisText.substring(0, 500));
+      throw new Error(`Failed to parse analysis: ${parseError}`);
+    }
+
+    const duration = Date.now() - startTime;
+    console.log(`Analysis complete in ${duration}ms`);
+
+    // Update the document with analysis results
+    const { error: updateError } = await supabase
+      .from('bid_documents')
+      .update({
+        processing_status: 'COMPLETED',
+        processing_completed_at: new Date().toISOString(),
+        processing_error: null,
+        ai_summary: analysis.summary,
+        ai_key_findings: analysis.key_findings,
+        ai_document_category: analysis.document_category,
+        ai_confidence_score: analysis.confidence_score,
+        ai_model_version: 'claude-sonnet-4-20250514',
+        ai_analysis_metadata: analysis.extracted_data,
+        ai_tokens_used: (claudeResponse.usage?.input_tokens || 0) + (claudeResponse.usage?.output_tokens || 0),
+      })
+      .eq('id', document_id);
+
+    if (updateError) {
+      console.error('Failed to update document:', updateError);
+      // Don't fail the request, the analysis was successful
+    }
+
+    // Return success response
+    res.json({
+      success: true,
+      document_id,
+      analysis,
+      duration_ms: duration,
+      usage: claudeResponse.usage,
+    });
+
+  } catch (error) {
+    console.error('Analysis error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+
+    // Try to update document status to FAILED
+    try {
+      const { document_id } = req.body || {};
+      if (document_id) {
+        await supabase
+          .from('bid_documents')
+          .update({
+            processing_status: 'FAILED',
+            processing_error: errorMessage,
+            processing_completed_at: new Date().toISOString(),
+          })
+          .eq('id', document_id);
+      }
+    } catch {
+      // Ignore update errors
+    }
+
+    res.status(500).json({
+      error: 'Analysis failed',
+      message: errorMessage,
     });
   }
 });

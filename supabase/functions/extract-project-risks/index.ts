@@ -165,26 +165,48 @@ serve(async (req) => {
       );
     }
 
-    // Verify user has access to this project (RLS will enforce this)
-    const { data: projectAccess, error: accessError } = await supabaseUser
+    // Create service role client for data access
+    const supabase = createClient(supabaseUrl, supabaseServiceKey, {
+      auth: { autoRefreshToken: false, persistSession: false },
+    });
+
+    // Verify user has access to this project by checking organization match
+    // Using service role to bypass RLS issues with get_user_organization_id
+    const { data: userProfile, error: profileError } = await supabase
+      .from('user_profiles')
+      .select('organization_id')
+      .eq('id', user.id)
+      .single();
+
+    if (profileError || !userProfile) {
+      return new Response(
+        JSON.stringify({ error: 'User profile not found' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const { data: projectAccess, error: accessError } = await supabase
       .from('bid_projects')
-      .select('id')
+      .select('id, organization_id')
       .eq('id', bid_project_id)
       .single();
 
     if (accessError || !projectAccess) {
       return new Response(
-        JSON.stringify({ error: 'Project not found or access denied' }),
+        JSON.stringify({ error: 'Project not found' }),
+        { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Verify organization match (manual RLS check)
+    if (projectAccess.organization_id !== userProfile.organization_id) {
+      return new Response(
+        JSON.stringify({ error: 'Access denied - organization mismatch' }),
         { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    // Create service role client for actual operations
-    const supabase = createClient(supabaseUrl, supabaseServiceKey, {
-      auth: { autoRefreshToken: false, persistSession: false },
-    });
-
-    // Get project details with service role
+    // Get project details (supabase service client already created above)
     const { data: project, error: projectError } = await supabase
       .from('bid_projects')
       .select('id, project_name, state_project_number, county, route_number, dbe_goal_percentage, contract_time_days')
