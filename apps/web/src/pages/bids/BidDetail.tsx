@@ -9,6 +9,8 @@ import { RisksTab } from '../../components/bids/RisksTab';
 import { QuestionsTab } from '../../components/bids/QuestionsTab';
 import { WorkPackagesTab } from '../../components/bids/WorkPackagesTab';
 import { TeamTab } from '../../components/bids/TeamTab';
+import { DeadlineAlertBanner } from '../../components/bids/DeadlineAlertBanner';
+import { SubmissionChecklistModal } from '../../components/bids/SubmissionChecklistModal';
 import './BidDetail.css';
 
 interface BidProject {
@@ -185,6 +187,14 @@ export function BidDetail() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Pricing validation state
+  const [pricingMetrics, setPricingMetrics] = useState<{
+    totalItems: number;
+    completeItems: number;
+    incompleteItems: number;
+  }>({ totalItems: 0, completeItems: 0, incompleteItems: 0 });
+  const [showSubmissionModal, setShowSubmissionModal] = useState(false);
+
   const fetchProject = useCallback(async () => {
     if (!id) return;
 
@@ -219,6 +229,24 @@ export function BidDetail() {
         .eq('is_current', true);
 
       setHasSnapshot((snapshotCount ?? 0) > 0);
+
+      // Fetch pricing completeness metrics
+      const { data: lineItemsData } = await supabase
+        .from('bid_line_items')
+        .select('final_unit_price, pricing_reviewed')
+        .eq('bid_project_id', id);
+
+      if (lineItemsData) {
+        const totalItems = lineItemsData.length;
+        const completeItems = lineItemsData.filter(
+          (item) => item.final_unit_price != null && item.pricing_reviewed === true
+        ).length;
+        setPricingMetrics({
+          totalItems,
+          completeItems,
+          incompleteItems: totalItems - completeItems,
+        });
+      }
     } catch (err) {
       console.error('Error fetching project:', err);
       setError('Failed to load bid project');
@@ -322,8 +350,26 @@ export function BidDetail() {
             <span className={`badge badge-lg ${getStatusBadgeClass(project.status)}`}>
               {project.status.replace(/_/g, ' ')}
             </span>
+            {project.status === 'ESTIMATING' && (
+              <button
+                className="btn btn-success ml-3"
+                onClick={() => setShowSubmissionModal(true)}
+              >
+                Submit Bid
+              </button>
+            )}
           </div>
         </div>
+
+        {/* Deadline Alert Banner */}
+        {pricingMetrics.totalItems > 0 && (
+          <DeadlineAlertBanner
+            lettingDate={project.letting_date || project.bid_due_date}
+            incompleteCount={pricingMetrics.incompleteItems}
+            totalItems={pricingMetrics.totalItems}
+            onReviewClick={() => setActiveTab('line-items')}
+          />
+        )}
 
         {/* Tabs */}
         <div className="tabs-container">
@@ -368,6 +414,21 @@ export function BidDetail() {
           {activeTab === 'team' && <TeamTab projectId={project.id} />}
         </div>
       </div>
+
+      {/* Submission Checklist Modal */}
+      {showSubmissionModal && (
+        <SubmissionChecklistModal
+          projectId={project.id}
+          projectName={project.project_name}
+          onClose={() => setShowSubmissionModal(false)}
+          onSubmissionComplete={() => {
+            setShowSubmissionModal(false);
+            // Refresh data after submission
+            fetchProject();
+            // Could also update project status here
+          }}
+        />
+      )}
     </>
   );
 }

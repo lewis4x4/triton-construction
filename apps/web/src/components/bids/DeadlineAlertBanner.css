@@ -1,0 +1,242 @@
+/* ============================================
+   DEADLINE ALERT BANNER
+   Prominent notification for approaching deadlines
+   ============================================ */
+
+.deadline-alert-banner {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-4);
+  backdrop-filter: var(--glass-blur);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Urgency Levels */
+.deadline-alert-banner.critical {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.1));
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.deadline-alert-banner.warning {
+  background: linear-gradient(135deg, rgba(255, 159, 28, 0.15), rgba(245, 158, 11, 0.1));
+  border: 1px solid rgba(255, 159, 28, 0.4);
+}
+
+.deadline-alert-banner.info {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.1));
+  border: 1px solid rgba(59, 130, 246, 0.4);
+}
+
+/* Banner Content */
+.banner-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.banner-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.banner-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.banner-headline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-2);
+}
+
+/* Deadline Badge */
+.deadline-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.deadline-alert-banner.critical .deadline-badge {
+  background: rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+}
+
+.deadline-alert-banner.warning .deadline-badge {
+  background: rgba(255, 159, 28, 0.3);
+  color: #fcd34d;
+}
+
+.deadline-alert-banner.info .deadline-badge {
+  background: rgba(59, 130, 246, 0.3);
+  color: #93c5fd;
+}
+
+/* Incomplete Count */
+.incomplete-count {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.deadline-alert-banner.critical .incomplete-count {
+  color: #fca5a5;
+}
+
+.deadline-alert-banner.warning .incomplete-count {
+  color: #fcd34d;
+}
+
+.deadline-alert-banner.info .incomplete-count {
+  color: #93c5fd;
+}
+
+/* Progress Bar */
+.banner-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.progress-bar-small {
+  flex: 1;
+  max-width: 200px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill-small {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.deadline-alert-banner.critical .progress-fill-small {
+  background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+.deadline-alert-banner.warning .progress-fill-small {
+  background: linear-gradient(90deg, #f59e0b, #d97706);
+}
+
+.deadline-alert-banner.info .progress-fill-small {
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+}
+
+.progress-text-small {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--text-tertiary);
+}
+
+/* Review Button */
+.btn-review-now {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.deadline-alert-banner.critical .btn-review-now {
+  background: rgba(239, 68, 68, 0.9);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  color: white;
+}
+
+.deadline-alert-banner.critical .btn-review-now:hover {
+  background: #ef4444;
+  transform: translateX(2px);
+}
+
+.deadline-alert-banner.warning .btn-review-now {
+  background: rgba(245, 158, 11, 0.9);
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  color: var(--bg-primary);
+}
+
+.deadline-alert-banner.warning .btn-review-now:hover {
+  background: #f59e0b;
+  transform: translateX(2px);
+}
+
+.deadline-alert-banner.info .btn-review-now {
+  background: rgba(59, 130, 246, 0.9);
+  border: 1px solid rgba(59, 130, 246, 0.5);
+  color: white;
+}
+
+.deadline-alert-banner.info .btn-review-now:hover {
+  background: #3b82f6;
+  transform: translateX(2px);
+}
+
+/* Pulsing Animation for Critical */
+.deadline-alert-banner.critical {
+  animation: slideIn 0.3s ease-out, pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .banner-content {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+  }
+
+  .banner-headline {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+  }
+
+  .banner-progress {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+  }
+
+  .progress-bar-small {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .btn-review-now {
+    width: 100%;
+    justify-content: center;
+  }
+}

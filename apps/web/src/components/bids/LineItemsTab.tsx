@@ -1,10 +1,14 @@
 import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@triton/supabase-client';
 import { LineItemDetail } from './LineItemDetail';
+import './LineItemsTab.css';
 
 interface LineItemsTabProps {
   projectId: string;
 }
+
+// Pricing status types for validation framework
+type PricingStatus = 'COMPLETE' | 'AI_SUGGESTED' | 'MANUAL_REQUIRED' | 'INCOMPLETE' | 'NEEDS_PRICING';
 
 // Use a simplified type that matches what we select from the database
 interface LineItem {
@@ -26,7 +30,37 @@ interface LineItem {
   pricing_reviewed: boolean | null;
   estimator_notes: string | null;
   created_at: string | null;
+  pricing_status?: PricingStatus | null; // Will be populated once migration is applied
 }
+
+// Compute pricing status from existing fields (fallback until DB migration is applied)
+function computePricingStatus(item: LineItem): PricingStatus {
+  if (item.pricing_status) return item.pricing_status;
+
+  // Calculate based on existing fields
+  if (item.final_unit_price != null && item.pricing_reviewed === true) {
+    return 'COMPLETE';
+  }
+  if (item.pricing_reviewed === true && item.final_unit_price == null) {
+    return 'INCOMPLETE';
+  }
+  if (item.ai_suggested_unit_price != null) {
+    return 'AI_SUGGESTED';
+  }
+  if (item.base_unit_cost != null) {
+    return 'NEEDS_PRICING';
+  }
+  return 'NEEDS_PRICING';
+}
+
+// Pricing status display configuration
+const PRICING_STATUS_CONFIG: Record<PricingStatus, { label: string; icon: string; className: string }> = {
+  COMPLETE: { label: 'Complete', icon: '✅', className: 'status-complete' },
+  AI_SUGGESTED: { label: 'AI Suggested', icon: '🤖', className: 'status-ai-suggested' },
+  MANUAL_REQUIRED: { label: 'Manual Required', icon: '⚠️', className: 'status-manual-required' },
+  INCOMPLETE: { label: 'Incomplete', icon: '⚡', className: 'status-incomplete' },
+  NEEDS_PRICING: { label: 'Needs Pricing', icon: '🔴', className: 'status-needs-pricing' },
+};
 
 type SortField = 'line_number' | 'item_number' | 'quantity' | 'final_extended_price' | 'pricing_reviewed';
 type SortDirection = 'asc' | 'desc';
@@ -80,11 +114,7 @@ export function LineItemsTab({ projectId }: LineItemsTabProps) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         query = query.eq('work_category', filterCategory as any);
       }
-      if (filterReviewed === 'reviewed') {
-        query = query.eq('pricing_reviewed', true);
-      } else if (filterReviewed === 'unreviewed') {
-        query = query.eq('pricing_reviewed', false);
-      }
+      // Note: pricing_status filter will be applied client-side until migration is applied
 
       // Apply sorting
       query = query.order(sortField, { ascending: sortDirection === 'asc' });
@@ -93,8 +123,10 @@ export function LineItemsTab({ projectId }: LineItemsTabProps) {
 
       if (fetchError) throw fetchError;
 
-      // Apply search filter client-side and map to our interface
+      // Apply search filter and pricing status filter client-side
       let filteredData = (data || []) as LineItem[];
+
+      // Search filter
       if (searchQuery) {
         const search = searchQuery.toLowerCase();
         filteredData = filteredData.filter(
@@ -102,6 +134,25 @@ export function LineItemsTab({ projectId }: LineItemsTabProps) {
             item.item_number.toLowerCase().includes(search) ||
             item.description.toLowerCase().includes(search)
         );
+      }
+
+      // Pricing status filter (client-side until migration is applied)
+      if (filterReviewed) {
+        filteredData = filteredData.filter((item) => {
+          const status = computePricingStatus(item);
+          switch (filterReviewed) {
+            case 'complete':
+              return status === 'COMPLETE';
+            case 'needs-attention':
+              return status !== 'COMPLETE';
+            case 'ai-suggested':
+              return status === 'AI_SUGGESTED';
+            case 'needs-pricing':
+              return status === 'NEEDS_PRICING' || status === 'MANUAL_REQUIRED';
+            default:
+              return true;
+          }
+        });
       }
 
       setLineItems(filteredData);
@@ -215,12 +266,24 @@ export function LineItemsTab({ projectId }: LineItemsTabProps) {
     return sortDirection === 'asc' ? '↑' : '↓';
   };
 
-  // Calculate totals
+  // Calculate totals and pricing status counts
   const totalExtended = lineItems.reduce(
     (sum, item) => sum + (item.final_extended_price || 0),
     0
   );
-  const reviewedCount = lineItems.filter((item) => item.pricing_reviewed).length;
+
+  // Count items by pricing status
+  const statusCounts = lineItems.reduce((counts, item) => {
+    const status = computePricingStatus(item);
+    counts[status] = (counts[status] || 0) + 1;
+    return counts;
+  }, {} as Record<PricingStatus, number>);
+
+  const completeCount = statusCounts.COMPLETE || 0;
+  const needsAttentionCount = lineItems.length - completeCount;
+  const completionPercentage = lineItems.length > 0
+    ? Math.round((completeCount / lineItems.length) * 100)
+    : 0;
 
   if (isLoading) {
     return (
@@ -253,11 +316,19 @@ export function LineItemsTab({ projectId }: LineItemsTabProps) {
           <span className="stat-label">Total Items</span>
         </div>
         <div className="summary-stat">
-          <span className="stat-value">
-            {reviewedCount}/{lineItems.length}
+          <span className="stat-value" style={{ color: completionPercentage === 100 ? '#10b981' : '#f59e0b' }}>
+            {completeCount}/{lineItems.length} ({completionPercentage}%)
           </span>
-          <span className="stat-label">Reviewed</span>
+          <span className="stat-label">Complete</span>
         </div>
+        {needsAttentionCount > 0 && (
+          <div className="summary-stat summary-stat-warning">
+            <span className="stat-value" style={{ color: '#ef4444' }}>
+              {needsAttentionCount}
+            </span>
+            <span className="stat-label">Needs Attention</span>
+          </div>
+        )}
         <div className="summary-stat">
           <span className="stat-value">{formatCurrency(totalExtended)}</span>
           <span className="stat-label">Total Value</span>
@@ -296,8 +367,10 @@ export function LineItemsTab({ projectId }: LineItemsTabProps) {
             className="filter-select"
           >
             <option value="">All Items</option>
-            <option value="reviewed">Reviewed</option>
-            <option value="unreviewed">Needs Review</option>
+            <option value="complete">Complete</option>
+            <option value="needs-attention">Needs Attention</option>
+            <option value="ai-suggested">AI Suggested</option>
+            <option value="needs-pricing">Missing Pricing</option>
           </select>
         </div>
 
@@ -389,63 +462,78 @@ export function LineItemsTab({ projectId }: LineItemsTabProps) {
               </tr>
             </thead>
             <tbody>
-              {lineItems.map((item) => (
-                <tr
-                  key={item.id}
-                  className={selectedItems.has(item.id) ? 'selected' : ''}
-                >
-                  <td className="checkbox-col">
-                    <input
-                      type="checkbox"
-                      checked={selectedItems.has(item.id)}
-                      onChange={() => handleSelectItem(item.id)}
-                    />
-                  </td>
-                  <td>{item.line_number ?? '-'}</td>
-                  <td className="item-number">{item.item_number}</td>
-                  <td className="description-cell">
-                    <span className="description" title={item.description}>
-                      {item.description}
-                    </span>
-                  </td>
-                  <td className="numeric">{formatNumber(item.quantity)}</td>
-                  <td>{item.unit}</td>
-                  <td>
-                    {item.work_category ? (
-                      <span className="category-badge">
-                        {WORK_CATEGORIES.find((c) => c.value === item.work_category)?.label ||
-                          item.work_category}
+              {lineItems.map((item) => {
+                const status = computePricingStatus(item);
+                const statusConfig = PRICING_STATUS_CONFIG[status];
+                const hasPrice = item.final_unit_price != null || item.ai_suggested_unit_price != null;
+
+                return (
+                  <tr
+                    key={item.id}
+                    className={`${selectedItems.has(item.id) ? 'selected' : ''} ${statusConfig.className}`}
+                  >
+                    <td className="checkbox-col">
+                      <input
+                        type="checkbox"
+                        checked={selectedItems.has(item.id)}
+                        onChange={() => handleSelectItem(item.id)}
+                      />
+                    </td>
+                    <td>{item.line_number ?? '-'}</td>
+                    <td className="item-number">{item.item_number}</td>
+                    <td className="description-cell">
+                      <span className="description" title={item.description}>
+                        {item.description}
                       </span>
-                    ) : (
-                      <span className="no-category">-</span>
-                    )}
-                  </td>
-                  <td className="numeric">
-                    {formatCurrency(
-                      item.final_unit_price || item.ai_suggested_unit_price || item.base_unit_cost
-                    )}
-                  </td>
-                  <td className="numeric">
-                    {formatCurrency(item.final_extended_price)}
-                  </td>
-                  <td className="center">
-                    {item.pricing_reviewed ? (
-                      <span className="status-badge status-completed">✓</span>
-                    ) : (
-                      <span className="status-badge status-pending">○</span>
-                    )}
-                  </td>
-                  <td>
-                    <button
-                      className="btn btn-icon"
-                      onClick={() => setSelectedItem(item)}
-                      title="Edit"
-                    >
-                      ✏️
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                    <td className="numeric">{formatNumber(item.quantity)}</td>
+                    <td>{item.unit}</td>
+                    <td>
+                      {item.work_category ? (
+                        <span className="category-badge">
+                          {WORK_CATEGORIES.find((c) => c.value === item.work_category)?.label ||
+                            item.work_category}
+                        </span>
+                      ) : (
+                        <span className="no-category">-</span>
+                      )}
+                    </td>
+                    <td className="numeric">
+                      {hasPrice ? (
+                        formatCurrency(
+                          item.final_unit_price || item.ai_suggested_unit_price || item.base_unit_cost
+                        )
+                      ) : (
+                        <span style={{ color: '#ef4444', fontWeight: 500 }}>No Price</span>
+                      )}
+                    </td>
+                    <td className="numeric">
+                      {item.final_extended_price ? (
+                        formatCurrency(item.final_extended_price)
+                      ) : (
+                        <span style={{ color: '#ef4444' }}>-</span>
+                      )}
+                    </td>
+                    <td className="center">
+                      <span
+                        className={`status-badge ${statusConfig.className}`}
+                        title={statusConfig.label}
+                      >
+                        {statusConfig.icon}
+                      </span>
+                    </td>
+                    <td>
+                      <button
+                        className="btn btn-icon"
+                        onClick={() => setSelectedItem(item)}
+                        title="Edit"
+                      >
+                        ✏️
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
             <tfoot>
               <tr className="totals-row">

@@ -417,24 +417,71 @@ serve(async (req) => {
 
     const startLineNumber = replaceExisting ? 1 : (maxLineData?.line_number || 0) + 1;
 
-    // Insert line items
-    const lineItemRecords = parseResult.lineItems.map((item, index) => ({
-      bid_project_id: bidProjectId,
-      line_number: startLineNumber + index,
-      item_number: item.itemNumber,
-      alt_item_number: item.altItemNumber || null,
-      description: item.description,
-      short_description: item.shortDescription || null,
-      quantity: item.quantity,
-      unit: item.unit,
-      source_document_id: documentId,
-      // Store engineer estimate as a reference if available
-      estimator_notes: item.engineerEstimate
-        ? `Engineer Estimate: $${item.engineerEstimate.toFixed(2)}/unit`
-        : null,
-      // Mark as not reviewed
-      pricing_reviewed: false,
-    }));
+    // Lookup historical pricing for exact item number matches
+    // This helps provide AI suggestions based on past bids
+    const itemNumbers = parseResult.lineItems.map(item => item.itemNumber);
+    const { data: historicalPricing } = await supabaseAdmin
+      .from('bid_line_items')
+      .select('item_number, final_unit_price, bid_project_id')
+      .in('item_number', itemNumbers)
+      .not('final_unit_price', 'is', null)
+      .order('created_at', { ascending: false });
+
+    // Build a map of item_number -> most recent final_unit_price (exact match only)
+    const historicalPriceMap = new Map<string, number>();
+    if (historicalPricing) {
+      for (const record of historicalPricing) {
+        // Only use exact matches, skip if we already have a price for this item
+        if (record.item_number && record.final_unit_price && !historicalPriceMap.has(record.item_number)) {
+          historicalPriceMap.set(record.item_number, record.final_unit_price);
+        }
+      }
+    }
+
+    // Insert line items with pricing intelligence
+    const lineItemRecords = parseResult.lineItems.map((item, index) => {
+      // Priority for ai_suggested_unit_price:
+      // 1. Engineer estimate from BidX file (most reliable)
+      // 2. Historical pricing from exact item number match (fallback)
+      let aiSuggestedPrice: number | null = null;
+      let pricingSource = '';
+
+      if (item.engineerEstimate && item.engineerEstimate > 0) {
+        aiSuggestedPrice = item.engineerEstimate;
+        pricingSource = 'engineer_estimate';
+      } else if (historicalPriceMap.has(item.itemNumber)) {
+        aiSuggestedPrice = historicalPriceMap.get(item.itemNumber) || null;
+        pricingSource = 'historical_match';
+      }
+
+      return {
+        bid_project_id: bidProjectId,
+        line_number: startLineNumber + index,
+        item_number: item.itemNumber,
+        alt_item_number: item.altItemNumber || null,
+        description: item.description,
+        short_description: item.shortDescription || null,
+        quantity: item.quantity,
+        unit: item.unit,
+        source_document_id: documentId,
+        // Store engineer estimate in estimator_notes for reference
+        estimator_notes: item.engineerEstimate
+          ? `Engineer Estimate: $${item.engineerEstimate.toFixed(2)}/unit`
+          : null,
+        // Populate AI suggested price from engineer estimate or historical data
+        ai_suggested_unit_price: aiSuggestedPrice,
+        // Calculate suggested extended price if we have a suggestion
+        ai_suggested_extended_price: aiSuggestedPrice ? aiSuggestedPrice * item.quantity : null,
+        // Store metadata about pricing source
+        ai_pricing_metadata: aiSuggestedPrice ? {
+          source: pricingSource,
+          confidence: pricingSource === 'engineer_estimate' ? 0.95 : 0.75,
+          extracted_at: new Date().toISOString(),
+        } : null,
+        // Mark as not reviewed
+        pricing_reviewed: false,
+      };
+    });
 
     const { data: insertedItems, error: insertError } = await supabaseAdmin
       .from('bid_line_items')

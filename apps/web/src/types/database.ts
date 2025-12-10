@@ -449,6 +449,145 @@ export type Database = {
           },
         ]
       }
+      ai_runs: {
+        Row: {
+          anthropic_request_id: string | null
+          bid_project_id: string | null
+          completed_at: string | null
+          created_at: string
+          document_id: string | null
+          duration_ms: number | null
+          error_code: string | null
+          error_message: string | null
+          estimated_cost_usd: number | null
+          id: string
+          input_tokens: number | null
+          max_tokens: number | null
+          model: string
+          organization_id: string
+          output_tokens: number | null
+          prompt_version: string | null
+          run_type: string
+          started_at: string
+          status: string
+          temperature: number | null
+          total_tokens: number | null
+          triggered_by: string | null
+        }
+        Insert: {
+          anthropic_request_id?: string | null
+          bid_project_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          document_id?: string | null
+          duration_ms?: number | null
+          error_code?: string | null
+          error_message?: string | null
+          estimated_cost_usd?: number | null
+          id?: string
+          input_tokens?: number | null
+          max_tokens?: number | null
+          model: string
+          organization_id: string
+          output_tokens?: number | null
+          prompt_version?: string | null
+          run_type: string
+          started_at?: string
+          status?: string
+          temperature?: number | null
+          total_tokens?: number | null
+          triggered_by?: string | null
+        }
+        Update: {
+          anthropic_request_id?: string | null
+          bid_project_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          document_id?: string | null
+          duration_ms?: number | null
+          error_code?: string | null
+          error_message?: string | null
+          estimated_cost_usd?: number | null
+          id?: string
+          input_tokens?: number | null
+          max_tokens?: number | null
+          model?: string
+          organization_id?: string
+          output_tokens?: number | null
+          prompt_version?: string | null
+          run_type?: string
+          started_at?: string
+          status?: string
+          temperature?: number | null
+          total_tokens?: number | null
+          triggered_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_runs_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "bid_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_runs_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_environmental_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "ai_runs_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_pricing_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "ai_runs_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_project_dashboard"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "ai_runs_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_projects_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_runs_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_questions_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "ai_runs_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_risk_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "ai_runs_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "bid_documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_runs_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_document_processing"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_saved_reports: {
         Row: {
           created_at: string | null
@@ -1454,6 +1593,13 @@ export type Database = {
             referencedRelation: "bid_documents"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "bid_ai_corrections_source_document_id_fkey"
+            columns: ["source_document_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_document_processing"
+            referencedColumns: ["id"]
+          },
         ]
       }
       bid_assembly_template_lines: {
@@ -1849,6 +1995,13 @@ export type Database = {
             referencedRelation: "bid_documents"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "bid_bridge_structures_source_document_id_fkey"
+            columns: ["source_document_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_document_processing"
+            referencedColumns: ["id"]
+          },
         ]
       }
       bid_competitors: {
@@ -2027,15 +2180,145 @@ export type Database = {
           },
         ]
       }
+      bid_document_analysis_log: {
+        Row: {
+          ai_model: string | null
+          ai_provider: string | null
+          analysis_type: string
+          bid_project_id: string
+          completed_at: string | null
+          created_at: string | null
+          document_id: string
+          duration_ms: number | null
+          error_message: string | null
+          id: string
+          input_tokens: number | null
+          output_tokens: number | null
+          response_payload: Json | null
+          started_at: string | null
+          status: string
+          success: boolean | null
+        }
+        Insert: {
+          ai_model?: string | null
+          ai_provider?: string | null
+          analysis_type: string
+          bid_project_id: string
+          completed_at?: string | null
+          created_at?: string | null
+          document_id: string
+          duration_ms?: number | null
+          error_message?: string | null
+          id?: string
+          input_tokens?: number | null
+          output_tokens?: number | null
+          response_payload?: Json | null
+          started_at?: string | null
+          status?: string
+          success?: boolean | null
+        }
+        Update: {
+          ai_model?: string | null
+          ai_provider?: string | null
+          analysis_type?: string
+          bid_project_id?: string
+          completed_at?: string | null
+          created_at?: string | null
+          document_id?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          id?: string
+          input_tokens?: number | null
+          output_tokens?: number | null
+          response_payload?: Json | null
+          started_at?: string | null
+          status?: string
+          success?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bid_document_analysis_log_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "bid_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bid_document_analysis_log_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_environmental_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_document_analysis_log_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_pricing_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_document_analysis_log_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_project_dashboard"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_document_analysis_log_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_projects_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bid_document_analysis_log_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_questions_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_document_analysis_log_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_risk_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_document_analysis_log_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "bid_documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bid_document_analysis_log_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_document_processing"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       bid_documents: {
         Row: {
+          ai_analysis_metadata: Json | null
+          ai_confidence_score: number | null
+          ai_document_category: string | null
+          ai_key_findings: Json | null
+          ai_model_version: string | null
+          ai_summary: string | null
+          ai_tokens_used: number | null
           bid_project_id: string
+          content_hash: string | null
           created_at: string | null
           created_by: string | null
           document_author: string | null
           document_date: string | null
           document_title: string | null
           document_type: Database["public"]["Enums"]["document_type_enum"]
+          extracted_text: string | null
           extracted_text_path: string | null
           file_name: string
           file_path: string
@@ -2045,21 +2328,33 @@ export type Database = {
           mime_type: string | null
           ocr_confidence: number | null
           page_count: number | null
+          processing_attempts: number | null
           processing_completed_at: string | null
           processing_error: string | null
           processing_started_at: string | null
           processing_status:
             | Database["public"]["Enums"]["processing_status_enum"]
             | null
+          processing_worker_id: string | null
+          updated_at: string | null
         }
         Insert: {
+          ai_analysis_metadata?: Json | null
+          ai_confidence_score?: number | null
+          ai_document_category?: string | null
+          ai_key_findings?: Json | null
+          ai_model_version?: string | null
+          ai_summary?: string | null
+          ai_tokens_used?: number | null
           bid_project_id: string
+          content_hash?: string | null
           created_at?: string | null
           created_by?: string | null
           document_author?: string | null
           document_date?: string | null
           document_title?: string | null
           document_type: Database["public"]["Enums"]["document_type_enum"]
+          extracted_text?: string | null
           extracted_text_path?: string | null
           file_name: string
           file_path: string
@@ -2069,21 +2364,33 @@ export type Database = {
           mime_type?: string | null
           ocr_confidence?: number | null
           page_count?: number | null
+          processing_attempts?: number | null
           processing_completed_at?: string | null
           processing_error?: string | null
           processing_started_at?: string | null
           processing_status?:
             | Database["public"]["Enums"]["processing_status_enum"]
             | null
+          processing_worker_id?: string | null
+          updated_at?: string | null
         }
         Update: {
+          ai_analysis_metadata?: Json | null
+          ai_confidence_score?: number | null
+          ai_document_category?: string | null
+          ai_key_findings?: Json | null
+          ai_model_version?: string | null
+          ai_summary?: string | null
+          ai_tokens_used?: number | null
           bid_project_id?: string
+          content_hash?: string | null
           created_at?: string | null
           created_by?: string | null
           document_author?: string | null
           document_date?: string | null
           document_title?: string | null
           document_type?: Database["public"]["Enums"]["document_type_enum"]
+          extracted_text?: string | null
           extracted_text_path?: string | null
           file_name?: string
           file_path?: string
@@ -2093,12 +2400,15 @@ export type Database = {
           mime_type?: string | null
           ocr_confidence?: number | null
           page_count?: number | null
+          processing_attempts?: number | null
           processing_completed_at?: string | null
           processing_error?: string | null
           processing_started_at?: string | null
           processing_status?:
             | Database["public"]["Enums"]["processing_status_enum"]
             | null
+          processing_worker_id?: string | null
+          updated_at?: string | null
         }
         Relationships: [
           {
@@ -2415,6 +2725,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "bid_environmental_commitments_source_document_id_fkey"
+            columns: ["source_document_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_document_processing"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "bid_environmental_commitments_verified_by_fkey"
             columns: ["verified_by"]
             isOneToOne: false
@@ -2714,13 +3031,6 @@ export type Database = {
             referencedRelation: "bid_pricing_scenarios"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "bid_estimate_versions_pricing_scenario_id_fkey"
-            columns: ["pricing_scenario_id"]
-            isOneToOne: false
-            referencedRelation: "v_bid_pricing_summary"
-            referencedColumns: ["scenario_id"]
-          },
         ]
       }
       bid_executive_snapshots: {
@@ -2730,7 +3040,9 @@ export type Database = {
           bid_project_id: string
           cost_considerations: string | null
           created_at: string | null
+          created_by: string | null
           critical_risks_count: number | null
+          documents_analyzed_count: number | null
           environmental_commitments_count: number | null
           environmental_summary: string | null
           generation_duration_ms: number | null
@@ -2739,6 +3051,9 @@ export type Database = {
           id: string
           is_current: boolean | null
           key_quantities_summary: string | null
+          low_risks_count: number | null
+          medium_risks_count: number | null
+          metrics: Json | null
           prebid_questions_count: number | null
           project_overview: string | null
           recommendations: string | null
@@ -2764,7 +3079,9 @@ export type Database = {
           bid_project_id: string
           cost_considerations?: string | null
           created_at?: string | null
+          created_by?: string | null
           critical_risks_count?: number | null
+          documents_analyzed_count?: number | null
           environmental_commitments_count?: number | null
           environmental_summary?: string | null
           generation_duration_ms?: number | null
@@ -2773,6 +3090,9 @@ export type Database = {
           id?: string
           is_current?: boolean | null
           key_quantities_summary?: string | null
+          low_risks_count?: number | null
+          medium_risks_count?: number | null
+          metrics?: Json | null
           prebid_questions_count?: number | null
           project_overview?: string | null
           recommendations?: string | null
@@ -2798,7 +3118,9 @@ export type Database = {
           bid_project_id?: string
           cost_considerations?: string | null
           created_at?: string | null
+          created_by?: string | null
           critical_risks_count?: number | null
+          documents_analyzed_count?: number | null
           environmental_commitments_count?: number | null
           environmental_summary?: string | null
           generation_duration_ms?: number | null
@@ -2807,6 +3129,9 @@ export type Database = {
           id?: string
           is_current?: boolean | null
           key_quantities_summary?: string | null
+          low_risks_count?: number | null
+          medium_risks_count?: number | null
+          metrics?: Json | null
           prebid_questions_count?: number | null
           project_overview?: string | null
           recommendations?: string | null
@@ -3237,6 +3562,13 @@ export type Database = {
             columns: ["source_document_id"]
             isOneToOne: false
             referencedRelation: "bid_documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bid_hazmat_findings_source_document_id_fkey"
+            columns: ["source_document_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_document_processing"
             referencedColumns: ["id"]
           },
           {
@@ -3896,6 +4228,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "bid_item_document_refs_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_document_processing"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "bid_item_document_refs_line_item_id_fkey"
             columns: ["line_item_id"]
             isOneToOne: false
@@ -4030,13 +4369,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "bid_pricing_scenarios"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "bid_item_pricing_scenarios_pricing_scenario_id_fkey"
-            columns: ["pricing_scenario_id"]
-            isOneToOne: false
-            referencedRelation: "v_bid_pricing_summary"
-            referencedColumns: ["scenario_id"]
           },
         ]
       }
@@ -4326,19 +4658,20 @@ export type Database = {
             referencedRelation: "bid_pricing_scenarios"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "bid_line_item_price_changes_pricing_scenario_id_fkey"
-            columns: ["pricing_scenario_id"]
-            isOneToOne: false
-            referencedRelation: "v_bid_pricing_summary"
-            referencedColumns: ["scenario_id"]
-          },
         ]
       }
       bid_line_items: {
         Row: {
           ai_categorization_confidence: number | null
+          ai_categorized_at: string | null
           ai_confidence_score: number | null
+          ai_model_used: string | null
+          ai_price_source: string | null
+          ai_price_source_details: Json | null
+          ai_pricing_confidence: number | null
+          ai_pricing_metadata: Json | null
+          ai_reasoning: string | null
+          ai_suggested_extended_price: number | null
           ai_suggested_unit_price: number | null
           alt_item_number: string | null
           base_extended_cost: number | null
@@ -4366,6 +4699,7 @@ export type Database = {
           id: string
           item_number: string
           line_number: number
+          manually_reviewed: boolean | null
           opportunity_explanation: string | null
           opportunity_flag:
             | Database["public"]["Enums"]["opportunity_type_enum"]
@@ -4382,10 +4716,15 @@ export type Database = {
           pricing_reviewed: boolean | null
           pricing_reviewed_at: string | null
           pricing_reviewed_by: string | null
+          pricing_status:
+            | Database["public"]["Enums"]["pricing_status_enum"]
+            | null
           profit_pct: number | null
           quantity: number
           required_by_items: string[] | null
           review_priority_score: number | null
+          reviewed_at: string | null
+          reviewed_by: string | null
           risk_explanation: string | null
           risk_level: Database["public"]["Enums"]["severity_enum"] | null
           short_description: string | null
@@ -4402,7 +4741,15 @@ export type Database = {
         }
         Insert: {
           ai_categorization_confidence?: number | null
+          ai_categorized_at?: string | null
           ai_confidence_score?: number | null
+          ai_model_used?: string | null
+          ai_price_source?: string | null
+          ai_price_source_details?: Json | null
+          ai_pricing_confidence?: number | null
+          ai_pricing_metadata?: Json | null
+          ai_reasoning?: string | null
+          ai_suggested_extended_price?: number | null
           ai_suggested_unit_price?: number | null
           alt_item_number?: string | null
           base_extended_cost?: number | null
@@ -4430,6 +4777,7 @@ export type Database = {
           id?: string
           item_number: string
           line_number: number
+          manually_reviewed?: boolean | null
           opportunity_explanation?: string | null
           opportunity_flag?:
             | Database["public"]["Enums"]["opportunity_type_enum"]
@@ -4446,10 +4794,15 @@ export type Database = {
           pricing_reviewed?: boolean | null
           pricing_reviewed_at?: string | null
           pricing_reviewed_by?: string | null
+          pricing_status?:
+            | Database["public"]["Enums"]["pricing_status_enum"]
+            | null
           profit_pct?: number | null
           quantity: number
           required_by_items?: string[] | null
           review_priority_score?: number | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           risk_explanation?: string | null
           risk_level?: Database["public"]["Enums"]["severity_enum"] | null
           short_description?: string | null
@@ -4466,7 +4819,15 @@ export type Database = {
         }
         Update: {
           ai_categorization_confidence?: number | null
+          ai_categorized_at?: string | null
           ai_confidence_score?: number | null
+          ai_model_used?: string | null
+          ai_price_source?: string | null
+          ai_price_source_details?: Json | null
+          ai_pricing_confidence?: number | null
+          ai_pricing_metadata?: Json | null
+          ai_reasoning?: string | null
+          ai_suggested_extended_price?: number | null
           ai_suggested_unit_price?: number | null
           alt_item_number?: string | null
           base_extended_cost?: number | null
@@ -4494,6 +4855,7 @@ export type Database = {
           id?: string
           item_number?: string
           line_number?: number
+          manually_reviewed?: boolean | null
           opportunity_explanation?: string | null
           opportunity_flag?:
             | Database["public"]["Enums"]["opportunity_type_enum"]
@@ -4510,10 +4872,15 @@ export type Database = {
           pricing_reviewed?: boolean | null
           pricing_reviewed_at?: string | null
           pricing_reviewed_by?: string | null
+          pricing_status?:
+            | Database["public"]["Enums"]["pricing_status_enum"]
+            | null
           profit_pct?: number | null
           quantity?: number
           required_by_items?: string[] | null
           review_priority_score?: number | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           risk_explanation?: string | null
           risk_level?: Database["public"]["Enums"]["severity_enum"] | null
           short_description?: string | null
@@ -4755,6 +5122,129 @@ export type Database = {
           },
         ]
       }
+      bid_notifications: {
+        Row: {
+          bid_project_id: string
+          channel: Database["public"]["Enums"]["notification_channel_enum"]
+          created_at: string | null
+          dedup_key: string | null
+          delivered_at: string | null
+          failed_at: string | null
+          failure_reason: string | null
+          id: string
+          message: string
+          metadata: Json | null
+          notification_type: Database["public"]["Enums"]["notification_type_enum"]
+          organization_id: string
+          read_at: string | null
+          retry_count: number | null
+          scheduled_at: string | null
+          sent_at: string | null
+          subject: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          bid_project_id: string
+          channel?: Database["public"]["Enums"]["notification_channel_enum"]
+          created_at?: string | null
+          dedup_key?: string | null
+          delivered_at?: string | null
+          failed_at?: string | null
+          failure_reason?: string | null
+          id?: string
+          message: string
+          metadata?: Json | null
+          notification_type: Database["public"]["Enums"]["notification_type_enum"]
+          organization_id: string
+          read_at?: string | null
+          retry_count?: number | null
+          scheduled_at?: string | null
+          sent_at?: string | null
+          subject: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          bid_project_id?: string
+          channel?: Database["public"]["Enums"]["notification_channel_enum"]
+          created_at?: string | null
+          dedup_key?: string | null
+          delivered_at?: string | null
+          failed_at?: string | null
+          failure_reason?: string | null
+          id?: string
+          message?: string
+          metadata?: Json | null
+          notification_type?: Database["public"]["Enums"]["notification_type_enum"]
+          organization_id?: string
+          read_at?: string | null
+          retry_count?: number | null
+          scheduled_at?: string | null
+          sent_at?: string | null
+          subject?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bid_notifications_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "bid_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bid_notifications_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_environmental_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_notifications_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_pricing_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_notifications_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_project_dashboard"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_notifications_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_projects_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bid_notifications_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_questions_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_notifications_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_risk_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_notifications_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       bid_outcomes: {
         Row: {
           actual_profit_margin: number | null
@@ -4992,9 +5482,13 @@ export type Database = {
         Row: {
           ai_confidence: number | null
           ai_generated: boolean | null
+          answer_document_id: string | null
+          answer_received_at: string | null
+          answer_text: string | null
           bid_project_id: string
           category: Database["public"]["Enums"]["risk_category_enum"] | null
           created_at: string | null
+          created_by: string | null
           edit_reason: string | null
           edited_at: string | null
           edited_by: string | null
@@ -5016,13 +5510,18 @@ export type Database = {
           submitted_at: string | null
           submitted_by: string | null
           updated_at: string | null
+          updated_by: string | null
         }
         Insert: {
           ai_confidence?: number | null
           ai_generated?: boolean | null
+          answer_document_id?: string | null
+          answer_received_at?: string | null
+          answer_text?: string | null
           bid_project_id: string
           category?: Database["public"]["Enums"]["risk_category_enum"] | null
           created_at?: string | null
+          created_by?: string | null
           edit_reason?: string | null
           edited_at?: string | null
           edited_by?: string | null
@@ -5044,13 +5543,18 @@ export type Database = {
           submitted_at?: string | null
           submitted_by?: string | null
           updated_at?: string | null
+          updated_by?: string | null
         }
         Update: {
           ai_confidence?: number | null
           ai_generated?: boolean | null
+          answer_document_id?: string | null
+          answer_received_at?: string | null
+          answer_text?: string | null
           bid_project_id?: string
           category?: Database["public"]["Enums"]["risk_category_enum"] | null
           created_at?: string | null
+          created_by?: string | null
           edit_reason?: string | null
           edited_at?: string | null
           edited_by?: string | null
@@ -5072,8 +5576,23 @@ export type Database = {
           submitted_at?: string | null
           submitted_by?: string | null
           updated_at?: string | null
+          updated_by?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "bid_prebid_questions_answer_document_id_fkey"
+            columns: ["answer_document_id"]
+            isOneToOne: false
+            referencedRelation: "bid_documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bid_prebid_questions_answer_document_id_fkey"
+            columns: ["answer_document_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_document_processing"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "bid_prebid_questions_bid_project_id_fkey"
             columns: ["bid_project_id"]
@@ -5180,10 +5699,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "bid_prebid_questions_response_document_id_fkey"
+            columns: ["response_document_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_document_processing"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "bid_prebid_questions_source_document_id_fkey"
             columns: ["source_document_id"]
             isOneToOne: false
             referencedRelation: "bid_documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bid_prebid_questions_source_document_id_fkey"
+            columns: ["source_document_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_document_processing"
             referencedColumns: ["id"]
           },
           {
@@ -5192,6 +5725,207 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "user_profiles"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      bid_pricing_review_queue: {
+        Row: {
+          applied_unit_price: number | null
+          bid_project_id: string
+          confidence_score: number | null
+          created_at: string | null
+          detected_pattern: string | null
+          detection_source: string | null
+          id: string
+          line_item_id: string
+          requires_manual_review: boolean | null
+          review_notes: string | null
+          review_status: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          suggested_match_item_number: string | null
+          suggested_match_project_id: string | null
+          suggested_match_unit_price: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          applied_unit_price?: number | null
+          bid_project_id: string
+          confidence_score?: number | null
+          created_at?: string | null
+          detected_pattern?: string | null
+          detection_source?: string | null
+          id?: string
+          line_item_id: string
+          requires_manual_review?: boolean | null
+          review_notes?: string | null
+          review_status?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          suggested_match_item_number?: string | null
+          suggested_match_project_id?: string | null
+          suggested_match_unit_price?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          applied_unit_price?: number | null
+          bid_project_id?: string
+          confidence_score?: number | null
+          created_at?: string | null
+          detected_pattern?: string | null
+          detection_source?: string | null
+          id?: string
+          line_item_id?: string
+          requires_manual_review?: boolean | null
+          review_notes?: string | null
+          review_status?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          suggested_match_item_number?: string | null
+          suggested_match_project_id?: string | null
+          suggested_match_unit_price?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bid_pricing_review_queue_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "bid_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bid_pricing_review_queue_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_environmental_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_pricing_review_queue_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_pricing_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_pricing_review_queue_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_project_dashboard"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_pricing_review_queue_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_projects_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bid_pricing_review_queue_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_questions_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_pricing_review_queue_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_risk_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_pricing_review_queue_line_item_id_fkey"
+            columns: ["line_item_id"]
+            isOneToOne: true
+            referencedRelation: "bid_line_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bid_pricing_review_queue_line_item_id_fkey"
+            columns: ["line_item_id"]
+            isOneToOne: true
+            referencedRelation: "v_bid_items_needing_review"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bid_pricing_review_queue_line_item_id_fkey"
+            columns: ["line_item_id"]
+            isOneToOne: true
+            referencedRelation: "v_bid_line_item_full"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bid_pricing_review_queue_line_item_id_fkey"
+            columns: ["line_item_id"]
+            isOneToOne: true
+            referencedRelation: "v_bid_line_item_links"
+            referencedColumns: ["line_item_id"]
+          },
+          {
+            foreignKeyName: "bid_pricing_review_queue_line_item_id_fkey"
+            columns: ["line_item_id"]
+            isOneToOne: true
+            referencedRelation: "v_bid_scenario_comparison"
+            referencedColumns: ["line_item_id"]
+          },
+          {
+            foreignKeyName: "bid_pricing_review_queue_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bid_pricing_review_queue_suggested_match_project_id_fkey"
+            columns: ["suggested_match_project_id"]
+            isOneToOne: false
+            referencedRelation: "bid_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bid_pricing_review_queue_suggested_match_project_id_fkey"
+            columns: ["suggested_match_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_environmental_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_pricing_review_queue_suggested_match_project_id_fkey"
+            columns: ["suggested_match_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_pricing_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_pricing_review_queue_suggested_match_project_id_fkey"
+            columns: ["suggested_match_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_project_dashboard"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_pricing_review_queue_suggested_match_project_id_fkey"
+            columns: ["suggested_match_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_projects_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bid_pricing_review_queue_suggested_match_project_id_fkey"
+            columns: ["suggested_match_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_questions_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_pricing_review_queue_suggested_match_project_id_fkey"
+            columns: ["suggested_match_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_risk_summary"
+            referencedColumns: ["bid_project_id"]
           },
         ]
       }
@@ -5515,6 +6249,111 @@ export type Database = {
             referencedRelation: "bid_documents"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "bid_project_conditions_source_document_id_fkey"
+            columns: ["source_document_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_document_processing"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bid_project_members: {
+        Row: {
+          bid_project_id: string
+          can_edit_line_items: boolean | null
+          can_edit_questions: boolean | null
+          can_edit_risks: boolean | null
+          can_generate_snapshots: boolean | null
+          can_run_ai_analysis: boolean | null
+          can_upload_documents: boolean | null
+          created_at: string
+          created_by: string | null
+          id: string
+          role: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          bid_project_id: string
+          can_edit_line_items?: boolean | null
+          can_edit_questions?: boolean | null
+          can_edit_risks?: boolean | null
+          can_generate_snapshots?: boolean | null
+          can_run_ai_analysis?: boolean | null
+          can_upload_documents?: boolean | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          role: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          bid_project_id?: string
+          can_edit_line_items?: boolean | null
+          can_edit_questions?: boolean | null
+          can_edit_risks?: boolean | null
+          can_generate_snapshots?: boolean | null
+          can_run_ai_analysis?: boolean | null
+          can_upload_documents?: boolean | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          role?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bid_project_members_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "bid_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bid_project_members_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_environmental_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_project_members_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_pricing_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_project_members_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_project_dashboard"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_project_members_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_projects_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bid_project_members_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_questions_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_project_members_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_risk_summary"
+            referencedColumns: ["bid_project_id"]
+          },
         ]
       }
       bid_project_opportunities: {
@@ -5657,6 +6496,13 @@ export type Database = {
             referencedRelation: "bid_documents"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "bid_project_opportunities_source_document_id_fkey"
+            columns: ["source_document_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_document_processing"
+            referencedColumns: ["id"]
+          },
         ]
       }
       bid_project_risks: {
@@ -5665,12 +6511,14 @@ export type Database = {
           ai_confidence: number | null
           ai_generated: boolean | null
           ai_reasoning: string | null
+          ai_run_id: string | null
           bid_project_id: string
           category: Database["public"]["Enums"]["risk_category_enum"]
           contingency_percentage: number | null
           contingency_recommended: boolean | null
           cost_impact: Database["public"]["Enums"]["severity_enum"]
           created_at: string | null
+          created_by: string | null
           description: string
           estimated_cost_impact_high: number | null
           estimated_cost_impact_low: number | null
@@ -5699,24 +6547,28 @@ export type Database = {
           risk_number: string | null
           schedule_impact: Database["public"]["Enums"]["severity_enum"]
           source_document_id: string | null
+          source_document_ids: string[] | null
           source_page_numbers: string | null
           source_text_excerpt: string | null
           suggested_question: string | null
           title: string
           type: Database["public"]["Enums"]["risk_type_enum"]
           updated_at: string | null
+          updated_by: string | null
         }
         Insert: {
           action_notes?: string | null
           ai_confidence?: number | null
           ai_generated?: boolean | null
           ai_reasoning?: string | null
+          ai_run_id?: string | null
           bid_project_id: string
           category: Database["public"]["Enums"]["risk_category_enum"]
           contingency_percentage?: number | null
           contingency_recommended?: boolean | null
           cost_impact: Database["public"]["Enums"]["severity_enum"]
           created_at?: string | null
+          created_by?: string | null
           description: string
           estimated_cost_impact_high?: number | null
           estimated_cost_impact_low?: number | null
@@ -5745,24 +6597,28 @@ export type Database = {
           risk_number?: string | null
           schedule_impact: Database["public"]["Enums"]["severity_enum"]
           source_document_id?: string | null
+          source_document_ids?: string[] | null
           source_page_numbers?: string | null
           source_text_excerpt?: string | null
           suggested_question?: string | null
           title: string
           type?: Database["public"]["Enums"]["risk_type_enum"]
           updated_at?: string | null
+          updated_by?: string | null
         }
         Update: {
           action_notes?: string | null
           ai_confidence?: number | null
           ai_generated?: boolean | null
           ai_reasoning?: string | null
+          ai_run_id?: string | null
           bid_project_id?: string
           category?: Database["public"]["Enums"]["risk_category_enum"]
           contingency_percentage?: number | null
           contingency_recommended?: boolean | null
           cost_impact?: Database["public"]["Enums"]["severity_enum"]
           created_at?: string | null
+          created_by?: string | null
           description?: string
           estimated_cost_impact_high?: number | null
           estimated_cost_impact_low?: number | null
@@ -5791,12 +6647,14 @@ export type Database = {
           risk_number?: string | null
           schedule_impact?: Database["public"]["Enums"]["severity_enum"]
           source_document_id?: string | null
+          source_document_ids?: string[] | null
           source_page_numbers?: string | null
           source_text_excerpt?: string | null
           suggested_question?: string | null
           title?: string
           type?: Database["public"]["Enums"]["risk_type_enum"]
           updated_at?: string | null
+          updated_by?: string | null
         }
         Relationships: [
           {
@@ -5862,6 +6720,13 @@ export type Database = {
             referencedRelation: "bid_documents"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "bid_project_risks_source_document_id_fkey"
+            columns: ["source_document_id"]
+            isOneToOne: false
+            referencedRelation: "v_pending_document_processing"
+            referencedColumns: ["id"]
+          },
         ]
       }
       bid_projects: {
@@ -5873,6 +6738,7 @@ export type Database = {
           assigned_estimator_id: string | null
           assigned_pm_id: string | null
           bid_amount: number | null
+          bid_bond_percentage: number | null
           bid_due_date: string | null
           completion_date: string | null
           contract_id: string | null
@@ -5887,6 +6753,9 @@ export type Database = {
             | Database["public"]["Enums"]["complexity_enum"]
             | null
           environmental_sensitivity_reason: string | null
+          estimated_value_high: number | null
+          estimated_value_low: number | null
+          federal_aid_number: string | null
           federal_project_number: string | null
           id: string
           is_federal_aid: boolean | null
@@ -5903,7 +6772,12 @@ export type Database = {
           owner_contact: string | null
           owner_email: string | null
           owner_phone: string | null
+          payment_bond_required: boolean | null
+          performance_bond_required: boolean | null
           prebid_meeting_date: string | null
+          prebid_question_deadline: string | null
+          prequalification_required: boolean | null
+          project_metadata: Json | null
           project_name: string
           question_deadline: string | null
           route: string | null
@@ -5917,6 +6791,7 @@ export type Database = {
           updated_by: string | null
           winner_name: string | null
           winning_bid_amount: number | null
+          working_days: number | null
         }
         Insert: {
           active_project_id?: string | null
@@ -5926,6 +6801,7 @@ export type Database = {
           assigned_estimator_id?: string | null
           assigned_pm_id?: string | null
           bid_amount?: number | null
+          bid_bond_percentage?: number | null
           bid_due_date?: string | null
           completion_date?: string | null
           contract_id?: string | null
@@ -5940,6 +6816,9 @@ export type Database = {
             | Database["public"]["Enums"]["complexity_enum"]
             | null
           environmental_sensitivity_reason?: string | null
+          estimated_value_high?: number | null
+          estimated_value_low?: number | null
+          federal_aid_number?: string | null
           federal_project_number?: string | null
           id?: string
           is_federal_aid?: boolean | null
@@ -5956,7 +6835,12 @@ export type Database = {
           owner_contact?: string | null
           owner_email?: string | null
           owner_phone?: string | null
+          payment_bond_required?: boolean | null
+          performance_bond_required?: boolean | null
           prebid_meeting_date?: string | null
+          prebid_question_deadline?: string | null
+          prequalification_required?: boolean | null
+          project_metadata?: Json | null
           project_name: string
           question_deadline?: string | null
           route?: string | null
@@ -5970,6 +6854,7 @@ export type Database = {
           updated_by?: string | null
           winner_name?: string | null
           winning_bid_amount?: number | null
+          working_days?: number | null
         }
         Update: {
           active_project_id?: string | null
@@ -5979,6 +6864,7 @@ export type Database = {
           assigned_estimator_id?: string | null
           assigned_pm_id?: string | null
           bid_amount?: number | null
+          bid_bond_percentage?: number | null
           bid_due_date?: string | null
           completion_date?: string | null
           contract_id?: string | null
@@ -5993,6 +6879,9 @@ export type Database = {
             | Database["public"]["Enums"]["complexity_enum"]
             | null
           environmental_sensitivity_reason?: string | null
+          estimated_value_high?: number | null
+          estimated_value_low?: number | null
+          federal_aid_number?: string | null
           federal_project_number?: string | null
           id?: string
           is_federal_aid?: boolean | null
@@ -6009,7 +6898,12 @@ export type Database = {
           owner_contact?: string | null
           owner_email?: string | null
           owner_phone?: string | null
+          payment_bond_required?: boolean | null
+          performance_bond_required?: boolean | null
           prebid_meeting_date?: string | null
+          prebid_question_deadline?: string | null
+          prequalification_required?: boolean | null
+          project_metadata?: Json | null
           project_name?: string
           question_deadline?: string | null
           route?: string | null
@@ -6023,6 +6917,7 @@ export type Database = {
           updated_by?: string | null
           winner_name?: string | null
           winning_bid_amount?: number | null
+          working_days?: number | null
         }
         Relationships: [
           {
@@ -6597,10 +7492,19 @@ export type Database = {
         Row: {
           ai_generated: boolean | null
           assigned_estimator_id: string | null
+          assigned_subcontractor_id: string | null
           bid_project_id: string
           created_at: string | null
+          created_by: string | null
           description: string | null
+          estimated_value: number | null
           id: string
+          is_ai_generated: boolean | null
+          is_locked: boolean | null
+          lock_reason: string | null
+          locked_at: string | null
+          locked_by: string | null
+          notes: string | null
           package_code: string | null
           package_name: string
           package_number: number
@@ -6609,6 +7513,7 @@ export type Database = {
           structure_id: string | null
           total_items: number | null
           updated_at: string | null
+          updated_by: string | null
           work_category:
             | Database["public"]["Enums"]["work_category_enum"]
             | null
@@ -6616,10 +7521,19 @@ export type Database = {
         Insert: {
           ai_generated?: boolean | null
           assigned_estimator_id?: string | null
+          assigned_subcontractor_id?: string | null
           bid_project_id: string
           created_at?: string | null
+          created_by?: string | null
           description?: string | null
+          estimated_value?: number | null
           id?: string
+          is_ai_generated?: boolean | null
+          is_locked?: boolean | null
+          lock_reason?: string | null
+          locked_at?: string | null
+          locked_by?: string | null
+          notes?: string | null
           package_code?: string | null
           package_name: string
           package_number: number
@@ -6628,6 +7542,7 @@ export type Database = {
           structure_id?: string | null
           total_items?: number | null
           updated_at?: string | null
+          updated_by?: string | null
           work_category?:
             | Database["public"]["Enums"]["work_category_enum"]
             | null
@@ -6635,10 +7550,19 @@ export type Database = {
         Update: {
           ai_generated?: boolean | null
           assigned_estimator_id?: string | null
+          assigned_subcontractor_id?: string | null
           bid_project_id?: string
           created_at?: string | null
+          created_by?: string | null
           description?: string | null
+          estimated_value?: number | null
           id?: string
+          is_ai_generated?: boolean | null
+          is_locked?: boolean | null
+          lock_reason?: string | null
+          locked_at?: string | null
+          locked_by?: string | null
+          notes?: string | null
           package_code?: string | null
           package_name?: string
           package_number?: number
@@ -6647,6 +7571,7 @@ export type Database = {
           structure_id?: string | null
           total_items?: number | null
           updated_at?: string | null
+          updated_by?: string | null
           work_category?:
             | Database["public"]["Enums"]["work_category_enum"]
             | null
@@ -15922,6 +16847,126 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_pending_validations"
             referencedColumns: ["pay_period_id"]
+          },
+        ]
+      }
+      in_app_notifications: {
+        Row: {
+          action_label: string | null
+          action_url: string | null
+          bid_project_id: string | null
+          created_at: string | null
+          dismissed_at: string | null
+          expires_at: string | null
+          icon: string | null
+          id: string
+          is_dismissed: boolean | null
+          is_read: boolean | null
+          message: string
+          organization_id: string
+          priority: string | null
+          read_at: string | null
+          related_entity_id: string | null
+          related_entity_type: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          action_label?: string | null
+          action_url?: string | null
+          bid_project_id?: string | null
+          created_at?: string | null
+          dismissed_at?: string | null
+          expires_at?: string | null
+          icon?: string | null
+          id?: string
+          is_dismissed?: boolean | null
+          is_read?: boolean | null
+          message: string
+          organization_id: string
+          priority?: string | null
+          read_at?: string | null
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          action_label?: string | null
+          action_url?: string | null
+          bid_project_id?: string | null
+          created_at?: string | null
+          dismissed_at?: string | null
+          expires_at?: string | null
+          icon?: string | null
+          id?: string
+          is_dismissed?: boolean | null
+          is_read?: boolean | null
+          message?: string
+          organization_id?: string
+          priority?: string | null
+          read_at?: string | null
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "in_app_notifications_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "bid_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "in_app_notifications_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_environmental_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "in_app_notifications_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_pricing_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "in_app_notifications_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_project_dashboard"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "in_app_notifications_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_projects_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "in_app_notifications_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_questions_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "in_app_notifications_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_risk_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "in_app_notifications_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -32331,6 +33376,95 @@ export type Database = {
           },
         ]
       }
+      user_notification_preferences: {
+        Row: {
+          bid_deadline_1_day: boolean | null
+          bid_deadline_3_days: boolean | null
+          bid_deadline_7_days: boolean | null
+          bid_deadline_today: boolean | null
+          bid_incomplete_pricing: boolean | null
+          bid_status_change: boolean | null
+          bid_submission_complete: boolean | null
+          certification_expiring: boolean | null
+          created_at: string | null
+          document_processed: boolean | null
+          email_enabled: boolean | null
+          id: string
+          in_app_enabled: boolean | null
+          insurance_expiring: boolean | null
+          organization_id: string
+          phone_number: string | null
+          phone_verified_at: string | null
+          push_enabled: boolean | null
+          quiet_hours_end: string | null
+          quiet_hours_start: string | null
+          sms_enabled: boolean | null
+          timezone: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          bid_deadline_1_day?: boolean | null
+          bid_deadline_3_days?: boolean | null
+          bid_deadline_7_days?: boolean | null
+          bid_deadline_today?: boolean | null
+          bid_incomplete_pricing?: boolean | null
+          bid_status_change?: boolean | null
+          bid_submission_complete?: boolean | null
+          certification_expiring?: boolean | null
+          created_at?: string | null
+          document_processed?: boolean | null
+          email_enabled?: boolean | null
+          id?: string
+          in_app_enabled?: boolean | null
+          insurance_expiring?: boolean | null
+          organization_id: string
+          phone_number?: string | null
+          phone_verified_at?: string | null
+          push_enabled?: boolean | null
+          quiet_hours_end?: string | null
+          quiet_hours_start?: string | null
+          sms_enabled?: boolean | null
+          timezone?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          bid_deadline_1_day?: boolean | null
+          bid_deadline_3_days?: boolean | null
+          bid_deadline_7_days?: boolean | null
+          bid_deadline_today?: boolean | null
+          bid_incomplete_pricing?: boolean | null
+          bid_status_change?: boolean | null
+          bid_submission_complete?: boolean | null
+          certification_expiring?: boolean | null
+          created_at?: string | null
+          document_processed?: boolean | null
+          email_enabled?: boolean | null
+          id?: string
+          in_app_enabled?: boolean | null
+          insurance_expiring?: boolean | null
+          organization_id?: string
+          phone_number?: string | null
+          phone_verified_at?: string | null
+          push_enabled?: boolean | null
+          quiet_hours_end?: string | null
+          quiet_hours_start?: string | null
+          sms_enabled?: boolean | null
+          timezone?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_notification_preferences_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_profiles: {
         Row: {
           avatar_url: string | null
@@ -37222,22 +38356,22 @@ export type Database = {
       }
       v_bid_pricing_summary: {
         Row: {
+          ai_suggested_count: number | null
           bid_project_id: string | null
-          default_contingency_pct: number | null
-          default_overhead_pct: number | null
-          default_profit_pct: number | null
-          effective_margin_pct: number | null
-          is_primary: boolean | null
-          items_with_scenario_pricing: number | null
+          complete_count: number | null
+          complete_extended_price: number | null
+          completion_percentage: number | null
+          days_until_deadline: number | null
+          incomplete_count: number | null
+          is_urgent: boolean | null
+          letting_date: string | null
+          manual_required_count: number | null
+          needs_attention_count: number | null
+          needs_pricing_count: number | null
           project_name: string | null
-          scenario_id: string | null
-          scenario_name: string | null
-          scenario_type:
-            | Database["public"]["Enums"]["pricing_scenario_type_enum"]
-            | null
-          total_base_cost: number | null
+          project_status: Database["public"]["Enums"]["bid_status_enum"] | null
+          total_extended_price: number | null
           total_items: number | null
-          total_with_markups: number | null
         }
         Relationships: []
       }
@@ -39562,6 +40696,78 @@ export type Database = {
         }
         Relationships: []
       }
+      v_pending_document_processing: {
+        Row: {
+          bid_project_id: string | null
+          created_at: string | null
+          document_type:
+            | Database["public"]["Enums"]["document_type_enum"]
+            | null
+          file_name: string | null
+          id: string | null
+          is_stuck: boolean | null
+          minutes_processing: number | null
+          minutes_since_upload: number | null
+          processing_attempts: number | null
+          processing_error: string | null
+          processing_started_at: string | null
+          processing_status:
+            | Database["public"]["Enums"]["processing_status_enum"]
+            | null
+          project_name: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bid_documents_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "bid_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bid_documents_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_environmental_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_documents_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_pricing_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_documents_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_project_dashboard"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_documents_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_projects_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bid_documents_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_questions_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+          {
+            foreignKeyName: "bid_documents_bid_project_id_fkey"
+            columns: ["bid_project_id"]
+            isOneToOne: false
+            referencedRelation: "v_bid_risk_summary"
+            referencedColumns: ["bid_project_id"]
+          },
+        ]
+      }
       v_pending_report_approvals: {
         Row: {
           created_by_name: string | null
@@ -41610,6 +42816,15 @@ export type Database = {
           },
         ]
       }
+      v_user_unread_notification_count: {
+        Row: {
+          high_priority_count: number | null
+          unread_count: number | null
+          urgent_count: number | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
       v_validation_summary: {
         Row: {
           failed_math_count: number | null
@@ -42438,29 +43653,6 @@ export type Database = {
       addgeometrycolumn:
         | {
             Args: {
-              column_name: string
-              new_dim: number
-              new_srid: number
-              new_type: string
-              schema_name: string
-              table_name: string
-              use_typmod?: boolean
-            }
-            Returns: string
-          }
-        | {
-            Args: {
-              column_name: string
-              new_dim: number
-              new_srid: number
-              new_type: string
-              table_name: string
-              use_typmod?: boolean
-            }
-            Returns: string
-          }
-        | {
-            Args: {
               catalog_name: string
               column_name: string
               new_dim: number
@@ -42472,15 +43664,30 @@ export type Database = {
             }
             Returns: string
           }
-      apply_assembly_template:
         | {
             Args: {
-              p_line_item_id: string
-              p_template_id: string
-              p_wage_determination_id?: string
+              column_name: string
+              new_dim: number
+              new_srid: number
+              new_type: string
+              schema_name: string
+              table_name: string
+              use_typmod?: boolean
             }
-            Returns: number
+            Returns: string
           }
+        | {
+            Args: {
+              column_name: string
+              new_dim: number
+              new_srid: number
+              new_type: string
+              table_name: string
+              use_typmod?: boolean
+            }
+            Returns: string
+          }
+      apply_assembly_template:
         | {
             Args: {
               p_ai_confidence?: number
@@ -42491,6 +43698,14 @@ export type Database = {
               p_template_id: string
             }
             Returns: string
+          }
+        | {
+            Args: {
+              p_line_item_id: string
+              p_template_id: string
+              p_wage_determination_id?: string
+            }
+            Returns: number
           }
       approve_validation_override: {
         Args: {
@@ -42633,6 +43848,51 @@ export type Database = {
         Returns: boolean
       }
       check_utility_response_windows: { Args: never; Returns: number }
+      claim_documents_for_processing: {
+        Args: { p_batch_size?: number; p_worker_id?: string }
+        Returns: {
+          ai_analysis_metadata: Json | null
+          ai_confidence_score: number | null
+          ai_document_category: string | null
+          ai_key_findings: Json | null
+          ai_model_version: string | null
+          ai_summary: string | null
+          ai_tokens_used: number | null
+          bid_project_id: string
+          content_hash: string | null
+          created_at: string | null
+          created_by: string | null
+          document_author: string | null
+          document_date: string | null
+          document_title: string | null
+          document_type: Database["public"]["Enums"]["document_type_enum"]
+          extracted_text: string | null
+          extracted_text_path: string | null
+          file_name: string
+          file_path: string
+          file_size_bytes: number | null
+          id: string
+          is_ocr_required: boolean | null
+          mime_type: string | null
+          ocr_confidence: number | null
+          page_count: number | null
+          processing_attempts: number | null
+          processing_completed_at: string | null
+          processing_error: string | null
+          processing_started_at: string | null
+          processing_status:
+            | Database["public"]["Enums"]["processing_status_enum"]
+            | null
+          processing_worker_id: string | null
+          updated_at: string | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "bid_documents"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       compute_daily_material_summary: {
         Args: { p_date: string; p_project_id: string }
         Returns: string
@@ -42663,6 +43923,21 @@ export type Database = {
         }
         Returns: string
       }
+      create_in_app_notification: {
+        Args: {
+          p_action_label?: string
+          p_action_url?: string
+          p_bid_project_id?: string
+          p_expires_in_days?: number
+          p_icon?: string
+          p_message: string
+          p_organization_id: string
+          p_priority?: string
+          p_title: string
+          p_user_id: string
+        }
+        Returns: string
+      }
       create_predictive_alert: {
         Args: {
           p_actions?: Json
@@ -42685,6 +43960,15 @@ export type Database = {
       dropgeometrycolumn:
         | {
             Args: {
+              catalog_name: string
+              column_name: string
+              schema_name: string
+              table_name: string
+            }
+            Returns: string
+          }
+        | {
+            Args: {
               column_name: string
               schema_name: string
               table_name: string
@@ -42692,26 +43976,17 @@ export type Database = {
             Returns: string
           }
         | { Args: { column_name: string; table_name: string }; Returns: string }
+      dropgeometrytable:
         | {
             Args: {
               catalog_name: string
-              column_name: string
               schema_name: string
               table_name: string
             }
             Returns: string
           }
-      dropgeometrytable:
         | { Args: { schema_name: string; table_name: string }; Returns: string }
         | { Args: { table_name: string }; Returns: string }
-        | {
-            Args: {
-              catalog_name: string
-              schema_name: string
-              table_name: string
-            }
-            Returns: string
-          }
       employee_has_valid_cert: {
         Args: { p_cert_code: string; p_employee_id: string }
         Returns: boolean
@@ -43013,6 +44288,19 @@ export type Database = {
         Args: { p_bid_project_id: string }
         Returns: Json
       }
+      get_bids_needing_deadline_notifications: {
+        Args: { p_days_until_deadline: number }
+        Returns: {
+          assigned_users: string[]
+          bid_project_id: string
+          days_until: unknown
+          incomplete_count: number
+          letting_date: string
+          organization_id: string
+          project_name: string
+          total_items: number
+        }[]
+      }
       get_compliance_dashboard: {
         Args: { p_organization_id: string }
         Returns: {
@@ -43107,6 +44395,21 @@ export type Database = {
           expiration_date: string
           insurance_type: string
           subcontractor_id: string
+        }[]
+      }
+      get_incomplete_line_items: {
+        Args: { p_bid_project_id: string }
+        Returns: {
+          ai_suggested_unit_price: number
+          description: string
+          final_unit_price: number
+          id: string
+          item_number: string
+          line_number: number
+          pricing_reviewed: boolean
+          pricing_status: Database["public"]["Enums"]["pricing_status_enum"]
+          quantity: number
+          unit: string
         }[]
       }
       get_item_specs: {
@@ -43457,9 +44760,13 @@ export type Database = {
         Args: { p_escalation_id: string; p_notification_type: string }
         Returns: boolean
       }
+      mark_notifications_read: {
+        Args: { p_notification_ids?: string[]; p_user_id: string }
+        Returns: number
+      }
       populate_geometry_columns:
-        | { Args: { use_typmod?: boolean }; Returns: string }
         | { Args: { tbl_oid: unknown; use_typmod?: boolean }; Returns: number }
+        | { Args: { use_typmod?: boolean }; Returns: string }
       postgis_constraint_dims: {
         Args: { geomcolumn: string; geomschema: string; geomtable: string }
         Returns: number
@@ -43531,6 +44838,16 @@ export type Database = {
         Args: { p_pay_period_id: string }
         Returns: undefined
       }
+      reset_stuck_documents: {
+        Args: { p_max_attempts?: number; p_stuck_threshold_minutes?: number }
+        Returns: {
+          attempts: number
+          document_id: string
+          file_name: string
+          new_status: string
+          previous_status: string
+        }[]
+      }
       resolve_escalation: {
         Args: {
           p_escalation_id: string
@@ -43572,6 +44889,15 @@ export type Database = {
           ticket_id: string
           ticket_number: string
         }[]
+      }
+      should_notify_user: {
+        Args: {
+          p_channel: Database["public"]["Enums"]["notification_channel_enum"]
+          p_notification_type: Database["public"]["Enums"]["notification_type_enum"]
+          p_organization_id: string
+          p_user_id: string
+        }
+        Returns: boolean
       }
       should_user_receive_alert: {
         Args: {
@@ -43639,6 +44965,14 @@ export type Database = {
       st_asewkt: { Args: { "": string }; Returns: string }
       st_asgeojson:
         | {
+            Args: { geog: unknown; maxdecimaldigits?: number; options?: number }
+            Returns: string
+          }
+        | {
+            Args: { geom: unknown; maxdecimaldigits?: number; options?: number }
+            Returns: string
+          }
+        | {
             Args: {
               geom_column?: string
               maxdecimaldigits?: number
@@ -43647,16 +44981,34 @@ export type Database = {
             }
             Returns: string
           }
+        | { Args: { "": string }; Returns: string }
+      st_asgml:
+        | {
+            Args: {
+              geog: unknown
+              id?: string
+              maxdecimaldigits?: number
+              nprefix?: string
+              options?: number
+            }
+            Returns: string
+          }
         | {
             Args: { geom: unknown; maxdecimaldigits?: number; options?: number }
             Returns: string
           }
+        | { Args: { "": string }; Returns: string }
         | {
-            Args: { geog: unknown; maxdecimaldigits?: number; options?: number }
+            Args: {
+              geog: unknown
+              id?: string
+              maxdecimaldigits?: number
+              nprefix?: string
+              options?: number
+              version: number
+            }
             Returns: string
           }
-        | { Args: { "": string }; Returns: string }
-      st_asgml:
         | {
             Args: {
               geom: unknown
@@ -43668,39 +45020,13 @@ export type Database = {
             }
             Returns: string
           }
-        | {
-            Args: { geom: unknown; maxdecimaldigits?: number; options?: number }
-            Returns: string
-          }
-        | {
-            Args: {
-              geog: unknown
-              id?: string
-              maxdecimaldigits?: number
-              nprefix?: string
-              options?: number
-            }
-            Returns: string
-          }
-        | {
-            Args: {
-              geog: unknown
-              id?: string
-              maxdecimaldigits?: number
-              nprefix?: string
-              options?: number
-              version: number
-            }
-            Returns: string
-          }
-        | { Args: { "": string }; Returns: string }
       st_askml:
         | {
-            Args: { geom: unknown; maxdecimaldigits?: number; nprefix?: string }
+            Args: { geog: unknown; maxdecimaldigits?: number; nprefix?: string }
             Returns: string
           }
         | {
-            Args: { geog: unknown; maxdecimaldigits?: number; nprefix?: string }
+            Args: { geom: unknown; maxdecimaldigits?: number; nprefix?: string }
             Returns: string
           }
         | { Args: { "": string }; Returns: string }
@@ -43721,11 +45047,11 @@ export type Database = {
       }
       st_assvg:
         | {
-            Args: { geom: unknown; maxdecimaldigits?: number; rel?: number }
+            Args: { geog: unknown; maxdecimaldigits?: number; rel?: number }
             Returns: string
           }
         | {
-            Args: { geog: unknown; maxdecimaldigits?: number; rel?: number }
+            Args: { geom: unknown; maxdecimaldigits?: number; rel?: number }
             Returns: string
           }
         | { Args: { "": string }; Returns: string }
@@ -43733,8 +45059,7 @@ export type Database = {
       st_astwkb:
         | {
             Args: {
-              geom: unknown[]
-              ids: number[]
+              geom: unknown
               prec?: number
               prec_m?: number
               prec_z?: number
@@ -43745,7 +45070,8 @@ export type Database = {
           }
         | {
             Args: {
-              geom: unknown
+              geom: unknown[]
+              ids: number[]
               prec?: number
               prec_m?: number
               prec_z?: number
@@ -43759,8 +45085,8 @@ export type Database = {
         Returns: string
       }
       st_azimuth:
-        | { Args: { geom1: unknown; geom2: unknown }; Returns: number }
         | { Args: { geog1: unknown; geog2: unknown }; Returns: number }
+        | { Args: { geom1: unknown; geom2: unknown }; Returns: number }
       st_boundingdiagonal: {
         Args: { fits?: boolean; geom: unknown }
         Returns: unknown
@@ -43825,11 +45151,11 @@ export type Database = {
         Returns: boolean
       }
       st_distance:
-        | { Args: { geom1: unknown; geom2: unknown }; Returns: number }
         | {
             Args: { geog1: unknown; geog2: unknown; use_spheroid?: boolean }
             Returns: number
           }
+        | { Args: { geom1: unknown; geom2: unknown }; Returns: number }
       st_distancesphere:
         | { Args: { geom1: unknown; geom2: unknown }; Returns: number }
         | {
@@ -43851,6 +45177,11 @@ export type Database = {
       }
       st_equals: { Args: { geom1: unknown; geom2: unknown }; Returns: boolean }
       st_expand:
+        | { Args: { box: unknown; dx: number; dy: number }; Returns: unknown }
+        | {
+            Args: { box: unknown; dx: number; dy: number; dz?: number }
+            Returns: unknown
+          }
         | {
             Args: {
               dm?: number
@@ -43861,11 +45192,6 @@ export type Database = {
             }
             Returns: unknown
           }
-        | {
-            Args: { box: unknown; dx: number; dy: number; dz?: number }
-            Returns: unknown
-          }
-        | { Args: { box: unknown; dx: number; dy: number }; Returns: unknown }
       st_force3d: { Args: { geom: unknown; zvalue?: number }; Returns: unknown }
       st_force3dm: {
         Args: { geom: unknown; mvalue?: number }
@@ -43880,16 +45206,16 @@ export type Database = {
         Returns: unknown
       }
       st_generatepoints:
+        | { Args: { area: unknown; npoints: number }; Returns: unknown }
         | {
             Args: { area: unknown; npoints: number; seed: number }
             Returns: unknown
           }
-        | { Args: { area: unknown; npoints: number }; Returns: unknown }
       st_geogfromtext: { Args: { "": string }; Returns: unknown }
       st_geographyfromtext: { Args: { "": string }; Returns: unknown }
       st_geohash:
-        | { Args: { geom: unknown; maxchars?: number }; Returns: string }
         | { Args: { geog: unknown; maxchars?: number }; Returns: string }
+        | { Args: { geom: unknown; maxchars?: number }; Returns: string }
       st_geomcollfromtext: { Args: { "": string }; Returns: unknown }
       st_geometricmedian: {
         Args: {
@@ -43933,8 +45259,8 @@ export type Database = {
         Returns: unknown
       }
       st_intersects:
-        | { Args: { geom1: unknown; geom2: unknown }; Returns: boolean }
         | { Args: { geog1: unknown; geog2: unknown }; Returns: boolean }
+        | { Args: { geom1: unknown; geom2: unknown }; Returns: boolean }
       st_isvaliddetail: {
         Args: { flags?: number; geom: unknown }
         Returns: Database["public"]["CompositeTypes"]["valid_detail"]
@@ -44111,8 +45437,8 @@ export type Database = {
         Returns: Record<string, unknown>[]
       }
       st_srid:
-        | { Args: { geom: unknown }; Returns: number }
         | { Args: { geog: unknown }; Returns: number }
+        | { Args: { geom: unknown }; Returns: number }
       st_subdivide: {
         Args: { geom: unknown; gridsize?: number; maxvertices?: number }
         Returns: unknown[]
@@ -44141,15 +45467,15 @@ export type Database = {
       }
       st_touches: { Args: { geom1: unknown; geom2: unknown }; Returns: boolean }
       st_transform:
-        | { Args: { geom: unknown; to_proj: string }; Returns: unknown }
-        | {
-            Args: { from_proj: string; geom: unknown; to_srid: number }
-            Returns: unknown
-          }
         | {
             Args: { from_proj: string; geom: unknown; to_proj: string }
             Returns: unknown
           }
+        | {
+            Args: { from_proj: string; geom: unknown; to_srid: number }
+            Returns: unknown
+          }
+        | { Args: { geom: unknown; to_proj: string }; Returns: unknown }
       st_triangulatepolygon: { Args: { g1: unknown }; Returns: unknown }
       st_union:
         | { Args: { geom1: unknown; geom2: unknown }; Returns: unknown }
@@ -44231,6 +45557,14 @@ export type Database = {
         }
         Returns: boolean
       }
+      user_has_project_access: {
+        Args: {
+          p_project_id: string
+          p_required_permission?: string
+          p_user_id: string
+        }
+        Returns: boolean
+      }
       user_has_valid_certification: {
         Args: { cert_code: string }
         Returns: boolean
@@ -44238,6 +45572,10 @@ export type Database = {
       user_is_on_project: {
         Args: { p_project_id: string; p_user_id: string }
         Returns: boolean
+      }
+      validate_bid_for_submission: {
+        Args: { p_bid_project_id: string }
+        Returns: Json
       }
       validate_pay_period: {
         Args: { p_pay_period_id: string }
@@ -44706,6 +46044,18 @@ export type Database = {
         | "closed"
         | "void"
       note_type: "ASSUMPTION" | "RISK" | "OPPORTUNITY" | "CONFLICT" | "GENERAL"
+      notification_channel_enum: "EMAIL" | "IN_APP" | "SMS" | "PUSH"
+      notification_type_enum:
+        | "BID_DEADLINE_7_DAYS"
+        | "BID_DEADLINE_3_DAYS"
+        | "BID_DEADLINE_1_DAY"
+        | "BID_DEADLINE_TODAY"
+        | "BID_INCOMPLETE_PRICING"
+        | "BID_SUBMISSION_COMPLETE"
+        | "BID_STATUS_CHANGE"
+        | "DOCUMENT_PROCESSED"
+        | "CERTIFICATION_EXPIRING"
+        | "INSURANCE_EXPIRING"
       ocr_status:
         | "pending"
         | "processing"
@@ -44800,6 +46150,12 @@ export type Database = {
         | "RS_MEANS"
         | "VENDOR_QUOTE"
       pricing_scenario_type_enum: "AGGRESSIVE" | "BALANCED" | "CONSERVATIVE"
+      pricing_status_enum:
+        | "NEEDS_PRICING"
+        | "AI_SUGGESTED"
+        | "MANUAL_REQUIRED"
+        | "INCOMPLETE"
+        | "COMPLETE"
       processing_status_enum:
         | "PENDING"
         | "PROCESSING"
@@ -45860,6 +47216,19 @@ export const Constants = {
         "void",
       ],
       note_type: ["ASSUMPTION", "RISK", "OPPORTUNITY", "CONFLICT", "GENERAL"],
+      notification_channel_enum: ["EMAIL", "IN_APP", "SMS", "PUSH"],
+      notification_type_enum: [
+        "BID_DEADLINE_7_DAYS",
+        "BID_DEADLINE_3_DAYS",
+        "BID_DEADLINE_1_DAY",
+        "BID_DEADLINE_TODAY",
+        "BID_INCOMPLETE_PRICING",
+        "BID_SUBMISSION_COMPLETE",
+        "BID_STATUS_CHANGE",
+        "DOCUMENT_PROCESSED",
+        "CERTIFICATION_EXPIRING",
+        "INSURANCE_EXPIRING",
+      ],
       ocr_status: [
         "pending",
         "processing",
@@ -45965,6 +47334,13 @@ export const Constants = {
         "VENDOR_QUOTE",
       ],
       pricing_scenario_type_enum: ["AGGRESSIVE", "BALANCED", "CONSERVATIVE"],
+      pricing_status_enum: [
+        "NEEDS_PRICING",
+        "AI_SUGGESTED",
+        "MANUAL_REQUIRED",
+        "INCOMPLETE",
+        "COMPLETE",
+      ],
       processing_status_enum: [
         "PENDING",
         "PROCESSING",
