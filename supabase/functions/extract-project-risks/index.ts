@@ -255,7 +255,7 @@ serve(async (req) => {
     // Get project details (supabase service client already created above)
     const { data: project, error: projectError } = await supabase
       .from('bid_projects')
-      .select('id, project_name, state_project_number, county, route_number, dbe_goal_percentage, contract_time_days')
+      .select('id, project_name, state_project_number, county, route, dbe_goal_percentage, contract_time_days')
       .eq('id', bid_project_id)
       .single();
 
@@ -341,7 +341,7 @@ PROJECT INFORMATION:
 - Name: ${project.project_name}
 - State Project: ${project.state_project_number || 'Not specified'}
 - County: ${project.county || 'Not specified'}
-- Route: ${project.route_number || 'Not specified'}
+- Route: ${project.route || 'Not specified'}
 - DBE Goal: ${project.dbe_goal_percentage || 0}%
 - Contract Days: ${project.contract_time_days || 'Not specified'}
 

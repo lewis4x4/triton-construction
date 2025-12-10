@@ -217,7 +217,7 @@ serve(async (req) => {
     // Get project details
     const { data: project, error: projectError } = await supabase
       .from('bid_projects')
-      .select('id, project_name, state_project_number, county, route_number, question_deadline')
+      .select('id, project_name, state_project_number, county, route, question_deadline')
       .eq('id', bid_project_id)
       .single();
 
@@ -315,7 +315,7 @@ PROJECT INFORMATION:
 - Name: ${project.project_name}
 - State Project: ${project.state_project_number || 'Not specified'}
 - County: ${project.county || 'Not specified'}
-- Route: ${project.route_number || 'Not specified'}
+- Route: ${project.route || 'Not specified'}
 - Question Deadline: ${project.question_deadline || 'Not specified'}
 
 DOCUMENT ANALYSIS (${documentContext.length} documents analyzed):
