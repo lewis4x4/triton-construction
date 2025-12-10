@@ -43,6 +43,7 @@ const QUESTION_CATEGORIES = [
 export function QuestionsTab({ projectId }: QuestionsTabProps) {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasFetched, setHasFetched] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [selectedQuestions, setSelectedQuestions] = useState<Set<string>>(new Set());
@@ -70,9 +71,11 @@ export function QuestionsTab({ projectId }: QuestionsTabProps) {
 
       if (fetchError) throw fetchError;
       setQuestions(data || []);
+      setHasFetched(true);
     } catch (err) {
       console.error('Error fetching questions:', err);
-      setError('Failed to load questions');
+      setError(err instanceof Error ? err.message : 'Failed to load questions');
+      setHasFetched(true);
     } finally {
       setIsLoading(false);
     }
@@ -270,7 +273,8 @@ export function QuestionsTab({ projectId }: QuestionsTabProps) {
   // Render
   // ============================================================================
 
-  if (isLoading) {
+  // Only show loading spinner on initial load
+  if (isLoading && !hasFetched) {
     return (
       <div className="questions-loading">
         <div className="loading-spinner" />

@@ -78,6 +78,7 @@ export function WorkPackagesTab({ projectId }: WorkPackagesTabProps) {
   const [expandedPackage, setExpandedPackage] = useState<string | null>(null);
   const [packageItems, setPackageItems] = useState<Record<string, WorkPackageItem[]>>({});
   const [isLoading, setIsLoading] = useState(true);
+  const [hasFetched, setHasFetched] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [generateError, setGenerateError] = useState<string | null>(null);
@@ -135,9 +136,11 @@ export function WorkPackagesTab({ projectId }: WorkPackagesTabProps) {
 
       if (fetchError) throw fetchError;
       setPackages((data as unknown as WorkPackage[]) || []);
+      setHasFetched(true);
     } catch (err) {
       console.error('Error fetching work packages:', err);
-      setError('Failed to load work packages');
+      setError(err instanceof Error ? err.message : 'Failed to load work packages');
+      setHasFetched(true);
     } finally {
       setIsLoading(false);
     }
@@ -593,7 +596,8 @@ export function WorkPackagesTab({ projectId }: WorkPackagesTabProps) {
     totalItems: packages.reduce((sum, p) => sum + (p.total_items || 0), 0),
   };
 
-  if (isLoading) {
+  // Only show loading spinner on initial load
+  if (isLoading && !hasFetched) {
     return (
       <div className="packages-loading">
         <div className="loading-spinner" />
