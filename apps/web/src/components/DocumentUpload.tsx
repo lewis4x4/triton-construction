@@ -59,8 +59,9 @@ interface UploadingFile {
   error?: string;
 }
 
-// File size threshold for using Railway service (5MB)
-const LARGE_FILE_THRESHOLD = 5 * 1024 * 1024;
+// File size threshold for using Railway service
+// Set to 0 to route ALL uploads through Railway (more reliable for all file sizes)
+const LARGE_FILE_THRESHOLD = 0;
 // Railway service URL (handles large files that exceed edge function memory)
 const RAILWAY_UPLOAD_URL = import.meta.env.VITE_DOCUMENT_PROCESSOR_URL || 'https://document-processor-production-b5d6.up.railway.app';
 
