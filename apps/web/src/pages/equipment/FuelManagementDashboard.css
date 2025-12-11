@@ -197,6 +197,7 @@
   grid-template-columns: repeat(6, 1fr);
   gap: 16px;
   margin-bottom: 24px;
+  align-items: stretch;
 }
 
 .fuel-dashboard-page .kpi-card {
@@ -206,6 +207,8 @@
   padding: 20px;
   transition: all 0.3s;
   box-shadow: var(--shadow-sm);
+  min-height: 140px;
+  overflow: visible;
 }
 
 .fuel-dashboard-page .kpi-card:hover {

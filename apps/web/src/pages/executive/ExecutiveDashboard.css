@@ -139,8 +139,9 @@
     align-items: flex-start;
     gap: 1rem;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     transition: all 0.3s ease;
+    min-height: 120px;
 }
 
 .stat-card:hover {
@@ -278,9 +279,10 @@
     backdrop-filter: blur(12px);
     border-radius: var(--radius-lg, 12px);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    overflow: hidden;
+    overflow: visible;
     display: flex;
     flex-direction: column;
+    min-height: 350px;
 }
 
 .dashboard-card.wide {
@@ -318,6 +320,8 @@
 .chart-container {
     padding: 1rem;
     min-height: 300px;
+    overflow: visible;
+    flex: 1;
 }
 
 /* Quick Actions Style */

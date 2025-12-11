@@ -84,8 +84,9 @@
     align-items: flex-start;
     gap: 1rem;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     transition: all 0.3s ease;
+    min-height: 110px;
 }
 
 .stat-card:hover {
@@ -132,4 +133,107 @@
     font-size: 0.75rem;
     margin-top: 0.5rem;
     color: var(--text-muted);
+}
+
+/* ============================================
+   GRAVITY CARD - Main Content Cards
+   ============================================ */
+
+.gravity-card {
+    background: rgba(30, 41, 59, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.gravity-card .p-5 {
+    padding: 1.25rem;
+}
+
+.gravity-card .p-4 {
+    padding: 1rem;
+}
+
+/* ============================================
+   BUTTON STYLES
+   ============================================ */
+
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.new-project-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    background: linear-gradient(135deg, var(--accent-primary, #3d6b4f), var(--accent-olive, #4a7c59));
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(61, 107, 79, 0.3);
+}
+
+.new-project-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(61, 107, 79, 0.4);
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR
+   ============================================ */
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* ============================================
+   VOID DEEP BACKGROUND
+   ============================================ */
+
+.bg-void-deep {
+    background: rgba(13, 17, 23, 0.8);
+}
+
+/* ============================================
+   VERTICAL TEXT ORIENTATION
+   ============================================ */
+
+.writing-mode-vertical {
+    writing-mode: vertical-rl;
 }

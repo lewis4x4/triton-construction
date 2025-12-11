@@ -157,6 +157,8 @@
   gap: 1rem;
   align-items: flex-start;
   transition: all 0.2s ease;
+  min-height: 100px;
+  overflow: visible;
 }
 
 .kpi-card:hover {
@@ -350,8 +352,9 @@
   backdrop-filter: var(--glass-blur);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-xl);
-  overflow: hidden;
+  overflow: visible;
   box-shadow: var(--glass-shadow);
+  min-height: 200px;
 }
 
 .card-header {
