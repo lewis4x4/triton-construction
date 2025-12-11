@@ -55,7 +55,7 @@ interface LineItem {
   quantity: number;
   unit: string;
   work_category: WorkCategory | null;
-  unit_price: number | null;
+  final_unit_price: number | null;
 }
 
 interface WorkPackage {
@@ -229,7 +229,7 @@ serve(async (req) => {
     // Get all line items for the project
     const { data: lineItems, error: itemsError } = await supabase
       .from('bid_line_items')
-      .select('id, line_number, item_number, description, quantity, unit, work_category, unit_price')
+      .select('id, line_number, item_number, description, quantity, unit, work_category, final_unit_price')
       .eq('bid_project_id', bid_project_id)
       .order('line_number', { ascending: true });
 
