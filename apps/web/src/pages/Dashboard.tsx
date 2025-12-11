@@ -12,6 +12,7 @@ import {
   Users,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { BidsNeedingAttention } from '../components/bids/BidsNeedingAttention';
 import './Dashboard.css';
 
 export function Dashboard() {
@@ -121,8 +122,13 @@ export function Dashboard() {
           </div>
         </div>
 
+        {/* Bids Needing Attention Widget */}
+        <div className="dashboard-card">
+          <BidsNeedingAttention />
+        </div>
+
         {/* Recent Activity Placeholder */}
-        <div className="dashboard-card span-2">
+        <div className="dashboard-card">
           <div className="card-header">
             <h3>Recent Activity</h3>
             <Link to="/reports" className="card-link">View all</Link>

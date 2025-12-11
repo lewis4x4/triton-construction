@@ -84,7 +84,22 @@ function findNodes(node: unknown, nodeName: string, results: unknown[] = []): un
   return results;
 }
 
-// Parse WVDOH Bidx XML format
+// Normalize WVDOH item number format
+// EBSX uses format like "201001-000" which should map to "201.001" for historical matching
+function normalizeItemNumber(itemNumber: string): string {
+  if (!itemNumber) return '';
+
+  // EBSX format: 201001-000 → 201.001
+  const ebsxMatch = itemNumber.match(/^(\d{3})(\d{3})-(\d{3})$/);
+  if (ebsxMatch) {
+    return `${ebsxMatch[1]}.${ebsxMatch[2]}`;
+  }
+
+  // Already normalized or other format - return as-is
+  return itemNumber;
+}
+
+// Parse WVDOH Bidx XML format (supports both BidX and EBSX formats)
 function parseBidxXml(xmlContent: string): ParseResult {
   const result: ParseResult = {
     success: false,
@@ -96,8 +111,14 @@ function parseBidxXml(xmlContent: string): ParseResult {
   try {
     const xml = parseXML(xmlContent);
 
-    // Try multiple possible root structures
+    // Detect if this is an EBSX file by checking for EBSXContainer or EBSX root
+    const isEBSX = !!(findNodes(xml, 'EBSXContainer').length || findNodes(xml, 'EBSX').length);
+
+    // Try multiple possible root structures (including EBSX paths)
     const possibleItemContainers = [
+      // EBSX-specific paths (WVDOH AASHTOWare format)
+      'EBSXContainer', 'EBSX', 'Letting', 'Section',
+      // Standard BidX paths
       'BidItems', 'Items', 'LineItems', 'BidSchedule', 'Schedule',
       'Proposal', 'ProposalItems', 'BidDocument', 'Bid'
     ];
@@ -135,45 +156,88 @@ function parseBidxXml(xmlContent: string): ParseResult {
       }
     }
 
-    // Try to extract project info
+    // Try to extract project info (including EBSX-specific nodes)
     const projectNodes = findNodes(xml, 'Project');
     const proposalNodes = findNodes(xml, 'Proposal');
     const headerNodes = findNodes(xml, 'Header');
+    const lettingNodes = findNodes(xml, 'Letting');
 
+    // For EBSX files, extract info from both Letting and Proposal nodes
+    const lettingInfo = lettingNodes[0] as Record<string, unknown> | undefined;
+    const proposalInfo = proposalNodes[0] as Record<string, unknown> | undefined;
     const infoSource = projectNodes[0] || proposalNodes[0] || headerNodes[0] || xml;
 
     if (infoSource && typeof infoSource === 'object') {
       const info = infoSource as Record<string, unknown>;
+
+      // For EBSX, combine info from Letting and Proposal nodes
+      let lettingDate = getTextContent(info['LettingDate'] || info['BidDate'] || info['Date']);
+      let contractNumber = getTextContent(info['ContractNumber'] || info['Contract'] || info['ContractNo']);
+      let projectDescription = getTextContent(info['ProjectName'] || info['Name'] || info['Title']);
+
+      // EBSX-specific: Get letting date from Letting node
+      if (isEBSX && lettingInfo) {
+        const ebsxLettingDate = getTextContent(lettingInfo['LettingTime'] || lettingInfo['LettingDate']);
+        if (ebsxLettingDate) lettingDate = ebsxLettingDate;
+
+        const lettingId = getTextContent(lettingInfo['LettingID']);
+        if (lettingId && !contractNumber) contractNumber = lettingId;
+      }
+
+      // EBSX-specific: Get contract ID and description from Proposal node
+      if (isEBSX && proposalInfo) {
+        const ebsxContractId = getTextContent(proposalInfo['ContractID'] || proposalInfo['ContractNumber']);
+        if (ebsxContractId) contractNumber = ebsxContractId;
+
+        const ebsxDescription = getTextContent(
+          proposalInfo['ProjectDescription'] ||
+          proposalInfo['Description'] ||
+          proposalInfo['ProposalDescription']
+        );
+        if (ebsxDescription) projectDescription = ebsxDescription;
+      }
+
       result.projectInfo = {
-        projectName: getTextContent(info['ProjectName'] || info['Name'] || info['Title']),
-        contractNumber: getTextContent(info['ContractNumber'] || info['Contract'] || info['ContractNo']),
+        projectName: projectDescription,
+        contractNumber,
         county: getTextContent(info['County'] || info['Location']),
         route: getTextContent(info['Route'] || info['Highway'] || info['Road']),
-        lettingDate: getTextContent(info['LettingDate'] || info['BidDate'] || info['Date']),
+        lettingDate,
       };
     }
 
     // Parse each item
-    let lineNumber = 0;
+    let autoLineNumber = 0;
     for (const item of items) {
       if (!item || typeof item !== 'object') continue;
 
-      lineNumber++;
+      autoLineNumber++;
       const itemObj = item as Record<string, unknown>;
 
-      // Try various field names for each property
-      const itemNumber = getTextContent(
+      // Try to get explicit line number from EBSX (e.g., "0005" → 5)
+      const explicitLineNum = getTextContent(itemObj['LineNumber'] || itemObj['LineNum'] || itemObj['Line']);
+      const lineNumber = explicitLineNum ? parseInt(explicitLineNum, 10) || autoLineNumber : autoLineNumber;
+
+      // Try various field names for each property (including EBSX-specific names)
+      const rawItemNumber = getTextContent(
         itemObj['ItemNumber'] || itemObj['Number'] || itemObj['ItemNo'] ||
         itemObj['PayItemNumber'] || itemObj['ItemCode'] || itemObj['Code'] ||
         itemObj['@ItemNumber'] || itemObj['@Number']
       );
 
+      // Normalize item number for WVDOH format (201001-000 → 201.001)
+      const itemNumber = normalizeItemNumber(rawItemNumber);
+
+      // EBSX uses DescriptionIDESCRL (long) and DescriptionIDESCR (short)
       const description = getTextContent(
+        itemObj['DescriptionIDESCRL'] || // EBSX long description
         itemObj['Description'] || itemObj['ItemDescription'] || itemObj['Desc'] ||
         itemObj['LongDescription'] || itemObj['Name'] || itemObj['ItemName']
       );
 
+      // EBSX uses DescriptionIDESCR for short description
       const shortDesc = getTextContent(
+        itemObj['DescriptionIDESCR'] || // EBSX short description
         itemObj['ShortDescription'] || itemObj['ShortDesc'] || itemObj['Brief']
       );
 
@@ -192,12 +256,16 @@ function parseBidxXml(xmlContent: string): ParseResult {
         itemObj['UnitPrice'] || itemObj['Price'] || itemObj['EstPrice']
       );
 
+      // EBSX uses ItemType for classification (e.g., "CLER", "NTWK")
       const category = getTextContent(
+        itemObj['ItemType'] || // EBSX item type
         itemObj['Category'] || itemObj['WorkType'] || itemObj['Type'] ||
         itemObj['ItemCategory'] || itemObj['Classification']
       );
 
+      // EBSX items are organized under Section nodes
       const section = getTextContent(
+        itemObj['SectionID'] || itemObj['SectionNumber'] || // EBSX section
         itemObj['Section'] || itemObj['Heading'] || itemObj['Group']
       );
 
@@ -224,12 +292,20 @@ function parseBidxXml(xmlContent: string): ParseResult {
       }
 
       // Only add items with valid data
-      if (itemNumber || description) {
+      if (itemNumber || description || shortDesc) {
+        // Use short description as fallback if no long description
+        const finalDescription = description || shortDesc || 'No description';
+
+        // For EBSX, store original item number format as alt if it differs from normalized
+        const finalAltItemNumber = (rawItemNumber && rawItemNumber !== itemNumber)
+          ? rawItemNumber
+          : (altItemNumber || undefined);
+
         result.lineItems.push({
           lineNumber,
           itemNumber: itemNumber || `ITEM-${lineNumber}`,
-          altItemNumber: altItemNumber || undefined,
-          description: description || 'No description',
+          altItemNumber: finalAltItemNumber,
+          description: finalDescription,
           shortDescription: shortDesc || undefined,
           quantity,
           unit: unit || 'LS',
@@ -271,16 +347,6 @@ serve(async (req) => {
       );
     }
 
-    // Create Supabase client with user's auth token
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      {
-        global: { headers: { Authorization: authHeader } },
-        auth: { autoRefreshToken: false, persistSession: false },
-      }
-    );
-
     // Create admin client for database operations
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -288,13 +354,29 @@ serve(async (req) => {
       { auth: { autoRefreshToken: false, persistSession: false } }
     );
 
-    // Get current user
-    const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
-    if (userError || !user) {
-      return new Response(
-        JSON.stringify({ error: 'Invalid authentication' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    // Check if this is a service role key call (from process-document-queue)
+    const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+    const token = authHeader.replace('Bearer ', '');
+    const isServiceRoleCall = token === serviceRoleKey;
+
+    // For user calls, validate authentication
+    if (!isServiceRoleCall) {
+      const supabaseClient = createClient(
+        Deno.env.get('SUPABASE_URL') ?? '',
+        Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+        {
+          global: { headers: { Authorization: authHeader } },
+          auth: { autoRefreshToken: false, persistSession: false },
+        }
       );
+
+      const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+      if (userError || !user) {
+        return new Response(
+          JSON.stringify({ error: 'Invalid authentication' }),
+          { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
     }
 
     // Parse request body
@@ -307,8 +389,8 @@ serve(async (req) => {
       );
     }
 
-    // Verify user has access to the project
-    const { data: project, error: projectError } = await supabaseClient
+    // Verify project exists (use admin client for service role calls, skip RLS check)
+    const { data: project, error: projectError } = await supabaseAdmin
       .from('bid_projects')
       .select('id, organization_id')
       .eq('id', bidProjectId)
@@ -316,7 +398,7 @@ serve(async (req) => {
 
     if (projectError || !project) {
       return new Response(
-        JSON.stringify({ error: 'Bid project not found or access denied' }),
+        JSON.stringify({ error: 'Bid project not found' }),
         { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }

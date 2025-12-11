@@ -23,7 +23,7 @@ type DocumentType =
 
 const DOCUMENT_TYPES: { value: DocumentType; label: string; description: string }[] = [
   { value: 'PROPOSAL', label: 'Proposal', description: 'Main bid proposal document' },
-  { value: 'BIDX', label: 'Bidx File', description: 'Bidx XML file with line items' },
+  { value: 'BIDX', label: 'Bidx File', description: 'Bidx/EBSX file with line items (WVDOH AASHTOWare)' },
   { value: 'PLANS', label: 'Plans', description: 'Project construction plans' },
   { value: 'EXISTING_PLANS', label: 'Existing Plans', description: 'As-built or existing conditions' },
   { value: 'SPECIAL_PROVISIONS', label: 'Special Provisions', description: 'SP document' },
@@ -38,7 +38,7 @@ const DOCUMENT_TYPES: { value: DocumentType; label: string; description: string 
 
 const ACCEPTED_TYPES: Record<DocumentType, string> = {
   PROPOSAL: '.pdf',
-  BIDX: '.xml',
+  BIDX: '.xml,.ebsx',
   PLANS: '.pdf,.tif,.tiff',
   EXISTING_PLANS: '.pdf,.tif,.tiff',
   SPECIAL_PROVISIONS: '.pdf',

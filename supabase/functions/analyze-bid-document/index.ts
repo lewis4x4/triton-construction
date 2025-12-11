@@ -1,6 +1,6 @@
 // Supabase Edge Function: analyze-bid-document
 // Analyzes bid package documents using Claude AI to extract structured data
-// Supports: PDF proposals, environmental reports, hazmat surveys, plans
+// Supports: PDF proposals, environmental reports, hazmat surveys, geotechnical reports, traffic studies, plans
 
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
@@ -216,6 +216,91 @@ Provide a JSON response with this structure:
     "unsuitable_material_expected": boolean,
     "dewatering_required": boolean,
     "special_equipment_needed": ["array of equipment"]
+  },
+  "confidence_score": 0-100
+}
+
+Always respond with valid JSON only.`,
+
+  TRAFFIC_STUDY: `You are an expert traffic engineer analyzing traffic studies for WVDOH highway construction projects.
+
+Analyze the provided traffic study document and extract:
+1. Current traffic volumes (AADT, ADT, peak hour volumes)
+2. Level of Service (LOS) analysis for intersections and road segments
+3. Work zone requirements and traffic control recommendations
+4. Detour requirements and routes if applicable
+5. Speed limits and any speed reduction requirements
+6. Crash/accident history data
+7. Pedestrian and bicycle considerations
+8. Special event or seasonal traffic considerations
+9. Recommended construction phasing from traffic perspective
+
+Provide a JSON response with this structure:
+{
+  "summary": "2-3 sentence summary of traffic conditions and key requirements",
+  "document_category": "TRAFFIC_STUDY",
+  "key_findings": [
+    {
+      "type": "VOLUME|LOS|WORK_ZONE|DETOUR|SAFETY|TIMING|PHASING",
+      "title": "Brief title",
+      "description": "Detailed description",
+      "severity": "LOW|MEDIUM|HIGH|CRITICAL",
+      "page_reference": "Page X" or null
+    }
+  ],
+  "extracted_data": {
+    "aadt": number or null,
+    "adt": number or null,
+    "peak_hour_am_volume": number or null,
+    "peak_hour_pm_volume": number or null,
+    "peak_hour_am_time": "HH:MM-HH:MM" or null,
+    "peak_hour_pm_time": "HH:MM-HH:MM" or null,
+    "current_los": "A|B|C|D|E|F" or null,
+    "projected_los_during_construction": "A|B|C|D|E|F" or null,
+    "truck_percentage": number or null,
+    "speed_limit_existing": number or null,
+    "speed_limit_work_zone": number or null,
+    "road_closure_allowed": boolean,
+    "full_closure_hours": "description of allowed closure times" or null,
+    "lane_closure_restrictions": ["array of restrictions"],
+    "detour_required": boolean,
+    "detour_routes": [
+      {
+        "description": "route description",
+        "length_miles": number,
+        "added_travel_time_minutes": number
+      }
+    ],
+    "crash_history": {
+      "period_years": number,
+      "total_crashes": number,
+      "fatal_crashes": number,
+      "injury_crashes": number,
+      "crash_rate": number or null
+    },
+    "work_zone_requirements": {
+      "flaggers_required": boolean,
+      "pilot_car_required": boolean,
+      "temporary_signals_required": boolean,
+      "night_work_required": boolean,
+      "night_work_reason": "string or null",
+      "police_officer_required": boolean,
+      "rumble_strips_required": boolean,
+      "portable_changeable_message_signs": number or null
+    },
+    "timing_restrictions": [
+      {
+        "restriction": "description",
+        "reason": "why",
+        "dates_or_times": "when"
+      }
+    ],
+    "pedestrian_accommodations_required": boolean,
+    "bicycle_accommodations_required": boolean,
+    "school_zone_impacts": boolean,
+    "special_events_considerations": ["array of events/dates to avoid"],
+    "recommended_construction_phases": ["array of phasing recommendations"],
+    "mot_plan_requirements": ["array of MOT requirements"]
   },
   "confidence_score": 0-100
 }

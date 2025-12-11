@@ -11,6 +11,7 @@ import { WorkPackagesTab } from '../../components/bids/WorkPackagesTab';
 import { TeamTab } from '../../components/bids/TeamTab';
 import { DeadlineAlertBanner } from '../../components/bids/DeadlineAlertBanner';
 import { SubmissionChecklistModal } from '../../components/bids/SubmissionChecklistModal';
+import { BidTrafficMap } from '../../components/bids/BidTrafficMap';
 import './BidDetail.css';
 
 interface BidProject {
@@ -23,6 +24,8 @@ interface BidProject {
   letting_date: string | null;
   bid_due_date: string | null;
   location_description: string | null;
+  latitude: number | null;
+  longitude: number | null;
   status: string;
   engineers_estimate: number | null;
   created_at: string;
@@ -205,7 +208,7 @@ export function BidDetail() {
       // Fetch project details - select columns matching database schema
       const { data: projectData, error: projectError } = await supabase
         .from('bid_projects')
-        .select('id, project_name, owner, state_project_number, county, route, letting_date, bid_due_date, location_description, status, engineers_estimate, created_at')
+        .select('id, project_name, owner, state_project_number, county, route, letting_date, bid_due_date, location_description, latitude, longitude, status, engineers_estimate, created_at')
         .eq('id', id)
         .single();
 
@@ -727,6 +730,19 @@ function OverviewTab({
           </div>
         </div>
       </div>
+
+      {/* Site Analysis - Traffic Map */}
+      <BidTrafficMap
+        projectId={project.id}
+        projectName={project.project_name}
+        projectLocation={
+          project.latitude && project.longitude
+            ? { lat: project.latitude, lng: project.longitude }
+            : null
+        }
+        county={project.county || undefined}
+        route={project.route || undefined}
+      />
 
       {/* Pricing Method Breakdown */}
       {metrics && (metrics.total_line_items ?? 0) > 0 && (

@@ -1,6 +1,7 @@
 import { type ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import { NotificationBell } from './notifications';
 import {
   LayoutDashboard,
   FileText,
@@ -206,9 +207,12 @@ export function Layout({ children }: LayoutProps) {
                 Sign Out
               </button>
             </div>
-            <button onClick={signOut} className="btn btn-ghost btn-icon" title="Sign Out">
-              <LogOut size={18} strokeWidth={1.5} />
-            </button>
+            <div className="user-actions">
+              <NotificationBell />
+              <button onClick={signOut} className="btn btn-ghost btn-icon" title="Sign Out">
+                <LogOut size={18} strokeWidth={1.5} />
+              </button>
+            </div>
           </div>
         </div>
       </aside>
