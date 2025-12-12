@@ -4,6 +4,7 @@ import './DocumentList.css';
 
 interface DocumentListProps {
   projectId: string;
+  onProcessingComplete?: () => void; // Callback when document processing completes (for refreshing metrics)
 }
 
 interface Document {
@@ -192,7 +193,7 @@ function AIDetailsRow({ doc }: AIDetailsRowProps) {
   );
 }
 
-export function DocumentList({ projectId }: DocumentListProps) {
+export function DocumentList({ projectId, onProcessingComplete }: DocumentListProps) {
   const [documents, setDocuments] = useState<Document[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -251,12 +252,31 @@ export function DocumentList({ projectId }: DocumentListProps) {
           filter: `bid_project_id=eq.${projectId}`,
         },
         (payload) => {
+          const oldStatus = (payload.old as Document)?.processing_status;
+          const newStatus = (payload.new as Document)?.processing_status;
+
           // Update existing document in place (no loading spinner)
           setDocuments((prev) =>
             prev.map((doc) =>
               doc.id === payload.new.id ? (payload.new as Document) : doc
             )
           );
+
+          // If document just finished processing (BIDX extracted line items), refresh parent metrics
+          // This updates the Line Items tab badge count
+          const processingStatuses = ['PROCESSING', 'PENDING', 'AI_ANALYZING'];
+          const completedStatuses = ['COMPLETED', 'AI_ANALYZED', 'FAILED', 'FAILED_PERMANENT'];
+
+          if (
+            processingStatuses.includes(oldStatus || '') &&
+            completedStatuses.includes(newStatus || '') &&
+            onProcessingComplete
+          ) {
+            // Small delay to ensure database is fully updated before refreshing
+            setTimeout(() => {
+              onProcessingComplete();
+            }, 500);
+          }
         }
       )
       .on(
@@ -277,7 +297,7 @@ export function DocumentList({ projectId }: DocumentListProps) {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [fetchDocuments, projectId]);
+  }, [fetchDocuments, projectId, onProcessingComplete]);
 
   // Fallback polling: silently refresh when documents are processing
   // This ensures UI updates even if real-time subscription isn't working

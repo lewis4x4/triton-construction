@@ -816,7 +816,7 @@ function DocumentsTab({
   return (
     <div className="documents-tab">
       <DocumentUpload projectId={projectId} onUploadComplete={onDocumentsChange} />
-      <DocumentList projectId={projectId} />
+      <DocumentList projectId={projectId} onProcessingComplete={onDocumentsChange} />
     </div>
   );
 }
