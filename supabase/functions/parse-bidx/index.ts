@@ -959,7 +959,7 @@ serve(async (req) => {
         processing_status: 'COMPLETED',
         processing_completed_at: new Date().toISOString(),
         processing_error: null,
-        extracted_metadata: {
+        ai_analysis_metadata: {
           lineItemCount: parseResult.totalItems,
           projectInfo: parseResult.projectInfo,
           parsedAt: new Date().toISOString(),
