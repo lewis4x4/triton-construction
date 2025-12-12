@@ -6,22 +6,28 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Allowed document types and their expected MIME types
+// Allowed document types and their expected MIME types (WVDOH Bid Package)
 const DOCUMENT_TYPE_MIME_MAP: Record<string, string[]> = {
   PROPOSAL: ['application/pdf'],
-  BIDX: ['application/xml', 'text/xml'],
-  PLANS: ['application/pdf', 'image/tiff'],
-  EXISTING_PLANS: ['application/pdf', 'image/tiff'],
+  BIDX: ['application/xml', 'text/xml', 'application/octet-stream'],
+  ITEMIZED_BID_XLSX: ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+  PLANS: ['application/pdf', 'image/tiff', 'application/acad', 'application/x-autocad', 'application/dwg', 'image/vnd.dwg'],
+  EXISTING_PLANS: ['application/pdf', 'image/tiff', 'application/acad', 'application/x-autocad', 'application/dwg', 'image/vnd.dwg'],
   SPECIAL_PROVISIONS: ['application/pdf'],
   ENVIRONMENTAL: ['application/pdf'],
   ASBESTOS: ['application/pdf'],
   HAZMAT: ['application/pdf'],
   GEOTECHNICAL: ['application/pdf'],
+  HYDRAULIC: ['application/pdf'],
   TRAFFIC_STUDY: ['application/pdf'],
+  UTILITY_PLANS: ['application/pdf'],
+  ROW_PLANS: ['application/pdf'],
+  PERMITS: ['application/pdf'],
+  PREBID_MINUTES: ['application/pdf'],
   ADDENDUM: ['application/pdf'],
   OTHER: ['application/pdf', 'application/xml', 'text/xml', 'application/vnd.ms-excel',
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-          'image/png', 'image/jpeg', 'image/tiff'],
+          'image/png', 'image/jpeg', 'image/tiff', 'application/acad', 'application/dwg'],
 };
 
 interface UploadRequest {
@@ -176,31 +182,58 @@ serve(async (req) => {
       );
     }
 
-    // Auto-trigger document processing (async - don't wait for completion)
+    // Auto-trigger document processing
+    // NOTE: We MUST await this fetch or use a timeout, because Deno Deploy
+    // may terminate the function before fire-and-forget requests complete
     let processingTriggered = false;
+    let processingResult: string | null = null;
     try {
       const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
       const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 
-      // Fire and forget - call process-document-queue for this document
-      fetch(`${supabaseUrl}/functions/v1/process-document-queue`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${serviceRoleKey}`,
-        },
-        body: JSON.stringify({
-          documentIds: [document.id],
-          batchSize: 1,
-        }),
-      }).catch((err) => {
-        console.error('Auto-processing trigger failed (non-blocking):', err);
-      });
+      // Use AbortController for timeout (30 seconds max)
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-      processingTriggered = true;
+      try {
+        const processResponse = await fetch(`${supabaseUrl}/functions/v1/process-document-queue`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${serviceRoleKey}`,
+          },
+          body: JSON.stringify({
+            documentIds: [document.id],
+            batchSize: 1,
+          }),
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
+        if (processResponse.ok) {
+          const result = await processResponse.json();
+          processingTriggered = true;
+          processingResult = result.message || 'Processing completed';
+          console.log('Processing triggered successfully:', result);
+        } else {
+          const errorText = await processResponse.text();
+          console.error('Processing trigger returned error:', processResponse.status, errorText);
+          processingResult = `Processing trigger failed: ${processResponse.status}`;
+        }
+      } catch (fetchErr) {
+        clearTimeout(timeoutId);
+        if (fetchErr instanceof Error && fetchErr.name === 'AbortError') {
+          console.error('Processing trigger timed out');
+          processingResult = 'Processing trigger timed out';
+        } else {
+          throw fetchErr;
+        }
+      }
     } catch (triggerErr) {
       // Don't fail upload if auto-processing trigger fails
       console.error('Failed to trigger auto-processing:', triggerErr);
+      processingResult = `Trigger error: ${triggerErr instanceof Error ? triggerErr.message : 'Unknown'}`;
     }
 
     // Return success with document info
@@ -216,9 +249,10 @@ serve(async (req) => {
           createdAt: document.created_at,
         },
         processingTriggered,
+        processingResult,
         message: processingTriggered
-          ? 'Document uploaded successfully. AI processing has been triggered.'
-          : 'Document uploaded successfully. Processing will begin shortly.',
+          ? `Document uploaded and processed successfully. ${processingResult}`
+          : `Document uploaded. Processing status: ${processingResult || 'queued'}`,
       }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );

@@ -570,16 +570,24 @@
   font-size: 0.875rem;
 }
 
+/* Equipment Detail Overlay */
+.equipment-detail-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-end;
+  align-items: stretch;
+}
+
 /* Equipment Detail Panel */
 .equipment-detail-panel {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 400px;
+  width: 420px;
+  max-width: 90vw;
   height: 100vh;
   background: var(--bg-card);
   box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
-  z-index: 100;
   display: flex;
   flex-direction: column;
   animation: slideIn 0.2s ease-out;

@@ -768,7 +768,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <EnhancedVehicleDetails />
+                  <EquipmentFleetDashboard />
                 </Layout>
               </ProtectedRoute>
             }

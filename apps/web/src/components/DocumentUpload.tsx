@@ -10,6 +10,7 @@ interface DocumentUploadProps {
 type DocumentType =
   | 'PROPOSAL'
   | 'BIDX'
+  | 'ITEMIZED_BID_XLSX'
   | 'PLANS'
   | 'EXISTING_PLANS'
   | 'SPECIAL_PROVISIONS'
@@ -17,13 +18,19 @@ type DocumentType =
   | 'ASBESTOS'
   | 'HAZMAT'
   | 'GEOTECHNICAL'
+  | 'HYDRAULIC'
   | 'TRAFFIC_STUDY'
+  | 'UTILITY_PLANS'
+  | 'ROW_PLANS'
+  | 'PERMITS'
+  | 'PREBID_MINUTES'
   | 'ADDENDUM'
   | 'OTHER';
 
 const DOCUMENT_TYPES: { value: DocumentType; label: string; description: string }[] = [
   { value: 'PROPOSAL', label: 'Proposal', description: 'Main bid proposal document' },
   { value: 'BIDX', label: 'Bidx File', description: 'Bidx/EBSX file with line items (WVDOH AASHTOWare)' },
+  { value: 'ITEMIZED_BID_XLSX', label: 'Itemized Bid (Excel)', description: 'Bid proposal spreadsheet with line items' },
   { value: 'PLANS', label: 'Plans', description: 'Project construction plans' },
   { value: 'EXISTING_PLANS', label: 'Existing Plans', description: 'As-built or existing conditions' },
   { value: 'SPECIAL_PROVISIONS', label: 'Special Provisions', description: 'SP document' },
@@ -31,7 +38,12 @@ const DOCUMENT_TYPES: { value: DocumentType; label: string; description: string 
   { value: 'ASBESTOS', label: 'Asbestos Report', description: 'Asbestos survey report' },
   { value: 'HAZMAT', label: 'Hazmat Report', description: 'Hazardous materials report' },
   { value: 'GEOTECHNICAL', label: 'Geotechnical', description: 'Geotech/boring logs' },
+  { value: 'HYDRAULIC', label: 'Hydraulic Report', description: 'Hydrologic/hydraulic analysis (H&H)' },
   { value: 'TRAFFIC_STUDY', label: 'Traffic Study', description: 'Traffic analysis' },
+  { value: 'UTILITY_PLANS', label: 'Utility Plans', description: 'Utility relocation and coordination plans' },
+  { value: 'ROW_PLANS', label: 'Right-of-Way Plans', description: 'R/W plans, easements, property limits' },
+  { value: 'PERMITS', label: 'Permits & Approvals', description: 'Environmental permits, 404, NPDES, etc.' },
+  { value: 'PREBID_MINUTES', label: 'Pre-Bid Minutes', description: 'Pre-bid meeting minutes and Q&A' },
   { value: 'ADDENDUM', label: 'Addendum', description: 'Bid addendum' },
   { value: 'OTHER', label: 'Other', description: 'Other supporting documents' },
 ];
@@ -39,16 +51,22 @@ const DOCUMENT_TYPES: { value: DocumentType; label: string; description: string 
 const ACCEPTED_TYPES: Record<DocumentType, string> = {
   PROPOSAL: '.pdf',
   BIDX: '.xml,.ebsx',
-  PLANS: '.pdf,.tif,.tiff',
-  EXISTING_PLANS: '.pdf,.tif,.tiff',
+  ITEMIZED_BID_XLSX: '.xls,.xlsx',
+  PLANS: '.pdf,.tif,.tiff,.dwg',
+  EXISTING_PLANS: '.pdf,.tif,.tiff,.dwg',
   SPECIAL_PROVISIONS: '.pdf',
   ENVIRONMENTAL: '.pdf',
   ASBESTOS: '.pdf',
   HAZMAT: '.pdf',
   GEOTECHNICAL: '.pdf',
+  HYDRAULIC: '.pdf',
   TRAFFIC_STUDY: '.pdf',
+  UTILITY_PLANS: '.pdf',
+  ROW_PLANS: '.pdf',
+  PERMITS: '.pdf',
+  PREBID_MINUTES: '.pdf',
   ADDENDUM: '.pdf',
-  OTHER: '.pdf,.xml,.xls,.xlsx,.png,.jpg,.jpeg,.tif,.tiff',
+  OTHER: '.pdf,.xml,.xls,.xlsx,.png,.jpg,.jpeg,.tif,.tiff,.dwg',
 };
 
 interface UploadingFile {

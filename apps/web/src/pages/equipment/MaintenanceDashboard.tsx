@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import {
   Wrench,
   Calendar,
@@ -124,9 +124,19 @@ interface WorkOrder {
 }
 
 export function MaintenanceDashboard() {
+  const [searchParams] = useSearchParams();
+
+  // Read URL params for initial state
+  const initialTab = searchParams.get('tab') as 'overview' | 'scheduled' | 'history' | 'work_orders' | null;
+  const initialEquipment = searchParams.get('equipment') || '';
+
   const [loading, setLoading] = useState(true);
   const [dateRange, setDateRange] = useState<'7d' | '30d' | '90d' | 'ytd'>('30d');
-  const [activeTab, setActiveTab] = useState<'overview' | 'scheduled' | 'history' | 'work_orders'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'scheduled' | 'history' | 'work_orders'>(
+    initialTab && ['overview', 'scheduled', 'history', 'work_orders'].includes(initialTab)
+      ? initialTab
+      : 'overview'
+  );
   const [kpis, setKpis] = useState<MaintenanceKPI[]>([]);
   const [scheduledMaintenance, setScheduledMaintenance] = useState<ScheduledMaintenance[]>([]);
   const [maintenanceHistory, setMaintenanceHistory] = useState<MaintenanceHistory[]>([]);
@@ -134,7 +144,7 @@ export function MaintenanceDashboard() {
   const [costByCategory, setCostByCategory] = useState<MaintenanceCostByCategory[]>([]);
   const [technicians, setTechnicians] = useState<TechnicianWorkload[]>([]);
   const [workOrders, setWorkOrders] = useState<WorkOrder[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(initialEquipment);
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [priorityFilter, setPriorityFilter] = useState<string>('all');
 

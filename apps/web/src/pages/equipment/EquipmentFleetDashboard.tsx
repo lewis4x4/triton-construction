@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Truck,
   Wrench,
@@ -69,6 +70,7 @@ interface MaintenanceAlert {
 }
 
 export function EquipmentFleetDashboard() {
+  const navigate = useNavigate();
   const [equipment, setEquipment] = useState<EquipmentItem[]>([]);
   const [stats, setStats] = useState<FleetStats | null>(null);
   const [alerts, setAlerts] = useState<MaintenanceAlert[]>([]);
@@ -529,13 +531,14 @@ export function EquipmentFleetDashboard() {
         )}
       </div>
 
-      {/* Equipment Detail Panel */}
+      {/* Equipment Detail Panel with Overlay */}
       {selectedEquipment && (
-        <div className="equipment-detail-panel">
-          <div className="detail-header">
-            <h3>{selectedEquipment.equipment_number}</h3>
-            <button onClick={() => setSelectedEquipment(null)}>×</button>
-          </div>
+        <div className="equipment-detail-overlay" onClick={() => setSelectedEquipment(null)}>
+          <div className="equipment-detail-panel" onClick={(e) => e.stopPropagation()}>
+            <div className="detail-header">
+              <h3>{selectedEquipment.equipment_number}</h3>
+              <button onClick={() => setSelectedEquipment(null)}>×</button>
+            </div>
           <div className="detail-content">
             <div className="detail-row">
               <span className="label">Description</span>
@@ -605,10 +608,21 @@ export function EquipmentFleetDashboard() {
             )}
           </div>
           <div className="detail-actions">
-            <button className="btn btn-secondary">View History</button>
-            <button className="btn btn-primary">Schedule Maintenance</button>
+            <button
+              className="btn btn-secondary"
+              onClick={() => navigate(`/equipment/maintenance?tab=history&equipment=${encodeURIComponent(selectedEquipment.equipment_number)}`)}
+            >
+              View History
+            </button>
+            <button
+              className="btn btn-primary"
+              onClick={() => navigate(`/equipment/maintenance?tab=scheduled&equipment=${encodeURIComponent(selectedEquipment.equipment_number)}`)}
+            >
+              Schedule Maintenance
+            </button>
           </div>
         </div>
+      </div>
       )}
     </div>
   );

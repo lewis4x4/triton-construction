@@ -1618,10 +1618,11 @@ export function EnhancedMaterialsDashboard() {
         )}
       </main>
 
-      {/* Detail Panel */}
+      {/* Detail Panel with Overlay */}
       {showDetailPanel && (
-        <div className={`detail-panel ${showDetailPanel ? 'open' : ''}`}>
-          <div className="detail-panel-header">
+        <div className="detail-panel-overlay" onClick={() => setShowDetailPanel(false)}>
+          <div className="detail-panel open" onClick={(e) => e.stopPropagation()}>
+            <div className="detail-panel-header">
             <h3>
               {detailType === 'ticket' && selectedTicket?.ticket_number}
               {detailType === 'po' && selectedPO?.po_number}
@@ -1855,12 +1856,8 @@ export function EnhancedMaterialsDashboard() {
               </>
             )}
           </div>
+          </div>
         </div>
-      )}
-
-      {/* Panel Overlay */}
-      {showDetailPanel && (
-        <div className="detail-panel-overlay" onClick={() => setShowDetailPanel(false)} />
       )}
     </div>
   );

@@ -1664,10 +1664,11 @@ export function EnhancedSubcontractorDashboard() {
         )}
       </main>
 
-      {/* Detail Panel */}
+      {/* Detail Panel with Overlay */}
       {showDetailPanel && (
-        <div className={`detail-panel ${showDetailPanel ? 'open' : ''}`}>
-          <div className="detail-panel-header">
+        <div className="detail-panel-overlay" onClick={() => setShowDetailPanel(false)}>
+          <div className="detail-panel open" onClick={(e) => e.stopPropagation()}>
+            <div className="detail-panel-header">
             <h3>
               {detailType === 'subcontractor' && selectedSubcontractor?.company_name}
               {detailType === 'agreement' && selectedAgreement?.agreement_number}
@@ -1917,12 +1918,8 @@ export function EnhancedSubcontractorDashboard() {
               </>
             )}
           </div>
+          </div>
         </div>
-      )}
-
-      {/* Panel Overlay */}
-      {showDetailPanel && (
-        <div className="detail-panel-overlay" onClick={() => setShowDetailPanel(false)} />
       )}
     </div>
   );

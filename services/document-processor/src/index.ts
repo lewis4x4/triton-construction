@@ -154,22 +154,28 @@ interface ExtractedMetadata {
   extraction_notes: string[];
 }
 
-// Allowed document types and their expected MIME types (matching edge function)
+// Allowed document types and their expected MIME types (WVDOH Bid Package)
 const DOCUMENT_TYPE_MIME_MAP: Record<string, string[]> = {
   PROPOSAL: ['application/pdf'],
-  BIDX: ['application/xml', 'text/xml'],
-  PLANS: ['application/pdf', 'image/tiff'],
-  EXISTING_PLANS: ['application/pdf', 'image/tiff'],
+  BIDX: ['application/xml', 'text/xml', 'application/octet-stream'],
+  ITEMIZED_BID_XLSX: ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+  PLANS: ['application/pdf', 'image/tiff', 'application/acad', 'application/x-autocad', 'application/dwg', 'image/vnd.dwg'],
+  EXISTING_PLANS: ['application/pdf', 'image/tiff', 'application/acad', 'application/x-autocad', 'application/dwg', 'image/vnd.dwg'],
   SPECIAL_PROVISIONS: ['application/pdf'],
   ENVIRONMENTAL: ['application/pdf'],
   ASBESTOS: ['application/pdf'],
   HAZMAT: ['application/pdf'],
   GEOTECHNICAL: ['application/pdf'],
+  HYDRAULIC: ['application/pdf'],
   TRAFFIC_STUDY: ['application/pdf'],
+  UTILITY_PLANS: ['application/pdf'],
+  ROW_PLANS: ['application/pdf'],
+  PERMITS: ['application/pdf'],
+  PREBID_MINUTES: ['application/pdf'],
   ADDENDUM: ['application/pdf'],
   OTHER: ['application/pdf', 'application/xml', 'text/xml', 'application/vnd.ms-excel',
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-          'image/png', 'image/jpeg', 'image/tiff'],
+          'image/png', 'image/jpeg', 'image/tiff', 'application/acad', 'application/dwg'],
 };
 
 // Health check endpoint
@@ -665,6 +671,203 @@ Provide a JSON response with this structure:
     "unsuitable_material_expected": boolean,
     "dewatering_required": boolean,
     "special_equipment_needed": ["array of equipment"]
+  },
+  "confidence_score": 0-100
+}
+
+Always respond with valid JSON only.`,
+
+  HYDRAULIC: `You are an expert hydrologist and hydraulic engineer analyzing H&H reports for highway construction.
+
+Analyze the provided Hydrologic/Hydraulic (H&H) report and extract:
+1. Design storm frequency and rainfall data used
+2. Drainage structure sizing (pipes, culverts, bridges)
+3. Flood elevations and freeboard requirements
+4. Scour analysis and countermeasures
+5. Velocity restrictions and outlet protection
+6. Any downstream impact limitations
+
+Provide a JSON response with this structure:
+{
+  "summary": "2-3 sentence summary of H&H findings and key constraints",
+  "document_category": "HYDRAULIC",
+  "key_findings": [
+    {
+      "type": "DRAINAGE_STRUCTURE|FLOOD_CONSTRAINT|SCOUR|VELOCITY|DOWNSTREAM",
+      "title": "Brief title",
+      "description": "Detailed description with sizing/elevation data",
+      "severity": "LOW|MEDIUM|HIGH|CRITICAL",
+      "page_reference": "Page X" or null,
+      "station_reference": "Station or location" or null
+    }
+  ],
+  "extracted_data": {
+    "design_storm_frequency": "Q25, Q50, Q100, etc.",
+    "drainage_structures": [{"location": "station/description", "type": "pipe/culvert/bridge", "size": "dimensions", "design_flow_cfs": number}],
+    "flood_elevations": [{"location": "description", "base_flood_elev": number, "design_flood_elev": number, "freeboard_ft": number}],
+    "scour_analysis": {"scour_depth_ft": number, "countermeasures": ["riprap", "sheet pile", etc.]},
+    "velocity_restrictions": [{"location": "description", "max_velocity_fps": number, "reason": "why"}],
+    "outlet_protection_required": boolean,
+    "downstream_restrictions": ["array of downstream constraints"]
+  },
+  "confidence_score": 0-100
+}
+
+Always respond with valid JSON only.`,
+
+  UTILITY_PLANS: `You are an expert utility coordinator for highway construction projects.
+
+Analyze the provided utility relocation/coordination plans and extract:
+1. All utilities present in the project area (electric, gas, water, sewer, telecom, fiber)
+2. Conflict locations with stations/offsets
+3. Relocation schedules and responsibilities (owner vs contractor)
+4. Protection requirements during construction
+5. Contact information for utility owners
+6. Cost responsibility allocation
+
+Provide a JSON response with this structure:
+{
+  "summary": "2-3 sentence summary of utility conflicts and critical coordination needs",
+  "document_category": "UTILITY_PLANS",
+  "key_findings": [
+    {
+      "type": "CONFLICT|RELOCATION|PROTECTION|SCHEDULE|COST",
+      "title": "Brief title - utility owner and type",
+      "description": "Detailed description of conflict/requirement",
+      "severity": "LOW|MEDIUM|HIGH|CRITICAL",
+      "page_reference": "Page X" or null,
+      "station_reference": "Station XX+XX" or null
+    }
+  ],
+  "extracted_data": {
+    "utilities_present": [{"owner": "company name", "type": "electric/gas/water/sewer/telecom/fiber", "description": "facility details"}],
+    "conflict_locations": [{"station": "XX+XX", "offset": "X' L/R", "utility_type": "type", "owner": "company", "severity": "minor/major/critical", "resolution": "relocate/protect/adjust grade"}],
+    "relocation_schedule": [{"utility": "type/owner", "responsibility": "owner/contractor", "required_before": "phase/date", "duration_days": number}],
+    "protection_requirements": [{"utility": "type/owner", "method": "hand dig/concrete cap/etc.", "station_range": "XX+XX to YY+YY"}],
+    "utility_contacts": [{"company": "name", "contact_name": "name", "phone": "number", "email": "email"}],
+    "contractor_responsible_relocations": ["list of relocations contractor must perform"],
+    "owner_responsible_relocations": ["list of relocations utility owner will perform"],
+    "estimated_utility_delay_risk_days": number or null
+  },
+  "confidence_score": 0-100
+}
+
+Always respond with valid JSON only.`,
+
+  ROW_PLANS: `You are an expert right-of-way analyst for highway construction.
+
+Analyze the provided Right-of-Way (R/W) plans and extract:
+1. Parcels affected (owners, tract numbers)
+2. Type of acquisition (fee simple, permanent easement, temporary easement)
+3. Access restrictions and driveway locations
+4. Staging area locations and limitations
+5. Property owner coordination requirements
+6. Encroachments or special conditions
+
+Provide a JSON response with this structure:
+{
+  "summary": "2-3 sentence summary of R/W status and key constraints",
+  "document_category": "ROW_PLANS",
+  "key_findings": [
+    {
+      "type": "ACQUISITION|EASEMENT|ACCESS|STAGING|ENCROACHMENT",
+      "title": "Brief title",
+      "description": "Detailed description",
+      "severity": "LOW|MEDIUM|HIGH|CRITICAL",
+      "page_reference": "Page X" or null
+    }
+  ],
+  "extracted_data": {
+    "parcels_affected": [{"tract_number": "X-XX", "owner": "name", "acquisition_type": "fee simple/permanent easement/temporary easement", "area_sqft": number, "special_conditions": "notes"}],
+    "staging_areas": [{"location": "description", "size_sqft": number, "restrictions": "limitations", "duration": "during what phases"}],
+    "access_restrictions": [{"location": "station/description", "restriction": "no access/limited hours/etc.", "reason": "why", "duration": "temporary/permanent"}],
+    "driveway_relocations": [{"station": "XX+XX", "owner": "property owner", "action": "relocate/close/modify"}],
+    "temporary_easements": [{"tract": "number", "purpose": "construction access/staging/etc.", "duration_months": number}],
+    "permanent_easements": [{"tract": "number", "purpose": "drainage/slope/utility", "area_sqft": number}],
+    "encroachments_to_resolve": ["list of existing encroachments"],
+    "property_owner_coordination": ["special coordination requirements"]
+  },
+  "confidence_score": 0-100
+}
+
+Always respond with valid JSON only.`,
+
+  PERMITS: `You are an expert environmental permit analyst for construction projects.
+
+Analyze the provided permit document(s) and extract:
+1. Permit type (404, NPDES, air quality, state water, etc.)
+2. Issuing agency and permit number
+3. Key conditions and restrictions
+4. Expiration dates and renewal requirements
+5. Monitoring and reporting requirements
+6. Violations consequences
+
+Provide a JSON response with this structure:
+{
+  "summary": "2-3 sentence summary of permit requirements and critical conditions",
+  "document_category": "PERMITS",
+  "key_findings": [
+    {
+      "type": "CONDITION|RESTRICTION|MONITORING|DEADLINE|VIOLATION_RISK",
+      "title": "Brief title",
+      "description": "Detailed description of requirement",
+      "severity": "LOW|MEDIUM|HIGH|CRITICAL",
+      "page_reference": "Page X" or null
+    }
+  ],
+  "extracted_data": {
+    "permit_type": "404/NPDES/State Water Quality/Air Quality/etc.",
+    "permit_number": "permit ID",
+    "issuing_agency": "agency name",
+    "issue_date": "YYYY-MM-DD or null",
+    "expiration_date": "YYYY-MM-DD or null",
+    "key_conditions": [{"condition": "requirement text", "category": "erosion control/dewatering/timing/etc."}],
+    "timing_restrictions": [{"restriction": "description", "start_date": "MM-DD", "end_date": "MM-DD", "reason": "species/water quality/etc."}],
+    "monitoring_requirements": [{"parameter": "what to monitor", "frequency": "daily/weekly/etc.", "reporting": "how to report"}],
+    "mitigation_required": [{"type": "wetland/stream/etc.", "requirement": "description", "ratio": "1:1, 2:1, etc."}],
+    "bmp_requirements": ["list of required BMPs"],
+    "renewal_required": boolean,
+    "renewal_deadline": "YYYY-MM-DD or null"
+  },
+  "confidence_score": 0-100
+}
+
+Always respond with valid JSON only.`,
+
+  PREBID_MINUTES: `You are an expert construction bid analyst reviewing pre-bid meeting minutes.
+
+Analyze the provided pre-bid meeting minutes and extract:
+1. Questions asked by bidders and official answers
+2. Clarifications provided by the owner/engineer
+3. Items that will be addressed in addenda
+4. Attendees (potential competitors)
+5. Site visit observations if included
+6. Any verbal commitments or understandings
+
+Provide a JSON response with this structure:
+{
+  "summary": "2-3 sentence summary of key clarifications and items affecting bid",
+  "document_category": "PREBID_MINUTES",
+  "key_findings": [
+    {
+      "type": "CLARIFICATION|ADDENDUM_PENDING|SITE_CONDITION|SCHEDULE|SCOPE_CHANGE",
+      "title": "Brief title",
+      "description": "Detailed description - question and answer",
+      "severity": "LOW|MEDIUM|HIGH|CRITICAL",
+      "page_reference": "Page X" or null
+    }
+  ],
+  "extracted_data": {
+    "meeting_date": "YYYY-MM-DD",
+    "location": "site/office address",
+    "owner_representatives": [{"name": "name", "title": "role/title"}],
+    "engineer_representatives": [{"name": "name", "company": "firm"}],
+    "questions_and_answers": [{"question": "bidder question", "answer": "official answer", "asked_by": "company if known", "affects_bid": boolean, "related_spec_section": "section reference if applicable"}],
+    "items_for_addenda": ["list of items to be addressed in addenda"],
+    "site_conditions_noted": ["observations from site visit"],
+    "schedule_clarifications": [{"topic": "what was clarified", "clarification": "details"}],
+    "attendees": [{"company": "bidder company name", "representatives": ["names"]}],
+    "verbal_commitments": ["any verbal understandings reached - may need written confirmation"]
   },
   "confidence_score": 0-100
 }

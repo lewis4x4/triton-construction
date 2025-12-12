@@ -11,6 +11,7 @@ import { WorkPackagesTab } from '../../components/bids/WorkPackagesTab';
 import { TeamTab } from '../../components/bids/TeamTab';
 import { DeadlineAlertBanner } from '../../components/bids/DeadlineAlertBanner';
 import { SubmissionChecklistModal } from '../../components/bids/SubmissionChecklistModal';
+import { DeleteProjectModal } from '../../components/bids/DeleteProjectModal';
 import { BidTrafficMap } from '../../components/bids/BidTrafficMap';
 import './BidDetail.css';
 
@@ -68,11 +69,11 @@ interface WorkflowStage {
 
 const TABS: { id: TabId; label: string; icon: string }[] = [
   { id: 'overview', label: 'Overview', icon: '📊' },
-  { id: 'executive-snapshot', label: 'AI Summary', icon: '🤖' },
   { id: 'documents', label: 'Documents', icon: '📄' },
   { id: 'line-items', label: 'Line Items', icon: '📋' },
   { id: 'risks', label: 'Risks', icon: '⚠️' },
   { id: 'questions', label: 'Questions', icon: '❓' },
+  { id: 'executive-snapshot', label: 'AI Summary', icon: '🤖' },
   { id: 'work-packages', label: 'Work Packages', icon: '📦' },
   { id: 'team', label: 'Team', icon: '👥' },
 ];
@@ -197,6 +198,7 @@ export function BidDetail() {
     incompleteItems: number;
   }>({ totalItems: 0, completeItems: 0, incompleteItems: 0 });
   const [showSubmissionModal, setShowSubmissionModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const fetchProject = useCallback(async () => {
     if (!id) return;
@@ -361,6 +363,13 @@ export function BidDetail() {
                 Submit Bid
               </button>
             )}
+            <button
+              className="btn btn-icon btn-ghost btn-danger-ghost"
+              onClick={() => setShowDeleteModal(true)}
+              title="Delete Project"
+            >
+              🗑️
+            </button>
           </div>
         </div>
 
@@ -430,6 +439,16 @@ export function BidDetail() {
             fetchProject();
             // Could also update project status here
           }}
+        />
+      )}
+
+      {/* Delete Project Confirmation Modal */}
+      {showDeleteModal && (
+        <DeleteProjectModal
+          projectId={project.id}
+          projectName={project.project_name}
+          projectNumber={project.state_project_number}
+          onClose={() => setShowDeleteModal(false)}
         />
       )}
     </>

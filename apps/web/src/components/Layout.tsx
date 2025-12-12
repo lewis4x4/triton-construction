@@ -91,7 +91,7 @@ const navGroups: NavGroup[] = [
     label: 'Fleet Management',
     items: [
       { path: '/equipment', label: 'Fleet Analytics', icon: <Gauge size={20} strokeWidth={1.5} /> },
-      { path: '/equipment/vehicles', label: 'Vehicle Details', icon: <Car size={20} strokeWidth={1.5} /> },
+      { path: '/equipment/vehicles', label: 'Vehicle Fleet', icon: <Car size={20} strokeWidth={1.5} /> },
       { path: '/equipment/maintenance', label: 'Maintenance', icon: <Wrench size={20} strokeWidth={1.5} /> },
       { path: '/equipment/fuel', label: 'Fuel Management', icon: <Fuel size={20} strokeWidth={1.5} /> },
       { path: '/equipment/inspections', label: 'Inspections', icon: <ClipboardList size={20} strokeWidth={1.5} /> },
