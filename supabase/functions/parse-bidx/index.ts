@@ -1018,8 +1018,46 @@ serve(async (req) => {
 
   } catch (error) {
     console.error('Parse-bidx error:', error);
+
+    // BUG FIX: Update document status to FAILED on general errors
+    // Previously, the document would stay stuck at PROCESSING if an unhandled error occurred
+    try {
+      // Need to recreate admin client since we might be in the outer catch
+      const supabaseAdmin = createClient(
+        Deno.env.get('SUPABASE_URL') ?? '',
+        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+        { auth: { autoRefreshToken: false, persistSession: false } }
+      );
+
+      // Try to get documentId from request body if available
+      let documentId: string | null = null;
+      try {
+        const body = await req.clone().json();
+        documentId = body?.documentId;
+      } catch {
+        // Body already consumed or invalid, can't get documentId
+      }
+
+      if (documentId) {
+        await supabaseAdmin
+          .from('bid_documents')
+          .update({
+            processing_status: 'FAILED',
+            processing_error: error instanceof Error ? error.message : 'Unknown error during Bidx parsing',
+            processing_completed_at: new Date().toISOString(),
+          })
+          .eq('id', documentId);
+      }
+    } catch (updateError) {
+      console.error('Failed to update document status after error:', updateError);
+    }
+
     return new Response(
-      JSON.stringify({ error: 'An unexpected error occurred during Bidx parsing' }),
+      JSON.stringify({
+        success: false,
+        error: 'An unexpected error occurred during Bidx parsing',
+        message: error instanceof Error ? error.message : 'Unknown error',
+      }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

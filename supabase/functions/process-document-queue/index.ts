@@ -252,6 +252,23 @@ serve(async (req) => {
           successCount++;
         } else {
           failedCount++;
+
+          // BUG FIX: Update document status to FAILED when processor returns success: false
+          // Previously, the document would stay stuck at PROCESSING
+          const newAttempts = (doc.processing_attempts || 0) + 1;
+          const newStatus = newAttempts >= CONFIG.MAX_PROCESSING_ATTEMPTS ? 'FAILED_PERMANENT' : 'FAILED';
+
+          await supabase
+            .from('bid_documents')
+            .update({
+              processing_status: newStatus,
+              processing_error: result.message || 'Processing failed',
+              processing_attempts: newAttempts,
+              processing_started_at: null,
+              processing_worker_id: null,
+              processing_completed_at: new Date().toISOString(),
+            })
+            .eq('id', doc.id);
         }
       } catch (error) {
         console.error(`Error processing document ${doc.id}:`, error);
