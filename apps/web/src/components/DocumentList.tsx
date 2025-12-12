@@ -656,6 +656,9 @@ export function DocumentList({ projectId }: DocumentListProps) {
                 status === 'AI_ANALYZING' || isAnalyzing ? 'processing' :
                 parseStatus === 'complete' ? 'pending' : 'pending';
 
+              // BIDX and XLSX bid files use dedicated parsers and don't need AI analysis
+              const supportsAIAnalysis = doc.document_type !== 'BIDX' && doc.document_type !== 'ITEMIZED_BID_XLSX';
+
               // Determine smart action button
               const getSmartAction = () => {
                 if (isFailed) {
@@ -710,7 +713,7 @@ export function DocumentList({ projectId }: DocumentListProps) {
                     </button>
                   );
                 }
-                if (!hasAISummary && parseStatus === 'complete') {
+                if (!hasAISummary && parseStatus === 'complete' && supportsAIAnalysis) {
                   return (
                     <button
                       className="btn btn-smart btn-analyze"
@@ -768,7 +771,7 @@ export function DocumentList({ projectId }: DocumentListProps) {
                       <OverflowMenu
                         onDownload={() => handleDownload(doc)}
                         onDelete={() => handleDelete(doc)}
-                        onReanalyze={hasAISummary ? () => triggerAIAnalysis(doc) : undefined}
+                        onReanalyze={hasAISummary && supportsAIAnalysis ? () => triggerAIAnalysis(doc) : undefined}
                         hasAIAnalysis={hasAISummary}
                       />
                     </td>
