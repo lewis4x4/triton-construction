@@ -31,6 +31,13 @@ interface LineItem {
   estimator_notes: string | null;
   created_at: string | null;
   pricing_status?: PricingStatus | null; // Will be populated once migration is applied
+  // Pricing metadata from historical pricing system
+  pricing_metadata?: {
+    source?: string;
+    confidence?: number;
+    historical_count?: number;
+    base_price_year?: number;
+  } | null;
 }
 
 // Compute pricing status from existing fields (fallback until DB migration is applied)
@@ -104,6 +111,8 @@ export function LineItemsTab({ projectId }: LineItemsTabProps) {
     setError(null);
 
     try {
+      // Note: pricing_metadata column will be added once migration 106 is applied
+      // For now, the UI will work without it and show pricing source when available
       let query = supabase
         .from('bid_line_items')
         .select('id, line_number, item_number, alt_item_number, description, short_description, quantity, unit, work_category, risk_level, estimation_method, base_unit_cost, ai_suggested_unit_price, final_unit_price, final_extended_price, pricing_reviewed, estimator_notes, created_at')

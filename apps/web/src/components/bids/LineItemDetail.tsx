@@ -19,6 +19,13 @@ interface LineItem {
   pricing_reviewed: boolean | null;
   estimator_notes: string | null;
   created_at: string | null;
+  // Pricing metadata from historical pricing system
+  pricing_metadata?: {
+    source?: string;
+    confidence?: number;
+    historical_count?: number;
+    base_price_year?: number;
+  } | null;
 }
 
 interface WorkCategory {
@@ -252,12 +259,56 @@ export function LineItemDetail({ item, onClose, onSave, categories }: LineItemDe
             </div>
 
             <div className="pricing-summary">
-              <div className="pricing-row">
-                <span className="pricing-label">AI Suggested Price:</span>
-                <span className="pricing-value">
-                  {formatCurrency(item.ai_suggested_unit_price)}
-                </span>
-              </div>
+              {/* AI Suggested Price with source info */}
+              {item.ai_suggested_unit_price != null && (
+                <div className="ai-suggestion-box">
+                  <div className="ai-suggestion-header">
+                    <span className="ai-icon">🤖</span>
+                    <span className="ai-title">AI Suggested Price</span>
+                    {item.pricing_metadata?.confidence && (
+                      <span className={`confidence-badge ${item.pricing_metadata.confidence >= 0.8 ? 'high' : item.pricing_metadata.confidence >= 0.5 ? 'medium' : 'low'}`}>
+                        {Math.round(item.pricing_metadata.confidence * 100)}% confidence
+                      </span>
+                    )}
+                  </div>
+                  <div className="ai-suggestion-price">
+                    {formatCurrency(item.ai_suggested_unit_price)}
+                    <span className="per-unit">/ {item.unit}</span>
+                  </div>
+                  {item.pricing_metadata?.source && (
+                    <div className="ai-suggestion-source">
+                      Source: {item.pricing_metadata.source}
+                      {item.pricing_metadata.historical_count && item.pricing_metadata.historical_count > 0 && (
+                        <span className="historical-count">
+                          ({item.pricing_metadata.historical_count} historical bid{item.pricing_metadata.historical_count > 1 ? 's' : ''})
+                        </span>
+                      )}
+                    </div>
+                  )}
+                  {!formData.final_unit_price && (
+                    <button
+                      type="button"
+                      className="btn btn-ai-accept"
+                      onClick={() => setFormData(prev => ({
+                        ...prev,
+                        final_unit_price: item.ai_suggested_unit_price?.toFixed(2) || '',
+                        estimation_method: 'HISTORICAL_ANALOG'
+                      }))}
+                    >
+                      Use AI Suggestion
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {/* No AI suggestion message */}
+              {item.ai_suggested_unit_price == null && (
+                <div className="no-ai-suggestion">
+                  <span className="warning-icon">⚠️</span>
+                  <span>No AI suggested price available for this item. Manual pricing required.</span>
+                </div>
+              )}
+
               <div className="pricing-row editable">
                 <label htmlFor="final_unit_price" className="pricing-label">
                   Final Unit Price ($):
@@ -298,6 +349,13 @@ export function LineItemDetail({ item, onClose, onSave, categories }: LineItemDe
 
           {/* Review Status */}
           <div className="detail-section">
+            {/* Warning when marking reviewed without pricing */}
+            {formData.pricing_reviewed && !formData.final_unit_price && (
+              <div className="review-warning">
+                <span className="warning-icon">⚠️</span>
+                <span>You are marking this item as reviewed without setting a final price. Are you sure this is intentional?</span>
+              </div>
+            )}
             <div className="review-toggle">
               <label className="checkbox-label">
                 <input
