@@ -123,16 +123,18 @@ serve(async (req) => {
     }> = [];
 
     if (body.documentIds && body.documentIds.length > 0) {
-      // Process specific documents
+      // Process specific documents - include PENDING and PROCESSING (stuck) documents
+      // This allows retrying stuck documents when specific IDs are passed
       const { data, error } = await supabase
         .from('bid_documents')
         .update({
           processing_status: 'PROCESSING',
           processing_started_at: new Date().toISOString(),
           processing_worker_id: workerId,
+          processing_error: null, // Clear any previous error
         })
         .in('id', body.documentIds)
-        .eq('processing_status', 'PENDING')
+        .in('processing_status', ['PENDING', 'PROCESSING', 'FAILED']) // Allow retrying stuck/failed docs
         .select('id, bid_project_id, file_path, file_name, document_type, mime_type, file_size_bytes, processing_attempts');
 
       if (error) {
@@ -210,6 +212,9 @@ serve(async (req) => {
         if (doc.document_type === 'BIDX') {
           // Route to parse-bidx - it handles file download internally
           result = await processBidxDocument(supabaseUrl, supabaseServiceKey, doc);
+        } else if (doc.document_type === 'ITEMIZED_BID_XLSX') {
+          // Route to parse-xlsx-bid for Excel itemized bid files
+          result = await processXlsxBidDocument(supabaseUrl, supabaseServiceKey, doc);
         } else if (doc.mime_type === 'application/pdf') {
           // Route large files to Railway, small files to edge function
           const isLargeFile = (doc.file_size_bytes || 0) > CONFIG.LARGE_FILE_THRESHOLD_BYTES;
@@ -348,6 +353,47 @@ async function processBidxDocument(
     documentType: doc.document_type,
     success: true,
     message: result.message || `Extracted ${result.data?.lineItemsCreated || 0} line items`,
+    extractedData: result.data,
+  };
+}
+
+// Process Excel itemized bid files via parse-xlsx-bid
+async function processXlsxBidDocument(
+  supabaseUrl: string,
+  serviceKey: string,
+  doc: { id: string; bid_project_id: string; file_name: string; document_type: string }
+): Promise<ProcessingResult> {
+  // Call parse-xlsx-bid function
+  const response = await fetch(`${supabaseUrl}/functions/v1/parse-xlsx-bid`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${serviceKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      documentId: doc.id,
+      bidProjectId: doc.bid_project_id,
+    }),
+  });
+
+  const result = await response.json();
+
+  if (!response.ok || !result.success) {
+    return {
+      documentId: doc.id,
+      fileName: doc.file_name,
+      documentType: doc.document_type,
+      success: false,
+      message: result.message || result.error || 'Excel bid parsing failed',
+    };
+  }
+
+  return {
+    documentId: doc.id,
+    fileName: doc.file_name,
+    documentType: doc.document_type,
+    success: true,
+    message: result.message || `Extracted ${result.data?.lineItemsCreated || 0} line items from Excel`,
     extractedData: result.data,
   };
 }
