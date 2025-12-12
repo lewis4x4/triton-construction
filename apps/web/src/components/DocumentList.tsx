@@ -279,6 +279,23 @@ export function DocumentList({ projectId }: DocumentListProps) {
     };
   }, [fetchDocuments, projectId]);
 
+  // Fallback polling: silently refresh when documents are processing
+  // This ensures UI updates even if real-time subscription isn't working
+  useEffect(() => {
+    const hasProcessingDocs = documents.some(
+      (doc) => doc.processing_status === 'PROCESSING' || doc.processing_status === 'AI_ANALYZING'
+    );
+
+    if (!hasProcessingDocs) return;
+
+    // Poll every 5 seconds when documents are processing
+    const pollInterval = setInterval(() => {
+      fetchDocuments(false); // Silent refresh (no loading spinner)
+    }, 5000);
+
+    return () => clearInterval(pollInterval);
+  }, [documents, fetchDocuments]);
+
   const formatFileSize = (bytes: number | null) => {
     if (!bytes) return '-';
     if (bytes < 1024) return `${bytes} B`;
@@ -460,11 +477,15 @@ export function DocumentList({ projectId }: DocumentListProps) {
   };
 
   const triggerAnalyzeAll = async () => {
+    // Exclude BIDX and XLSX bid files - they have dedicated parsers (parse-bidx, parse-xlsx-bid)
+    // and don't go through analyze-bid-document
     const docsToAnalyze = documents.filter(
       (doc) =>
-        doc.processing_status === 'COMPLETED' ||
+        (doc.processing_status === 'COMPLETED' ||
         doc.processing_status === 'PENDING' ||
-        doc.processing_status === 'FAILED'
+        doc.processing_status === 'FAILED') &&
+        doc.document_type !== 'BIDX' &&
+        doc.document_type !== 'ITEMIZED_BID_XLSX'
     );
 
     if (docsToAnalyze.length === 0) {
@@ -515,10 +536,13 @@ export function DocumentList({ projectId }: DocumentListProps) {
     }
   };
 
+  // Count only documents that need AI analysis (exclude BIDX/XLSX bid files which use dedicated parsers)
   const pendingAnalysisCount = documents.filter(
     (doc) =>
       doc.processing_status !== 'AI_ANALYZED' &&
-      doc.processing_status !== 'AI_ANALYZING'
+      doc.processing_status !== 'AI_ANALYZING' &&
+      doc.document_type !== 'BIDX' &&
+      doc.document_type !== 'ITEMIZED_BID_XLSX'
   ).length;
 
   const failedCount = documents.filter(

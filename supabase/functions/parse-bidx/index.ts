@@ -35,6 +35,49 @@ interface ParseResult {
   errors: string[];
 }
 
+// Convert DOM Element to object structure compatible with our parsing functions
+function domToObject(element: Element): Record<string, unknown> {
+  const obj: Record<string, unknown> = {};
+
+  // Add element name as wrapper
+  const children: Record<string, unknown> = {};
+
+  // Process child elements
+  for (const child of Array.from(element.children)) {
+    const childObj = domToObject(child);
+    const tagName = child.tagName;
+
+    // If we already have this tag, convert to array
+    if (tagName in children) {
+      if (Array.isArray(children[tagName])) {
+        (children[tagName] as unknown[]).push(childObj[tagName]);
+      } else {
+        children[tagName] = [children[tagName], childObj[tagName]];
+      }
+    } else {
+      children[tagName] = childObj[tagName];
+    }
+  }
+
+  // If element has no children, use text content
+  if (element.children.length === 0) {
+    const text = element.textContent?.trim() || '';
+    obj[element.tagName] = text || children;
+  } else {
+    obj[element.tagName] = children;
+  }
+
+  // Process attributes
+  for (const attr of Array.from(element.attributes)) {
+    if (!obj[element.tagName] || typeof obj[element.tagName] !== 'object') {
+      obj[element.tagName] = { '#text': obj[element.tagName] };
+    }
+    (obj[element.tagName] as Record<string, unknown>)[`@${attr.name}`] = attr.value;
+  }
+
+  return obj;
+}
+
 // Extract text content from XML node
 function getTextContent(node: unknown): string {
   if (node === null || node === undefined) return '';
@@ -99,6 +142,117 @@ function normalizeItemNumber(itemNumber: string): string {
   return itemNumber;
 }
 
+// Parse EBSX file using regex (simple and reliable for EBSX format)
+function parseEbsxWithRegex(xmlContent: string): ParseResult {
+  const result: ParseResult = {
+    success: false,
+    lineItems: [],
+    totalItems: 0,
+    errors: [],
+  };
+
+  try {
+    // Check if this is an EBSX file
+    if (!xmlContent.includes('<EBSXContainer') && !xmlContent.includes('<EBSX')) {
+      result.errors.push('Not an EBSX file');
+      return result;
+    }
+
+    console.log('Using regex parser for EBSX file');
+
+    // Extract project info
+    const lettingTimeMatch = xmlContent.match(/<LettingTime>([^<]+)<\/LettingTime>/);
+    const contractIdMatch = xmlContent.match(/<ContractID>([^<]+)<\/ContractID>/);
+    const descMatch = xmlContent.match(/<ProjectDescription>([^<]+)<\/ProjectDescription>/);
+
+    result.projectInfo = {
+      projectName: descMatch ? descMatch[1].trim() : undefined,
+      contractNumber: contractIdMatch ? contractIdMatch[1].trim() : undefined,
+      lettingDate: lettingTimeMatch ? lettingTimeMatch[1].trim() : undefined,
+    };
+
+    // Extract all Item elements using regex
+    const itemRegex = /<Item[^>]*>([\s\S]*?)<\/Item>/g;
+    let match;
+    let lineNumber = 0;
+
+    // Track item number occurrences to handle duplicates
+    const itemNumberCounts = new Map<string, number>();
+
+    while ((match = itemRegex.exec(xmlContent)) !== null) {
+      lineNumber++;
+      const itemXml = match[1];
+
+      // Extract fields from Item
+      const lineNumMatch = itemXml.match(/<LineNumber>([^<]+)<\/LineNumber>/);
+      const itemNumMatch = itemXml.match(/<ItemNumber>([^<]+)<\/ItemNumber>/);
+      const qtyMatch = itemXml.match(/<Quantity>([^<]+)<\/Quantity>/);
+      const unitMatch = itemXml.match(/<Unit>([^<]+)<\/Unit>/);
+      const descLongMatch = itemXml.match(/<DescriptionIDESCRL>([^<]+)<\/DescriptionIDESCRL>/);
+      const descShortMatch = itemXml.match(/<DescriptionIDESCR>([^<]+)<\/DescriptionIDESCR>/);
+      const priceMatch = itemXml.match(/<UnitPrice[^>]*>([^<]*)<\/UnitPrice>/);
+      const itemTypeMatch = itemXml.match(/<ItemType>([^<]+)<\/ItemType>/);
+
+      const rawItemNumber = itemNumMatch ? itemNumMatch[1].trim() : '';
+      let itemNumber = normalizeItemNumber(rawItemNumber);
+      const description = descLongMatch ? descLongMatch[1].trim() : (descShortMatch ? descShortMatch[1].trim() : 'No description');
+      const shortDescription = descShortMatch ? descShortMatch[1].trim() : undefined;
+
+      // Handle duplicate item numbers by appending line number suffix
+      // (Common in WVDOH bids where same item appears in multiple sections)
+      if (itemNumber) {
+        const count = (itemNumberCounts.get(itemNumber) || 0) + 1;
+        itemNumberCounts.set(itemNumber, count);
+        if (count > 1) {
+          // Append line number to make unique: 201.001 -> 201.001-L5
+          const parsedLineNum = lineNumMatch ? parseInt(lineNumMatch[1], 10) || lineNumber : lineNumber;
+          itemNumber = `${itemNumber}-L${parsedLineNum}`;
+          console.log(`Duplicate item ${rawItemNumber}, renaming to ${itemNumber}`);
+        }
+      }
+
+      let quantity = 0;
+      if (qtyMatch) {
+        const parsed = parseFloat(qtyMatch[1].replace(/[,\s]/g, ''));
+        if (!isNaN(parsed)) quantity = parsed;
+      }
+
+      let engineerEstimate: number | undefined;
+      if (priceMatch && priceMatch[1]) {
+        const parsed = parseFloat(priceMatch[1].replace(/[$,\s]/g, ''));
+        if (!isNaN(parsed)) engineerEstimate = parsed;
+      }
+
+      if (itemNumber || description) {
+        result.lineItems.push({
+          lineNumber: lineNumMatch ? parseInt(lineNumMatch[1], 10) || lineNumber : lineNumber,
+          itemNumber: itemNumber || `ITEM-${lineNumber}`,
+          altItemNumber: (rawItemNumber && rawItemNumber !== itemNumber) ? rawItemNumber : undefined,
+          description,
+          shortDescription,
+          quantity,
+          unit: unitMatch ? unitMatch[1].trim() : 'LS',
+          engineerEstimate,
+          category: itemTypeMatch ? itemTypeMatch[1].trim() : undefined,
+        });
+      }
+    }
+
+    result.totalItems = result.lineItems.length;
+    result.success = result.lineItems.length > 0;
+
+    if (result.lineItems.length === 0) {
+      result.errors.push('No line items found in EBSX file');
+    }
+
+    console.log(`Regex parser found ${result.lineItems.length} items`);
+  } catch (error) {
+    result.errors.push(`EBSX regex parsing error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
+
+  return result;
+}
+
 // Parse WVDOH Bidx XML format (supports both BidX and EBSX formats)
 function parseBidxXml(xmlContent: string): ParseResult {
   const result: ParseResult = {
@@ -108,8 +262,16 @@ function parseBidxXml(xmlContent: string): ParseResult {
     errors: [],
   };
 
+  // First, try regex parser for EBSX files (more reliable for this format)
+  if (xmlContent.includes('<EBSXContainer') || xmlContent.includes('<EBSX>')) {
+    console.log('Detected EBSX format, using regex parser');
+    return parseEbsxWithRegex(xmlContent);
+  }
+
   try {
-    const xml = parseXML(xmlContent);
+    // For non-EBSX files, use the xml library
+    let xml: Record<string, unknown>;
+    xml = parseXML(xmlContent);
 
     // Detect if this is an EBSX file by checking for EBSXContainer or EBSX root
     const isEBSX = !!(findNodes(xml, 'EBSXContainer').length || findNodes(xml, 'EBSX').length);
@@ -357,7 +519,27 @@ serve(async (req) => {
     // Check if this is a service role key call (from process-document-queue)
     const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
     const token = authHeader.replace('Bearer ', '');
-    const isServiceRoleCall = token === serviceRoleKey;
+
+    // Check for service role authentication in multiple ways:
+    // 1. Direct key match
+    // 2. JWT with service_role claim
+    let isServiceRoleCall = token === serviceRoleKey;
+
+    if (!isServiceRoleCall) {
+      try {
+        // Try to decode JWT and check for service_role
+        const parts = token.split('.');
+        if (parts.length === 3) {
+          const payload = JSON.parse(atob(parts[1]));
+          // Accept if role is service_role from our Supabase instance
+          if (payload.role === 'service_role' && payload.ref === 'gablgsruyuhvjurhtcxx') {
+            isServiceRoleCall = true;
+          }
+        }
+      } catch {
+        // Not a valid JWT, continue with user auth
+      }
+    }
 
     // For user calls, validate authentication
     if (!isServiceRoleCall) {
@@ -455,11 +637,103 @@ serve(async (req) => {
       );
     }
 
-    // Parse XML content
-    const xmlContent = await fileData.text();
+    // Parse XML content - handle GZIP compressed EBSX files
+    // Version: 2 - Added GZIP support for EBSX files
+    let xmlContent: string;
+
+    // Read file as array buffer to check for GZIP magic bytes
+    const fileBuffer = await fileData.arrayBuffer();
+    const bytes = new Uint8Array(fileBuffer);
+
+    console.log(`File size: ${bytes.length} bytes`);
+    console.log(`First 10 bytes: ${Array.from(bytes.slice(0, 10)).map(b => b.toString(16).padStart(2, '0')).join(' ')}`);
+
+    // Check for GZIP magic bytes (0x1f 0x8b)
+    const isGzip = bytes.length >= 2 && bytes[0] === 0x1f && bytes[1] === 0x8b;
+    console.log(`isGzip: ${isGzip} (byte0: ${bytes[0]?.toString(16)}, byte1: ${bytes[1]?.toString(16)})`);
+
+    if (isGzip) {
+      console.log('Detected GZIP compressed EBSX file, decompressing...');
+      try {
+        // Use DecompressionStream to decompress GZIP
+        const decompressedStream = new Blob([bytes]).stream().pipeThrough(
+          new DecompressionStream('gzip')
+        );
+        // Read as ArrayBuffer and decode with TextDecoder for better control
+        const decompressedArrayBuffer = await new Response(decompressedStream).arrayBuffer();
+        const decompressedBytes = new Uint8Array(decompressedArrayBuffer);
+        console.log(`Decompressed to ${decompressedBytes.length} bytes`);
+        console.log(`First 20 decompressed bytes: ${Array.from(decompressedBytes.slice(0, 20)).map(b => b.toString(16).padStart(2, '0')).join(' ')}`);
+
+        // Use TextDecoder to decode as UTF-8
+        xmlContent = new TextDecoder('utf-8').decode(decompressedBytes);
+        console.log(`Decoded to ${xmlContent.length} characters`);
+      } catch (decompressError) {
+        console.error('GZIP decompression failed:', decompressError);
+        await supabaseAdmin
+          .from('bid_documents')
+          .update({
+            processing_status: 'FAILED',
+            processing_error: `GZIP decompression failed: ${decompressError instanceof Error ? decompressError.message : 'Unknown error'}`,
+            processing_completed_at: new Date().toISOString(),
+          })
+          .eq('id', documentId);
+
+        return new Response(
+          JSON.stringify({ error: 'Failed to decompress EBSX file' }),
+          { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+    } else {
+      // Plain XML file
+      xmlContent = new TextDecoder().decode(bytes);
+    }
+
+    // Clean up XML content - remove BOM and trim whitespace
+    // UTF-8 BOM is \uFEFF (EF BB BF in bytes), UTF-16 BE BOM is \uFFFE
+    if (xmlContent.charCodeAt(0) === 0xFEFF || xmlContent.charCodeAt(0) === 0xFFFE) {
+      console.log('Stripping BOM from XML content');
+      xmlContent = xmlContent.slice(1);
+    }
+
+    // Also trim any leading/trailing whitespace that might confuse the parser
+    xmlContent = xmlContent.trim();
+
+    // Log the first few character codes for debugging
+    const firstCharCodes = Array.from(xmlContent.slice(0, 20)).map(c => c.charCodeAt(0).toString(16));
+    console.log(`First 20 char codes after cleanup: ${firstCharCodes.join(' ')}`);
+    console.log(`XML starts with: ${xmlContent.slice(0, 80)}`);
+
+    // Check for invalid characters (replacement char U+FFFD or high bytes) in the content
+    let invalidCharPositions: { pos: number; char: string; code: number }[] = [];
+    for (let i = 0; i < xmlContent.length && invalidCharPositions.length < 5; i++) {
+      const code = xmlContent.charCodeAt(i);
+      // Check for replacement character or other suspicious characters
+      if (code === 0xFFFD || (code >= 0x80 && code < 0xA0) || code > 0xFFFF) {
+        invalidCharPositions.push({ pos: i, char: xmlContent[i], code });
+      }
+    }
+    if (invalidCharPositions.length > 0) {
+      console.log(`Found ${invalidCharPositions.length} invalid/suspicious characters:`, JSON.stringify(invalidCharPositions));
+    }
+
+    // Normalize line endings (Windows CRLF to LF) which might confuse some parsers
+    xmlContent = xmlContent.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
     const parseResult = parseBidxXml(xmlContent);
 
     if (!parseResult.success) {
+      // Include debug info
+      const debugInfo = {
+        fileSize: bytes.length,
+        firstBytes: Array.from(bytes.slice(0, 10)).map(b => b.toString(16).padStart(2, '0')).join(' '),
+        isGzip,
+        xmlContentLength: xmlContent.length,
+        firstCharCodes: Array.from(xmlContent.slice(0, 20)).map(c => c.charCodeAt(0).toString(16)).join(' '),
+        xmlContentPreview: xmlContent.substring(0, 150),
+        invalidCharPositions: invalidCharPositions.slice(0, 5),
+      };
+
       await supabaseAdmin
         .from('bid_documents')
         .update({
@@ -474,18 +748,58 @@ serve(async (req) => {
           success: false,
           errors: parseResult.errors,
           message: 'Failed to parse Bidx file',
+          debug: debugInfo,
         }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    // If replaceExisting, delete existing line items from this document
-    if (replaceExisting) {
-      await supabaseAdmin
-        .from('bid_line_items')
-        .delete()
-        .eq('bid_project_id', bidProjectId)
-        .eq('source_document_id', documentId);
+    // Check if line items already exist for this project (idempotent behavior)
+    const { count: existingItemCount } = await supabaseAdmin
+      .from('bid_line_items')
+      .select('id', { count: 'exact', head: true })
+      .eq('bid_project_id', bidProjectId);
+
+    if (existingItemCount && existingItemCount > 0) {
+      if (replaceExisting) {
+        // Delete existing line items to replace them
+        console.log(`Replacing ${existingItemCount} existing line items`);
+        await supabaseAdmin
+          .from('bid_line_items')
+          .delete()
+          .eq('bid_project_id', bidProjectId);
+      } else {
+        // Line items already exist - mark as success (idempotent)
+        console.log(`${existingItemCount} line items already exist for project, marking as complete`);
+
+        await supabaseAdmin
+          .from('bid_documents')
+          .update({
+            processing_status: 'COMPLETED',
+            processing_completed_at: new Date().toISOString(),
+            processing_error: null,
+            ai_analysis_metadata: {
+              lineItemCount: existingItemCount,
+              parsedAt: new Date().toISOString(),
+              note: 'Line items already exist - skipped re-processing',
+            },
+          })
+          .eq('id', documentId);
+
+        return new Response(
+          JSON.stringify({
+            success: true,
+            message: `Line items already exist (${existingItemCount} items). Skipped re-processing.`,
+            data: {
+              documentId,
+              projectId: bidProjectId,
+              lineItemsExisting: existingItemCount,
+              skipped: true,
+            },
+          }),
+          { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
     }
 
     // Get current max line number for this project
@@ -545,7 +859,6 @@ serve(async (req) => {
         short_description: item.shortDescription || null,
         quantity: item.quantity,
         unit: item.unit,
-        source_document_id: documentId,
         // Store engineer estimate in estimator_notes for reference
         estimator_notes: item.engineerEstimate
           ? `Engineer Estimate: $${item.engineerEstimate.toFixed(2)}/unit`

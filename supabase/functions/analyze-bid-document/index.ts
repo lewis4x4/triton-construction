@@ -307,6 +307,369 @@ Provide a JSON response with this structure:
 
 Always respond with valid JSON only.`,
 
+  HYDRAULIC: `You are an expert hydrologist/hydraulic engineer analyzing H&H reports for highway construction projects.
+
+Analyze the provided hydrologic/hydraulic report and extract:
+1. Design storm frequencies and flow calculations
+2. Drainage structure sizing (pipes, culverts, bridges)
+3. Flood elevations and restrictions
+4. Scour analysis and protection requirements
+5. Detention/retention requirements
+6. Downstream drainage impacts
+7. Water quality/stormwater management requirements
+
+Provide a JSON response with this structure:
+{
+  "summary": "2-3 sentence summary of hydraulic conditions and requirements",
+  "document_category": "HYDRAULIC",
+  "key_findings": [
+    {
+      "type": "DESIGN_FLOW|STRUCTURE_SIZING|FLOOD|SCOUR|DETENTION|DOWNSTREAM|WATER_QUALITY",
+      "title": "Brief title",
+      "description": "Detailed description including calculations or requirements",
+      "severity": "LOW|MEDIUM|HIGH|CRITICAL",
+      "page_reference": "Page X" or null,
+      "related_items": ["pipe sizes, culvert numbers, etc."]
+    }
+  ],
+  "extracted_data": {
+    "design_storm_frequency": "Q25, Q50, Q100, etc.",
+    "drainage_area_acres": number or null,
+    "peak_flow_cfs": number or null,
+    "structures": [
+      {
+        "type": "PIPE|CULVERT|BRIDGE|BOX|INLET",
+        "location": "station or description",
+        "size": "dimensions",
+        "material": "RCP, CMP, etc.",
+        "length_feet": number,
+        "design_capacity_cfs": number or null
+      }
+    ],
+    "flood_elevation_constraints": [
+      {
+        "location": "description",
+        "base_flood_elevation": number,
+        "design_elevation": number,
+        "freeboard_required": number
+      }
+    ],
+    "scour_analysis": {
+      "scour_critical_structures": ["array of structures"],
+      "scour_countermeasures": ["riprap, sheet pile, etc."]
+    },
+    "detention_required": boolean,
+    "detention_volume_acre_feet": number or null,
+    "water_quality_bmp_required": boolean,
+    "downstream_restrictions": ["array of restrictions"],
+    "timing_restrictions": [
+      {
+        "restriction": "description",
+        "reason": "fish passage, flooding, etc.",
+        "dates": "when"
+      }
+    ]
+  },
+  "confidence_score": 0-100
+}
+
+Always respond with valid JSON only.`,
+
+  UTILITY_PLANS: `You are an expert utility coordinator analyzing utility relocation plans for highway construction projects.
+
+Analyze the provided utility relocation document and extract:
+1. All utilities present and their owners
+2. Relocation responsibilities (owner vs contractor)
+3. Relocation schedules and coordination requirements
+4. Conflict locations and potential impacts
+5. Cost responsibility allocation
+6. Protection requirements during construction
+7. Temporary service requirements
+
+Provide a JSON response with this structure:
+{
+  "summary": "2-3 sentence summary of utility conflicts and coordination requirements",
+  "document_category": "UTILITY_PLANS",
+  "key_findings": [
+    {
+      "type": "CONFLICT|RELOCATION|TIMING|PROTECTION|COST|COORDINATION",
+      "title": "Brief title",
+      "description": "Detailed description including location and impact",
+      "severity": "LOW|MEDIUM|HIGH|CRITICAL",
+      "page_reference": "Page X" or null,
+      "related_items": ["affected bid items if identifiable"]
+    }
+  ],
+  "extracted_data": {
+    "utilities_present": [
+      {
+        "utility_type": "ELECTRIC|GAS|WATER|SEWER|TELECOM|FIBER|CABLE",
+        "owner_name": "company name",
+        "owner_contact": "name and phone if available",
+        "relocation_required": boolean,
+        "relocation_responsibility": "OWNER|CONTRACTOR|SHARED",
+        "estimated_completion_date": "date or null",
+        "cost_responsibility": "OWNER|CONTRACTOR|PROJECT"
+      }
+    ],
+    "conflict_locations": [
+      {
+        "station": "station or offset",
+        "description": "nature of conflict",
+        "utility_type": "type",
+        "severity": "MINOR|MODERATE|MAJOR",
+        "resolution": "relocation, protection, etc."
+      }
+    ],
+    "relocation_schedule": [
+      {
+        "utility_type": "type",
+        "owner": "company",
+        "start_date": "date or null",
+        "end_date": "date or null",
+        "must_complete_before": "description of dependent work"
+      }
+    ],
+    "contractor_responsibilities": ["array of contractor obligations"],
+    "owner_responsibilities": ["array of utility owner obligations"],
+    "protection_requirements": [
+      {
+        "utility_type": "type",
+        "location": "where",
+        "protection_method": "hand dig, steel plates, etc.",
+        "clearance_required": "distance"
+      }
+    ],
+    "temporary_services_required": ["array of temp service needs"],
+    "utility_permits_required": ["array of required permits"],
+    "pre_construction_meetings_required": boolean,
+    "joint_use_agreements": ["any JUA requirements"],
+    "estimated_utility_delays_days": number or null
+  },
+  "confidence_score": 0-100
+}
+
+Always respond with valid JSON only.`,
+
+  ROW_PLANS: `You are an expert right-of-way analyst reviewing R/W plans for highway construction projects.
+
+Analyze the provided right-of-way document and extract:
+1. Property boundaries and parcels affected
+2. Easement types and limitations
+3. Temporary vs permanent R/W acquisitions
+4. Access restrictions and staging areas
+5. Property owner coordination requirements
+6. Special conditions or encumbrances
+
+Provide a JSON response with this structure:
+{
+  "summary": "2-3 sentence summary of R/W conditions and constraints",
+  "document_category": "ROW_PLANS",
+  "key_findings": [
+    {
+      "type": "EASEMENT|ACCESS|STAGING|PROPERTY|RESTRICTION|COORDINATION",
+      "title": "Brief title",
+      "description": "Detailed description",
+      "severity": "LOW|MEDIUM|HIGH|CRITICAL",
+      "page_reference": "Page X" or null
+    }
+  ],
+  "extracted_data": {
+    "parcels_affected": [
+      {
+        "parcel_id": "identifier",
+        "owner_name": "name if available",
+        "acquisition_type": "FEE_SIMPLE|PERMANENT_EASEMENT|TEMPORARY_EASEMENT",
+        "area_acres": number or null,
+        "special_conditions": ["array of conditions"]
+      }
+    ],
+    "easement_types": [
+      {
+        "type": "CONSTRUCTION|DRAINAGE|UTILITY|SLOPE|ACCESS",
+        "location": "description",
+        "duration": "PERMANENT|TEMPORARY",
+        "restrictions": ["what cannot be done"]
+      }
+    ],
+    "staging_areas": [
+      {
+        "location": "description",
+        "area_acres": number or null,
+        "access_route": "description",
+        "restoration_required": boolean
+      }
+    ],
+    "access_restrictions": ["array of access limitations"],
+    "property_owner_coordination": [
+      {
+        "owner": "name",
+        "issue": "access, crops, business, etc.",
+        "requirement": "notification, scheduling, etc."
+      }
+    ],
+    "existing_encumbrances": ["utilities, existing easements, etc."],
+    "r/w_acquisition_complete": boolean,
+    "outstanding_parcels": number or null,
+    "condemnation_proceedings": boolean
+  },
+  "confidence_score": 0-100
+}
+
+Always respond with valid JSON only.`,
+
+  PERMITS: `You are an expert regulatory compliance analyst reviewing permits and approvals for construction projects.
+
+Analyze the provided permit/approval document and extract:
+1. Permit type and issuing agency
+2. Permit conditions and restrictions
+3. Expiration dates and renewal requirements
+4. Compliance monitoring requirements
+5. Reporting obligations
+6. Financial assurance requirements
+
+Provide a JSON response with this structure:
+{
+  "summary": "2-3 sentence summary of permit requirements and conditions",
+  "document_category": "PERMITS",
+  "key_findings": [
+    {
+      "type": "CONDITION|RESTRICTION|DEADLINE|MONITORING|REPORTING|FINANCIAL",
+      "title": "Brief title",
+      "description": "Detailed description of requirement",
+      "severity": "LOW|MEDIUM|HIGH|CRITICAL",
+      "page_reference": "Page X" or null
+    }
+  ],
+  "extracted_data": {
+    "permit_type": "404|NPDES|AIR_QUALITY|EROSION_SEDIMENT|STORMWATER|ENCROACHMENT|OTHER",
+    "permit_number": "string",
+    "issuing_agency": "agency name",
+    "issue_date": "YYYY-MM-DD or null",
+    "expiration_date": "YYYY-MM-DD or null",
+    "project_reference": "project name/number in permit",
+    "authorized_activities": ["what the permit allows"],
+    "conditions": [
+      {
+        "condition_number": "number or id",
+        "description": "full condition text",
+        "compliance_method": "how to comply",
+        "timing": "when compliance required"
+      }
+    ],
+    "timing_restrictions": [
+      {
+        "restriction": "description",
+        "start_date": "MM-DD",
+        "end_date": "MM-DD",
+        "reason": "species, water quality, etc."
+      }
+    ],
+    "monitoring_requirements": [
+      {
+        "parameter": "what to monitor",
+        "frequency": "how often",
+        "method": "how to measure",
+        "reporting": "where to report"
+      }
+    ],
+    "reporting_requirements": [
+      {
+        "report_type": "type",
+        "frequency": "timing",
+        "due_date": "when",
+        "submit_to": "agency/contact"
+      }
+    ],
+    "financial_assurance": {
+      "required": boolean,
+      "type": "BOND|LETTER_OF_CREDIT|ESCROW",
+      "amount": number or null
+    },
+    "penalties_for_violation": "description or null",
+    "amendment_required_for": ["conditions requiring permit amendment"]
+  },
+  "confidence_score": 0-100
+}
+
+Always respond with valid JSON only.`,
+
+  PREBID_MINUTES: `You are an expert construction bid analyst reviewing pre-bid meeting minutes.
+
+Analyze the provided pre-bid meeting minutes and extract:
+1. Questions asked by bidders and official answers
+2. Clarifications on scope, schedule, or requirements
+3. Site visit observations if included
+4. Attendee information (for competitive intelligence)
+5. Items to be addressed in future addenda
+6. Owner expectations and preferences expressed
+
+Provide a JSON response with this structure:
+{
+  "summary": "2-3 sentence summary of key meeting outcomes",
+  "document_category": "PREBID_MINUTES",
+  "key_findings": [
+    {
+      "type": "CLARIFICATION|SCOPE_CHANGE|SCHEDULE|SITE_CONDITION|SPECIFICATION|WARNING",
+      "title": "Brief title",
+      "description": "Detailed description",
+      "severity": "LOW|MEDIUM|HIGH|CRITICAL",
+      "related_items": ["affected bid items if identifiable"]
+    }
+  ],
+  "extracted_data": {
+    "meeting_date": "YYYY-MM-DD",
+    "meeting_location": "description",
+    "owner_representatives": ["names and titles"],
+    "attendees": [
+      {
+        "company_name": "name",
+        "representative_name": "name if available",
+        "contact_info": "phone/email if available"
+      }
+    ],
+    "questions_and_answers": [
+      {
+        "question_number": number,
+        "asked_by": "company or anonymous",
+        "question": "full question text",
+        "answer": "official answer",
+        "affects_bid_items": ["item numbers if applicable"],
+        "addendum_required": boolean
+      }
+    ],
+    "site_visit_observations": [
+      {
+        "location": "where",
+        "observation": "what was noted",
+        "impact": "how it affects construction"
+      }
+    ],
+    "clarifications": [
+      {
+        "topic": "subject",
+        "clarification": "official clarification",
+        "source": "who provided"
+      }
+    ],
+    "pending_addendum_items": ["items to be addressed in addenda"],
+    "owner_preferences": ["expressed preferences for means/methods"],
+    "schedule_discussions": {
+      "completion_emphasis": boolean,
+      "phasing_requirements": ["discussed phases"],
+      "milestone_dates": ["key dates discussed"]
+    },
+    "competitive_intelligence": {
+      "number_of_attendees": number,
+      "known_competitors": ["company names"],
+      "subcontractor_attendees": ["sub names if present"]
+    }
+  },
+  "confidence_score": 0-100
+}
+
+Always respond with valid JSON only.`,
+
   DEFAULT: `You are an expert construction document analyst for WVDOH bid packages.
 
 Analyze the provided document and extract all relevant information for bid estimation and project planning. Identify:
@@ -380,7 +743,27 @@ serve(async (req) => {
 
     // Check if this is a service-to-service call (service role key in auth header)
     const token = authHeader.replace('Bearer ', '');
-    const isServiceRoleCall = token === supabaseServiceKey;
+
+    // Check for service role authentication in multiple ways:
+    // 1. Direct key match
+    // 2. JWT with service_role claim
+    let isServiceRoleCall = token === supabaseServiceKey;
+
+    if (!isServiceRoleCall) {
+      try {
+        // Try to decode JWT and check for service_role
+        const parts = token.split('.');
+        if (parts.length === 3) {
+          const payload = JSON.parse(atob(parts[1]));
+          // Accept if role is service_role from our Supabase instance
+          if (payload.role === 'service_role' && payload.ref === 'gablgsruyuhvjurhtcxx') {
+            isServiceRoleCall = true;
+          }
+        }
+      } catch {
+        // Not a valid JWT, continue with user auth
+      }
+    }
 
     if (!isServiceRoleCall) {
       // User authentication flow
