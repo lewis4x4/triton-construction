@@ -813,41 +813,89 @@ serve(async (req) => {
 
     const startLineNumber = replaceExisting ? 1 : (maxLineData?.line_number || 0) + 1;
 
-    // Lookup historical pricing for exact item number matches
-    // This helps provide AI suggestions based on past bids
+    // Lookup historical pricing using the dedicated pricing system
+    // Priority: 1. historical_bid_pricing table (from past won/lost bids)
+    //           2. wvdoh_item_master table (base pricing schedule)
+    //           3. bid_line_items from other projects (fallback)
     const itemNumbers = parseResult.lineItems.map(item => item.itemNumber);
-    const { data: historicalPricing } = await supabaseAdmin
-      .from('bid_line_items')
-      .select('item_number, final_unit_price, bid_project_id')
-      .in('item_number', itemNumbers)
-      .not('final_unit_price', 'is', null)
-      .order('created_at', { ascending: false });
 
-    // Build a map of item_number -> most recent final_unit_price (exact match only)
-    const historicalPriceMap = new Map<string, number>();
-    if (historicalPricing) {
-      for (const record of historicalPricing) {
-        // Only use exact matches, skip if we already have a price for this item
-        if (record.item_number && record.final_unit_price && !historicalPriceMap.has(record.item_number)) {
-          historicalPriceMap.set(record.item_number, record.final_unit_price);
+    // Get the organization ID from the project
+    const { data: projectOrg } = await supabaseAdmin
+      .from('bid_projects')
+      .select('organization_id')
+      .eq('id', bidProjectId)
+      .single();
+    const organizationId = projectOrg?.organization_id;
+
+    // Build pricing suggestions using the new historical pricing system
+    const historicalPriceMap = new Map<string, { price: number; source: string; confidence: number }>();
+
+    // Try to get pricing from the new get_ai_suggested_price function (if migration 106 is applied)
+    try {
+      for (const itemNumber of itemNumbers) {
+        if (historicalPriceMap.has(itemNumber)) continue;
+
+        const { data: suggestion } = await supabaseAdmin.rpc('get_ai_suggested_price', {
+          p_organization_id: organizationId,
+          p_item_number: itemNumber,
+        });
+
+        if (suggestion?.found && suggestion?.suggested_price) {
+          historicalPriceMap.set(itemNumber, {
+            price: suggestion.suggested_price,
+            source: suggestion.source, // 'historical' or 'base_price'
+            confidence: suggestion.confidence || 0.75,
+          });
+        }
+      }
+    } catch {
+      // Function doesn't exist yet (migration 106 not applied), fall back to old method
+      console.log('get_ai_suggested_price not available, using fallback historical lookup');
+    }
+
+    // Fallback: query bid_line_items directly if no results from new system
+    if (historicalPriceMap.size === 0) {
+      const { data: historicalPricing } = await supabaseAdmin
+        .from('bid_line_items')
+        .select('item_number, final_unit_price, bid_project_id')
+        .in('item_number', itemNumbers)
+        .not('final_unit_price', 'is', null)
+        .order('created_at', { ascending: false });
+
+      if (historicalPricing) {
+        for (const record of historicalPricing) {
+          if (record.item_number && record.final_unit_price && !historicalPriceMap.has(record.item_number)) {
+            historicalPriceMap.set(record.item_number, {
+              price: record.final_unit_price,
+              source: 'legacy_historical',
+              confidence: 0.7,
+            });
+          }
         }
       }
     }
+
+    console.log(`Historical pricing found for ${historicalPriceMap.size} of ${itemNumbers.length} items`);
 
     // Insert line items with pricing intelligence
     const lineItemRecords = parseResult.lineItems.map((item, index) => {
       // Priority for ai_suggested_unit_price:
       // 1. Engineer estimate from BidX file (most reliable)
-      // 2. Historical pricing from exact item number match (fallback)
+      // 2. Historical pricing from new pricing system (weighted average from past bids)
+      // 3. Base pricing from WVDOH item master (Triton's pricing schedule)
       let aiSuggestedPrice: number | null = null;
       let pricingSource = '';
+      let pricingConfidence = 0;
 
       if (item.engineerEstimate && item.engineerEstimate > 0) {
         aiSuggestedPrice = item.engineerEstimate;
         pricingSource = 'engineer_estimate';
+        pricingConfidence = 0.95;
       } else if (historicalPriceMap.has(item.itemNumber)) {
-        aiSuggestedPrice = historicalPriceMap.get(item.itemNumber) || null;
-        pricingSource = 'historical_match';
+        const historical = historicalPriceMap.get(item.itemNumber)!;
+        aiSuggestedPrice = historical.price;
+        pricingSource = historical.source;
+        pricingConfidence = historical.confidence;
       }
 
       return {
@@ -867,11 +915,15 @@ serve(async (req) => {
         ai_suggested_unit_price: aiSuggestedPrice,
         // Calculate suggested extended price if we have a suggestion
         ai_suggested_extended_price: aiSuggestedPrice ? aiSuggestedPrice * item.quantity : null,
-        // Store metadata about pricing source
+        // Store metadata about pricing source with enhanced details
         ai_pricing_metadata: aiSuggestedPrice ? {
           source: pricingSource,
-          confidence: pricingSource === 'engineer_estimate' ? 0.95 : 0.75,
+          confidence: pricingConfidence,
           extracted_at: new Date().toISOString(),
+          source_description: pricingSource === 'engineer_estimate' ? 'From WVDOH engineer estimate in bid file'
+            : pricingSource === 'historical' ? 'Weighted average from past bids'
+            : pricingSource === 'base_price' ? 'From Triton pricing schedule'
+            : 'From previous project data',
         } : null,
         // Mark as not reviewed
         pricing_reviewed: false,
