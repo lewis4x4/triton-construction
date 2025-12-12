@@ -951,6 +951,83 @@ serve(async (req) => {
       );
     }
 
+    // =========================================================================
+    // PRICING ENGINE: Match items to master and apply assembly-based costing
+    // =========================================================================
+    console.log('Starting assembly-based pricing calculation...');
+
+    let matchedCount = 0;
+    let assemblyAppliedCount = 0;
+
+    try {
+      // Step 1: Match line items to master WVDOH items
+      // This calls the match_line_items_to_master() function from migration 107
+      const { data: matchResult, error: matchError } = await supabaseAdmin.rpc(
+        'match_line_items_to_master',
+        { p_project_id: bidProjectId }
+      );
+
+      if (matchError) {
+        console.error('Error matching items to master:', matchError.message);
+      } else {
+        matchedCount = matchResult || 0;
+        console.log(`Matched ${matchedCount} line items to master WVDOH items`);
+      }
+
+      // Step 2: Get all line items that have a matched master item with a default assembly
+      const { data: itemsWithAssemblies, error: assemblyQueryError } = await supabaseAdmin
+        .from('bid_line_items')
+        .select(`
+          id,
+          item_number,
+          quantity,
+          matched_master_item_id,
+          master_wvdoh_items!inner (
+            id,
+            item_code,
+            default_assembly_template_id
+          )
+        `)
+        .eq('bid_project_id', bidProjectId)
+        .not('matched_master_item_id', 'is', null);
+
+      if (assemblyQueryError) {
+        console.error('Error querying items with assemblies:', assemblyQueryError.message);
+      } else if (itemsWithAssemblies) {
+        // Step 3: Apply assembly templates to calculate base cost
+        for (const item of itemsWithAssemblies) {
+          const masterItem = item.master_wvdoh_items as {
+            id: string;
+            item_code: string;
+            default_assembly_template_id: string | null
+          };
+
+          if (masterItem?.default_assembly_template_id) {
+            // Call the apply_assembly_to_line_item function
+            const { error: applyError } = await supabaseAdmin.rpc(
+              'apply_assembly_to_line_item',
+              {
+                p_line_item_id: item.id,
+                p_template_id: masterItem.default_assembly_template_id,
+                p_overhead_pct: 15.0,  // Default 15% overhead
+                p_profit_pct: 10.0     // Default 10% profit
+              }
+            );
+
+            if (applyError) {
+              console.error(`Error applying assembly to item ${item.item_number}:`, applyError.message);
+            } else {
+              assemblyAppliedCount++;
+            }
+          }
+        }
+        console.log(`Applied assembly-based costing to ${assemblyAppliedCount} line items`);
+      }
+    } catch (pricingError) {
+      // Non-critical: log but don't fail the whole operation
+      console.error('Assembly-based pricing error:', pricingError);
+    }
+
     // CRITICAL: Update document status to COMPLETED immediately after successful insert
     // This prevents timeout issues from leaving documents stuck at PROCESSING
     await supabaseAdmin
@@ -963,6 +1040,10 @@ serve(async (req) => {
           lineItemCount: parseResult.totalItems,
           projectInfo: parseResult.projectInfo,
           parsedAt: new Date().toISOString(),
+          pricingEngine: {
+            itemsMatchedToMaster: matchedCount,
+            assembliesApplied: assemblyAppliedCount,
+          },
         },
       })
       .eq('id', documentId);
@@ -1011,6 +1092,13 @@ serve(async (req) => {
           projectId: bidProjectId,
           lineItemsCreated: insertedItems?.length || 0,
           projectInfo: parseResult.projectInfo,
+          pricingEngine: {
+            itemsMatchedToMaster: matchedCount,
+            assembliesApplied: assemblyAppliedCount,
+            message: assemblyAppliedCount > 0
+              ? `Base costs calculated for ${assemblyAppliedCount} items using assembly templates`
+              : 'No assembly templates available for matched items',
+          },
         },
       }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

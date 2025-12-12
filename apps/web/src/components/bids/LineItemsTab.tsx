@@ -1,7 +1,12 @@
 import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@triton/supabase-client';
 import { LineItemDetail } from './LineItemDetail';
+import { CostAdjustmentsPanel } from './CostAdjustmentsPanel';
 import './LineItemsTab.css';
+
+// Helper for accessing tables not yet in TypeScript types
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const supabaseAny = supabase as any;
 
 interface LineItemsTabProps {
   projectId: string;
@@ -30,6 +35,7 @@ interface LineItem {
   pricing_reviewed: boolean | null;
   estimator_notes: string | null;
   created_at: string | null;
+  wvdoh_item_code: string | null; // Normalized WVDOH item code for matching
   pricing_status?: PricingStatus | null; // Will be populated once migration is applied
   // Pricing metadata from historical pricing system
   pricing_metadata?: {
@@ -38,6 +44,36 @@ interface LineItem {
     historical_count?: number;
     base_price_year?: number;
   } | null;
+}
+
+// Cost adjustment factor from AI document analysis
+interface CostAdjustment {
+  id: string;
+  factor_type: string;
+  percentage_modifier: number;
+  condition_description: string;
+  condition_category: string | null;
+  source_document_id: string | null;
+  ai_confidence_score: number | null;
+  is_user_confirmed: boolean;
+  // Joined from bid_documents
+  source_document?: {
+    file_name: string;
+    document_type: string;
+  } | null;
+}
+
+// Line item with aggregated adjustments
+interface LineItemAdjustments {
+  line_item_id: string;
+  total_adjustment_pct: number;
+  adjustment_count: number;
+  labor_adjustment_pct: number;
+  equipment_adjustment_pct: number;
+  material_adjustment_pct: number;
+  overall_adjustment_pct: number;
+  calculated_unit_price: number | null;
+  unconfirmed_count: number;
 }
 
 // Compute pricing status from existing fields (fallback until DB migration is applied)
@@ -106,22 +142,88 @@ export function LineItemsTab({ projectId }: LineItemsTabProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
 
+  // Cost adjustment state
+  const [costAdjustments, setCostAdjustments] = useState<CostAdjustment[]>([]);
+  const [lineItemAdjustments, setLineItemAdjustments] = useState<Map<string, LineItemAdjustments>>(new Map());
+  const [showAdjustmentsPanel, setShowAdjustmentsPanel] = useState(false);
+
+  // Fetch cost adjustments for this project
+  const fetchCostAdjustments = useCallback(async () => {
+    try {
+      // Fetch all cost adjustments for this project with source document info
+      // Note: bid_cost_adjustment_factors table was added in migration 107
+      const { data: adjustmentsData, error: adjustmentsError } = await supabaseAny
+        .from('bid_cost_adjustment_factors')
+        .select(`
+          id, factor_type, percentage_modifier, condition_description, condition_category,
+          source_document_id, ai_confidence_score, is_user_confirmed, affected_item_codes,
+          affected_work_categories,
+          source_document:bid_documents(file_name, document_type)
+        `)
+        .eq('bid_project_id', projectId)
+        .order('created_at', { ascending: false });
+
+      if (adjustmentsError) {
+        console.warn('Could not fetch cost adjustments:', adjustmentsError);
+        return;
+      }
+
+      // Type-safe transform for source_document which may come back as an array or single object
+      const rawData = (adjustmentsData || []) as Array<Record<string, unknown>>;
+      const transformedAdjustments = rawData.map((adj) => ({
+        ...adj,
+        source_document: Array.isArray(adj.source_document)
+          ? adj.source_document[0] || null
+          : adj.source_document || null,
+      })) as CostAdjustment[];
+
+      setCostAdjustments(transformedAdjustments);
+
+      // Try to fetch aggregated adjustments per line item from the view
+      // Note: v_line_item_adjustments view was added in migration 107
+      const { data: lineAdjData } = await supabaseAny
+        .from('v_line_item_adjustments')
+        .select('*')
+        .eq('bid_project_id', projectId);
+
+      if (lineAdjData) {
+        const adjustmentsMap = new Map<string, LineItemAdjustments>();
+        const rawLineData = lineAdjData as Array<Record<string, unknown>>;
+        for (const row of rawLineData) {
+          adjustmentsMap.set(row.line_item_id as string, {
+            line_item_id: row.line_item_id as string,
+            total_adjustment_pct: (row.total_adjustment_pct as number) || 0,
+            adjustment_count: (row.adjustment_count as number) || 0,
+            labor_adjustment_pct: (row.labor_adjustment_pct as number) || 0,
+            equipment_adjustment_pct: (row.equipment_adjustment_pct as number) || 0,
+            material_adjustment_pct: (row.material_adjustment_pct as number) || 0,
+            overall_adjustment_pct: (row.overall_adjustment_pct as number) || 0,
+            calculated_unit_price: row.calculated_unit_price as number | null,
+            unconfirmed_count: (row.unconfirmed_count as number) || 0,
+          });
+        }
+        setLineItemAdjustments(adjustmentsMap);
+      }
+    } catch (err) {
+      console.warn('Error fetching cost adjustments:', err);
+    }
+  }, [projectId]);
+
   const fetchLineItems = useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
     try {
-      // Note: pricing_metadata column will be added once migration 106 is applied
-      // For now, the UI will work without it and show pricing source when available
-      let query = supabase
+      // Note: wvdoh_item_code column was added in migration 107 - types may not include it yet
+      // Using supabaseAny to handle columns not yet in TypeScript types
+      let query = supabaseAny
         .from('bid_line_items')
-        .select('id, line_number, item_number, alt_item_number, description, short_description, quantity, unit, work_category, risk_level, estimation_method, base_unit_cost, ai_suggested_unit_price, final_unit_price, final_extended_price, pricing_reviewed, estimator_notes, created_at')
+        .select('id, line_number, item_number, alt_item_number, description, short_description, quantity, unit, work_category, risk_level, estimation_method, base_unit_cost, ai_suggested_unit_price, final_unit_price, final_extended_price, pricing_reviewed, estimator_notes, created_at, wvdoh_item_code')
         .eq('bid_project_id', projectId);
 
-      // Apply filters - use type assertion to bypass strict enum type checking
+      // Apply filters
       if (filterCategory) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        query = query.eq('work_category', filterCategory as any);
+        query = query.eq('work_category', filterCategory);
       }
       // Note: pricing_status filter will be applied client-side until migration is applied
 
@@ -175,7 +277,8 @@ export function LineItemsTab({ projectId }: LineItemsTabProps) {
 
   useEffect(() => {
     fetchLineItems();
-  }, [fetchLineItems]);
+    fetchCostAdjustments();
+  }, [fetchLineItems, fetchCostAdjustments]);
 
   const handleSort = (field: SortField) => {
     if (field === sortField) {
@@ -342,6 +445,25 @@ export function LineItemsTab({ projectId }: LineItemsTabProps) {
           <span className="stat-value">{formatCurrency(totalExtended)}</span>
           <span className="stat-label">Total Value</span>
         </div>
+        {/* Cost Adjustments Summary */}
+        {costAdjustments.length > 0 && (
+          <div
+            className="summary-stat summary-stat-adjustments"
+            onClick={() => setShowAdjustmentsPanel(!showAdjustmentsPanel)}
+            style={{ cursor: 'pointer' }}
+            title="Click to view/manage cost adjustments"
+          >
+            <span className="stat-value" style={{ color: '#8b5cf6' }}>
+              {costAdjustments.length}
+              {costAdjustments.filter(a => !a.is_user_confirmed).length > 0 && (
+                <span style={{ fontSize: '0.7em', marginLeft: 4, color: '#f59e0b' }}>
+                  ({costAdjustments.filter(a => !a.is_user_confirmed).length} pending)
+                </span>
+              )}
+            </span>
+            <span className="stat-label">Cost Adjustments</span>
+          </div>
+        )}
       </div>
 
       {/* Filters and Actions */}
@@ -455,6 +577,9 @@ export function LineItemsTab({ projectId }: LineItemsTabProps) {
                 <th>Unit</th>
                 <th>Category</th>
                 <th className="numeric">Unit Price</th>
+                <th className="center" title="Cost Adjustments from AI document analysis">
+                  Adj
+                </th>
                 <th
                   className="sortable numeric"
                   onClick={() => handleSort('final_extended_price')}
@@ -516,6 +641,37 @@ export function LineItemsTab({ projectId }: LineItemsTabProps) {
                         <span style={{ color: '#ef4444', fontWeight: 500 }}>No Price</span>
                       )}
                     </td>
+                    {/* Cost Adjustment Indicator */}
+                    <td className="center">
+                      {(() => {
+                        const adj = lineItemAdjustments.get(item.id);
+                        if (!adj || adj.adjustment_count === 0) {
+                          return <span style={{ color: '#9ca3af' }}>-</span>;
+                        }
+                        const hasUnconfirmed = adj.unconfirmed_count > 0;
+                        const totalPct = adj.total_adjustment_pct;
+                        const sign = totalPct > 0 ? '+' : '';
+                        return (
+                          <span
+                            className={`adjustment-badge ${hasUnconfirmed ? 'unconfirmed' : 'confirmed'}`}
+                            title={`Labor: ${adj.labor_adjustment_pct > 0 ? '+' : ''}${adj.labor_adjustment_pct}%\nEquipment: ${adj.equipment_adjustment_pct > 0 ? '+' : ''}${adj.equipment_adjustment_pct}%\nMaterial: ${adj.material_adjustment_pct > 0 ? '+' : ''}${adj.material_adjustment_pct}%\nOverall: ${adj.overall_adjustment_pct > 0 ? '+' : ''}${adj.overall_adjustment_pct}%\n${hasUnconfirmed ? '⚠️ ' + adj.unconfirmed_count + ' unconfirmed' : '✓ All confirmed'}`}
+                            style={{
+                              display: 'inline-block',
+                              padding: '2px 6px',
+                              borderRadius: '4px',
+                              fontSize: '0.75rem',
+                              fontWeight: 600,
+                              backgroundColor: hasUnconfirmed ? '#fef3c7' : '#d1fae5',
+                              color: hasUnconfirmed ? '#92400e' : '#065f46',
+                              border: `1px solid ${hasUnconfirmed ? '#f59e0b' : '#10b981'}`,
+                              cursor: 'help',
+                            }}
+                          >
+                            {sign}{totalPct.toFixed(0)}%
+                          </span>
+                        );
+                      })()}
+                    </td>
                     <td className="numeric">
                       {item.final_extended_price ? (
                         formatCurrency(item.final_extended_price)
@@ -546,7 +702,7 @@ export function LineItemsTab({ projectId }: LineItemsTabProps) {
             </tbody>
             <tfoot>
               <tr className="totals-row">
-                <td colSpan={8} className="totals-label">
+                <td colSpan={9} className="totals-label">
                   Total ({lineItems.length} items)
                 </td>
                 <td className="numeric totals-value">
@@ -568,6 +724,17 @@ export function LineItemsTab({ projectId }: LineItemsTabProps) {
           categories={WORK_CATEGORIES}
         />
       )}
+
+      {/* Cost Adjustments Panel */}
+      <CostAdjustmentsPanel
+        projectId={projectId}
+        isOpen={showAdjustmentsPanel}
+        onClose={() => setShowAdjustmentsPanel(false)}
+        onAdjustmentsChange={() => {
+          fetchCostAdjustments();
+          fetchLineItems();
+        }}
+      />
     </div>
   );
 }

@@ -45,6 +45,18 @@ Analyze the provided bid proposal document and extract:
 5. Potential risks or concerns for bidding
 6. Any items requiring clarification (pre-bid questions)
 
+CRITICAL: For each finding that affects bid pricing, estimate the COST ADJUSTMENT PERCENTAGE. Use these guidelines:
+- Aggressive schedule (fewer working days than typical): +10% to +25% overall
+- High liquidated damages (>$2,500/day): +5% to +15% contingency
+- Very high LD (>$10,000/day): +10% to +25% contingency
+- A+B bidding (time-based): Account for acceleration costs
+- Incentive/disincentive clauses: +5% to +15% depending on risk
+- High DBE goal (>12%): +3% to +8% subcontractor premium
+- Federal-aid (Davis-Bacon): Already factored into wage rates
+- Buy America requirements: +10% to +20% steel/iron materials
+- Warranty requirements (extended): +5% to +10% affected items
+- Retainage held: Factor into cash flow (typically 5-10%)
+
 Provide a JSON response with this structure:
 {
   "summary": "2-3 sentence executive summary of the project",
@@ -72,16 +84,39 @@ Provide a JSON response with this structure:
     "dbe_goal_percentage": number or null,
     "engineers_estimate": number or null,
     "is_federal_aid": boolean,
+    "is_buy_america": boolean,
     "special_provisions": ["array of notable provisions"],
     "required_certifications": ["array of required certs"],
-    "bonding_requirements": "description or null"
+    "bonding_requirements": "description or null",
+    "schedule_type": "WORKING_DAYS|CALENDAR_DAYS|COMPLETION_DATE",
+    "incentive_disincentive": {
+      "has_incentive": boolean,
+      "incentive_per_day": number or null,
+      "disincentive_per_day": number or null,
+      "max_incentive": number or null
+    },
+    "warranty_requirements": ["array of warranty items"]
   },
+  "cost_adjustments": [
+    {
+      "factor_type": "OVERALL|CONTINGENCY|MATERIAL|SUBCONTRACTOR",
+      "percentage_modifier": 15,
+      "condition_description": "Aggressive 90 working day schedule for $8M project - typical would be 120+ days",
+      "condition_category": "SCHEDULE|LIQUIDATED_DAMAGES|DBE_GOAL|BUY_AMERICA|WARRANTY|INCENTIVE|OTHER",
+      "affected_item_codes": ["*"],
+      "affected_work_categories": null,
+      "source_text": "Time for completion: 90 Working Days. Liquidated damages: $3,500 per calendar day",
+      "confidence_score": 0.85
+    }
+  ],
   "confidence_score": 0-100
 }
 
+IMPORTANT: The cost_adjustments array is CRITICAL for bid pricing. Schedule constraints and liquidated damages are major risk factors that should be reflected in pricing.
+
 Always respond with valid JSON only.`,
 
-  ENVIRONMENTAL: `You are an expert environmental compliance analyst for construction projects.
+  ENVIRONMENTAL: `You are an expert environmental compliance analyst for WVDOH highway construction projects.
 
 Analyze the provided environmental document and extract:
 1. Wetland boundaries and restrictions
@@ -91,6 +126,18 @@ Analyze the provided environmental document and extract:
 5. Permit requirements and conditions
 6. Mitigation commitments
 7. Monitoring requirements
+
+CRITICAL: For each finding that affects bid pricing, estimate the COST ADJUSTMENT PERCENTAGE. Use these guidelines:
+- Seasonal work restrictions (3+ months limited): +15% to +30% overall (compressed schedule)
+- Seasonal work restrictions (1-2 months): +5% to +15% overall
+- In-stream work timing window (limited to 2-3 months): +20% to +40% drainage/structure work
+- Endangered species monitoring required: +5% to +10% overall
+- Species avoidance measures (exclusion fencing, relocations): +5% to +15% affected areas
+- Wetland mitigation construction: Add line item cost (typically $50k-$500k)
+- Stream mitigation construction: Add line item cost
+- Enhanced erosion control (SWPPP+): +5% to +10% E&S items
+- Tree clearing restrictions (seasonal): +10% to +20% clearing if schedule compressed
+- Archaeological monitoring: +3% to +8% earthwork in sensitive areas
 
 Provide a JSON response with this structure:
 {
@@ -114,16 +161,33 @@ Provide a JSON response with this structure:
         "restriction": "description",
         "start_date": "MM-DD",
         "end_date": "MM-DD",
-        "reason": "why"
+        "reason": "why",
+        "affected_work": "clearing, in-stream, etc."
       }
     ],
     "permits_required": ["array of permit types"],
     "mitigation_requirements": ["array of requirements"],
     "monitoring_requirements": ["array of monitoring items"],
-    "environmental_commitments": ["numbered commitments from document"]
+    "environmental_commitments": ["numbered commitments from document"],
+    "work_window_months": number or null,
+    "in_stream_work_window_months": number or null
   },
+  "cost_adjustments": [
+    {
+      "factor_type": "OVERALL|LABOR|EQUIPMENT|MATERIAL",
+      "percentage_modifier": 20,
+      "condition_description": "In-stream work restricted to June 1 - September 30 (4 month window) for mussel protection",
+      "condition_category": "SEASONAL_RESTRICTION|SPECIES_PROTECTION|WETLAND|STREAM|MONITORING|MITIGATION|OTHER",
+      "affected_item_codes": ["601.*", "604.*"] or ["*"],
+      "affected_work_categories": ["DRAINAGE", "SUBSTRUCTURE"] or null,
+      "source_text": "All in-stream work shall be conducted between June 1 and September 30 to protect freshwater mussel habitat",
+      "confidence_score": 0.90
+    }
+  ],
   "confidence_score": 0-100
 }
+
+IMPORTANT: The cost_adjustments array is CRITICAL for bid pricing. Seasonal timing restrictions are the most common environmental cost driver - a compressed work window often means accelerated crew sizes and overtime.
 
 Always respond with valid JSON only.`,
 
@@ -180,7 +244,7 @@ Provide a JSON response with this structure:
 
 Always respond with valid JSON only.`,
 
-  GEOTECHNICAL: `You are an expert geotechnical engineer analyzing soil and foundation reports.
+  GEOTECHNICAL: `You are an expert geotechnical engineer analyzing soil and foundation reports for WVDOH highway construction projects.
 
 Analyze the provided geotechnical document and extract:
 1. Soil conditions and classifications
@@ -190,6 +254,18 @@ Analyze the provided geotechnical document and extract:
 5. Earthwork considerations
 6. Special construction requirements
 7. Risk factors
+
+CRITICAL: For each finding that affects bid pricing, estimate the COST ADJUSTMENT PERCENTAGE. Use these guidelines:
+- Rock excavation encountered (>30% of excavation): +75% to +150% excavation cost
+- Rock excavation (intermittent, <30%): +25% to +50% excavation cost
+- High groundwater requiring dewatering: +20% to +40% overall earthwork
+- Unsuitable material removal: +15% to +30% excavation cost
+- Contaminated soils requiring special disposal: +50% to +200% disposal cost
+- Deep foundations required (piles/drilled shafts): +25% foundation cost
+- Shoring/sheet piling required: +15% to +25% overall
+- Special backfill material required: +10% to +25% material cost
+- Blasting restrictions (vibration sensitive area): +20% to +35% rock excavation
+- Settlement monitoring required: +5% to +10% overall
 
 Provide a JSON response with this structure:
 {
@@ -207,18 +283,39 @@ Provide a JSON response with this structure:
   "extracted_data": {
     "predominant_soil_type": "description",
     "rock_encountered": boolean,
+    "rock_percentage_estimate": number or null,
     "rock_depth_range": "X to Y feet or null",
+    "rock_type": "limestone, sandstone, shale, etc." or null,
     "groundwater_depth": number or null,
     "groundwater_concerns": ["array of concerns"],
     "bearing_capacity": "value with units or null",
     "foundation_recommendations": ["array of recommendations"],
     "earthwork_considerations": ["array of considerations"],
     "unsuitable_material_expected": boolean,
+    "unsuitable_material_percentage": number or null,
     "dewatering_required": boolean,
-    "special_equipment_needed": ["array of equipment"]
+    "contamination_present": boolean,
+    "contamination_type": "petroleum, hazmat, etc." or null,
+    "special_equipment_needed": ["array of equipment"],
+    "blasting_required": boolean,
+    "blasting_restrictions": ["vibration limits, timing, etc."] or null
   },
+  "cost_adjustments": [
+    {
+      "factor_type": "EQUIPMENT|MATERIAL|LABOR|OVERALL",
+      "percentage_modifier": 100,
+      "condition_description": "Rock excavation estimated at 60% of total excavation based on boring logs showing limestone at 4-8 ft depth",
+      "condition_category": "ROCK_EXCAVATION|GROUNDWATER|UNSUITABLE|CONTAMINATION|FOUNDATION|SHORING|BLASTING|OTHER",
+      "affected_item_codes": ["203.*", "206.*"] or ["*"],
+      "affected_work_categories": ["EARTHWORK"] or null,
+      "source_text": "Borings B-1 through B-5 encountered competent limestone at depths ranging from 4 to 8 feet",
+      "confidence_score": 0.85
+    }
+  ],
   "confidence_score": 0-100
 }
+
+IMPORTANT: The cost_adjustments array is CRITICAL for bid pricing. Include ALL geotechnical conditions that would affect construction costs with your best estimate of the percentage impact. Rock conditions and groundwater are the most common cost drivers.
 
 Always respond with valid JSON only.`,
 
@@ -234,6 +331,20 @@ Analyze the provided traffic study document and extract:
 7. Pedestrian and bicycle considerations
 8. Special event or seasonal traffic considerations
 9. Recommended construction phasing from traffic perspective
+
+CRITICAL: For each finding that affects bid pricing, estimate the COST ADJUSTMENT PERCENTAGE. Use these guidelines:
+- Night work required (traffic volumes too high for day work): +15% to +25% labor
+- Weekend work required: +25% to +50% labor for affected items
+- Pilot car operations: +$500-$2000/day (add to MOT costs)
+- Off-duty police required: +$50-$100/hour (add to MOT costs)
+- Temporary signals: +$5,000-$20,000 per intersection
+- PCMS boards required: +$500-$1,500/week each
+- Complex staging (multiple phases): +10% to +20% MOT items
+- Detour construction/maintenance: Add line item costs
+- High-volume road (AADT >10,000): +10% to +15% MOT
+- Very high volume (AADT >25,000): +20% to +30% MOT
+- School zone impacts: +5% to +10% work hour restrictions
+- Limited work hours (peak hour restrictions): +10% to +20% overall
 
 Provide a JSON response with this structure:
 {
@@ -302,8 +413,22 @@ Provide a JSON response with this structure:
     "recommended_construction_phases": ["array of phasing recommendations"],
     "mot_plan_requirements": ["array of MOT requirements"]
   },
+  "cost_adjustments": [
+    {
+      "factor_type": "LABOR|EQUIPMENT|OVERALL|MOBILIZATION",
+      "percentage_modifier": 20,
+      "condition_description": "Night work required due to AADT of 18,500 - daytime lane closures not permitted",
+      "condition_category": "NIGHT_WORK|WEEKEND_WORK|PEAK_HOUR_RESTRICTION|HIGH_VOLUME|MOT_COMPLEXITY|DETOUR|STAGING|OTHER",
+      "affected_item_codes": ["636.*", "705.*", "401.*"] or ["*"],
+      "affected_work_categories": ["MOT", "PAVEMENT", "SIGNING_STRIPING"] or null,
+      "source_text": "Due to the high traffic volumes (AADT 18,500), all lane closures shall be conducted between 9:00 PM and 6:00 AM",
+      "confidence_score": 0.90
+    }
+  ],
   "confidence_score": 0-100
 }
+
+IMPORTANT: The cost_adjustments array is CRITICAL for bid pricing. Night work requirements and high traffic volumes significantly impact labor costs and MOT expenses.
 
 Always respond with valid JSON only.`,
 
@@ -375,7 +500,7 @@ Provide a JSON response with this structure:
 
 Always respond with valid JSON only.`,
 
-  UTILITY_PLANS: `You are an expert utility coordinator analyzing utility relocation plans for highway construction projects.
+  UTILITY_PLANS: `You are an expert utility coordinator analyzing utility relocation plans for WVDOH highway construction projects.
 
 Analyze the provided utility relocation document and extract:
 1. All utilities present and their owners
@@ -385,6 +510,17 @@ Analyze the provided utility relocation document and extract:
 5. Cost responsibility allocation
 6. Protection requirements during construction
 7. Temporary service requirements
+
+CRITICAL: For each finding that affects bid pricing, estimate the COST ADJUSTMENT PERCENTAGE. Use these guidelines:
+- Multiple utility conflicts (5+): +10% to +20% overall (coordination complexity)
+- Contractor-responsible relocations: Full cost pass-through (add line items)
+- Hand digging required near utilities: +30% to +50% labor for affected excavation
+- Utility protection measures (steel plates, concrete): +5% to +15% affected areas
+- Utility delay risk (owner relocations incomplete): +5% to +15% contingency
+- Major utility crossing (high-pressure gas, transmission electric): +10% to +25% affected work
+- Temporary utility service required: Add line item cost
+- Complex coordination (4+ utility owners): +5% to +10% mobilization
+- Night work for utility outages: +15% to +25% labor for affected work
 
 Provide a JSON response with this structure:
 {
@@ -444,10 +580,26 @@ Provide a JSON response with this structure:
     "utility_permits_required": ["array of required permits"],
     "pre_construction_meetings_required": boolean,
     "joint_use_agreements": ["any JUA requirements"],
-    "estimated_utility_delays_days": number or null
+    "estimated_utility_delays_days": number or null,
+    "total_utility_conflicts": number,
+    "utility_owners_count": number
   },
+  "cost_adjustments": [
+    {
+      "factor_type": "LABOR|EQUIPMENT|OVERALL|CONTINGENCY",
+      "percentage_modifier": 15,
+      "condition_description": "7 utility conflicts identified requiring coordination with 4 different utility owners",
+      "condition_category": "UTILITY_CONFLICT|HAND_DIG|PROTECTION|DELAY_RISK|COORDINATION|RELOCATION|OTHER",
+      "affected_item_codes": ["203.*", "601.*"] or ["*"],
+      "affected_work_categories": ["EARTHWORK", "DRAINAGE", "UTILITIES"] or null,
+      "source_text": "Utility coordination required with AEP, Dominion Gas, WV American Water, and Frontier Communications",
+      "confidence_score": 0.80
+    }
+  ],
   "confidence_score": 0-100
 }
+
+IMPORTANT: The cost_adjustments array is CRITICAL for bid pricing. Utility conflicts are the #1 cause of change orders and delays. Hand digging near utilities significantly increases labor costs.
 
 Always respond with valid JSON only.`,
 
@@ -591,6 +743,108 @@ Provide a JSON response with this structure:
   },
   "confidence_score": 0-100
 }
+
+Always respond with valid JSON only.`,
+
+  SPECIAL_PROVISIONS: `You are an expert construction bid analyst specializing in WVDOH Special Provisions.
+
+Analyze the provided Special Provisions document and extract:
+1. Modifications to standard specifications
+2. Work restrictions that affect costs (night work, weekend work, limited hours)
+3. Material requirements that affect costs (non-standard, Buy America, specific suppliers)
+4. Environmental/seasonal restrictions
+5. Construction method changes from standard
+6. Quality testing requirements beyond standard
+7. Any unique contract conditions
+
+CRITICAL: For each finding that affects bid pricing, estimate the COST ADJUSTMENT PERCENTAGE that should be applied. Use these guidelines:
+- Night work (8pm-6am): +15% to +25% labor cost
+- Weekend work: +25% to +50% labor cost
+- Limited work hours: +5% to +15% overall
+- Noise restrictions: +5% equipment cost
+- Non-standard materials: +10% to +50% material cost
+- Buy America provisions: +15% to +30% material cost
+- Modified compaction requirements: +5% to +15% equipment cost
+- Additional testing: +5% to +10% overall
+- Seasonal restrictions (limited work window): +10% to +20% overall
+- Accelerated schedule: +10% to +25% overall
+
+Provide a JSON response with this structure:
+{
+  "summary": "2-3 sentence summary of key Special Provisions impacts",
+  "document_category": "SPECIAL_PROVISIONS",
+  "key_findings": [
+    {
+      "type": "WORK_RESTRICTION|MATERIAL_SPEC|TIMING|QUALITY|METHOD|FINANCIAL",
+      "title": "Brief title",
+      "description": "Detailed description",
+      "severity": "LOW|MEDIUM|HIGH|CRITICAL",
+      "page_reference": "Page X" or null,
+      "related_items": ["affected item codes if identifiable"]
+    }
+  ],
+  "extracted_data": {
+    "spec_modifications": [
+      {
+        "standard_section": "section number",
+        "modification_type": "ADDITION|DELETION|REPLACEMENT|SUPPLEMENT",
+        "description": "what changed",
+        "affects_items": ["item codes or categories"]
+      }
+    ],
+    "work_restrictions": {
+      "night_work_required": boolean,
+      "night_work_hours": "HH:MM-HH:MM" or null,
+      "weekend_work_allowed": boolean,
+      "limited_work_hours": {
+        "start_time": "HH:MM",
+        "end_time": "HH:MM",
+        "reason": "traffic, noise, etc."
+      } or null,
+      "noise_restrictions": boolean,
+      "noise_db_limit": number or null
+    },
+    "material_requirements": {
+      "buy_america_enhanced": boolean,
+      "specific_suppliers_required": ["supplier names"],
+      "non_standard_materials": [
+        {
+          "material": "description",
+          "requirement": "spec or standard",
+          "affected_items": ["item codes"]
+        }
+      ]
+    },
+    "timing_restrictions": [
+      {
+        "restriction": "description",
+        "start_date": "MM-DD" or null,
+        "end_date": "MM-DD" or null,
+        "affected_work": "description"
+      }
+    ],
+    "quality_requirements": {
+      "additional_testing": ["array of additional tests"],
+      "inspection_frequency_increased": boolean,
+      "third_party_testing_required": boolean
+    }
+  },
+  "cost_adjustments": [
+    {
+      "factor_type": "LABOR|EQUIPMENT|MATERIAL|SUBCONTRACTOR|OVERALL",
+      "percentage_modifier": 15,
+      "condition_description": "Night work required between 8pm and 6am per Section 108.03",
+      "condition_category": "NIGHT_WORK|WEEKEND_WORK|LIMITED_HOURS|MATERIAL_SPEC|SEASONAL|TESTING|QUALITY|OTHER",
+      "affected_item_codes": ["*"] or ["203.*", "401.*"],
+      "affected_work_categories": ["EARTHWORK", "PAVING"] or null,
+      "source_text": "Exact quote from document",
+      "confidence_score": 0.85
+    }
+  ],
+  "confidence_score": 0-100
+}
+
+IMPORTANT: The cost_adjustments array is CRITICAL for bid pricing. Include ALL conditions that would affect costs with your best estimate of the percentage impact.
 
 Always respond with valid JSON only.`,
 
@@ -976,6 +1230,88 @@ serve(async (req) => {
       throw new Error(`Failed to update document: ${updateError.message}`);
     }
 
+    // =========================================================================
+    // COST ADJUSTMENTS: Store AI-extracted adjustment factors
+    // =========================================================================
+    let adjustmentsInserted = 0;
+
+    // Check if analysis contains cost_adjustments array
+    const rawAnalysis = analysis as Record<string, unknown>;
+    const costAdjustments = rawAnalysis.cost_adjustments as Array<{
+      factor_type: string;
+      percentage_modifier: number;
+      condition_description: string;
+      condition_category?: string;
+      affected_item_codes?: string[];
+      affected_work_categories?: string[];
+      source_text?: string;
+      confidence_score?: number;
+    }> | undefined;
+
+    if (costAdjustments && Array.isArray(costAdjustments) && costAdjustments.length > 0) {
+      console.log(`Processing ${costAdjustments.length} cost adjustments from AI analysis`);
+
+      // Get organization_id from the project
+      const { data: projectData } = await supabase
+        .from('bid_projects')
+        .select('organization_id')
+        .eq('id', document.bid_project_id)
+        .single();
+
+      if (projectData?.organization_id) {
+        // First, remove any existing adjustments from this document (in case of re-analysis)
+        await supabase
+          .from('bid_cost_adjustment_factors')
+          .delete()
+          .eq('source_document_id', document_id);
+
+        // Insert each cost adjustment
+        for (const adj of costAdjustments) {
+          // Validate factor_type
+          const validFactorTypes = ['LABOR', 'EQUIPMENT', 'MATERIAL', 'SUBCONTRACTOR', 'OVERALL', 'MOBILIZATION', 'CONTINGENCY', 'OVERHEAD', 'PROFIT'];
+          const factorType = validFactorTypes.includes(adj.factor_type) ? adj.factor_type : 'OVERALL';
+
+          // Normalize affected_item_codes - replace "*" with null (means all items)
+          let affectedItemCodes = adj.affected_item_codes;
+          if (affectedItemCodes && affectedItemCodes.length === 1 && affectedItemCodes[0] === '*') {
+            affectedItemCodes = undefined;
+          }
+
+          const { error: insertError } = await supabase
+            .from('bid_cost_adjustment_factors')
+            .insert({
+              organization_id: projectData.organization_id,
+              bid_project_id: document.bid_project_id,
+              source_document_id: document_id,
+              factor_type: factorType,
+              percentage_modifier: adj.percentage_modifier,
+              condition_description: adj.condition_description,
+              condition_category: adj.condition_category || null,
+              affected_item_codes: affectedItemCodes || null,
+              affected_work_categories: adj.affected_work_categories || null,
+              source_text: adj.source_text || null,
+              ai_confidence_score: adj.confidence_score || 0.75,
+              is_user_confirmed: false,
+            });
+
+          if (insertError) {
+            console.error('Error inserting cost adjustment:', insertError);
+          } else {
+            adjustmentsInserted++;
+          }
+        }
+
+        console.log(`Inserted ${adjustmentsInserted} cost adjustments for project ${document.bid_project_id}`);
+
+        // The database trigger will auto-recalculate line item prices
+        // But we can also call it explicitly for immediate effect
+        if (adjustmentsInserted > 0) {
+          await supabase.rpc('recalculate_line_item_prices', { p_project_id: document.bid_project_id });
+          console.log('Triggered price recalculation for line items');
+        }
+      }
+    }
+
     // Update the log entry
     if (logEntry) {
       await supabase
@@ -987,7 +1323,11 @@ serve(async (req) => {
           input_tokens: claudeResult.usage?.input_tokens,
           output_tokens: claudeResult.usage?.output_tokens,
           success: true,
-          response_payload: { analysis },
+          response_payload: {
+            analysis,
+            cost_adjustments_extracted: costAdjustments?.length || 0,
+            cost_adjustments_inserted: adjustmentsInserted,
+          },
         })
         .eq('id', logEntry.id);
     }
@@ -1000,6 +1340,10 @@ serve(async (req) => {
         analysis,
         duration_ms: duration,
         usage: claudeResult.usage,
+        cost_adjustments: {
+          extracted: costAdjustments?.length || 0,
+          inserted: adjustmentsInserted,
+        },
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
