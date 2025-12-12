@@ -899,7 +899,23 @@ serve(async (req) => {
       );
     }
 
-    // Update project info if extracted
+    // CRITICAL: Update document status to COMPLETED immediately after successful insert
+    // This prevents timeout issues from leaving documents stuck at PROCESSING
+    await supabaseAdmin
+      .from('bid_documents')
+      .update({
+        processing_status: 'COMPLETED',
+        processing_completed_at: new Date().toISOString(),
+        processing_error: null,
+        extracted_metadata: {
+          lineItemCount: parseResult.totalItems,
+          projectInfo: parseResult.projectInfo,
+          parsedAt: new Date().toISOString(),
+        },
+      })
+      .eq('id', documentId);
+
+    // Update project info if extracted (non-critical, can timeout without issue)
     if (parseResult.projectInfo) {
       const updates: Record<string, unknown> = {};
       if (parseResult.projectInfo.contractNumber && !project.contract_number) {
@@ -927,22 +943,7 @@ serve(async (req) => {
       }
     }
 
-    // Update document status to completed
-    await supabaseAdmin
-      .from('bid_documents')
-      .update({
-        processing_status: 'COMPLETED',
-        processing_completed_at: new Date().toISOString(),
-        processing_error: null,
-        extracted_metadata: {
-          lineItemCount: parseResult.totalItems,
-          projectInfo: parseResult.projectInfo,
-          parsedAt: new Date().toISOString(),
-        },
-      })
-      .eq('id', documentId);
-
-    // Update project status if it was DRAFT
+    // Update project status if it was DRAFT (non-critical)
     await supabaseAdmin
       .from('bid_projects')
       .update({ status: 'IN_PROGRESS' })
