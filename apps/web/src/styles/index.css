@@ -969,6 +969,35 @@ p {
   opacity: 0.6;
 }
 
+/* Option element styling for dark theme dropdowns */
+select,
+.form-group select {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+option {
+  background-color: var(--void-deep);
+  color: var(--text-primary);
+  padding: var(--space-2) var(--space-3);
+}
+
+option:hover,
+option:focus,
+option:checked {
+  background-color: var(--void-mid);
+  color: var(--text-primary);
+}
+
+/* Firefox-specific option styling */
+@-moz-document url-prefix() {
+  option {
+    background-color: #0F172A;
+    color: #E2E8F0;
+  }
+}
+
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -1041,6 +1070,16 @@ p {
 .checkbox-label input[type="checkbox"] {
   width: 18px;
   height: 18px;
+  accent-color: var(--accent-primary);
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-default);
+}
+
+/* Global checkbox and radio dark theme styling */
+input[type="checkbox"],
+input[type="radio"] {
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-default);
   accent-color: var(--accent-primary);
 }
 

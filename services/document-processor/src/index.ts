@@ -291,14 +291,17 @@ app.post('/upload-document', upload.single('file'), async (req: Request, res: Re
       return;
     }
 
-    // Auto-trigger document processing (async - don't wait for completion)
+    // Auto-trigger document processing - AWAIT the call to ensure it completes
     let processingTriggered = false;
+    let processingResult: string | null = null;
     try {
       const supabaseUrl = process.env.SUPABASE_URL ?? '';
       const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
 
-      // Fire and forget - call process-document-queue for this document
-      fetch(`${supabaseUrl}/functions/v1/process-document-queue`, {
+      console.log(`Triggering document processing for: ${document.id}`);
+
+      // AWAIT the processing call - this ensures BIDX files are fully processed before returning
+      const processResponse = await fetch(`${supabaseUrl}/functions/v1/process-document-queue`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -308,14 +311,22 @@ app.post('/upload-document', upload.single('file'), async (req: Request, res: Re
           documentIds: [document.id],
           batchSize: 1,
         }),
-      }).catch((err) => {
-        console.error('Auto-processing trigger failed (non-blocking):', err);
       });
 
-      processingTriggered = true;
+      if (processResponse.ok) {
+        const result = await processResponse.json();
+        processingTriggered = true;
+        processingResult = result.message || 'Processing completed';
+        console.log('Processing completed successfully:', result);
+      } else {
+        const errorText = await processResponse.text();
+        console.error('Processing returned error:', processResponse.status, errorText);
+        processingResult = `Processing failed: ${processResponse.status}`;
+      }
     } catch (triggerErr) {
       // Don't fail upload if auto-processing trigger fails
       console.error('Failed to trigger auto-processing:', triggerErr);
+      processingResult = `Trigger error: ${triggerErr instanceof Error ? triggerErr.message : 'Unknown'}`;
     }
 
     console.log(`Upload complete: ${document.id}`);
@@ -332,9 +343,10 @@ app.post('/upload-document', upload.single('file'), async (req: Request, res: Re
         createdAt: document.created_at,
       },
       processingTriggered,
+      processingResult,
       message: processingTriggered
-        ? 'Document uploaded successfully. AI processing has been triggered.'
-        : 'Document uploaded successfully. Processing will begin shortly.',
+        ? `Document uploaded and processed successfully. ${processingResult}`
+        : `Document uploaded. Processing status: ${processingResult || 'queued'}`,
     });
 
   } catch (error) {
