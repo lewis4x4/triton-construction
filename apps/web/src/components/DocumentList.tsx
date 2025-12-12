@@ -479,8 +479,10 @@ export function DocumentList({ projectId }: DocumentListProps) {
   const triggerAnalyzeAll = async () => {
     // Exclude BIDX and XLSX bid files - they have dedicated parsers (parse-bidx, parse-xlsx-bid)
     // and don't go through analyze-bid-document
+    // Also exclude documents that already have AI analysis (ai_summary populated)
     const docsToAnalyze = documents.filter(
       (doc) =>
+        !doc.ai_summary && // Don't re-analyze docs that already have AI summary
         (doc.processing_status === 'COMPLETED' ||
         doc.processing_status === 'PENDING' ||
         doc.processing_status === 'FAILED') &&
@@ -537,8 +539,10 @@ export function DocumentList({ projectId }: DocumentListProps) {
   };
 
   // Count only documents that need AI analysis (exclude BIDX/XLSX bid files which use dedicated parsers)
+  // Also exclude documents that already have AI analysis (ai_summary populated)
   const pendingAnalysisCount = documents.filter(
     (doc) =>
+      !doc.ai_summary && // Don't count docs that already have AI summary
       doc.processing_status !== 'AI_ANALYZED' &&
       doc.processing_status !== 'AI_ANALYZING' &&
       doc.document_type !== 'BIDX' &&
