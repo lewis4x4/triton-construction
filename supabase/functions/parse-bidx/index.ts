@@ -930,6 +930,13 @@ serve(async (req) => {
       };
     });
 
+    // Log details about what we're about to insert
+    console.log(`Preparing to insert ${lineItemRecords.length} line items for project ${bidProjectId}`);
+    if (lineItemRecords.length > 0) {
+      console.log(`First item: ${lineItemRecords[0].item_number} - ${lineItemRecords[0].description?.substring(0, 50)}...`);
+      console.log(`Last item: ${lineItemRecords[lineItemRecords.length - 1].item_number}`);
+    }
+
     const { data: insertedItems, error: insertError } = await supabaseAdmin
       .from('bid_line_items')
       .insert(lineItemRecords)
@@ -950,6 +957,48 @@ serve(async (req) => {
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+
+    // CRITICAL: Verify items were actually inserted
+    // This catches cases where insert "succeeds" but returns 0 rows (RLS or constraint issues)
+    console.log(`Insert completed. Expected: ${lineItemRecords.length}, Got: ${insertedItems?.length || 0}`);
+
+    if (!insertedItems || insertedItems.length === 0) {
+      console.error('CRITICAL: Insert returned 0 rows despite no error. Possible RLS or constraint issue.');
+
+      // Double-check by querying the database
+      const { count: verifyCount } = await supabaseAdmin
+        .from('bid_line_items')
+        .select('id', { count: 'exact', head: true })
+        .eq('bid_project_id', bidProjectId);
+
+      console.log(`Database verification: ${verifyCount} items exist for project`);
+
+      if (!verifyCount || verifyCount === 0) {
+        await supabaseAdmin
+          .from('bid_documents')
+          .update({
+            processing_status: 'FAILED',
+            processing_error: `Insert returned 0 rows. Expected ${lineItemRecords.length} items. Database verification: ${verifyCount} items.`,
+            processing_completed_at: new Date().toISOString(),
+          })
+          .eq('id', documentId);
+
+        return new Response(
+          JSON.stringify({
+            error: 'Insert succeeded but returned 0 rows',
+            details: {
+              expected: lineItemRecords.length,
+              returned: insertedItems?.length || 0,
+              verified: verifyCount,
+            }
+          }),
+          { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+    }
+
+    // Log successful insert with count
+    console.log(`Successfully inserted ${insertedItems?.length || 0} line items for project ${bidProjectId}`);
 
     // =========================================================================
     // PRICING ENGINE: Match items to master and apply assembly-based costing
@@ -1004,13 +1053,12 @@ serve(async (req) => {
 
           if (masterItem?.default_assembly_template_id) {
             // Call the apply_assembly_to_line_item function
+            // Note: p_assembly_template_id is the correct parameter name per migration 107
             const { error: applyError } = await supabaseAdmin.rpc(
               'apply_assembly_to_line_item',
               {
                 p_line_item_id: item.id,
-                p_template_id: masterItem.default_assembly_template_id,
-                p_overhead_pct: 15.0,  // Default 15% overhead
-                p_profit_pct: 10.0     // Default 10% profit
+                p_assembly_template_id: masterItem.default_assembly_template_id
               }
             );
 
@@ -1037,7 +1085,9 @@ serve(async (req) => {
         processing_completed_at: new Date().toISOString(),
         processing_error: null,
         ai_analysis_metadata: {
-          lineItemCount: parseResult.totalItems,
+          lineItemCount: insertedItems?.length || 0,
+          lineItemsParsed: parseResult.totalItems,
+          lineItemsInserted: insertedItems?.length || 0,
           projectInfo: parseResult.projectInfo,
           parsedAt: new Date().toISOString(),
           pricingEngine: {
