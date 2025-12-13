@@ -302,19 +302,44 @@ export function DocumentList({ projectId, onProcessingComplete }: DocumentListPr
   // Fallback polling: silently refresh when documents are processing
   // This ensures UI updates even if real-time subscription isn't working
   useEffect(() => {
-    const hasProcessingDocs = documents.some(
+    const processingDocs = documents.filter(
       (doc) => doc.processing_status === 'PROCESSING' || doc.processing_status === 'AI_ANALYZING'
     );
 
-    if (!hasProcessingDocs) return;
+    if (processingDocs.length === 0) return;
 
     // Poll every 5 seconds when documents are processing
-    const pollInterval = setInterval(() => {
-      fetchDocuments(false); // Silent refresh (no loading spinner)
+    const pollInterval = setInterval(async () => {
+      // Fetch fresh data
+      const { data: freshDocs } = await supabase
+        .from('bid_documents')
+        .select('id, processing_status')
+        .eq('bid_project_id', projectId)
+        .in('id', processingDocs.map(d => d.id));
+
+      if (freshDocs) {
+        // Check if any processing document has completed
+        const completedDoc = freshDocs.find(
+          (fresh) => {
+            const oldDoc = processingDocs.find(p => p.id === fresh.id);
+            return oldDoc &&
+              ['PROCESSING', 'AI_ANALYZING'].includes(oldDoc.processing_status || '') &&
+              ['COMPLETED', 'AI_ANALYZED'].includes(fresh.processing_status || '');
+          }
+        );
+
+        if (completedDoc && onProcessingComplete) {
+          console.log('Polling detected processing completion, refreshing metrics...');
+          onProcessingComplete();
+        }
+      }
+
+      // Refresh document list
+      fetchDocuments(false);
     }, 5000);
 
     return () => clearInterval(pollInterval);
-  }, [documents, fetchDocuments]);
+  }, [documents, fetchDocuments, projectId, onProcessingComplete]);
 
   const formatFileSize = (bytes: number | null) => {
     if (!bytes) return '-';

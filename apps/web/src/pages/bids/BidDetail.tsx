@@ -266,6 +266,11 @@ export function BidDetail() {
 
   const setActiveTab = (tabId: TabId) => {
     setSearchParams({ tab: tabId });
+    // Refresh metrics when switching to line-items tab to ensure count is up-to-date
+    // This handles cases where real-time subscription missed the processing completion
+    if (tabId === 'line-items') {
+      fetchProject();
+    }
   };
 
   const formatDate = (dateStr: string | null) => {
