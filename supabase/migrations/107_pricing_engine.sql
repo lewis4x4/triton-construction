@@ -255,7 +255,7 @@ CREATE TRIGGER trg_recalculate_prices
 CREATE OR REPLACE VIEW public.v_bid_pricing_summary AS
 SELECT
     bp.id AS bid_project_id,
-    bp.name AS project_name,
+    bp.project_name AS project_name,
     bp.letting_date,
 
     -- Line item counts
