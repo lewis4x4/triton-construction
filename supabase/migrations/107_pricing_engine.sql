@@ -290,7 +290,7 @@ SELECT
 
 FROM public.bid_projects bp
 LEFT JOIN public.bid_line_items li ON li.bid_project_id = bp.id
-GROUP BY bp.id, bp.name, bp.letting_date;
+GROUP BY bp.id, bp.project_name, bp.letting_date;
 
 COMMENT ON VIEW public.v_bid_pricing_summary IS 'Summary of pricing status for each bid project';
 
