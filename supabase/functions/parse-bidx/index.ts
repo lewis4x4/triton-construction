@@ -127,19 +127,52 @@ function findNodes(node: unknown, nodeName: string, results: unknown[] = []): un
   return results;
 }
 
-// Normalize WVDOH item number format
-// EBSX uses format like "201001-000" which should map to "201.001" for historical matching
+// Normalize WVDOH item number format for consistent matching
+// Converts various formats to standard form: "201.001" → "201.1", "201.01" → "201.1"
+// This ensures EBSX items match wvdoh_item_master entries
 function normalizeItemNumber(itemNumber: string): string {
   if (!itemNumber) return '';
 
+  let normalized = itemNumber.trim().toLowerCase();
+
   // EBSX format: 201001-000 → 201.001
-  const ebsxMatch = itemNumber.match(/^(\d{3})(\d{3})-(\d{3})$/);
+  const ebsxMatch = normalized.match(/^(\d{3})(\d{3})-(\d{3})$/);
   if (ebsxMatch) {
-    return `${ebsxMatch[1]}.${ebsxMatch[2]}`;
+    normalized = `${ebsxMatch[1]}.${ebsxMatch[2]}`;
   }
 
-  // Already normalized or other format - return as-is
-  return itemNumber;
+  // Replace common separators with dots
+  normalized = normalized.replace(/[-_\s]/g, '.');
+
+  // Handle 6-digit format: "201001" -> "201.001"
+  if (/^\d{6}$/.test(normalized)) {
+    normalized = normalized.substring(0, 3) + '.' + normalized.substring(3);
+  }
+
+  // Remove multiple consecutive dots
+  normalized = normalized.replace(/\.+/g, '.');
+
+  // Split by dots and remove leading zeros from decimal parts
+  // This converts "201.001" to "201.1" and "203.01" to "203.1"
+  const parts = normalized.split('.');
+  if (parts.length >= 2) {
+    const section = parts[0];
+    // Remove leading zeros from item number part
+    const item = parts[1].replace(/^0+/, '') || '0';
+
+    if (parts.length >= 3) {
+      const subitem = parts[2].replace(/^0+/, '') || '0';
+      // Only include third part if it's not "0"
+      normalized = subitem !== '0' ? `${section}.${item}.${subitem}` : `${section}.${item}`;
+    } else {
+      normalized = `${section}.${item}`;
+    }
+  }
+
+  // Remove trailing .0
+  normalized = normalized.replace(/\.0+$/, '');
+
+  return normalized;
 }
 
 // Parse EBSX file using regex (simple and reliable for EBSX format)
@@ -835,22 +868,28 @@ serve(async (req) => {
       for (const itemNumber of itemNumbers) {
         if (historicalPriceMap.has(itemNumber)) continue;
 
+        // Normalize item number to match database format (e.g., "201.001" → "201.1")
+        const normalizedItemNumber = normalizeItemNumber(itemNumber);
+        console.log(`Looking up pricing for ${itemNumber} (normalized: ${normalizedItemNumber})`);
+
         const { data: suggestion } = await supabaseAdmin.rpc('get_ai_suggested_price', {
           p_organization_id: organizationId,
-          p_item_number: itemNumber,
+          p_item_number: normalizedItemNumber,
         });
 
         if (suggestion?.found && suggestion?.suggested_price) {
+          // Store with original item number as key since that's what we'll look up later
           historicalPriceMap.set(itemNumber, {
             price: suggestion.suggested_price,
             source: suggestion.source, // 'historical' or 'base_price'
             confidence: suggestion.confidence || 0.75,
           });
+          console.log(`Found pricing for ${itemNumber}: $${suggestion.suggested_price} (${suggestion.source})`);
         }
       }
-    } catch {
+    } catch (e) {
       // Function doesn't exist yet (migration 106 not applied), fall back to old method
-      console.log('get_ai_suggested_price not available, using fallback historical lookup');
+      console.log('get_ai_suggested_price not available, using fallback historical lookup', e);
     }
 
     // Fallback: query bid_line_items directly if no results from new system
