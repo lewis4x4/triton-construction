@@ -414,7 +414,8 @@ export function EnhancedCrewRoster() {
     ]);
   };
 
-  const handleSelectMember = (member: CrewMember) => {
+  const handleSelectMember = (e: React.MouseEvent, member: CrewMember) => {
+    e.stopPropagation();
     setSelectedMember(member);
     setShowDetailPanel(true);
   };
@@ -700,7 +701,7 @@ export function EnhancedCrewRoster() {
                     .sort((a, b) => b.complianceScore - a.complianceScore)
                     .slice(0, 5)
                     .map((member, i) => (
-                      <div key={member.id} className="performer-item" onClick={() => handleSelectMember(member)}>
+                      <div key={member.id} className="performer-item" onClick={(e) => handleSelectMember(e, member)}>
                         <span className="performer-rank">#{i + 1}</span>
                         <div className="performer-info">
                           <span className="performer-name">{member.displayName}</span>
@@ -755,10 +756,7 @@ export function EnhancedCrewRoster() {
                 <div
                   key={member.id}
                   className={`member-card ${selectedMember?.id === member.id ? 'selected' : ''}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleSelectMember(member);
-                  }}
+                  onClick={(e) => handleSelectMember(e, member)}
                 >
                   <div className="member-header">
                     <div className="member-avatar">

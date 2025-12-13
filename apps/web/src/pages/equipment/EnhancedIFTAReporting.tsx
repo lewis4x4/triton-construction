@@ -414,7 +414,8 @@ export function EnhancedIFTAReporting() {
     }
   };
 
-  const handleSelectReport = (report: QuarterlyReport) => {
+  const handleSelectReport = (e: React.MouseEvent, report: QuarterlyReport) => {
+    e.stopPropagation();
     setSelectedReport(report);
     setShowDetailPanel(true);
   };
@@ -504,7 +505,7 @@ export function EnhancedIFTAReporting() {
         <div className="alert-banner warning">
           <AlertTriangle size={20} />
           <span><strong>Q4 2024 Filing Due:</strong> January 31, 2025 - 23 days remaining</span>
-          <button className="btn-link" onClick={() => { const report = quarterlyReports[0]; if (report) handleSelectReport(report); }}>Review & Submit</button>
+          <button className="btn-link" onClick={(e) => { const report = quarterlyReports[0]; if (report) handleSelectReport(e, report); }}>Review & Submit</button>
         </div>
       )}
 
@@ -634,7 +635,7 @@ export function EnhancedIFTAReporting() {
                     <div
                       key={report.id}
                       className="quarter-item"
-                      onClick={() => handleSelectReport(report)}
+                      onClick={(e) => handleSelectReport(e, report)}
                     >
                       <div className="quarter-info">
                         <span className="quarter-name">{report.quarter} {report.year}</span>
@@ -707,7 +708,7 @@ export function EnhancedIFTAReporting() {
           <div className="quarters-section">
             <div className="quarters-grid">
               {quarterlyReports.map((report) => (
-                <div key={report.id} className="quarter-card" onClick={() => handleSelectReport(report)}>
+                <div key={report.id} className="quarter-card" onClick={(e) => handleSelectReport(e, report)}>
                   <div className="quarter-header">
                     <h3>{report.quarter} {report.year}</h3>
                     <span

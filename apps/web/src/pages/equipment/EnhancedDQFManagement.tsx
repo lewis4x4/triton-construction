@@ -531,7 +531,8 @@ export function EnhancedDQFManagement() {
     ]);
   };
 
-  const handleSelectDriver = async (driver: DriverQualificationFile) => {
+  const handleSelectDriver = async (e: React.MouseEvent, driver: DriverQualificationFile) => {
+    e.stopPropagation();
     setSelectedDriver(driver);
     setShowDetailPanel(true);
 
@@ -914,7 +915,7 @@ export function EnhancedDQFManagement() {
                 <div
                   key={driver.id}
                   className={`driver-card ${selectedDriver?.id === driver.id ? 'selected' : ''}`}
-                  onClick={() => handleSelectDriver(driver)}
+                  onClick={(e) => handleSelectDriver(e, driver)}
                 >
                   <div className="driver-header">
                     <div className="driver-avatar">

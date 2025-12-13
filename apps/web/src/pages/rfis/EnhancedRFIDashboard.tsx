@@ -899,8 +899,8 @@ function RFIDetailPanel({ rfi, onClose, getStatusConfig, getPriorityConfig, isOv
   const overdue = isOverdue(rfi);
 
   return (
-    <div className="detail-panel-overlay">
-      <div className="detail-panel">
+    <div className="detail-panel-overlay" onClick={onClose}>
+      <div className="detail-panel" onClick={(e) => e.stopPropagation()}>
         <div className="panel-header">
           <div className="panel-title">
             <span className="panel-number">{rfi.rfi_number}</span>

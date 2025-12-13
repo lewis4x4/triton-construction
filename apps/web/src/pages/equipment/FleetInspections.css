@@ -920,11 +920,14 @@
 .fleet-inspections-page .detail-panel {
   width: 100%;
   max-width: 500px;
+  height: 100%;
   background: linear-gradient(135deg, #1a1f2e, #0f1219);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   animation: slideIn 0.3s ease-out;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
 }
 
 @keyframes slideIn {
