@@ -324,15 +324,15 @@ export function EnhancedRFIDashboard() {
     <div className="enhanced-rfi-dashboard">
       {/* Header */}
       <div className="rfi-header">
-        <div className="header-left">
-          <h1>RFI Management</h1>
-          <p className="header-subtitle">Request for Information tracking and response management</p>
+        <div className="rfi-header-left">
+          <h1><HelpCircle size={28} /> RFI Management</h1>
+          <p>Request for Information tracking and response management</p>
         </div>
-        <div className="header-actions">
+        <div className="rfi-header-actions">
           <select
             value={selectedProjectId}
             onChange={(e) => setSelectedProjectId(e.target.value)}
-            className="project-select"
+            className="rfi-project-select"
           >
             {projects.map((p) => (
               <option key={p.id} value={p.id}>
@@ -340,11 +340,11 @@ export function EnhancedRFIDashboard() {
               </option>
             ))}
           </select>
-          <button className="btn-secondary" onClick={() => setShowFilters(!showFilters)}>
+          <button className="rfi-btn rfi-btn-secondary" onClick={() => setShowFilters(!showFilters)}>
             <Filter size={18} />
             Filters
           </button>
-          <button className="btn-primary" onClick={() => setShowNewRFIModal(true)}>
+          <button className="rfi-btn rfi-btn-primary" onClick={() => setShowNewRFIModal(true)}>
             <Plus size={18} />
             New RFI
           </button>
@@ -352,60 +352,72 @@ export function EnhancedRFIDashboard() {
       </div>
 
       {/* KPI Cards */}
-      <div className="rfi-kpis">
-        <div className="kpi-card">
-          <div className="kpi-icon blue">
-            <HelpCircle size={24} />
+      <div className="rfi-kpi-grid">
+        <div className="rfi-kpi-card blue">
+          <div className="rfi-kpi-header">
+            <div className="rfi-kpi-icon">
+              <HelpCircle size={24} />
+            </div>
+            <span className="rfi-kpi-trend neutral">Total</span>
           </div>
-          <div className="kpi-content">
-            <span className="kpi-value">{metrics?.total_rfis || 0}</span>
-            <span className="kpi-label">Total RFIs</span>
-            <div className="kpi-breakdown">
-              <span className="breakdown-item open">{metrics?.open_rfis || 0} Open</span>
+          <div className="rfi-kpi-value">{metrics?.total_rfis || 0}</div>
+          <div className="rfi-kpi-label">Total RFIs</div>
+          <div className="rfi-kpi-details">
+            <div className="rfi-kpi-detail">
+              <span className="rfi-kpi-detail-value">{metrics?.open_rfis || 0}</span>
+              <span className="rfi-kpi-detail-label">Open</span>
             </div>
           </div>
         </div>
 
-        <div className="kpi-card">
-          <div className={`kpi-icon ${(metrics?.overdue_rfis || 0) > 0 ? 'red' : 'green'}`}>
-            <AlertTriangle size={24} />
-          </div>
-          <div className="kpi-content">
-            <span className="kpi-value">{metrics?.overdue_rfis || 0}</span>
-            <span className="kpi-label">Overdue</span>
+        <div className={`rfi-kpi-card ${(metrics?.overdue_rfis || 0) > 0 ? 'red' : 'green'}`}>
+          <div className="rfi-kpi-header">
+            <div className="rfi-kpi-icon">
+              <AlertTriangle size={24} />
+            </div>
             {(metrics?.overdue_rfis || 0) > 0 && (
-              <div className="kpi-alert">
-                <AlertCircle size={14} />
-                <span>Requires attention</span>
-              </div>
+              <span className="rfi-kpi-trend down">Urgent</span>
             )}
           </div>
+          <div className="rfi-kpi-value">{metrics?.overdue_rfis || 0}</div>
+          <div className="rfi-kpi-label">Overdue</div>
+          {(metrics?.overdue_rfis || 0) > 0 && (
+            <div className="rfi-kpi-details">
+              <div className="rfi-kpi-detail">
+                <span className="rfi-kpi-detail-label">Requires attention</span>
+              </div>
+            </div>
+          )}
         </div>
 
-        <div className="kpi-card">
-          <div className="kpi-icon green">
-            <Timer size={24} />
+        <div className="rfi-kpi-card green">
+          <div className="rfi-kpi-header">
+            <div className="rfi-kpi-icon">
+              <Timer size={24} />
+            </div>
+            <span className="rfi-kpi-trend up">-0.3d</span>
           </div>
-          <div className="kpi-content">
-            <span className="kpi-value">{metrics?.avg_response_time || 0} days</span>
-            <span className="kpi-label">Avg Response Time</span>
-            <div className="kpi-trend positive">
-              <ArrowDownRight size={14} />
-              <span>0.3 days faster</span>
+          <div className="rfi-kpi-value">{metrics?.avg_response_time || 0}d</div>
+          <div className="rfi-kpi-label">Avg Response Time</div>
+          <div className="rfi-kpi-details">
+            <div className="rfi-kpi-detail">
+              <span className="rfi-kpi-detail-label">Days faster this month</span>
             </div>
           </div>
         </div>
 
-        <div className="kpi-card">
-          <div className="kpi-icon purple">
-            <CheckCircle size={24} />
+        <div className="rfi-kpi-card green">
+          <div className="rfi-kpi-header">
+            <div className="rfi-kpi-icon">
+              <CheckCircle size={24} />
+            </div>
+            <span className="rfi-kpi-trend up">+2.1%</span>
           </div>
-          <div className="kpi-content">
-            <span className="kpi-value">{metrics?.response_rate || 0}%</span>
-            <span className="kpi-label">Response Rate</span>
-            <div className="kpi-trend positive">
-              <ArrowUpRight size={14} />
-              <span>+2.1% this month</span>
+          <div className="rfi-kpi-value">{metrics?.response_rate || 0}%</div>
+          <div className="rfi-kpi-label">Response Rate</div>
+          <div className="rfi-kpi-details">
+            <div className="rfi-kpi-detail">
+              <span className="rfi-kpi-detail-label">This month</span>
             </div>
           </div>
         </div>
@@ -413,29 +425,32 @@ export function EnhancedRFIDashboard() {
 
       {/* Tabs */}
       <div className="rfi-tabs">
-        <div className="tabs-list">
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            return (
-              <button
-                key={tab.id}
-                className={`tab-btn ${activeTab === tab.id ? 'active' : ''} ${tab.alert && (tab.count || 0) > 0 ? 'alert' : ''}`}
-                onClick={() => setActiveTab(tab.id as TabType)}
-              >
-                {Icon && <Icon size={16} />}
-                {tab.label}
-                {tab.count !== undefined && (
-                  <span className={`tab-count ${tab.alert && tab.count > 0 ? 'alert' : ''}`}>
-                    {tab.count}
-                  </span>
-                )}
-              </button>
-            );
-          })}
-        </div>
-        <div className="tabs-actions">
-          <div className="search-box">
-            <Search size={18} />
+        {tabs.map((tab) => {
+          const Icon = tab.icon;
+          return (
+            <button
+              key={tab.id}
+              className={`rfi-tab ${activeTab === tab.id ? 'active' : ''} ${tab.alert && (tab.count || 0) > 0 ? 'alert' : ''}`}
+              onClick={() => setActiveTab(tab.id as TabType)}
+            >
+              {Icon && <Icon size={16} />}
+              {tab.label}
+              {tab.count !== undefined && (
+                <span className={`rfi-tab-badge ${tab.alert && tab.count > 0 ? 'alert' : ''}`}>
+                  {tab.count}
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Search and Controls */}
+      <div className="rfi-table-header">
+        <h3><FileText size={20} /> RFI List</h3>
+        <div className="rfi-table-controls">
+          <div className="rfi-search">
+            <Search size={16} />
             <input
               type="text"
               placeholder="Search RFIs..."
@@ -443,11 +458,11 @@ export function EnhancedRFIDashboard() {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          <button className="btn-icon" title="Export">
-            <Download size={18} />
+          <button className="rfi-filter-btn" title="Export">
+            <Download size={16} /> Export
           </button>
-          <button className="btn-icon" title="Refresh" onClick={loadData}>
-            <RefreshCw size={18} />
+          <button className="rfi-filter-btn" title="Refresh" onClick={loadData}>
+            <RefreshCw size={16} />
           </button>
         </div>
       </div>

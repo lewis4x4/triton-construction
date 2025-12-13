@@ -330,17 +330,17 @@
 /* Overview Grid */
 .overview-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
   .overview-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 850px) {
+@media (max-width: 900px) {
   .overview-grid {
     grid-template-columns: 1fr;
   }
@@ -361,24 +361,28 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.5rem;
+  padding: 1rem 1.25rem;
   border-bottom: 1px solid var(--border-default);
   background: rgba(0, 0, 0, 0.2);
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .card-header h3 {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
   color: var(--text-primary);
+  white-space: nowrap;
 }
 
 .card-subtitle {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--text-tertiary);
+  white-space: nowrap;
 }
 
 .header-icon-small {
@@ -408,7 +412,7 @@
 
 /* Trade Donut */
 .trade-card {
-  grid-row: span 2;
+  /* Let it flow naturally in 2-column grid */
 }
 
 .trade-donut-container {
@@ -775,13 +779,7 @@
 
 /* Invoices List */
 .recent-invoices-card {
-  grid-column: span 2;
-}
-
-@media (max-width: 1200px) {
-  .recent-invoices-card {
-    grid-column: span 1;
-  }
+  /* Single column in 2-col grid */
 }
 
 .invoices-list {
@@ -1249,4 +1247,462 @@
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+/* Contract Summary Card */
+.contract-summary-card .contract-summary {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contract-summary .summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.contract-summary .summary-item:last-of-type {
+  border-bottom: none;
+}
+
+.contract-summary .summary-item .label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.contract-summary .summary-item .value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
+.contract-summary .summary-item .value.paid {
+  color: var(--neon-green);
+}
+
+.contract-summary .summary-item .value.retained {
+  color: var(--neon-amber);
+}
+
+.contract-summary .summary-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  display: flex;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.contract-summary .bar-fill {
+  height: 100%;
+  transition: width 0.5s ease;
+}
+
+.contract-summary .bar-fill.paid {
+  background: linear-gradient(90deg, var(--neon-green), var(--neon-cyan));
+}
+
+.contract-summary .bar-fill.invoiced {
+  background: var(--neon-amber);
+}
+
+.contract-summary .summary-legend {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.contract-summary .summary-legend .dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  margin-right: 0.5rem;
+}
+
+.contract-summary .summary-legend .dot.paid {
+  background: var(--neon-cyan);
+}
+
+.contract-summary .summary-legend .dot.invoiced {
+  background: var(--neon-amber);
+}
+
+.contract-summary .summary-legend .dot.remaining {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Subcontractor Card Improvements */
+.sub-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--neon-blue), var(--neon-cyan));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.sub-identity {
+  flex: 1;
+  min-width: 0;
+}
+
+.sub-identity h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem 0;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sub-identity .trade {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.sub-certifications {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.cert-badge {
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.cert-badge.dbe {
+  background: rgba(139, 92, 246, 0.15);
+  color: #a78bfa;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.cert-badge.mbe {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--neon-blue);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.cert-badge.wbe {
+  background: rgba(236, 72, 153, 0.15);
+  color: #f472b6;
+  border: 1px solid rgba(236, 72, 153, 0.3);
+}
+
+.cert-badge.vbe {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.sub-performance {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.sub-performance .perf-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+}
+
+.sub-performance .perf-value {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
+.sub-performance .perf-label {
+  color: var(--text-tertiary);
+  font-size: 0.7rem;
+}
+
+.sub-performance .star {
+  color: var(--neon-amber);
+  fill: rgba(255, 159, 28, 0.3);
+}
+
+.sub-stats {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.sub-stats .stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.sub-stats .stat-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
+.sub-stats .stat-label {
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+}
+
+.sub-contact {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.sub-contact span {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.sub-contact svg {
+  color: var(--text-tertiary);
+}
+
+/* Detail Panel Header Fix */
+.detail-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-default);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.detail-panel-header h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.detail-panel-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
+.detail-section {
+  margin-bottom: 1.5rem;
+}
+
+.detail-section h4 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.detail-status-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.dbe-badge-large {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(139, 92, 246, 0.15);
+  color: #a78bfa;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-md);
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.metric-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+}
+
+.metric-card .metric-icon {
+  color: var(--neon-cyan);
+}
+
+.metric-card .metric-icon.star {
+  color: var(--neon-amber);
+}
+
+.metric-card .metric-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
+.metric-card .metric-label {
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.detail-item.full-width {
+  grid-column: span 2;
+}
+
+.detail-item .label {
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+}
+
+.detail-item .value {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.detail-item .value.highlight {
+  color: var(--neon-cyan);
+  font-weight: 600;
+}
+
+.detail-item .value.link {
+  color: var(--neon-blue);
+  cursor: pointer;
+}
+
+.cert-badges-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.detail-actions {
+  display: flex;
+  gap: 0.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-default);
+  margin-top: auto;
+}
+
+.contract-value-detail,
+.billing-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.value-row,
+.billing-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.value-row span:last-child,
+.billing-row span:last-child {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
+.value-row.total {
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-subtle);
+  font-size: 1rem;
+}
+
+.value-row.total span:last-child {
+  color: var(--neon-cyan);
+}
+
+.value-row .co {
+  color: var(--neon-green);
+}
+
+.billing-row .paid {
+  color: var(--neon-green);
+}
+
+.billing-row .retained {
+  color: var(--neon-amber);
+}
+
+.progress-detail {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.progress-detail .progress-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-detail .progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--neon-blue), var(--neon-cyan));
+  border-radius: 4px;
+}
+
+.progress-detail span {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
 }

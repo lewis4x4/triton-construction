@@ -522,7 +522,7 @@ export function WorkforceComplianceDashboard() {
               <h3 className="text-sm font-bold text-white uppercase tracking-widest">Quick Actions</h3>
             </div>
             <div className="p-4">
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              <div className="quick-actions-grid">
                 {[
                   { icon: Users, label: 'Add Employee' },
                   { icon: Building2, label: 'Add Subcontractor' },
@@ -531,9 +531,9 @@ export function WorkforceComplianceDashboard() {
                   { icon: Truck, label: 'Fleet Status' },
                   { icon: HardHat, label: 'Safety Meeting' }
                 ].map((action, i) => (
-                  <button key={i} className="flex flex-col items-center justify-center gap-3 p-4 rounded-lg bg-white/5 border border-white/10 hover:bg-cyan-500/10 hover:border-cyan-500/50 hover:text-cyan-400 transition-all group">
-                    <action.icon size={24} className="text-gray-400 group-hover:text-cyan-400 transition-colors" />
-                    <span className="text-xs font-medium text-gray-400 group-hover:text-white transition-colors">{action.label}</span>
+                  <button key={i} className="quick-action-btn">
+                    <action.icon size={24} className="quick-action-icon" />
+                    <span className="quick-action-label">{action.label}</span>
                   </button>
                 ))}
               </div>

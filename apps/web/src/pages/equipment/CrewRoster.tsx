@@ -516,6 +516,8 @@ export function CrewRoster() {
 
       {/* Member Detail Panel */}
       {selectedMember && (
+        <>
+        <div className="detail-panel-overlay" onClick={() => setSelectedMember(null)} />
         <div className="member-detail-panel">
           <div className="detail-header">
             <h3>{selectedMember.display_name}</h3>
@@ -626,6 +628,7 @@ export function CrewRoster() {
             <button className="btn btn-primary">Edit Member</button>
           </div>
         </div>
+        </>
       )}
     </div>
   );

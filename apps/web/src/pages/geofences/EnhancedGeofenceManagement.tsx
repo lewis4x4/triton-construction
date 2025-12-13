@@ -395,12 +395,24 @@ export function EnhancedGeofenceManagement() {
 
   const fetchData = async () => {
     setLoading(true);
+
+    // Helper function to add timeout to promises
+    const withTimeout = <T,>(promise: Promise<T>, ms: number): Promise<T> => {
+      const timeout = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Query timeout')), ms)
+      );
+      return Promise.race([promise, timeout]);
+    };
+
     try {
-      // Try to fetch real data
-      const { data: gfData } = await (supabase as any)
-        .from('geofences')
-        .select('*')
-        .order('created_at', { ascending: false });
+      // Try to fetch real data with 5 second timeout
+      const { data: gfData } = await withTimeout(
+        (supabase as any)
+          .from('geofences')
+          .select('*')
+          .order('created_at', { ascending: false }),
+        5000
+      );
 
       if (gfData && gfData.length > 0) {
         setGeofences(gfData);
@@ -413,6 +425,7 @@ export function EnhancedGeofenceManagement() {
       }
     } catch (err) {
       console.error('Error fetching data:', err);
+      // Fallback to demo data on any error (including timeout)
       setGeofences(demoGeofences);
       setEvents(demoEvents);
       calculateStats(demoGeofences);

@@ -347,22 +347,36 @@ export function EnhancedPlatformAlerts() {
 
   const fetchData = async () => {
     setLoading(true);
+
+    // Helper function to add timeout to promises
+    const withTimeout = <T,>(promise: Promise<T>, ms: number): Promise<T> => {
+      const timeout = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Query timeout')), ms)
+      );
+      return Promise.race([promise, timeout]);
+    };
+
     try {
-      // Try to fetch real data
-      const { data } = await (supabase as any)
-        .from('platform_alerts')
-        .select('*')
-        .order('created_at', { ascending: false });
+      // Try to fetch real data with 5 second timeout
+      const { data } = await withTimeout(
+        (supabase as any)
+          .from('platform_alerts')
+          .select('*')
+          .order('created_at', { ascending: false }),
+        5000
+      );
 
       if (data && data.length > 0) {
         setAlerts(data);
         calculateStats(data);
       } else {
+        // Fallback to demo data
         setAlerts(demoAlerts);
         calculateStats(demoAlerts);
       }
     } catch (err) {
       console.error('Error fetching alerts:', err);
+      // Fallback to demo data on any error (including timeout)
       setAlerts(demoAlerts);
       calculateStats(demoAlerts);
     } finally {

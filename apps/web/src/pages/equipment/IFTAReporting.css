@@ -355,6 +355,24 @@
   to { transform: rotate(360deg); }
 }
 
+/* Detail Panel Overlay */
+.ifta-reporting-page .detail-panel-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  z-index: 999;
+  animation: iftaFadeIn 0.2s ease-out;
+}
+
+@keyframes iftaFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 /* Detail Panel */
 .ifta-reporting-page .detail-panel {
   position: fixed;
@@ -363,10 +381,22 @@
   width: 520px;
   height: 100vh;
   background: var(--bg-card);
-  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.2);
   z-index: 1000;
   display: flex;
   flex-direction: column;
+  animation: iftaSlideIn 0.25s ease-out;
+}
+
+@keyframes iftaSlideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0.8;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 .ifta-reporting-page .panel-header {

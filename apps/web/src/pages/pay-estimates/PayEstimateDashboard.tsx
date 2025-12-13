@@ -61,17 +61,17 @@ type PayPeriodStatus =
   | 'CLOSED';
 
 const STATUS_CONFIG: Record<PayPeriodStatus, { label: string; color: string; bgColor: string }> = {
-  PRELIMINARY_RECEIVED: { label: 'Preliminary', color: '#6B7280', bgColor: '#F3F4F6' },
-  IMR_UNDER_REVIEW: { label: 'IMR Review', color: '#F59E0B', bgColor: '#FEF3C7' },
-  DISPUTED_WITH_STATE: { label: 'Disputed', color: '#EF4444', bgColor: '#FEE2E2' },
-  FINAL_RECEIVED: { label: 'Final Received', color: '#3B82F6', bgColor: '#DBEAFE' },
-  FUNDS_RECEIVED: { label: 'Funds Received', color: '#10B981', bgColor: '#D1FAE5' },
-  SUB_WS_IN_PROGRESS: { label: 'Sub Worksheet', color: '#8B5CF6', bgColor: '#EDE9FE' },
-  PENDING_APPROVAL: { label: 'Pending Approval', color: '#F59E0B', bgColor: '#FEF3C7' },
-  APPROVED: { label: 'Approved', color: '#10B981', bgColor: '#D1FAE5' },
-  CHECKS_CUT: { label: 'Checks Cut', color: '#10B981', bgColor: '#D1FAE5' },
-  CRL_SUBMITTED: { label: 'CRL Submitted', color: '#6B7280', bgColor: '#F3F4F6' },
-  CLOSED: { label: 'Closed', color: '#6B7280', bgColor: '#F3F4F6' },
+  PRELIMINARY_RECEIVED: { label: 'Preliminary', color: '#9CA3AF', bgColor: 'rgba(107, 114, 128, 0.2)' },
+  IMR_UNDER_REVIEW: { label: 'IMR Review', color: '#FBBF24', bgColor: 'rgba(245, 158, 11, 0.2)' },
+  DISPUTED_WITH_STATE: { label: 'Disputed', color: '#F87171', bgColor: 'rgba(239, 68, 68, 0.2)' },
+  FINAL_RECEIVED: { label: 'Final Received', color: '#60A5FA', bgColor: 'rgba(59, 130, 246, 0.2)' },
+  FUNDS_RECEIVED: { label: 'Funds Received', color: '#34D399', bgColor: 'rgba(16, 185, 129, 0.2)' },
+  SUB_WS_IN_PROGRESS: { label: 'Sub Worksheet', color: '#A78BFA', bgColor: 'rgba(139, 92, 246, 0.2)' },
+  PENDING_APPROVAL: { label: 'Pending Approval', color: '#FBBF24', bgColor: 'rgba(245, 158, 11, 0.2)' },
+  APPROVED: { label: 'Approved', color: '#34D399', bgColor: 'rgba(16, 185, 129, 0.2)' },
+  CHECKS_CUT: { label: 'Checks Cut', color: '#34D399', bgColor: 'rgba(16, 185, 129, 0.2)' },
+  CRL_SUBMITTED: { label: 'CRL Submitted', color: '#9CA3AF', bgColor: 'rgba(107, 114, 128, 0.2)' },
+  CLOSED: { label: 'Closed', color: '#9CA3AF', bgColor: 'rgba(107, 114, 128, 0.2)' },
 };
 
 // Demo data for fallback

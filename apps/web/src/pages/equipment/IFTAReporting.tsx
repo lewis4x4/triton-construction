@@ -356,6 +356,8 @@ export function IFTAReporting() {
 
       {/* Report Detail Panel */}
       {selectedReport && (
+        <>
+        <div className="detail-panel-overlay" onClick={() => setSelectedReport(null)} />
         <div className="detail-panel">
           <div className="panel-header">
             <h2>Q{selectedReport.report_quarter} {selectedReport.report_year} IFTA Report</h2>
@@ -504,6 +506,7 @@ export function IFTAReporting() {
             )}
           </div>
         </div>
+        </>
       )}
     </div>
   );

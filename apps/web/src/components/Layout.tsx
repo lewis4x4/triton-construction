@@ -203,14 +203,11 @@ export function Layout({ children }: LayoutProps) {
             </div>
             <div className="user-details">
               <span className="user-name">{getUserDisplayName()}</span>
-              <button onClick={signOut} className="sign-out-link">
-                Sign Out
-              </button>
             </div>
             <div className="user-actions">
               <NotificationBell />
               <button onClick={signOut} className="btn btn-ghost btn-icon" title="Sign Out">
-                <LogOut size={18} strokeWidth={1.5} />
+                <LogOut size={16} strokeWidth={1.5} />
               </button>
             </div>
           </div>

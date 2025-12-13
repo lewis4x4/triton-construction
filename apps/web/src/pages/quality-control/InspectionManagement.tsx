@@ -439,13 +439,18 @@ export function InspectionManagement() {
 
       {/* Detail Panel */}
       {selectedInspection && (
-        <div className="detail-panel">
-          <div className="panel-header">
-            <h2>{selectedInspection.inspection_number}</h2>
-            <button className="btn btn-icon" onClick={() => setSelectedInspection(null)}>
-              <X size={20} />
-            </button>
-          </div>
+        <>
+          <div
+            className="detail-panel-overlay"
+            onClick={() => setSelectedInspection(null)}
+          />
+          <div className="detail-panel">
+            <div className="panel-header">
+              <h2>{selectedInspection.inspection_number}</h2>
+              <button className="btn btn-icon" onClick={() => setSelectedInspection(null)}>
+                <X size={20} />
+              </button>
+            </div>
 
           <div className="panel-content">
             {/* Header Info */}
@@ -549,6 +554,7 @@ export function InspectionManagement() {
             </div>
           </div>
         </div>
+        </>
       )}
 
       {/* New Inspection Modal */}
