@@ -40,10 +40,21 @@ WHERE item_number = '615.39' AND base_unit_price = 0;
 -- Variants like 697.1-L270 should fall back to base item 697.1
 -- ============================================================================
 
--- Drop existing function(s) with any signature to avoid conflicts
-DROP FUNCTION IF EXISTS public.get_ai_suggested_price(UUID, TEXT);
-DROP FUNCTION IF EXISTS public.get_ai_suggested_price(UUID, TEXT, NUMERIC);
-DROP FUNCTION IF EXISTS public.get_ai_suggested_price(UUID, TEXT, NUMERIC, TEXT);
+-- Drop ALL existing versions of the function to avoid signature conflicts
+DO $$
+DECLARE
+    r RECORD;
+BEGIN
+    FOR r IN
+        SELECT p.oid::regprocedure AS func_signature
+        FROM pg_proc p
+        JOIN pg_namespace n ON p.pronamespace = n.oid
+        WHERE n.nspname = 'public'
+        AND p.proname = 'get_ai_suggested_price'
+    LOOP
+        EXECUTE 'DROP FUNCTION IF EXISTS ' || r.func_signature || ' CASCADE';
+    END LOOP;
+END $$;
 
 CREATE OR REPLACE FUNCTION public.get_ai_suggested_price(
   p_organization_id UUID,

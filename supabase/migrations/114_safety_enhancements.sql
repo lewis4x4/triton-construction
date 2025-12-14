@@ -642,6 +642,25 @@ CREATE POLICY "daily_jsa_links_access" ON public.daily_work_jsa_links
 -- PART 9: Competent Person Compliance View
 -- ============================================================================
 
+-- Ensure missing columns exist (may be missing in some deployments)
+ALTER TABLE public.competent_person_designations
+ADD COLUMN IF NOT EXISTS effective_date DATE DEFAULT CURRENT_DATE;
+
+ALTER TABLE public.competent_person_designations
+ADD COLUMN IF NOT EXISTS training_provider TEXT;
+
+ALTER TABLE public.competent_person_designations
+ADD COLUMN IF NOT EXISTS certificate_number TEXT;
+
+ALTER TABLE public.competent_person_designations
+ADD COLUMN IF NOT EXISTS expiration_date DATE;
+
+ALTER TABLE public.competent_person_designations
+ADD COLUMN IF NOT EXISTS revoked_at TIMESTAMPTZ;
+
+ALTER TABLE public.competent_person_designations
+ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT true;
+
 CREATE OR REPLACE VIEW public.v_competent_person_compliance AS
 SELECT
     cpd.organization_id,

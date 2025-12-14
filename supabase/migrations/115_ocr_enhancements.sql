@@ -64,15 +64,28 @@ ALTER TABLE IF EXISTS public.ocr_extractions
 -- SECTION 3: MATERIAL TICKET ENHANCEMENTS
 -- =====================================================
 
+-- Add core ticket fields if not exist (may be missing from earlier migrations)
+ALTER TABLE IF EXISTS public.material_tickets
+    ADD COLUMN IF NOT EXISTS vendor_ticket_number TEXT,
+    ADD COLUMN IF NOT EXISTS delivery_date DATE,
+    ADD COLUMN IF NOT EXISTS material_description TEXT,
+    ADD COLUMN IF NOT EXISTS material_type TEXT,
+    ADD COLUMN IF NOT EXISTS quantity NUMERIC(12,3),
+    ADD COLUMN IF NOT EXISTS unit_of_measure TEXT,
+    ADD COLUMN IF NOT EXISTS unit_price NUMERIC(12,4),
+    ADD COLUMN IF NOT EXISTS net_weight NUMERIC(12,3),
+    ADD COLUMN IF NOT EXISTS truck_number TEXT,
+    ADD COLUMN IF NOT EXISTS driver_name TEXT;
+
 -- Add OCR-related fields to material_tickets if not exist
 ALTER TABLE IF EXISTS public.material_tickets
-    ADD COLUMN IF NOT EXISTS ocr_status TEXT DEFAULT 'PENDING' CHECK (ocr_status IN ('PENDING', 'PROCESSING', 'COMPLETE', 'FAILED', 'MANUAL')),
+    ADD COLUMN IF NOT EXISTS ocr_status TEXT DEFAULT 'PENDING',
     ADD COLUMN IF NOT EXISTS ocr_confidence NUMERIC(5,2),
     ADD COLUMN IF NOT EXISTS ocr_provider TEXT,
     ADD COLUMN IF NOT EXISTS ocr_completed_at TIMESTAMPTZ,
     ADD COLUMN IF NOT EXISTS matched_po_id UUID REFERENCES public.purchase_orders(id),
     ADD COLUMN IF NOT EXISTS matched_po_confidence NUMERIC(3,2),
-    ADD COLUMN IF NOT EXISTS verification_status TEXT DEFAULT 'UNVERIFIED' CHECK (verification_status IN ('UNVERIFIED', 'VERIFIED', 'REJECTED', 'NEEDS_REVIEW')),
+    ADD COLUMN IF NOT EXISTS verification_status TEXT DEFAULT 'UNVERIFIED',
     ADD COLUMN IF NOT EXISTS verified_by UUID REFERENCES public.user_profiles(id),
     ADD COLUMN IF NOT EXISTS verified_at TIMESTAMPTZ,
     ADD COLUMN IF NOT EXISTS verification_notes TEXT,
@@ -80,6 +93,54 @@ ALTER TABLE IF EXISTS public.material_tickets
     ADD COLUMN IF NOT EXISTS variance_amount NUMERIC(12,2),
     ADD COLUMN IF NOT EXISTS variance_reason TEXT,
     ADD COLUMN IF NOT EXISTS document_type TEXT DEFAULT 'DELIVERY_TICKET';
+
+-- Note: If ocr_status/verification_status columns are enum types (from earlier migrations),
+-- they already enforce valid values. If they're TEXT columns, we add constraints.
+DO $$
+DECLARE
+    v_ocr_type TEXT;
+    v_verif_type TEXT;
+BEGIN
+    -- Check data type of ocr_status
+    SELECT data_type INTO v_ocr_type
+    FROM information_schema.columns
+    WHERE table_schema = 'public'
+      AND table_name = 'material_tickets'
+      AND column_name = 'ocr_status';
+
+    -- Only add constraint if it's TEXT type and constraint doesn't exist
+    IF v_ocr_type = 'text' THEN
+        IF NOT EXISTS (
+            SELECT 1 FROM pg_constraint
+            WHERE conname = 'material_tickets_ocr_status_check'
+            AND conrelid = 'public.material_tickets'::regclass
+        ) THEN
+            ALTER TABLE public.material_tickets
+            ADD CONSTRAINT material_tickets_ocr_status_check
+            CHECK (ocr_status IN ('PENDING', 'PROCESSING', 'COMPLETE', 'FAILED', 'MANUAL'));
+        END IF;
+    END IF;
+
+    -- Check data type of verification_status
+    SELECT data_type INTO v_verif_type
+    FROM information_schema.columns
+    WHERE table_schema = 'public'
+      AND table_name = 'material_tickets'
+      AND column_name = 'verification_status';
+
+    -- Only add constraint if it's TEXT type and constraint doesn't exist
+    IF v_verif_type = 'text' THEN
+        IF NOT EXISTS (
+            SELECT 1 FROM pg_constraint
+            WHERE conname = 'material_tickets_verification_status_check'
+            AND conrelid = 'public.material_tickets'::regclass
+        ) THEN
+            ALTER TABLE public.material_tickets
+            ADD CONSTRAINT material_tickets_verification_status_check
+            CHECK (verification_status IN ('UNVERIFIED', 'VERIFIED', 'REJECTED', 'NEEDS_REVIEW'));
+        END IF;
+    END IF;
+END $$;
 
 -- =====================================================
 -- SECTION 4: AUTO PO-MATCHING FUNCTION
@@ -183,7 +244,8 @@ DECLARE
     v_match RECORD;
 BEGIN
     -- Only auto-match if OCR is complete and no PO matched yet
-    IF NEW.ocr_status = 'COMPLETE' AND NEW.matched_po_id IS NULL THEN
+    -- Cast to TEXT for enum compatibility
+    IF NEW.ocr_status::TEXT = 'COMPLETE' AND NEW.matched_po_id IS NULL THEN
         SELECT * INTO v_match FROM public.auto_match_ticket_to_po(NEW.id) LIMIT 1;
 
         IF v_match.po_id IS NOT NULL THEN
@@ -336,6 +398,10 @@ CREATE TRIGGER material_ticket_variance_check
 -- SECTION 7: OCR QUEUE STATUS VIEW
 -- =====================================================
 
+-- Drop existing views first to allow column changes
+DROP VIEW IF EXISTS public.v_ocr_batch_status CASCADE;
+DROP VIEW IF EXISTS public.v_tickets_pending_verification CASCADE;
+
 CREATE OR REPLACE VIEW public.v_ocr_batch_status AS
 SELECT
     bj.id as batch_id,
@@ -391,9 +457,9 @@ SELECT
     mt.net_weight,
     mt.truck_number,
     mt.driver_name,
-    mt.ocr_status,
+    mt.ocr_status::TEXT as ocr_status,
     mt.ocr_confidence,
-    mt.verification_status,
+    mt.verification_status::TEXT as verification_status,
     mt.has_variance,
     mt.variance_amount,
     mt.variance_reason,
@@ -406,15 +472,15 @@ SELECT
     CASE
         WHEN mt.has_variance THEN 'HIGH'
         WHEN mt.ocr_confidence < 80 THEN 'MEDIUM'
-        WHEN mt.verification_status = 'NEEDS_REVIEW' THEN 'MEDIUM'
+        WHEN mt.verification_status::TEXT = 'NEEDS_REVIEW' THEN 'MEDIUM'
         ELSE 'LOW'
     END as review_priority
 FROM public.material_tickets mt
 JOIN public.projects p ON mt.project_id = p.id
 LEFT JOIN public.suppliers s ON mt.supplier_id = s.id
 LEFT JOIN public.purchase_orders po ON mt.matched_po_id = po.id
-WHERE mt.verification_status IN ('UNVERIFIED', 'NEEDS_REVIEW')
-  AND mt.ocr_status = 'COMPLETE'
+WHERE mt.verification_status::TEXT IN ('UNVERIFIED', 'NEEDS_REVIEW')
+  AND mt.ocr_status::TEXT = 'COMPLETE'
 ORDER BY
     CASE WHEN mt.has_variance THEN 0 ELSE 1 END,
     mt.ocr_confidence ASC,

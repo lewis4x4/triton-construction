@@ -5,6 +5,15 @@
 -- =============================================================================
 
 -- =============================================================================
+-- PART 0: EXTEND violation_type ENUM WITH NEW OPERATOR VIOLATION TYPES
+-- =============================================================================
+
+-- Add new violation types for operator qualification issues
+ALTER TYPE public.violation_type ADD VALUE IF NOT EXISTS 'operator_unqualified';
+ALTER TYPE public.violation_type ADD VALUE IF NOT EXISTS 'operator_cert_expired';
+ALTER TYPE public.violation_type ADD VALUE IF NOT EXISTS 'operator_cert_missing';
+
+-- =============================================================================
 -- PART 1: EQUIPMENT CERTIFICATION REQUIREMENTS TABLE
 -- Defines what certifications are required for each equipment category
 -- =============================================================================
@@ -79,6 +88,7 @@ CREATE TRIGGER trg_ecr_updated_at
 -- =============================================================================
 
 -- Get the demo organization ID for seeding
+-- NOTE: equipment_category_enum values are: earthmoving, hauling, lifting, paving, drilling_piling, concrete, support, survey_grade_control, other
 DO $$
 DECLARE
     v_org_id UUID;
@@ -87,67 +97,53 @@ BEGIN
     SELECT id INTO v_org_id FROM public.organizations LIMIT 1;
 
     IF v_org_id IS NOT NULL THEN
-        -- CRANE requirements (NCCCO certification required per OSHA 1926.1427)
+        -- LIFTING category: Crane/NCCCO requirements (required per OSHA 1926.1427)
         INSERT INTO public.equipment_certification_requirements
             (organization_id, equipment_category, certification_type, certification_name, is_required, is_blocking, regulatory_body, regulation_reference, notes)
         VALUES
-            (v_org_id, 'CRANE', 'NCCCO', 'NCCCO Crane Operator Certification', TRUE, TRUE, 'OSHA', '29 CFR 1926.1427', 'Required for all crane operations per OSHA crane standard')
+            (v_org_id, 'lifting', 'NCCCO', 'NCCCO Crane Operator Certification', TRUE, TRUE, 'OSHA', '29 CFR 1926.1427', 'Required for all crane operations per OSHA crane standard')
         ON CONFLICT DO NOTHING;
 
-        -- EXCAVATOR requirements (competent operator training)
+        -- LIFTING category: Forklift requirements (powered industrial truck)
         INSERT INTO public.equipment_certification_requirements
             (organization_id, equipment_category, certification_type, certification_name, is_required, is_blocking, regulatory_body, regulation_reference, notes)
         VALUES
-            (v_org_id, 'EXCAVATOR', 'EXCAVATOR_OPERATOR', 'Excavator Operator Training', TRUE, TRUE, 'OSHA', '29 CFR 1926.602', 'Competent operator training required')
+            (v_org_id, 'lifting', 'FORKLIFT_OPERATOR', 'Powered Industrial Truck Certification', TRUE, TRUE, 'OSHA', '29 CFR 1910.178', 'Mandatory forklift operator certification per OSHA')
         ON CONFLICT DO NOTHING;
 
-        -- LOADER requirements
+        -- EARTHMOVING category: Heavy equipment operator training (excavators, dozers, loaders, graders)
         INSERT INTO public.equipment_certification_requirements
             (organization_id, equipment_category, certification_type, certification_name, is_required, is_blocking, regulatory_body, regulation_reference, notes)
         VALUES
-            (v_org_id, 'LOADER', 'LOADER_OPERATOR', 'Loader Operator Training', TRUE, TRUE, 'OSHA', '29 CFR 1926.602', 'Heavy equipment operator training required')
+            (v_org_id, 'earthmoving', 'HEAVY_EQUIPMENT_OPERATOR', 'Heavy Equipment Operator Training', TRUE, TRUE, 'OSHA', '29 CFR 1926.602', 'Competent operator training required for earthmoving equipment')
         ON CONFLICT DO NOTHING;
 
-        -- DOZER requirements
+        -- HAULING category: CDL requirements for trucks
         INSERT INTO public.equipment_certification_requirements
             (organization_id, equipment_category, certification_type, certification_name, is_required, is_blocking, regulatory_body, regulation_reference, notes)
         VALUES
-            (v_org_id, 'DOZER', 'DOZER_OPERATOR', 'Dozer Operator Training', TRUE, TRUE, 'OSHA', '29 CFR 1926.602', 'Heavy equipment operator training required')
+            (v_org_id, 'hauling', 'CDL_A', 'Commercial Driver License Class A', TRUE, TRUE, 'FMCSA', '49 CFR 383', 'Required for vehicles over 26,001 lbs GVWR')
         ON CONFLICT DO NOTHING;
 
-        -- GRADER requirements
+        -- PAVING category: Paver/roller operator training
         INSERT INTO public.equipment_certification_requirements
             (organization_id, equipment_category, certification_type, certification_name, is_required, is_blocking, regulatory_body, regulation_reference, notes)
         VALUES
-            (v_org_id, 'GRADER', 'GRADER_OPERATOR', 'Motor Grader Operator Training', TRUE, TRUE, 'OSHA', '29 CFR 1926.602', 'Heavy equipment operator training required')
+            (v_org_id, 'paving', 'PAVING_EQUIPMENT_OPERATOR', 'Paving Equipment Operator Training', TRUE, TRUE, 'OSHA', '29 CFR 1926.602', 'Specialized paver/roller operation training required')
         ON CONFLICT DO NOTHING;
 
-        -- TRUCK requirements (CDL)
+        -- CONCRETE category: Concrete equipment operator training
         INSERT INTO public.equipment_certification_requirements
             (organization_id, equipment_category, certification_type, certification_name, is_required, is_blocking, regulatory_body, regulation_reference, notes)
         VALUES
-            (v_org_id, 'TRUCK', 'CDL_A', 'Commercial Driver License Class A', TRUE, TRUE, 'FMCSA', '49 CFR 383', 'Required for vehicles over 26,001 lbs GVWR')
+            (v_org_id, 'concrete', 'CONCRETE_EQUIPMENT_OPERATOR', 'Concrete Equipment Operator Training', TRUE, FALSE, 'OSHA', '29 CFR 1926.702', 'Concrete equipment specific training recommended')
         ON CONFLICT DO NOTHING;
 
-        -- PAVER requirements
+        -- DRILLING_PILING category: Specialized drilling/piling operator
         INSERT INTO public.equipment_certification_requirements
             (organization_id, equipment_category, certification_type, certification_name, is_required, is_blocking, regulatory_body, regulation_reference, notes)
         VALUES
-            (v_org_id, 'PAVER', 'PAVER_OPERATOR', 'Asphalt Paver Operator Training', TRUE, TRUE, 'OSHA', '29 CFR 1926.602', 'Specialized paver operation training required')
-        ON CONFLICT DO NOTHING;
-
-        -- ROLLER requirements
-        INSERT INTO public.equipment_certification_requirements
-            (organization_id, equipment_category, certification_type, certification_name, is_required, is_blocking, regulatory_body, regulation_reference, notes)
-        VALUES
-            (v_org_id, 'ROLLER', 'ROLLER_OPERATOR', 'Compaction Roller Operator Training', TRUE, FALSE, 'OSHA', '29 CFR 1926.602', 'Equipment-specific training recommended')
-        ON CONFLICT DO NOTHING;
-
-        -- FORKLIFT requirements (powered industrial truck)
-        INSERT INTO public.equipment_certification_requirements
-            (organization_id, equipment_category, certification_type, certification_name, is_required, is_blocking, regulatory_body, regulation_reference, notes)
-        VALUES
-            (v_org_id, 'FORKLIFT', 'FORKLIFT_OPERATOR', 'Powered Industrial Truck Certification', TRUE, TRUE, 'OSHA', '29 CFR 1910.178', 'Mandatory forklift operator certification per OSHA')
+            (v_org_id, 'drilling_piling', 'DRILLING_OPERATOR', 'Drilling/Piling Equipment Operator', TRUE, TRUE, 'OSHA', '29 CFR 1926.602', 'Specialized drilling equipment training required')
         ON CONFLICT DO NOTHING;
 
         RAISE NOTICE 'Seeded standard certification requirements for organization %', v_org_id;
@@ -331,7 +327,7 @@ BEGIN
         emp.first_name || ' ' || emp.last_name AS operator_name
     INTO v_operator
     FROM public.crew_members cm
-    JOIN public.employees emp ON cm.employee_id = emp.id
+    JOIN public.employees emp ON cm.employee_id::UUID = emp.id
     WHERE cm.id = p_operator_id;
 
     -- Build description
@@ -360,23 +356,25 @@ BEGIN
         INSERT INTO public.compliance_violations (
             organization_id,
             project_id,
+            equipment_id,
             violation_type,
             severity,
             status,
+            violation_code,
             title,
             description,
             affected_entity_type,
-            affected_entity_id,
             affected_entity_name,
-            resolution_details,
             created_at
         )
         VALUES (
             v_equipment.organization_id,
             p_project_id,
+            p_equipment_id,
             p_violation_type,
             p_severity,
             'open',
+            UPPER(p_violation_type),
             CASE p_violation_type
                 WHEN 'operator_unqualified' THEN 'Unqualified Equipment Operator'
                 WHEN 'operator_cert_expired' THEN 'Expired Operator Certification'
@@ -385,9 +383,7 @@ BEGIN
             END,
             v_description,
             'equipment',
-            p_equipment_id,
             v_equipment.equipment_number || ' - ' || COALESCE(v_equipment.equip_desc, ''),
-            p_details,
             NOW()
         )
         RETURNING id INTO v_violation_id;
@@ -616,19 +612,18 @@ SELECT
           AND oq.is_active = TRUE
     ) AS operator_qualifications,
 
-    -- Count open violations
+    -- Count open violations (cast to TEXT to avoid enum transaction issue)
     (
         SELECT COUNT(*)
         FROM public.compliance_violations cv
-        WHERE cv.affected_entity_id = e.id
-          AND cv.affected_entity_type = 'equipment'
-          AND cv.violation_type IN ('operator_unqualified', 'operator_cert_expired', 'operator_cert_missing')
+        WHERE cv.equipment_id = e.id
+          AND cv.violation_type::TEXT IN ('operator_unqualified', 'operator_cert_expired', 'operator_cert_missing')
           AND cv.status = 'open'
     ) AS open_violations
 
 FROM public.equipment e
 LEFT JOIN public.crew_members cm ON e.current_operator_id = cm.id
-LEFT JOIN public.employees emp ON cm.employee_id = emp.id
+LEFT JOIN public.employees emp ON cm.employee_id::UUID = emp.id
 WHERE e.deleted_at IS NULL;
 
 -- =============================================================================

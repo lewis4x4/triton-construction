@@ -5,55 +5,48 @@
 -- =============================================================================
 
 -- ============================================================================
--- PART 1: COMPLIANCE VIOLATION SEVERITY ENUM
+-- PART 1: COMPLIANCE VIOLATION ENUMS (drop and recreate to ensure correct values)
 -- ============================================================================
 
-DO $$ BEGIN
-    CREATE TYPE public.violation_severity AS ENUM (
-        'info',        -- Informational, no action required
-        'warning',     -- Should be addressed soon
-        'critical',    -- Must be addressed immediately
-        'blocking'     -- Blocks work until resolved
-    );
-EXCEPTION
-    WHEN duplicate_object THEN NULL;
-END $$;
+-- Drop existing types if they exist (CASCADE to handle dependencies)
+DROP TYPE IF EXISTS public.violation_severity CASCADE;
+DROP TYPE IF EXISTS public.violation_type CASCADE;
+DROP TYPE IF EXISTS public.violation_status CASCADE;
 
-DO $$ BEGIN
-    CREATE TYPE public.violation_type AS ENUM (
-        'wage_rate_below_minimum',      -- Applied rate < prevailing wage
-        'wage_rate_expired',            -- Wage determination has expired
-        'wage_rate_missing',            -- No wage rate configured for classification
-        'certification_expired',        -- Worker certification expired
-        'certification_missing',        -- Required certification not on file
-        'insurance_expired',            -- Subcontractor insurance expired
-        'insurance_insufficient',       -- Insurance coverage below minimums
-        'payment_deadline_warning',     -- 7 days until deadline
-        'payment_deadline_urgent',      -- 3 days until deadline
-        'payment_deadline_violation',   -- Deadline exceeded
-        'operator_unqualified',         -- Operator lacks equipment certification
-        'site_orientation_missing',     -- No valid site orientation
-        'safety_training_expired',      -- Required safety training expired
-        'dbe_goal_at_risk',             -- DBE utilization below target
-        'overtime_threshold_exceeded',  -- Excessive overtime (fatigue risk)
-        'other'                         -- Catch-all for other violations
-    );
-EXCEPTION
-    WHEN duplicate_object THEN NULL;
-END $$;
+CREATE TYPE public.violation_severity AS ENUM (
+    'info',        -- Informational, no action required
+    'warning',     -- Should be addressed soon
+    'critical',    -- Must be addressed immediately
+    'blocking'     -- Blocks work until resolved
+);
 
-DO $$ BEGIN
-    CREATE TYPE public.violation_status AS ENUM (
-        'open',            -- Violation detected, not yet addressed
-        'acknowledged',    -- User has acknowledged the violation
-        'in_progress',     -- Corrective action underway
-        'resolved',        -- Issue has been fixed
-        'waived',          -- Violation waived with approval
-        'escalated'        -- Escalated to higher authority
-    );
-EXCEPTION
-    WHEN duplicate_object THEN NULL;
-END $$;
+CREATE TYPE public.violation_type AS ENUM (
+    'wage_rate_below_minimum',      -- Applied rate < prevailing wage
+    'wage_rate_expired',            -- Wage determination has expired
+    'wage_rate_missing',            -- No wage rate configured for classification
+    'certification_expired',        -- Worker certification expired
+    'certification_missing',        -- Required certification not on file
+    'insurance_expired',            -- Subcontractor insurance expired
+    'insurance_insufficient',       -- Insurance coverage below minimums
+    'payment_deadline_warning',     -- 7 days until deadline
+    'payment_deadline_urgent',      -- 3 days until deadline
+    'payment_deadline_violation',   -- Deadline exceeded
+    'operator_unqualified',         -- Operator lacks equipment certification
+    'site_orientation_missing',     -- No valid site orientation
+    'safety_training_expired',      -- Required safety training expired
+    'dbe_goal_at_risk',             -- DBE utilization below target
+    'overtime_threshold_exceeded',  -- Excessive overtime (fatigue risk)
+    'other'                         -- Catch-all for other violations
+);
+
+CREATE TYPE public.violation_status AS ENUM (
+    'open',            -- Violation detected, not yet addressed
+    'acknowledged',    -- User has acknowledged the violation
+    'in_progress',     -- Corrective action underway
+    'resolved',        -- Issue has been fixed
+    'waived',          -- Violation waived with approval
+    'escalated'        -- Escalated to higher authority
+);
 
 -- ============================================================================
 -- PART 2: COMPLIANCE VIOLATIONS TABLE
