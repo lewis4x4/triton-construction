@@ -91,6 +91,8 @@ import {
 } from './pages/pay-estimates';
 // Self-Perform Cost Tracking
 import { SelfPerformDashboard } from './pages/self-perform';
+// Cost Code Management
+import { CostCodeManagement } from './pages/cost-codes/CostCodeManagement';
 // Platform Core - Alerts, Geofences, Executive Dashboard
 import { EnhancedPlatformAlerts } from './pages/alerts';
 import { EnhancedGeofenceManagement } from './pages/geofences';
@@ -98,7 +100,7 @@ import { ExecutiveDashboard } from './pages/executive/ExecutiveDashboard';
 // Time Tracking Module
 import { TimeTrackingDashboard, TimeEntryPage, TimesheetApproval, WeeklyTimesheet } from './pages/time-tracking';
 // Compliance Module
-import { WageRateManagement } from './pages/compliance';
+import { WageRateManagement, CertifiedPayrollDashboard } from './pages/compliance';
 import './styles/index.css';
 
 function App() {
@@ -554,6 +556,18 @@ function App() {
             }
           />
 
+          {/* Cost Code Management routes */}
+          <Route
+            path="/cost-codes"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <CostCodeManagement />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
           {/* Pay Estimates routes */}
           <Route
             path="/pay-estimates"
@@ -623,6 +637,16 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <WageRateManagement />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/compliance/certified-payroll"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <CertifiedPayrollDashboard />
                 </Layout>
               </ProtectedRoute>
             }

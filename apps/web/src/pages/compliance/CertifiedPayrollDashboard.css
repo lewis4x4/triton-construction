@@ -1,0 +1,1197 @@
+/* =============================================================================
+   Certified Payroll Dashboard - WH-347 Compliance
+   ============================================================================= */
+
+.certified-payroll-dashboard {
+  padding: 24px;
+  max-width: 1600px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+/* Header */
+.cpd-header {
+  margin-bottom: 24px;
+}
+
+.cpd-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cpd-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.cpd-header-icon {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.cpd-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0;
+}
+
+.cpd-subtitle {
+  font-size: 14px;
+  color: #94a3b8;
+  margin: 4px 0 0 0;
+}
+
+.cpd-header-right {
+  display: flex;
+  gap: 12px;
+}
+
+.cpd-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.cpd-btn.primary {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+}
+
+.cpd-btn.primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.cpd-btn.secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cpd-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* KPI Cards */
+.cpd-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.cpd-kpi-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.cpd-kpi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.cpd-kpi-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cpd-kpi-card.total .cpd-kpi-header svg { color: #3b82f6; }
+.cpd-kpi-card.pending .cpd-kpi-header svg { color: #f59e0b; }
+.cpd-kpi-card.certified .cpd-kpi-header svg { color: #10b981; }
+.cpd-kpi-card.gross .cpd-kpi-header svg { color: #8b5cf6; }
+.cpd-kpi-card.workers .cpd-kpi-header svg { color: #ec4899; }
+.cpd-kpi-card.hours .cpd-kpi-header svg { color: #06b6d4; }
+
+.cpd-kpi-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.cpd-kpi-footer {
+  margin-top: 8px;
+}
+
+.cpd-kpi-detail {
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* Tabs */
+.cpd-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 12px;
+}
+
+.cpd-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: #94a3b8;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cpd-tab:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
+}
+
+.cpd-tab.active {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
+.cpd-tab-count {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+.cpd-tab.active .cpd-tab-count {
+  background: rgba(59, 130, 246, 0.3);
+}
+
+/* Loading */
+.cpd-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px;
+  color: #94a3b8;
+  gap: 16px;
+}
+
+.cpd-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(59, 130, 246, 0.2);
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Content */
+.cpd-content {
+  min-height: 400px;
+}
+
+/* Filters */
+.cpd-filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.cpd-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 0 12px;
+  flex: 1;
+  max-width: 300px;
+}
+
+.cpd-search svg {
+  color: #64748b;
+}
+
+.cpd-search input {
+  background: transparent;
+  border: none;
+  padding: 10px 0;
+  color: #e2e8f0;
+  font-size: 14px;
+  width: 100%;
+  outline: none;
+}
+
+.cpd-search input::placeholder {
+  color: #64748b;
+}
+
+.cpd-filter-select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #e2e8f0;
+  font-size: 14px;
+  cursor: pointer;
+  min-width: 180px;
+}
+
+.cpd-filter-select option {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
+.cpd-refresh-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 10px;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cpd-refresh-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+}
+
+/* Payrolls List */
+.cpd-payrolls-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 16px;
+}
+
+.cpd-payroll-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cpd-payroll-card:hover {
+  border-color: rgba(59, 130, 246, 0.3);
+  transform: translateY(-2px);
+}
+
+.cpd-payroll-card.selected {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.cpd-payroll-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.cpd-payroll-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cpd-payroll-number {
+  font-size: 18px;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+.cpd-payroll-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.cpd-payroll-project {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #94a3b8;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.cpd-payroll-details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.cpd-payroll-detail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.cpd-payroll-detail svg {
+  color: #64748b;
+}
+
+.cpd-payroll-certified {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 12px;
+  color: #10b981;
+}
+
+/* Generate Section */
+.cpd-generate-section {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.cpd-generate-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 600px;
+  width: 100%;
+}
+
+.cpd-generate-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.cpd-generate-header svg {
+  color: #3b82f6;
+  margin-bottom: 16px;
+}
+
+.cpd-generate-header h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin: 0 0 8px 0;
+}
+
+.cpd-generate-header p {
+  color: #94a3b8;
+  margin: 0;
+}
+
+.cpd-generate-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cpd-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cpd-form-group label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #e2e8f0;
+}
+
+.cpd-form-group select,
+.cpd-form-group input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #e2e8f0;
+  font-size: 14px;
+}
+
+.cpd-form-group select:focus,
+.cpd-form-group input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.cpd-form-group select option {
+  background: #1e293b;
+}
+
+.cpd-form-hint {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.cpd-generate-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 8px;
+}
+
+.cpd-generate-info svg {
+  color: #f59e0b;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.cpd-generate-info p {
+  margin: 0;
+  font-size: 13px;
+  color: #fbbf24;
+}
+
+.cpd-generate-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 12px;
+}
+
+.cpd-generate-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+}
+
+.cpd-generate-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+/* Pending Section */
+.cpd-pending-section,
+.cpd-history-section {
+  padding: 0;
+}
+
+.cpd-section-header {
+  margin-bottom: 24px;
+}
+
+.cpd-section-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin: 0 0 4px 0;
+}
+
+.cpd-section-header p {
+  color: #94a3b8;
+  margin: 0;
+  font-size: 14px;
+}
+
+.cpd-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px;
+  color: #64748b;
+  text-align: center;
+}
+
+.cpd-empty-state svg {
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.cpd-empty-state h3 {
+  font-size: 18px;
+  color: #94a3b8;
+  margin: 0 0 8px 0;
+}
+
+.cpd-empty-state p {
+  margin: 0;
+}
+
+.cpd-pending-list,
+.cpd-history-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 16px;
+}
+
+.cpd-pending-card,
+.cpd-history-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.cpd-pending-header,
+.cpd-history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.cpd-pending-number,
+.cpd-history-number {
+  font-size: 18px;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+.cpd-pending-project,
+.cpd-history-project {
+  font-size: 14px;
+  color: #94a3b8;
+  display: block;
+  margin-top: 4px;
+}
+
+.cpd-pending-status,
+.cpd-history-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.cpd-pending-stats,
+.cpd-history-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.cpd-pending-stat,
+.cpd-history-detail {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.cpd-pending-stat svg,
+.cpd-history-detail svg {
+  color: #64748b;
+}
+
+.cpd-pending-actions,
+.cpd-history-actions {
+  display: flex;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cpd-pending-action,
+.cpd-history-action {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #e2e8f0;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cpd-pending-action:hover,
+.cpd-history-action:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.cpd-pending-action.certify {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #10b981;
+}
+
+.cpd-pending-action.certify:hover {
+  background: rgba(16, 185, 129, 0.25);
+}
+
+/* Detail Panel */
+.cpd-detail-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 1000;
+}
+
+.cpd-detail-panel {
+  width: 100%;
+  max-width: 900px;
+  height: 100%;
+  background: linear-gradient(135deg, #1a1f2e, #0f1219);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  animation: slideIn 0.3s ease-out;
+  overflow: hidden;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.cpd-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cpd-detail-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin: 0;
+}
+
+.cpd-detail-number {
+  display: block;
+  font-size: 14px;
+  color: #3b82f6;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.cpd-detail-close {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.cpd-detail-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f1f5f9;
+}
+
+.cpd-detail-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+/* WH-347 Header */
+.cpd-wh347-header {
+  background: rgba(59, 130, 246, 0.05);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.cpd-wh347-row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+.cpd-wh347-row:last-child {
+  margin-bottom: 0;
+}
+
+.cpd-wh347-field {
+  flex: 1;
+}
+
+.cpd-wh347-field label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.cpd-wh347-field span {
+  font-size: 14px;
+  color: #e2e8f0;
+}
+
+/* Lines Table */
+.cpd-lines-table-wrapper {
+  overflow-x: auto;
+  margin-bottom: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+}
+
+.cpd-lines-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.cpd-lines-table th {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 10px 8px;
+  text-align: left;
+  font-weight: 600;
+  color: #94a3b8;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  white-space: nowrap;
+}
+
+.cpd-lines-table td {
+  padding: 10px 8px;
+  color: #e2e8f0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  white-space: nowrap;
+}
+
+.cpd-lines-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.cpd-lines-table tfoot td {
+  background: rgba(255, 255, 255, 0.05);
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+.cpd-name-cell {
+  min-width: 120px;
+}
+
+.cpd-total-cell {
+  font-weight: 600;
+  color: #3b82f6 !important;
+}
+
+.cpd-money-cell {
+  text-align: right;
+  font-family: 'SF Mono', 'Monaco', monospace;
+}
+
+/* Certification Section */
+.cpd-certification-section {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.cpd-certification-section h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin: 0 0 16px 0;
+}
+
+.cpd-cert-text {
+  font-size: 13px;
+  color: #94a3b8;
+  line-height: 1.6;
+  margin: 0 0 20px 0;
+}
+
+.cpd-cert-signature {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cpd-cert-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cpd-cert-field label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.cpd-cert-field span {
+  font-size: 14px;
+  color: #e2e8f0;
+}
+
+.cpd-signature {
+  font-family: 'Brush Script MT', cursive;
+  font-size: 24px !important;
+  color: #3b82f6 !important;
+}
+
+.cpd-cert-pending {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 8px;
+  color: #fbbf24;
+  font-size: 14px;
+}
+
+/* Detail Footer */
+.cpd-detail-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.cpd-detail-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.cpd-detail-btn.primary {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+}
+
+.cpd-detail-btn.primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.cpd-detail-btn.secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cpd-detail-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Modal */
+.cpd-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+}
+
+.cpd-modal {
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 500px;
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cpd-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cpd-modal-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin: 0;
+}
+
+.cpd-modal-close {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.cpd-modal-close:hover {
+  color: #f1f5f9;
+}
+
+.cpd-modal-body {
+  padding: 24px;
+}
+
+.cpd-modal-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+.cpd-modal-info svg {
+  color: #f59e0b;
+  flex-shrink: 0;
+}
+
+.cpd-modal-info p {
+  margin: 0;
+  font-size: 13px;
+  color: #fbbf24;
+}
+
+.cpd-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cpd-modal-btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cpd-modal-btn.primary {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+}
+
+.cpd-modal-btn.primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.cpd-modal-btn.primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cpd-modal-btn.secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cpd-modal-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Certify Modal Specific */
+.cpd-certify-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.cpd-certify-info svg {
+  color: #3b82f6;
+  flex-shrink: 0;
+}
+
+.cpd-certify-info div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cpd-certify-info strong {
+  color: #f1f5f9;
+  font-size: 16px;
+}
+
+.cpd-certify-info span {
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.cpd-cert-statement {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.cpd-cert-statement svg {
+  color: #10b981;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.cpd-cert-statement p {
+  margin: 0;
+  font-size: 13px;
+  color: #34d399;
+  line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .cpd-kpi-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .certified-payroll-dashboard {
+    padding: 16px;
+  }
+
+  .cpd-header-content {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .cpd-header-right {
+    width: 100%;
+  }
+
+  .cpd-btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .cpd-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .cpd-tabs {
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .cpd-tab span {
+    display: none;
+  }
+
+  .cpd-payrolls-list,
+  .cpd-pending-list,
+  .cpd-history-list {
+    grid-template-columns: 1fr;
+  }
+
+  .cpd-detail-panel {
+    max-width: 100%;
+  }
+
+  .cpd-wh347-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .cpd-cert-signature {
+    grid-template-columns: 1fr;
+  }
+}

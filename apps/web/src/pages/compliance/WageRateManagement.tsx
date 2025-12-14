@@ -115,10 +115,27 @@ export function WageRateManagement() {
   const [filterClassification, setFilterClassification] = useState('');
   const [filterDetermination, setFilterDetermination] = useState('');
   const [filterProject, setFilterProject] = useState('');
-  const [_showAddModal, setShowAddModal] = useState(false);
-  const [_showImportModal, setShowImportModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showImportModal, setShowImportModal] = useState(false);
   const [selectedRate, setSelectedRate] = useState<WageRate | null>(null);
   const [expandedClassifications, setExpandedClassifications] = useState<string[]>([]);
+  const [editingRate, setEditingRate] = useState<WageRate | null>(null);
+  const [saving, setSaving] = useState(false);
+
+  // Add/Edit form state
+  const [formData, setFormData] = useState({
+    wage_determination_number: '',
+    modification_number: 0,
+    work_classification: '',
+    classification_title: '',
+    group_number: '',
+    base_rate: 0,
+    fringe_rate: 0,
+    effective_date: '',
+    expiration_date: '',
+    counties: [] as string[],
+    project_id: '',
+  });
 
   // Demo data
   const demoRates: WageRate[] = [
@@ -451,6 +468,193 @@ export function WageRateManagement() {
     setLoading(false);
   }
 
+  // WV Counties for selection
+  const WV_COUNTIES = [
+    'Barbour', 'Berkeley', 'Boone', 'Braxton', 'Brooke', 'Cabell', 'Calhoun', 'Clay',
+    'Doddridge', 'Fayette', 'Gilmer', 'Grant', 'Greenbrier', 'Hampshire', 'Hancock',
+    'Hardy', 'Harrison', 'Jackson', 'Jefferson', 'Kanawha', 'Lewis', 'Lincoln', 'Logan',
+    'Marion', 'Marshall', 'Mason', 'McDowell', 'Mercer', 'Mineral', 'Mingo', 'Monongalia',
+    'Monroe', 'Morgan', 'Nicholas', 'Ohio', 'Pendleton', 'Pleasants', 'Pocahontas',
+    'Preston', 'Putnam', 'Raleigh', 'Randolph', 'Ritchie', 'Roane', 'Summers', 'Taylor',
+    'Tucker', 'Tyler', 'Upshur', 'Wayne', 'Webster', 'Wetzel', 'Wirt', 'Wood', 'Wyoming'
+  ];
+
+  function resetForm() {
+    setFormData({
+      wage_determination_number: '',
+      modification_number: 0,
+      work_classification: '',
+      classification_title: '',
+      group_number: '',
+      base_rate: 0,
+      fringe_rate: 0,
+      effective_date: '',
+      expiration_date: '',
+      counties: [],
+      project_id: '',
+    });
+    setEditingRate(null);
+  }
+
+  function openAddModal() {
+    resetForm();
+    setShowAddModal(true);
+  }
+
+  function openEditModal(rate: WageRate) {
+    setEditingRate(rate);
+    setFormData({
+      wage_determination_number: rate.wage_determination_number,
+      modification_number: rate.modification_number,
+      work_classification: rate.work_classification,
+      classification_title: rate.classification_title,
+      group_number: rate.group_number || '',
+      base_rate: rate.base_rate,
+      fringe_rate: rate.fringe_rate,
+      effective_date: rate.effective_date,
+      expiration_date: rate.expiration_date || '',
+      counties: rate.counties,
+      project_id: rate.project_id || '',
+    });
+    setShowAddModal(true);
+  }
+
+  async function handleSaveRate() {
+    if (!formData.wage_determination_number || !formData.work_classification || !formData.base_rate) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const totalRate = formData.base_rate + formData.fringe_rate;
+      const otRate = formData.base_rate * 1.5;
+      const dtRate = formData.base_rate * 2.0;
+
+      const rateData = {
+        wage_determination_number: formData.wage_determination_number,
+        modification_number: formData.modification_number,
+        work_classification: formData.work_classification,
+        classification_title: formData.classification_title || WORK_CLASSIFICATIONS.find(c => c.value === formData.work_classification)?.label || formData.work_classification,
+        group_number: formData.group_number || null,
+        base_rate: formData.base_rate,
+        fringe_rate: formData.fringe_rate,
+        total_rate: totalRate,
+        ot_base_rate: otRate,
+        dt_base_rate: dtRate,
+        effective_date: formData.effective_date,
+        expiration_date: formData.expiration_date || null,
+        counties: formData.counties,
+        project_id: formData.project_id || null,
+        is_active: true,
+      };
+
+      if (editingRate) {
+        // Update existing rate
+        await (supabase as any)
+          .from('prevailing_wage_rates')
+          .update(rateData)
+          .eq('id', editingRate.id);
+
+        // Update local state
+        setRates(rates.map(r => r.id === editingRate.id ? { ...r, ...rateData } as WageRate : r));
+        alert('Rate updated successfully');
+      } else {
+        // Insert new rate
+        const { data: newRate, error } = await (supabase as any)
+          .from('prevailing_wage_rates')
+          .insert(rateData)
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        if (newRate) {
+          setRates([newRate, ...rates]);
+        } else {
+          // Demo mode - create fake rate
+          const fakeRate: WageRate = {
+            id: `rate-${Date.now()}`,
+            organization_id: 'org-001',
+            ...rateData,
+            created_at: new Date().toISOString(),
+          } as WageRate;
+          setRates([fakeRate, ...rates]);
+        }
+        alert('Rate created successfully');
+      }
+
+      setShowAddModal(false);
+      resetForm();
+    } catch (error) {
+      console.error('Save error:', error);
+      // Demo mode fallback
+      const totalRate = formData.base_rate + formData.fringe_rate;
+      const fakeRate: WageRate = {
+        id: editingRate?.id || `rate-${Date.now()}`,
+        organization_id: 'org-001',
+        wage_determination_number: formData.wage_determination_number,
+        modification_number: formData.modification_number,
+        work_classification: formData.work_classification,
+        classification_title: formData.classification_title || WORK_CLASSIFICATIONS.find(c => c.value === formData.work_classification)?.label || formData.work_classification,
+        group_number: formData.group_number || null,
+        base_rate: formData.base_rate,
+        fringe_rate: formData.fringe_rate,
+        total_rate: totalRate,
+        ot_base_rate: formData.base_rate * 1.5,
+        dt_base_rate: formData.base_rate * 2.0,
+        effective_date: formData.effective_date,
+        expiration_date: formData.expiration_date || null,
+        counties: formData.counties,
+        project_id: formData.project_id || null,
+        is_active: true,
+        document_url: null,
+        created_at: new Date().toISOString(),
+      };
+
+      if (editingRate) {
+        setRates(rates.map(r => r.id === editingRate.id ? fakeRate : r));
+      } else {
+        setRates([fakeRate, ...rates]);
+      }
+
+      setShowAddModal(false);
+      resetForm();
+      alert(`Rate ${editingRate ? 'updated' : 'created'} (demo mode)`);
+    }
+    setSaving(false);
+  }
+
+  async function handleDeleteRate(rateId: string) {
+    if (!confirm('Are you sure you want to delete this rate?')) return;
+
+    try {
+      await (supabase as any)
+        .from('prevailing_wage_rates')
+        .delete()
+        .eq('id', rateId);
+
+      setRates(rates.filter(r => r.id !== rateId));
+      setSelectedRate(null);
+      alert('Rate deleted successfully');
+    } catch (error) {
+      console.error('Delete error:', error);
+      // Demo mode
+      setRates(rates.filter(r => r.id !== rateId));
+      setSelectedRate(null);
+      alert('Rate deleted (demo mode)');
+    }
+  }
+
+  function toggleCounty(county: string) {
+    setFormData(prev => ({
+      ...prev,
+      counties: prev.counties.includes(county)
+        ? prev.counties.filter(c => c !== county)
+        : [...prev.counties, county]
+    }));
+  }
+
   const filteredRates = rates.filter(rate => {
     const matchesSearch = searchTerm === '' ||
       rate.classification_title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -509,7 +713,7 @@ export function WageRateManagement() {
               <Upload size={18} />
               <span>Import DOL Rates</span>
             </button>
-            <button className="wrm-btn primary" onClick={() => setShowAddModal(true)}>
+            <button className="wrm-btn primary" onClick={openAddModal}>
               <Plus size={18} />
               <span>Add Rate</span>
             </button>
@@ -761,11 +965,19 @@ export function WageRateManagement() {
                                       >
                                         <Eye size={14} />
                                       </button>
-                                      <button className="wrm-action-btn" title="Edit">
+                                      <button
+                                        className="wrm-action-btn"
+                                        onClick={(e) => { e.stopPropagation(); openEditModal(rate); }}
+                                        title="Edit"
+                                      >
                                         <Edit size={14} />
                                       </button>
-                                      <button className="wrm-action-btn" title="Copy">
-                                        <Copy size={14} />
+                                      <button
+                                        className="wrm-action-btn"
+                                        onClick={(e) => { e.stopPropagation(); handleDeleteRate(rate.id); }}
+                                        title="Delete"
+                                      >
+                                        <Trash2 size={14} />
                                       </button>
                                     </div>
                                   </td>
@@ -1059,7 +1271,7 @@ export function WageRateManagement() {
                   </div>
                   <h3>Manual Entry</h3>
                   <p>Add individual wage rates manually</p>
-                  <button className="wrm-manual-btn" onClick={() => setShowAddModal(true)}>
+                  <button className="wrm-manual-btn" onClick={openAddModal}>
                     <Plus size={16} />
                     Add New Rate
                   </button>
@@ -1260,9 +1472,191 @@ export function WageRateManagement() {
               <button className="wrm-modal-btn secondary" onClick={() => setSelectedRate(null)}>
                 Close
               </button>
-              <button className="wrm-modal-btn primary">
+              <button className="wrm-modal-btn primary" onClick={() => { setSelectedRate(null); openEditModal(selectedRate); }}>
                 <Edit size={16} />
                 Edit Rate
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add/Edit Rate Modal */}
+      {showAddModal && (
+        <div className="wrm-modal-overlay" onClick={() => { setShowAddModal(false); resetForm(); }}>
+          <div className="wrm-modal wrm-modal-large" onClick={(e) => e.stopPropagation()}>
+            <div className="wrm-modal-header">
+              <h2>{editingRate ? 'Edit Wage Rate' : 'Add New Wage Rate'}</h2>
+              <button className="wrm-modal-close" onClick={() => { setShowAddModal(false); resetForm(); }}>
+                <XCircle size={20} />
+              </button>
+            </div>
+            <div className="wrm-modal-body">
+              <div className="wrm-form-grid">
+                <div className="wrm-form-group">
+                  <label>Wage Determination Number *</label>
+                  <input
+                    type="text"
+                    value={formData.wage_determination_number}
+                    onChange={(e) => setFormData({ ...formData, wage_determination_number: e.target.value })}
+                    placeholder="e.g., WV20240001"
+                  />
+                </div>
+                <div className="wrm-form-group">
+                  <label>Modification Number</label>
+                  <input
+                    type="number"
+                    value={formData.modification_number}
+                    onChange={(e) => setFormData({ ...formData, modification_number: parseInt(e.target.value) || 0 })}
+                    min="0"
+                  />
+                </div>
+                <div className="wrm-form-group">
+                  <label>Work Classification *</label>
+                  <select
+                    value={formData.work_classification}
+                    onChange={(e) => setFormData({ ...formData, work_classification: e.target.value })}
+                  >
+                    <option value="">Select Classification...</option>
+                    {WORK_CLASSIFICATIONS.map((c) => (
+                      <option key={c.value} value={c.value}>{c.label} ({c.group})</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="wrm-form-group">
+                  <label>Classification Title</label>
+                  <input
+                    type="text"
+                    value={formData.classification_title}
+                    onChange={(e) => setFormData({ ...formData, classification_title: e.target.value })}
+                    placeholder="e.g., Laborer - Group 1"
+                  />
+                </div>
+                <div className="wrm-form-group">
+                  <label>Group Number</label>
+                  <input
+                    type="text"
+                    value={formData.group_number}
+                    onChange={(e) => setFormData({ ...formData, group_number: e.target.value })}
+                    placeholder="e.g., 1, 2, 3"
+                  />
+                </div>
+                <div className="wrm-form-group">
+                  <label>Base Rate ($/hr) *</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={formData.base_rate || ''}
+                    onChange={(e) => setFormData({ ...formData, base_rate: parseFloat(e.target.value) || 0 })}
+                    placeholder="0.00"
+                  />
+                </div>
+                <div className="wrm-form-group">
+                  <label>Fringe Rate ($/hr)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={formData.fringe_rate || ''}
+                    onChange={(e) => setFormData({ ...formData, fringe_rate: parseFloat(e.target.value) || 0 })}
+                    placeholder="0.00"
+                  />
+                </div>
+                <div className="wrm-form-group">
+                  <label>Total Rate (calculated)</label>
+                  <input
+                    type="text"
+                    value={`$${(formData.base_rate + formData.fringe_rate).toFixed(2)}/hr`}
+                    disabled
+                    className="wrm-calculated"
+                  />
+                </div>
+                <div className="wrm-form-group">
+                  <label>Effective Date *</label>
+                  <input
+                    type="date"
+                    value={formData.effective_date}
+                    onChange={(e) => setFormData({ ...formData, effective_date: e.target.value })}
+                  />
+                </div>
+                <div className="wrm-form-group">
+                  <label>Expiration Date</label>
+                  <input
+                    type="date"
+                    value={formData.expiration_date}
+                    onChange={(e) => setFormData({ ...formData, expiration_date: e.target.value })}
+                  />
+                </div>
+                <div className="wrm-form-group">
+                  <label>Project (Optional)</label>
+                  <select
+                    value={formData.project_id}
+                    onChange={(e) => setFormData({ ...formData, project_id: e.target.value })}
+                  >
+                    <option value="">Organization-Wide</option>
+                    {projects.map((p) => (
+                      <option key={p.id} value={p.id}>{p.project_number} - {p.name}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="wrm-form-group wrm-counties-group">
+                <label>Counties Coverage</label>
+                <div className="wrm-counties-selector">
+                  {WV_COUNTIES.map((county) => (
+                    <label key={county} className={`wrm-county-checkbox ${formData.counties.includes(county) ? 'selected' : ''}`}>
+                      <input
+                        type="checkbox"
+                        checked={formData.counties.includes(county)}
+                        onChange={() => toggleCounty(county)}
+                      />
+                      <span>{county}</span>
+                    </label>
+                  ))}
+                </div>
+                <div className="wrm-counties-actions">
+                  <button type="button" onClick={() => setFormData({ ...formData, counties: WV_COUNTIES })}>Select All</button>
+                  <button type="button" onClick={() => setFormData({ ...formData, counties: [] })}>Clear All</button>
+                  <span>{formData.counties.length} selected</span>
+                </div>
+              </div>
+
+              <div className="wrm-rate-preview">
+                <h4>Rate Preview</h4>
+                <div className="wrm-preview-grid">
+                  <div className="wrm-preview-item">
+                    <span className="label">Regular Rate</span>
+                    <span className="value">${formData.base_rate.toFixed(2)}/hr</span>
+                  </div>
+                  <div className="wrm-preview-item">
+                    <span className="label">Fringe</span>
+                    <span className="value">${formData.fringe_rate.toFixed(2)}/hr</span>
+                  </div>
+                  <div className="wrm-preview-item total">
+                    <span className="label">Total</span>
+                    <span className="value">${(formData.base_rate + formData.fringe_rate).toFixed(2)}/hr</span>
+                  </div>
+                  <div className="wrm-preview-item">
+                    <span className="label">OT (1.5x Base)</span>
+                    <span className="value">${(formData.base_rate * 1.5).toFixed(2)}/hr</span>
+                  </div>
+                  <div className="wrm-preview-item">
+                    <span className="label">DT (2.0x Base)</span>
+                    <span className="value">${(formData.base_rate * 2.0).toFixed(2)}/hr</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="wrm-modal-footer">
+              <button className="wrm-modal-btn secondary" onClick={() => { setShowAddModal(false); resetForm(); }}>
+                Cancel
+              </button>
+              <button
+                className="wrm-modal-btn primary"
+                onClick={handleSaveRate}
+                disabled={saving || !formData.wage_determination_number || !formData.work_classification || !formData.base_rate}
+              >
+                {saving ? 'Saving...' : (editingRate ? 'Update Rate' : 'Add Rate')}
               </button>
             </div>
           </div>

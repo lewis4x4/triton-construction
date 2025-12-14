@@ -1684,3 +1684,210 @@
     max-height: calc(100vh - 20px);
   }
 }
+
+/* ============================================
+   ADD/EDIT MODAL STYLES
+   ============================================ */
+
+.wrm-modal.wrm-modal-large {
+  max-width: 800px;
+  max-height: 90vh;
+}
+
+.wrm-modal.wrm-modal-large .wrm-modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.wrm-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.wrm-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.wrm-form-group label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #c9d1d9;
+}
+
+.wrm-form-group input,
+.wrm-form-group select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: #e6edf3;
+  transition: all 0.2s ease;
+}
+
+.wrm-form-group input:focus,
+.wrm-form-group select:focus {
+  outline: none;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+}
+
+.wrm-form-group input::placeholder {
+  color: #6e7681;
+}
+
+.wrm-form-group input:disabled,
+.wrm-form-group input.wrm-calculated {
+  background: rgba(139, 92, 246, 0.1);
+  color: #a78bfa;
+  cursor: not-allowed;
+}
+
+.wrm-form-group select option {
+  background: #1e293b;
+  color: #e6edf3;
+}
+
+.wrm-counties-group {
+  margin-top: 8px;
+}
+
+.wrm-counties-selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.wrm-county-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #8b949e;
+  transition: all 0.2s ease;
+}
+
+.wrm-county-checkbox:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.wrm-county-checkbox.selected {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: rgba(139, 92, 246, 0.4);
+  color: #a78bfa;
+}
+
+.wrm-county-checkbox input {
+  display: none;
+}
+
+.wrm-counties-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.wrm-counties-actions button {
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #8b949e;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.wrm-counties-actions button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #c9d1d9;
+}
+
+.wrm-counties-actions span {
+  font-size: 12px;
+  color: #6e7681;
+  margin-left: auto;
+}
+
+.wrm-rate-preview {
+  margin-top: 24px;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(59, 130, 246, 0.08));
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 12px;
+}
+
+.wrm-rate-preview h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #a78bfa;
+  margin: 0 0 16px 0;
+}
+
+.wrm-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+.wrm-preview-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+}
+
+.wrm-preview-item .label {
+  font-size: 11px;
+  color: #6e7681;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.wrm-preview-item .value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #e6edf3;
+}
+
+.wrm-preview-item.total {
+  background: rgba(139, 92, 246, 0.15);
+}
+
+.wrm-preview-item.total .value {
+  color: #a78bfa;
+}
+
+@media (max-width: 768px) {
+  .wrm-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wrm-preview-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .wrm-modal.wrm-modal-large {
+    margin: 8px;
+    max-width: calc(100vw - 16px);
+  }
+}

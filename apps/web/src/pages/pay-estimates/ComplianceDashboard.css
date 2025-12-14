@@ -496,6 +496,293 @@
   to { transform: rotate(360deg); }
 }
 
+/* Violation Alert Toast */
+.compliance-dashboard .violation-alert-toast {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: #991b1b;
+  color: white;
+  border-radius: 10px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  animation: slideIn 0.3s ease-out;
+}
+
+.compliance-dashboard .violation-alert-toast svg {
+  flex-shrink: 0;
+}
+
+.compliance-dashboard .violation-alert-toast button {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 0.5rem;
+}
+
+.compliance-dashboard .violation-alert-toast button:hover {
+  color: white;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Tab Navigation */
+.compliance-dashboard .tab-navigation {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  padding: 0.375rem;
+  background: var(--bg-secondary);
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+}
+
+.compliance-dashboard .tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.compliance-dashboard .tab-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-card);
+}
+
+.compliance-dashboard .tab-btn.active {
+  color: var(--text-primary);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+}
+
+.compliance-dashboard .tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  border-radius: 10px;
+}
+
+.compliance-dashboard .tab-badge.overdue {
+  background: var(--stat-rust-bg);
+  color: var(--stat-rust-icon);
+}
+
+.compliance-dashboard .tab-badge.critical {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/* Violations Stats Cards */
+.compliance-dashboard .stat-card.blocking .stat-icon {
+  background: #fecaca;
+  color: #991b1b;
+}
+
+.compliance-dashboard .stat-card.critical .stat-icon {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.compliance-dashboard .stat-card.info .stat-icon {
+  background: #dbeafe;
+  color: #3b82f6;
+}
+
+/* Violations Section */
+.compliance-dashboard .violations-section {
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+
+.compliance-dashboard .violations-section > h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 1.5rem 0;
+}
+
+.compliance-dashboard .violations-section > h2 svg {
+  color: var(--stat-rust-icon);
+}
+
+.compliance-dashboard .violations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Violation Card */
+.compliance-dashboard .violation-card {
+  background: var(--bg-secondary);
+  border-radius: 10px;
+  border-left: 4px solid;
+  padding: 1rem 1.25rem;
+  transition: all 0.15s;
+}
+
+.compliance-dashboard .violation-card:hover {
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+}
+
+.compliance-dashboard .violation-card.blocking {
+  border-left-color: #991b1b;
+}
+
+.compliance-dashboard .violation-card.critical {
+  border-left-color: #dc2626;
+}
+
+.compliance-dashboard .violation-card.warning {
+  border-left-color: #d97706;
+}
+
+.compliance-dashboard .violation-card.info {
+  border-left-color: #3b82f6;
+}
+
+.compliance-dashboard .violation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.compliance-dashboard .violation-type {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.compliance-dashboard .violation-type svg {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.compliance-dashboard .violation-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+}
+
+.compliance-dashboard .severity-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  flex-shrink: 0;
+}
+
+.compliance-dashboard .violation-description {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 0 0 0.75rem 0;
+  line-height: 1.5;
+}
+
+.compliance-dashboard .violation-values {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 0.75rem;
+  padding: 0.75rem;
+  background: var(--bg-card);
+  border-radius: 6px;
+}
+
+.compliance-dashboard .value-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.compliance-dashboard .value-label {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.compliance-dashboard .value {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: 'SF Mono', 'Menlo', monospace;
+}
+
+.compliance-dashboard .value.negative {
+  color: #dc2626;
+}
+
+.compliance-dashboard .violation-meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.compliance-dashboard .violation-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.compliance-dashboard .btn-resolve {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-inverse);
+  background: var(--accent-primary);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.compliance-dashboard .btn-resolve:hover {
+  background: var(--accent-olive);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .compliance-dashboard {
