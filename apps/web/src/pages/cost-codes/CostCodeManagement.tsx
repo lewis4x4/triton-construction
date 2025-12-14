@@ -16,10 +16,8 @@ import {
   Settings,
   RefreshCw,
   Download,
-  Upload,
   Plus,
   Edit2,
-  Save,
 } from 'lucide-react';
 import './CostCodeManagement.css';
 
@@ -213,7 +211,7 @@ export function CostCodeManagement() {
         .order('item_code');
 
       if (!templateError && templateData && templateData.length > 0) {
-        setTemplates(templateData);
+        setTemplates(templateData as unknown as AssemblyTemplate[]);
         setIsUsingDemo(false);
       } else {
         setTemplates(DEMO_TEMPLATES);
@@ -221,7 +219,7 @@ export function CostCodeManagement() {
       }
 
       if (!itemError && itemData && itemData.length > 0) {
-        setWvdohItems(itemData);
+        setWvdohItems(itemData as unknown as WVDOHItem[]);
       } else {
         setWvdohItems(DEMO_WVDOH_ITEMS);
         setIsUsingDemo(true);
@@ -269,7 +267,7 @@ export function CostCodeManagement() {
     try {
       const { error } = await supabase
         .from('master_wvdoh_items')
-        .update({ default_assembly_template_id: templateId })
+        .update({ default_assembly_template_id: templateId } as any)
         .eq('item_code', item.item_code);
 
       if (!error) {

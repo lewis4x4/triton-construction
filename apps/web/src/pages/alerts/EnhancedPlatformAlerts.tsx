@@ -358,7 +358,7 @@ export function EnhancedPlatformAlerts() {
 
     try {
       // Try to fetch real data with 5 second timeout
-      const { data } = await withTimeout(
+      const { data } = await withTimeout<{ data: any; error: any }>(
         (supabase as any)
           .from('platform_alerts')
           .select('*')

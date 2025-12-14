@@ -406,7 +406,7 @@ export function EnhancedGeofenceManagement() {
 
     try {
       // Try to fetch real data with 5 second timeout
-      const { data: gfData } = await withTimeout(
+      const { data: gfData } = await withTimeout<{ data: any; error: any }>(
         (supabase as any)
           .from('geofences')
           .select('*')

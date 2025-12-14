@@ -17,12 +17,9 @@ import {
   RefreshCw,
   BarChart3,
   TrendingUp,
-  ArrowUpRight,
-  ArrowDownRight,
   FileText,
   DollarSign,
   Timer,
-  AlertCircle,
   X,
   Paperclip,
   MoreVertical

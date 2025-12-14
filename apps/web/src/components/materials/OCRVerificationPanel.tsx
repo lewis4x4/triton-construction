@@ -71,6 +71,8 @@ interface MaterialTicket {
   unit?: string;
   unit_price?: number;
   total_amount?: number;
+  truck_number?: string;
+  driver_name?: string;
   ocr_status: 'pending' | 'processing' | 'completed' | 'failed' | 'verified';
   ocr_confidence?: number;
   ocr_extracted_data?: ExtractedData;
@@ -81,6 +83,7 @@ interface MaterialTicket {
   matched_po_id?: string;
   matched_po?: { po_number: string; supplier?: { name: string } };
   po_match_confidence?: number;
+  po_match_confirmed?: boolean;
   has_variance?: boolean;
   variance_type?: string;
   variance_amount?: number;

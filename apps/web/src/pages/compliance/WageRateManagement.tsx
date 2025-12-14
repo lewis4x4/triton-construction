@@ -16,7 +16,6 @@ import {
   Search,
   Edit,
   Trash2,
-  Copy,
   Eye,
   ChevronRight,
   ChevronDown,
@@ -116,7 +115,7 @@ export function WageRateManagement() {
   const [filterDetermination, setFilterDetermination] = useState('');
   const [filterProject, setFilterProject] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
-  const [showImportModal, setShowImportModal] = useState(false);
+  const [_showImportModal, setShowImportModal] = useState(false);
   const [selectedRate, setSelectedRate] = useState<WageRate | null>(null);
   const [expandedClassifications, setExpandedClassifications] = useState<string[]>([]);
   const [editingRate, setEditingRate] = useState<WageRate | null>(null);

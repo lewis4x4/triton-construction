@@ -1,21 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Map, RefreshCw, List, Filter, AlertTriangle, MapPin, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Map, RefreshCw, List, Filter, AlertTriangle, MapPin, CheckCircle2, Radio } from 'lucide-react';
 import { supabase } from '@triton/supabase-client';
 import { TicketMap, type MapTicket } from '../../components/locate-tickets/TicketMap';
 import { type TicketStatus } from '../../components/locate-tickets/StatusBadge';
+import { useAuth } from '../../hooks/useAuth';
 import './TicketMapPage.css';
 
 type FilterStatus = 'ALL' | TicketStatus | 'HIGH_RISK';
 
 export function TicketMapPage() {
   const navigate = useNavigate();
+  const { user, profile } = useAuth();
   const [tickets, setTickets] = useState<MapTicket[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<FilterStatus>('ALL');
   const [showFilters, setShowFilters] = useState(false);
   const [isGeocoding, setIsGeocoding] = useState(false);
+  const [isRealtimeConnected, setIsRealtimeConnected] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
   const [geocodeResult, setGeocodeResult] = useState<{
     success: boolean;
     message: string;
@@ -73,9 +77,59 @@ export function TicketMapPage() {
     fetchTickets();
   }, [filter]);
 
-  const handleTicketClick = (ticketId: string) => {
+  // Realtime subscription for live ticket updates
+  useEffect(() => {
+    const channel = supabase
+      .channel('wv811-tickets-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'wv811_tickets',
+        },
+        (payload) => {
+          console.log('Realtime ticket update:', payload.eventType, payload);
+          setLastUpdate(new Date());
+
+          if (payload.eventType === 'INSERT') {
+            // New ticket - refetch to get full data with coords
+            fetchTickets();
+          } else if (payload.eventType === 'UPDATE') {
+            const updated = payload.new as Record<string, unknown>;
+            // Update the ticket in state if it exists
+            setTickets((prev) =>
+              prev.map((t) =>
+                t.id === updated.id
+                  ? {
+                      ...t,
+                      status: (updated.status as TicketStatus) || t.status,
+                      risk_score: (updated.risk_score as number) || t.risk_score,
+                      has_gas_utility: (updated.has_gas_utility as boolean) ?? t.has_gas_utility,
+                      has_electric_utility: (updated.has_electric_utility as boolean) ?? t.has_electric_utility,
+                    }
+                  : t
+              )
+            );
+          } else if (payload.eventType === 'DELETE') {
+            const deleted = payload.old as Record<string, unknown>;
+            setTickets((prev) => prev.filter((t) => t.id !== deleted.id));
+          }
+        }
+      )
+      .subscribe((status) => {
+        console.log('Realtime subscription status:', status);
+        setIsRealtimeConnected(status === 'SUBSCRIBED');
+      });
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  const handleTicketClick = useCallback((ticketId: string) => {
     navigate(`/locate-tickets/${ticketId}`);
-  };
+  }, [navigate]);
 
   const handleGeocodeAll = async () => {
     setIsGeocoding(true);
@@ -143,6 +197,10 @@ export function TicketMapPage() {
         </div>
         <div className="header-right">
           <div className="map-stats">
+            <span className={`stat realtime ${isRealtimeConnected ? 'connected' : ''}`} title={lastUpdate ? `Last update: ${lastUpdate.toLocaleTimeString()}` : 'Waiting for updates'}>
+              <Radio size={12} className={isRealtimeConnected ? 'pulse' : ''} />
+              {isRealtimeConnected ? 'Live' : 'Connecting...'}
+            </span>
             <span className="stat">{ticketsWithCoords.length} on map</span>
             {ticketsWithoutCoords.length > 0 && (
               <>
@@ -215,6 +273,10 @@ export function TicketMapPage() {
           <TicketMap
             tickets={tickets}
             onTicketClick={handleTicketClick}
+            enableHighRiskAlerts={true}
+            userId={user?.id}
+            organizationId={profile?.organization_id}
+            highRiskRadiusMeters={500}
           />
         )}
       </div>

@@ -4,13 +4,12 @@
 // Supports camera capture, file upload, batch uploads, and GPS tagging
 // =============================================================================
 
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { supabase } from '@triton/supabase-client';
 import {
   X,
   Camera,
   Upload,
-  Image,
   Loader2,
   CheckCircle,
   AlertTriangle,
@@ -18,7 +17,6 @@ import {
   MapPin,
   FileText,
   Scan,
-  ChevronDown,
   Plus,
   FolderOpen,
 } from 'lucide-react';
@@ -217,20 +215,22 @@ export function TicketCaptureModal({
     const completedTicketIds: string[] = [];
 
     for (let i = 0; i < queuedFiles.length; i++) {
-      const queuedFile = queuedFiles[i];
+      const currentFile = queuedFiles[i];
+      if (!currentFile) continue;
+
       setProcessingProgress({ current: i + 1, total: queuedFiles.length });
 
       // Update status to uploading
       setQueuedFiles(prev =>
-        prev.map(f => (f.id === queuedFile.id ? { ...f, status: 'uploading', progress: 10 } : f))
+        prev.map(f => (f.id === currentFile.id ? { ...f, status: 'uploading', progress: 10 } : f))
       );
 
       try {
         // Upload to Supabase Storage
-        const filePath = `tickets/${projectId}/${Date.now()}-${queuedFile.file.name}`;
-        const { data: uploadData, error: uploadError } = await supabase.storage
+        const filePath = `tickets/${projectId}/${Date.now()}-${currentFile.file.name}`;
+        const { error: uploadError } = await supabase.storage
           .from('delivery-tickets')
-          .upload(filePath, queuedFile.file);
+          .upload(filePath, currentFile.file);
 
         if (uploadError) throw new Error(`Upload failed: ${uploadError.message}`);
 
@@ -243,7 +243,7 @@ export function TicketCaptureModal({
 
         // Update status to processing
         setQueuedFiles(prev =>
-          prev.map(f => (f.id === queuedFile.id ? { ...f, status: 'processing', progress: 50 } : f))
+          prev.map(f => (f.id === currentFile.id ? { ...f, status: 'processing', progress: 50 } : f))
         );
 
         // Call enhanced OCR function
@@ -252,30 +252,21 @@ export function TicketCaptureModal({
           {
             body: {
               document_url: documentUrl,
-              document_type: queuedFile.documentType,
+              document_type: currentFile.documentType,
               project_id: projectId,
               supplier_id: supplierId,
+              // GPS location is passed to the OCR function for metadata
+              gps_location: currentFile.gpsLocation,
             },
           }
         );
 
         if (ocrError) throw new Error(`OCR processing failed: ${ocrError.message}`);
 
-        // Update GPS location on ticket if available
-        if (queuedFile.gpsLocation && ocrResult.ticket_id) {
-          await supabase
-            .from('material_tickets')
-            .update({
-              capture_latitude: queuedFile.gpsLocation.lat,
-              capture_longitude: queuedFile.gpsLocation.lng,
-            })
-            .eq('id', ocrResult.ticket_id);
-        }
-
         // Update status to complete
         setQueuedFiles(prev =>
           prev.map(f =>
-            f.id === queuedFile.id
+            f.id === currentFile.id
               ? {
                   ...f,
                   status: 'complete',
@@ -288,12 +279,13 @@ export function TicketCaptureModal({
         );
 
         completedTicketIds.push(ocrResult.ticket_id);
-      } catch (error: any) {
+      } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         console.error('Processing error:', error);
         setQueuedFiles(prev =>
           prev.map(f =>
-            f.id === queuedFile.id
-              ? { ...f, status: 'error', progress: 0, error: error.message }
+            f.id === currentFile.id
+              ? { ...f, status: 'error', progress: 0, error: errorMessage }
               : f
           )
         );

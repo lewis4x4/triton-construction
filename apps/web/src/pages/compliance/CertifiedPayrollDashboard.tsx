@@ -13,7 +13,6 @@ import {
   AlertTriangle,
   ChevronRight,
   Download,
-  Upload,
   Plus,
   Search,
   Eye,
@@ -24,7 +23,6 @@ import {
   Shield,
   ClipboardCheck,
   PenTool,
-  ArrowRight,
   X
 } from 'lucide-react';
 import './CertifiedPayrollDashboard.css';

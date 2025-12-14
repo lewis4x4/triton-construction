@@ -226,7 +226,7 @@ const SEVERITY_CONFIG = {
   blocking: { label: 'Blocking', color: '#991b1b', bgColor: '#fecaca', icon: XCircle },
 };
 
-const VIOLATION_TYPE_ICONS: Record<string, React.ComponentType<{ size?: number }>> = {
+const VIOLATION_TYPE_ICONS: Record<string, typeof DollarSign> = {
   wage_rate_below_minimum: DollarSign,
   wage_rate_expired: Clock,
   wage_rate_missing: DollarSign,
@@ -285,7 +285,7 @@ export function ComplianceDashboard() {
           schema: 'public',
           table: 'compliance_escalations',
         },
-        (payload) => {
+        () => {
           loadData(); // Reload to get full escalation details
         }
       )
@@ -343,7 +343,7 @@ export function ComplianceDashboard() {
 
       // Load escalations
       const { data: escData, error: escError } = await supabase
-        .from('compliance_escalations')
+        .from('compliance_escalations' as any)
         .select(`
           *,
           pay_period:pay_periods(estimate_number, project:projects(name))
@@ -368,7 +368,7 @@ export function ComplianceDashboard() {
 
       // Load compliance violations
       const { data: violData, error: violError } = await supabase
-        .from('compliance_violations')
+        .from('compliance_violations' as any)
         .select(`
           id,
           violation_type,
@@ -501,7 +501,7 @@ export function ComplianceDashboard() {
     }
 
     const { error } = await supabase
-      .from('compliance_escalations')
+      .from('compliance_escalations' as any)
       .update({ pm_notified_at: new Date().toISOString() })
       .eq('id', id);
 
@@ -519,7 +519,8 @@ export function ComplianceDashboard() {
     }
 
     const { error } = await supabase
-      .from('compliance_violations')
+      // @ts-expect-error Table not yet in generated types
+      .from('compliance_violations' as const)
       .update({
         status: 'acknowledged',
         acknowledged_at: new Date().toISOString(),
@@ -540,7 +541,8 @@ export function ComplianceDashboard() {
     }
 
     const { error } = await supabase
-      .from('compliance_violations')
+      // @ts-expect-error Table not yet in generated types
+      .from('compliance_violations' as const)
       .update({
         status: 'resolved',
         resolved_at: new Date().toISOString(),
@@ -872,7 +874,7 @@ export function ComplianceDashboard() {
               {violations.map(violation => {
                 const severityConfig = SEVERITY_CONFIG[violation.severity];
                 const SeverityIcon = severityConfig.icon;
-                const TypeIcon = VIOLATION_TYPE_ICONS[violation.violation_type] || VIOLATION_TYPE_ICONS.default;
+                const TypeIcon = VIOLATION_TYPE_ICONS[violation.violation_type] ?? Shield;
 
                 return (
                   <div

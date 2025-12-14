@@ -173,7 +173,29 @@ export const VerificationQueue: React.FC<VerificationQueueProps> = ({
       const { data, error: fetchError } = await query.limit(100);
 
       if (fetchError) throw fetchError;
-      setTickets(data || []);
+
+      // Transform data to match expected types (Supabase returns relations as objects, not arrays)
+      const transformedTickets: QueueTicket[] = (data || []).map((row: any) => ({
+        id: row.id,
+        ticket_number: row.ticket_number,
+        ticket_date: row.ticket_date,
+        document_type: row.document_type,
+        ocr_status: row.ocr_status,
+        ocr_confidence: row.ocr_confidence,
+        verification_status: row.verification_status,
+        has_variance: row.has_variance,
+        variance_type: row.variance_type,
+        material_description: row.material_description,
+        quantity: row.quantity,
+        unit: row.unit,
+        total_amount: row.total_amount,
+        document_url: row.document_url,
+        created_at: row.created_at,
+        supplier: row.supplier || null,
+        project: row.project || null,
+      }));
+
+      setTickets(transformedTickets);
     } catch (err: any) {
       setError(err.message || 'Failed to load tickets');
     } finally {
@@ -287,7 +309,8 @@ export const VerificationQueue: React.FC<VerificationQueueProps> = ({
               disabled={tickets.findIndex((t) => t.id === selectedTicketId) === 0}
               onClick={() => {
                 const idx = tickets.findIndex((t) => t.id === selectedTicketId);
-                if (idx > 0) setSelectedTicketId(tickets[idx - 1].id);
+                const prevTicket = idx > 0 ? tickets[idx - 1] : null;
+                if (prevTicket) setSelectedTicketId(prevTicket.id);
               }}
             >
               Previous
@@ -297,7 +320,8 @@ export const VerificationQueue: React.FC<VerificationQueueProps> = ({
               disabled={tickets.findIndex((t) => t.id === selectedTicketId) === tickets.length - 1}
               onClick={() => {
                 const idx = tickets.findIndex((t) => t.id === selectedTicketId);
-                if (idx < tickets.length - 1) setSelectedTicketId(tickets[idx + 1].id);
+                const nextTicket = idx < tickets.length - 1 ? tickets[idx + 1] : null;
+                if (nextTicket) setSelectedTicketId(nextTicket.id);
               }}
             >
               Next

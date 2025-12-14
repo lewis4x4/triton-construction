@@ -403,6 +403,33 @@ serve(async (req) => {
           }
         }
 
+        // Auto-geocode ticket if no coordinates were parsed from email
+        if (!parsedData.digSite.latitude || !parsedData.digSite.longitude) {
+          try {
+            const geocodeResponse = await fetch(
+              `${Deno.env.get('SUPABASE_URL')}/functions/v1/geocode-ticket`,
+              {
+                method: 'POST',
+                headers: {
+                  'Authorization': `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`,
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ ticketId: ticketData.id }),
+              }
+            );
+
+            if (geocodeResponse.ok) {
+              const geocodeResult = await geocodeResponse.json();
+              console.log(`Auto-geocoded ticket ${parsedData.ticketNumber}:`, geocodeResult.status);
+            } else {
+              console.warn(`Geocoding failed for ticket ${parsedData.ticketNumber}:`, await geocodeResponse.text());
+            }
+          } catch (geocodeError) {
+            // Don't fail the parse if geocoding fails
+            console.warn(`Geocoding error for ticket ${parsedData.ticketNumber}:`, geocodeError);
+          }
+        }
+
         // Update email ingest status
         await supabaseAdmin
           .from('wv811_email_ingests')

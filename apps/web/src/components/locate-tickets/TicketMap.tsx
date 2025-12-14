@@ -2,8 +2,29 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { BaseMap, MapRef } from '../maps/BaseMap';
 import { type TicketStatus } from './StatusBadge';
+import { supabase } from '@triton/supabase-client';
 
 // Mapbox access token handled by BaseMap via env
+
+// High-risk alert types
+interface NearbyHighRiskTicket {
+  id: string;
+  ticket_number: string;
+  dig_site_address: string;
+  dig_site_city: string | null;
+  risk_score: number;
+  has_gas_utility: boolean;
+  has_electric_utility: boolean;
+  status: string;
+  distance_meters: number;
+}
+
+interface HighRiskAlert {
+  high_risk_tickets: NearbyHighRiskTicket[];
+  alert_queued: boolean;
+  alert_message: string | null;
+  total_nearby: number;
+}
 
 export interface MapTicket {
   id: string;
@@ -20,11 +41,20 @@ export interface MapTicket {
   has_electric_utility: boolean;
 }
 
+type ViewMode = 'clusters' | 'heatmap';
+
 interface TicketMapProps {
   tickets: MapTicket[];
   onTicketClick?: (ticketId: string) => void;
   center?: [number, number];
   zoom?: number;
+  showHeatmapToggle?: boolean;
+  // High-risk proximity alert props
+  enableHighRiskAlerts?: boolean;
+  userId?: string;
+  organizationId?: string;
+  highRiskRadiusMeters?: number;
+  onHighRiskAlert?: (alert: HighRiskAlert) => void;
 }
 
 const statusColors: Record<TicketStatus, string> = {
@@ -37,13 +67,31 @@ const statusColors: Record<TicketStatus, string> = {
   CANCELLED: '#9ca3af', // gray-light
 };
 
-export function TicketMap({ tickets, onTicketClick, center, zoom = 10 }: TicketMapProps) {
+export function TicketMap({
+  tickets,
+  onTicketClick,
+  center,
+  zoom = 10,
+  showHeatmapToggle = true,
+  enableHighRiskAlerts = false,
+  userId,
+  organizationId,
+  highRiskRadiusMeters = 500,
+  onHighRiskAlert,
+}: TicketMapProps) {
   const mapRef = useRef<MapRef>(null);
   const popup = useRef<mapboxgl.Popup | null>(null);
   const userLocationMarker = useRef<mapboxgl.Marker | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const [isLocating, setIsLocating] = useState(false);
+  const [viewMode, setViewMode] = useState<ViewMode>('clusters');
+
+  // High-risk proximity alert state
+  const [highRiskAlert, setHighRiskAlert] = useState<HighRiskAlert | null>(null);
+  const [alertDismissed, setAlertDismissed] = useState(false);
+  const [isCheckingHighRisk, setIsCheckingHighRisk] = useState(false);
+  const lastCheckedLocation = useRef<[number, number] | null>(null);
 
   // We need access to the map instance for layers/sources
   const [mapInstance, setMapInstance] = useState<mapboxgl.Map | null>(null);
@@ -100,6 +148,68 @@ export function TicketMap({ tickets, onTicketClick, center, zoom = 10 }: TicketM
       { enableHighAccuracy: true, timeout: 10000 }
     );
   }, []);
+
+  // Check for nearby high-risk tickets when location changes
+  const checkHighRiskProximity = useCallback(async (lng: number, lat: number) => {
+    if (!enableHighRiskAlerts) return;
+
+    // Avoid checking if we already checked this location (within ~100m)
+    if (lastCheckedLocation.current) {
+      const [lastLng, lastLat] = lastCheckedLocation.current;
+      const distanceDeg = Math.sqrt(Math.pow(lng - lastLng, 2) + Math.pow(lat - lastLat, 2));
+      // ~0.001 degrees is roughly 100m at mid-latitudes
+      if (distanceDeg < 0.001) {
+        return;
+      }
+    }
+
+    setIsCheckingHighRisk(true);
+    lastCheckedLocation.current = [lng, lat];
+
+    try {
+      const { data, error } = await supabase.functions.invoke('wv811-high-risk-alert', {
+        body: {
+          latitude: lat,
+          longitude: lng,
+          radius_meters: highRiskRadiusMeters,
+          user_id: userId,
+          organization_id: organizationId,
+        },
+      });
+
+      if (error) {
+        console.error('High-risk check error:', error);
+        return;
+      }
+
+      const alertData = data as HighRiskAlert;
+
+      if (alertData.high_risk_tickets && alertData.high_risk_tickets.length > 0) {
+        setHighRiskAlert(alertData);
+        setAlertDismissed(false);
+
+        // Call the optional callback
+        if (onHighRiskAlert) {
+          onHighRiskAlert(alertData);
+        }
+      } else {
+        // Clear alert if no more high-risk tickets nearby
+        setHighRiskAlert(null);
+      }
+    } catch (err) {
+      console.error('High-risk proximity check failed:', err);
+    } finally {
+      setIsCheckingHighRisk(false);
+    }
+  }, [enableHighRiskAlerts, highRiskRadiusMeters, userId, organizationId, onHighRiskAlert]);
+
+  // Effect to check high-risk proximity when user location changes
+  useEffect(() => {
+    if (userLocation && enableHighRiskAlerts) {
+      const [lng, lat] = userLocation;
+      checkHighRiskProximity(lng, lat);
+    }
+  }, [userLocation, enableHighRiskAlerts, checkHighRiskProximity]);
 
   const handleMapLoad = (map: mapboxgl.Map) => {
     setMapInstance(map);
@@ -208,6 +318,108 @@ export function TicketMap({ tickets, onTicketClick, center, zoom = 10 }: TicketM
       },
     });
 
+    // ============ HEATMAP LAYER ============
+    // Add separate non-clustered source for heatmap (heatmap layers don't work with clustered sources)
+    map.addSource('tickets-heatmap', {
+      type: 'geojson',
+      data: ticketsToGeoJSON([]),
+    });
+
+    // Heatmap layer - shows risk density with color gradient
+    map.addLayer({
+      id: 'tickets-heatmap-layer',
+      type: 'heatmap',
+      source: 'tickets-heatmap',
+      maxzoom: 15,
+      layout: {
+        visibility: 'none', // Start hidden, clusters visible by default
+      },
+      paint: {
+        // Weight based on risk_score (0-100) - higher risk = more weight
+        'heatmap-weight': [
+          'interpolate',
+          ['linear'],
+          ['get', 'risk_score'],
+          0, 0.2,    // Low risk = low weight
+          50, 0.5,   // Medium risk
+          70, 0.8,   // High risk
+          100, 1.0,  // Critical risk = full weight
+        ],
+        // Intensity increases with zoom (more detail at higher zoom)
+        'heatmap-intensity': [
+          'interpolate',
+          ['linear'],
+          ['zoom'],
+          0, 0.5,
+          9, 1,
+          15, 2,
+        ],
+        // Color ramp: green (safe) → yellow (caution) → red (danger)
+        'heatmap-color': [
+          'interpolate',
+          ['linear'],
+          ['heatmap-density'],
+          0, 'rgba(0, 0, 0, 0)',           // Transparent at 0
+          0.1, 'rgba(34, 197, 94, 0.4)',   // Green - low density
+          0.3, 'rgba(132, 204, 22, 0.5)',  // Lime
+          0.5, 'rgba(250, 204, 21, 0.6)',  // Yellow - medium density
+          0.7, 'rgba(249, 115, 22, 0.7)',  // Orange
+          0.9, 'rgba(239, 68, 68, 0.8)',   // Red - high density
+          1, 'rgba(185, 28, 28, 0.9)',     // Dark red - critical
+        ],
+        // Radius increases with zoom
+        'heatmap-radius': [
+          'interpolate',
+          ['linear'],
+          ['zoom'],
+          0, 8,
+          9, 20,
+          12, 30,
+          15, 40,
+        ],
+        // Fade out at higher zoom levels
+        'heatmap-opacity': [
+          'interpolate',
+          ['linear'],
+          ['zoom'],
+          12, 0.9,
+          15, 0.6,
+        ],
+      },
+    });
+
+    // Individual points visible at high zoom when in heatmap mode
+    map.addLayer({
+      id: 'tickets-heatmap-points',
+      type: 'circle',
+      source: 'tickets-heatmap',
+      minzoom: 13,
+      layout: {
+        visibility: 'none',
+      },
+      paint: {
+        'circle-radius': [
+          'interpolate',
+          ['linear'],
+          ['zoom'],
+          13, 6,
+          15, 10,
+        ],
+        'circle-color': [
+          'interpolate',
+          ['linear'],
+          ['get', 'risk_score'],
+          0, '#22c55e',   // Green
+          50, '#facc15',  // Yellow
+          70, '#f97316',  // Orange
+          100, '#ef4444', // Red
+        ],
+        'circle-stroke-width': 2,
+        'circle-stroke-color': '#ffffff',
+        'circle-opacity': 0.9,
+      },
+    });
+
     // Click on cluster to zoom
     map.on('click', 'clusters', (e) => {
       const features = map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
@@ -302,9 +514,18 @@ export function TicketMap({ tickets, onTicketClick, center, zoom = 10 }: TicketM
   useEffect(() => {
     if (!mapInstance || !mapLoaded) return;
 
-    const source = mapInstance.getSource('tickets') as mapboxgl.GeoJSONSource;
-    if (source) {
-      source.setData(ticketsToGeoJSON(tickets));
+    const geoJSON = ticketsToGeoJSON(tickets);
+
+    // Update cluster source
+    const clusterSource = mapInstance.getSource('tickets') as mapboxgl.GeoJSONSource;
+    if (clusterSource) {
+      clusterSource.setData(geoJSON);
+    }
+
+    // Update heatmap source
+    const heatmapSource = mapInstance.getSource('tickets-heatmap') as mapboxgl.GeoJSONSource;
+    if (heatmapSource) {
+      heatmapSource.setData(geoJSON);
     }
 
     const ticketsWithCoords = tickets.filter((t) => t.latitude != null && t.longitude != null);
@@ -324,6 +545,38 @@ export function TicketMap({ tickets, onTicketClick, center, zoom = 10 }: TicketM
       }
     }
   }, [tickets, mapLoaded, ticketsToGeoJSON, mapInstance]);
+
+  // Toggle layer visibility when viewMode changes
+  useEffect(() => {
+    if (!mapInstance || !mapLoaded) return;
+
+    const clusterLayers = ['clusters', 'cluster-count', 'unclustered-point', 'high-risk-indicator'];
+    const heatmapLayers = ['tickets-heatmap-layer', 'tickets-heatmap-points'];
+
+    if (viewMode === 'heatmap') {
+      clusterLayers.forEach(layer => {
+        if (mapInstance.getLayer(layer)) {
+          mapInstance.setLayoutProperty(layer, 'visibility', 'none');
+        }
+      });
+      heatmapLayers.forEach(layer => {
+        if (mapInstance.getLayer(layer)) {
+          mapInstance.setLayoutProperty(layer, 'visibility', 'visible');
+        }
+      });
+    } else {
+      heatmapLayers.forEach(layer => {
+        if (mapInstance.getLayer(layer)) {
+          mapInstance.setLayoutProperty(layer, 'visibility', 'none');
+        }
+      });
+      clusterLayers.forEach(layer => {
+        if (mapInstance.getLayer(layer)) {
+          mapInstance.setLayoutProperty(layer, 'visibility', 'visible');
+        }
+      });
+    }
+  }, [viewMode, mapInstance, mapLoaded]);
 
   // Update user location marker
   useEffect(() => {
@@ -443,6 +696,124 @@ export function TicketMap({ tickets, onTicketClick, center, zoom = 10 }: TicketM
         )}
       </button>
 
+      {/* View Mode Toggle */}
+      {showHeatmapToggle && (
+        <div
+          style={{
+            position: 'absolute',
+            top: '10px',
+            left: '54px',
+            display: 'flex',
+            background: 'white',
+            borderRadius: '8px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+            overflow: 'hidden',
+            zIndex: 10,
+          }}
+        >
+          <button
+            onClick={() => setViewMode('clusters')}
+            title="Cluster view"
+            style={{
+              padding: '8px 12px',
+              border: 'none',
+              background: viewMode === 'clusters' ? '#2563eb' : 'white',
+              color: viewMode === 'clusters' ? 'white' : '#374151',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontSize: '13px',
+              fontWeight: 500,
+              transition: 'all 0.15s ease',
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="3" />
+              <circle cx="6" cy="6" r="2" />
+              <circle cx="18" cy="6" r="2" />
+              <circle cx="6" cy="18" r="2" />
+              <circle cx="18" cy="18" r="2" />
+            </svg>
+            Clusters
+          </button>
+          <button
+            onClick={() => setViewMode('heatmap')}
+            title="Risk heatmap view"
+            style={{
+              padding: '8px 12px',
+              border: 'none',
+              borderLeft: '1px solid #e5e7eb',
+              background: viewMode === 'heatmap' ? '#2563eb' : 'white',
+              color: viewMode === 'heatmap' ? 'white' : '#374151',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontSize: '13px',
+              fontWeight: 500,
+              transition: 'all 0.15s ease',
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+              <circle cx="12" cy="9" r="2.5" />
+            </svg>
+            Heatmap
+          </button>
+        </div>
+      )}
+
+      {/* Heatmap Legend */}
+      {showHeatmapToggle && viewMode === 'heatmap' && (
+        <div
+          style={{
+            position: 'absolute',
+            top: '56px',
+            left: '10px',
+            background: 'white',
+            borderRadius: '8px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+            padding: '10px 12px',
+            zIndex: 10,
+            minWidth: '140px',
+          }}
+        >
+          <div style={{ fontSize: '11px', fontWeight: 600, color: '#374151', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            Risk Density
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ width: '20px', height: '12px', borderRadius: '2px', background: 'rgba(185, 28, 28, 0.9)' }} />
+              <span style={{ fontSize: '11px', color: '#6b7280' }}>Critical</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ width: '20px', height: '12px', borderRadius: '2px', background: 'rgba(239, 68, 68, 0.8)' }} />
+              <span style={{ fontSize: '11px', color: '#6b7280' }}>High</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ width: '20px', height: '12px', borderRadius: '2px', background: 'rgba(249, 115, 22, 0.7)' }} />
+              <span style={{ fontSize: '11px', color: '#6b7280' }}>Medium-High</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ width: '20px', height: '12px', borderRadius: '2px', background: 'rgba(250, 204, 21, 0.6)' }} />
+              <span style={{ fontSize: '11px', color: '#6b7280' }}>Medium</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ width: '20px', height: '12px', borderRadius: '2px', background: 'rgba(132, 204, 22, 0.5)' }} />
+              <span style={{ fontSize: '11px', color: '#6b7280' }}>Low</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ width: '20px', height: '12px', borderRadius: '2px', background: 'rgba(34, 197, 94, 0.4)' }} />
+              <span style={{ fontSize: '11px', color: '#6b7280' }}>Minimal</span>
+            </div>
+          </div>
+          <div style={{ fontSize: '10px', color: '#9ca3af', marginTop: '8px', fontStyle: 'italic' }}>
+            Based on utility presence & ticket risk scores
+          </div>
+        </div>
+      )}
+
       {ticketsWithoutCoords.length > 0 && (
         <div style={{
           position: 'absolute',
@@ -461,10 +832,197 @@ export function TicketMap({ tickets, onTicketClick, center, zoom = 10 }: TicketM
         </div>
       )}
 
+      {/* High-Risk Proximity Alert Banner */}
+      {highRiskAlert && highRiskAlert.high_risk_tickets.length > 0 && !alertDismissed && (
+        <div
+          style={{
+            position: 'absolute',
+            top: showHeatmapToggle ? '56px' : '10px',
+            right: '10px',
+            maxWidth: '320px',
+            background: 'linear-gradient(135deg, #dc2626 0%, #991b1b 100%)',
+            borderRadius: '12px',
+            boxShadow: '0 4px 20px rgba(220, 38, 38, 0.4)',
+            zIndex: 20,
+            overflow: 'hidden',
+            animation: 'slideIn 0.3s ease-out',
+          }}
+        >
+          {/* Alert Header */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '12px 14px',
+            borderBottom: '1px solid rgba(255,255,255,0.2)',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                background: 'rgba(255,255,255,0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                animation: 'pulse-alert 2s ease-in-out infinite',
+              }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                  <path d="M12 2L1 21h22L12 2zm0 3.5l7.53 13H4.47L12 5.5zm-1 5.5v4h2v-4h-2zm0 6v2h2v-2h-2z"/>
+                </svg>
+              </div>
+              <div>
+                <div style={{ color: 'white', fontWeight: 700, fontSize: '14px' }}>
+                  HIGH-RISK AREA
+                </div>
+                <div style={{ color: 'rgba(255,255,255,0.85)', fontSize: '12px' }}>
+                  {highRiskAlert.total_nearby} active ticket{highRiskAlert.total_nearby !== 1 ? 's' : ''} nearby
+                </div>
+              </div>
+            </div>
+            <button
+              onClick={() => setAlertDismissed(true)}
+              style={{
+                background: 'rgba(255,255,255,0.2)',
+                border: 'none',
+                borderRadius: '6px',
+                padding: '6px',
+                cursor: 'pointer',
+                color: 'white',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              title="Dismiss alert"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Utility Warnings */}
+          <div style={{ padding: '10px 14px', background: 'rgba(0,0,0,0.1)' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+              {highRiskAlert.high_risk_tickets.some(t => t.has_gas_utility) && (
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: '4px 10px',
+                  background: '#fbbf24',
+                  color: '#78350f',
+                  borderRadius: '20px',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                }}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 5.28c-1.23-.37-2.22-1.17-2.8-2.18l-1-1.6c-.41-.65-1.11-1-1.84-1-.78 0-1.59.5-1.78 1.44S7 23 7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3c1 1.15 2.41 2.01 4 2.34V23H19V9.78c-.63-.22-1.26-.5-1.5-1z"/>
+                  </svg>
+                  GAS PRESENT
+                </div>
+              )}
+              {highRiskAlert.high_risk_tickets.some(t => t.has_electric_utility) && (
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: '4px 10px',
+                  background: '#fde047',
+                  color: '#713f12',
+                  borderRadius: '20px',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                }}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M7 2v11h3v9l7-12h-4l4-8z"/>
+                  </svg>
+                  ELECTRIC PRESENT
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Nearest Ticket Info */}
+          {highRiskAlert.high_risk_tickets[0] && (
+            <div style={{ padding: '12px 14px' }}>
+              <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '10px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '6px' }}>
+                Nearest Ticket
+              </div>
+              <div style={{ color: 'white', fontWeight: 600, fontSize: '13px' }}>
+                {highRiskAlert.high_risk_tickets[0].ticket_number}
+              </div>
+              <div style={{ color: 'rgba(255,255,255,0.85)', fontSize: '12px', marginTop: '2px' }}>
+                {highRiskAlert.high_risk_tickets[0].dig_site_address}
+                {highRiskAlert.high_risk_tickets[0].dig_site_city && `, ${highRiskAlert.high_risk_tickets[0].dig_site_city}`}
+              </div>
+              {highRiskAlert.high_risk_tickets[0].distance_meters > 0 && (
+                <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '11px', marginTop: '4px' }}>
+                  ~{Math.round(highRiskAlert.high_risk_tickets[0].distance_meters)}m away
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Action Reminder */}
+          <div style={{
+            padding: '10px 14px',
+            background: 'rgba(255,255,255,0.1)',
+            borderTop: '1px solid rgba(255,255,255,0.1)',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'white', fontSize: '12px' }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <path d="M21 15l-5-5L5 21"/>
+              </svg>
+              <span style={{ fontWeight: 500 }}>Photo verification required before excavating</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* High-risk check loading indicator */}
+      {isCheckingHighRisk && (
+        <div style={{
+          position: 'absolute',
+          top: '10px',
+          right: '10px',
+          padding: '8px 12px',
+          background: 'rgba(37, 99, 235, 0.9)',
+          borderRadius: '8px',
+          color: 'white',
+          fontSize: '12px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          zIndex: 15,
+        }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ animation: 'spin 1s linear infinite' }}>
+            <path d="M21 12a9 9 0 11-6.219-8.56" />
+          </svg>
+          Checking area...
+        </div>
+      )}
+
       <style>{`
             @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+              from { transform: rotate(0deg); }
+              to { transform: rotate(360deg); }
+            }
+            @keyframes slideIn {
+              from {
+                opacity: 0;
+                transform: translateX(20px);
+              }
+              to {
+                opacity: 1;
+                transform: translateX(0);
+              }
+            }
+            @keyframes pulse-alert {
+              0%, 100% { opacity: 1; }
+              50% { opacity: 0.6; }
             }
         `}</style>
     </div>
