@@ -71,7 +71,7 @@ const TABS: { id: TabId; label: string; icon: string }[] = [
   { id: 'overview', label: 'Overview', icon: '📊' },
   { id: 'documents', label: 'Documents', icon: '📄' },
   { id: 'line-items', label: 'Line Items', icon: '📋' },
-  { id: 'executive-snapshot', label: 'AI Analysis', icon: '🤖' },
+  { id: 'executive-snapshot', label: 'Executive Summary', icon: '📝' },
   { id: 'risks', label: 'Risks', icon: '⚠️' },
   { id: 'questions', label: 'Questions', icon: '❓' },
   { id: 'work-packages', label: 'Work Packages', icon: '📦' },
