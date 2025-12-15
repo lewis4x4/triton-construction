@@ -56,7 +56,7 @@ interface DashboardMetrics {
   estimated_completion_pct: number | null;
 }
 
-type TabId = 'overview' | 'executive-snapshot' | 'documents' | 'line-items' | 'risks' | 'questions' | 'work-packages' | 'team';
+type TabId = 'documents' | 'line-items' | 'executive-snapshot' | 'ai-analysis' | 'risks' | 'questions' | 'work-packages' | 'team';
 
 // Workflow stages for progress tracking
 interface WorkflowStage {
@@ -69,10 +69,10 @@ interface WorkflowStage {
 }
 
 const TABS: { id: TabId; label: string; icon: string }[] = [
-  { id: 'overview', label: 'Overview', icon: '📊' },
   { id: 'documents', label: 'Documents', icon: '📄' },
   { id: 'line-items', label: 'Line Items', icon: '📋' },
   { id: 'executive-snapshot', label: 'Executive Summary', icon: '📝' },
+  { id: 'ai-analysis', label: 'AI Analysis', icon: '📊' },
   { id: 'risks', label: 'Risks', icon: '⚠️' },
   { id: 'questions', label: 'Questions', icon: '❓' },
   { id: 'work-packages', label: 'Work Packages', icon: '📦' },
@@ -184,7 +184,7 @@ function WorkflowProgress({
 export function BidDetail() {
   const { id } = useParams<{ id: string }>();
   const [searchParams, setSearchParams] = useSearchParams();
-  const activeTab = (searchParams.get('tab') as TabId) || 'overview';
+  const activeTab = (searchParams.get('tab') as TabId) || 'documents';
 
   const [project, setProject] = useState<BidProject | null>(null);
   const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
@@ -416,7 +416,7 @@ export function BidDetail() {
 
         {/* Tab Content */}
         <div className="tab-content">
-          {activeTab === 'overview' && (
+          {activeTab === 'ai-analysis' && (
             <OverviewTab project={project} metrics={metrics} onDataRefresh={fetchProject} />
           )}
           {activeTab === 'executive-snapshot' && (
