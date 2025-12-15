@@ -9,6 +9,8 @@ type UserProfile = Tables<'user_profiles'>;
 const SESSION_REFRESH_INTERVAL = 5 * 60 * 1000;
 // Session warning threshold (10 minutes before expiry)
 const SESSION_WARNING_THRESHOLD = 10 * 60 * 1000;
+// Maximum time to wait for initial auth check (10 seconds)
+const AUTH_TIMEOUT = 10 * 1000;
 
 interface AuthState {
   user: User | null;
@@ -211,8 +213,24 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [state.isAuthenticated, checkAndRefreshSession]);
 
   useEffect(() => {
+    // Safety timeout to prevent infinite loading
+    const timeoutId = setTimeout(() => {
+      console.warn('Auth check timed out after 10s, clearing state...');
+      // Clear potentially corrupted auth state
+      localStorage.removeItem('sb-gablgsruyuhvjurhtcxx-auth-token');
+      setState({
+        user: null,
+        session: null,
+        profile: null,
+        isLoading: false,
+        isAuthenticated: false,
+      });
+    }, AUTH_TIMEOUT);
+
     // Get initial session with error handling
     supabase.auth.getSession().then(async ({ data: { session }, error }) => {
+      clearTimeout(timeoutId);
+
       if (error) {
         console.error('Error getting session:', error);
         setState(prev => ({ ...prev, isLoading: false }));
@@ -222,7 +240,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
       let profile: UserProfile | null = null;
 
       if (session?.user) {
-        profile = await fetchProfile(session.user.id);
+        // Add timeout to profile fetch as well
+        try {
+          const profilePromise = fetchProfile(session.user.id);
+          const timeoutPromise = new Promise<null>((_, reject) =>
+            setTimeout(() => reject(new Error('Profile fetch timeout')), 5000)
+          );
+          profile = await Promise.race([profilePromise, timeoutPromise]);
+        } catch (err) {
+          console.warn('Profile fetch failed/timed out, continuing without profile');
+          profile = null;
+        }
       }
 
       setState({
@@ -233,6 +261,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         isAuthenticated: !!session,
       });
     }).catch((err) => {
+      clearTimeout(timeoutId);
       console.error('Exception getting session:', err);
       setState(prev => ({ ...prev, isLoading: false }));
     });
@@ -267,6 +296,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     );
 
     return () => {
+      clearTimeout(timeoutId);
       subscription.unsubscribe();
     };
   }, [fetchProfile]);
