@@ -102,7 +102,7 @@ interface Question {
 
 interface WorkPackage {
   id: string;
-  name: string;
+  package_name: string;
   description: string | null;
   status: string;
   estimated_value: number | null;
@@ -1353,7 +1353,7 @@ export function ExecutiveHandoffModal({ projectId, projectName, onClose }: Execu
       ${workPackages.map(wp => `
       <div class="package-card">
         <div class="package-header">
-          <div class="package-name">${wp.name}</div>
+          <div class="package-name">${wp.package_name}</div>
           <div class="package-value">${formatCurrency(wp.estimated_value)}</div>
         </div>
         <div class="package-meta">
