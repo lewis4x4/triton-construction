@@ -88,6 +88,7 @@ interface Risk {
   impact: string | null;
   mitigation_strategy: string | null;
   review_status: string;
+  ai_confidence: number | null;
 }
 
 interface Question {
@@ -98,6 +99,7 @@ interface Question {
   priority: string | null;
   answer_text: string | null;
   submitted_at: string | null;
+  ai_confidence: number | null;
 }
 
 interface WorkPackage {
@@ -129,6 +131,7 @@ interface Document {
   document_type: string | null;
   processing_status: string;
   ai_summary: string | null;
+  ai_confidence_score: number | null;
 }
 
 interface EnvironmentalCommitment {
@@ -308,6 +311,133 @@ export function ExecutiveHandoffModal({ projectId, projectName, onClose }: Execu
 
     // Work package value breakdown
     const totalWorkPackageValue = workPackages.reduce((sum, wp) => sum + (wp.estimated_value || 0), 0);
+
+    // AI Confidence calculations
+    const allRisks = risks.filter(r => r.type === 'RISK');
+    const avgRiskConfidence = allRisks.length > 0
+      ? allRisks.reduce((sum, r) => sum + (r.ai_confidence || 75), 0) / allRisks.length
+      : 0;
+    const avgQuestionConfidence = questions.length > 0
+      ? questions.reduce((sum, q) => sum + (q.ai_confidence || 75), 0) / questions.length
+      : 0;
+    const processedDocs = documents.filter(d => d.processing_status === 'COMPLETED');
+    const docProcessedPct = documents.length > 0
+      ? (processedDocs.length / documents.length) * 100
+      : 0;
+    const avgDocConfidence = processedDocs.length > 0
+      ? processedDocs.reduce((sum, d) => sum + (d.ai_confidence_score || 75), 0) / processedDocs.length
+      : 0;
+
+    // Overall AI confidence (weighted average)
+    const confidenceComponents = [
+      { weight: 0.35, value: avgDocConfidence, name: 'Document Extraction' },
+      { weight: 0.35, value: avgRiskConfidence, name: 'Risk Identification' },
+      { weight: 0.30, value: avgQuestionConfidence, name: 'Question Generation' },
+    ];
+    const overallConfidence = confidenceComponents.reduce((sum, c) => sum + (c.weight * c.value), 0);
+
+    const getConfidenceLevel = (score: number) => {
+      if (score >= 80) return { level: 'HIGH', color: '#059669' };
+      if (score >= 60) return { level: 'MEDIUM', color: '#d97706' };
+      return { level: 'LOW', color: '#dc2626' };
+    };
+
+    // Bid Strategy Scenarios
+    const engineersEstimate = project?.engineers_estimate || 0;
+    const currentBidValue = metrics?.total_bid_value || 0;
+
+    const getBidScenarios = () => {
+      const base = engineersEstimate || currentBidValue;
+      if (base === 0) return null;
+
+      // Calculate risk-adjusted factors
+      const riskFactor = (criticalRisks.length * 0.03) + (highRisks.length * 0.015) + (mediumRisks.length * 0.005);
+      const opportunityFactor = opportunities.length * 0.01;
+
+      return {
+        conservative: {
+          name: 'Conservative',
+          value: base * 1.0,  // At estimate
+          variance: 0,
+          winProb: 15,
+          rationale: 'Full risk coverage, minimal competition pressure',
+          color: '#6b7280'
+        },
+        balanced: {
+          name: 'Balanced',
+          value: base * (0.93 - riskFactor + opportunityFactor),  // ~7% below, adjusted for risk
+          variance: -7 + Math.round((riskFactor - opportunityFactor) * 100),
+          winProb: 45,
+          rationale: `${allRisks.length > 5 ? 'Higher risk profile requires margin' : 'Standard scope with acceptable risk'}`,
+          color: '#3b82f6'
+        },
+        aggressive: {
+          name: 'Aggressive',
+          value: base * (0.88 - opportunityFactor),  // ~12% below
+          variance: -12 - Math.round(opportunityFactor * 100),
+          winProb: 75,
+          rationale: 'Thin margins, relies on efficiency and favorable conditions',
+          color: '#059669'
+        }
+      };
+    };
+
+    const bidScenarios = getBidScenarios();
+
+    // Self-Perform vs Subcontract Analysis
+    const getExecutionStrategy = (category: string | null, description: string = ''): { strategy: 'SELF_PERFORM' | 'SUBCONTRACT' | 'EVALUATE'; reason: string } => {
+      const cat = (category || '').toUpperCase();
+      const desc = description.toLowerCase();
+
+      // Specialty work typically subcontracted
+      if (cat.includes('ENVIRONMENTAL') || desc.includes('lead') || desc.includes('asbestos') || desc.includes('hazmat')) {
+        return { strategy: 'SUBCONTRACT', reason: 'Specialty certification required' };
+      }
+      if (cat.includes('SIGNING') || cat.includes('STRIPING') || desc.includes('marking') || desc.includes('stripe')) {
+        return { strategy: 'SUBCONTRACT', reason: 'Specialty equipment' };
+      }
+      if (cat.includes('MOT') || desc.includes('traffic control')) {
+        return { strategy: 'SUBCONTRACT', reason: 'Specialty crews' };
+      }
+      if (cat.includes('LANDSCAPING') || desc.includes('seeding') || desc.includes('mulch')) {
+        return { strategy: 'SUBCONTRACT', reason: 'Specialty work' };
+      }
+      if (cat.includes('GUARDRAIL') || desc.includes('guardrail') || desc.includes('barrier')) {
+        return { strategy: 'SUBCONTRACT', reason: 'Specialty installation' };
+      }
+
+      // Core competencies typically self-performed
+      if (cat.includes('EARTHWORK') || desc.includes('excavat') || desc.includes('grading')) {
+        return { strategy: 'SELF_PERFORM', reason: 'Core competency' };
+      }
+      if (cat.includes('PAVEMENT') || desc.includes('asphalt') || desc.includes('paving')) {
+        return { strategy: 'SELF_PERFORM', reason: 'Core competency' };
+      }
+      if (cat.includes('SUBSTRUCTURE') || cat.includes('SUPERSTRUCTURE') || cat.includes('DECK')) {
+        return { strategy: 'SELF_PERFORM', reason: 'Structure work' };
+      }
+      if (cat.includes('DRAINAGE') || desc.includes('pipe') || desc.includes('culvert')) {
+        return { strategy: 'SELF_PERFORM', reason: 'Core competency' };
+      }
+
+      return { strategy: 'EVALUATE', reason: 'Review for best approach' };
+    };
+
+    // Analyze work packages for execution strategy
+    const workPackageStrategies = workPackages.map(wp => ({
+      ...wp,
+      executionStrategy: getExecutionStrategy(wp.description, wp.package_name)
+    }));
+
+    const selfPerformValue = workPackageStrategies
+      .filter(wp => wp.executionStrategy.strategy === 'SELF_PERFORM')
+      .reduce((sum, wp) => sum + (wp.estimated_value || 0), 0);
+    const subcontractValue = workPackageStrategies
+      .filter(wp => wp.executionStrategy.strategy === 'SUBCONTRACT')
+      .reduce((sum, wp) => sum + (wp.estimated_value || 0), 0);
+    const evaluateValue = workPackageStrategies
+      .filter(wp => wp.executionStrategy.strategy === 'EVALUATE')
+      .reduce((sum, wp) => sum + (wp.estimated_value || 0), 0);
 
     // Category breakdown from line items
     const categoryBreakdown: Record<string, { count: number; value: number }> = {};
@@ -1084,6 +1214,44 @@ export function ExecutiveHandoffModal({ projectId, projectName, onClose }: Execu
       <p>${snapshot.cost_considerations}</p>
     </div>
     ` : ''}
+
+    <!-- AI Confidence Dashboard -->
+    <div class="exec-summary-box" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 1px solid #0ea5e9;">
+      <h4 style="color: #0369a1; margin-bottom: 1rem;">AI Analysis Confidence</h4>
+      <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+        <div style="font-size: 2rem; font-weight: 700; color: ${getConfidenceLevel(overallConfidence).color};">
+          ${Math.round(overallConfidence)}%
+        </div>
+        <div>
+          <div style="font-weight: 600; color: ${getConfidenceLevel(overallConfidence).color};">
+            ${getConfidenceLevel(overallConfidence).level} CONFIDENCE
+          </div>
+          <div style="font-size: 0.85rem; color: var(--text-secondary);">Overall Analysis Quality</div>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1rem;">
+        <div style="text-align: center; padding: 0.75rem; background: white; border-radius: 0.5rem;">
+          <div style="font-weight: 600; color: ${getConfidenceLevel(avgDocConfidence).color};">${Math.round(avgDocConfidence)}%</div>
+          <div style="font-size: 0.75rem; color: var(--text-secondary);">Document Extraction</div>
+          <div style="font-size: 0.7rem; color: var(--text-tertiary);">${processedDocs.length}/${documents.length} processed</div>
+        </div>
+        <div style="text-align: center; padding: 0.75rem; background: white; border-radius: 0.5rem;">
+          <div style="font-weight: 600; color: ${getConfidenceLevel(avgRiskConfidence).color};">${Math.round(avgRiskConfidence)}%</div>
+          <div style="font-size: 0.75rem; color: var(--text-secondary);">Risk Identification</div>
+          <div style="font-size: 0.7rem; color: var(--text-tertiary);">${allRisks.length} risks found</div>
+        </div>
+        <div style="text-align: center; padding: 0.75rem; background: white; border-radius: 0.5rem;">
+          <div style="font-weight: 600; color: ${getConfidenceLevel(avgQuestionConfidence).color};">${Math.round(avgQuestionConfidence)}%</div>
+          <div style="font-size: 0.75rem; color: var(--text-secondary);">Question Generation</div>
+          <div style="font-size: 0.7rem; color: var(--text-tertiary);">${questions.length} questions</div>
+        </div>
+      </div>
+      ${docProcessedPct < 100 ? `
+      <div style="padding: 0.5rem 0.75rem; background: #fef3c7; border-radius: 0.375rem; font-size: 0.85rem;">
+        <strong style="color: #d97706;">Note:</strong> ${documents.length - processedDocs.length} document(s) failed processing. Results may be incomplete.
+      </div>
+      ` : ''}
+    </div>
   </div>
   ` : ''}
 
@@ -1188,6 +1356,69 @@ export function ExecutiveHandoffModal({ projectId, projectName, onClose }: Execu
           </div>
           `;
         }).join('')}
+    </div>
+  </div>
+  ` : ''}
+
+  ${bidScenarios && config.includeFinancialAnalysis ? `
+  <!-- BID STRATEGY -->
+  <div class="section" style="page-break-inside: avoid;">
+    <div class="section-header">
+      <span class="section-number">3b</span>
+      <span class="section-title">Bid Strategy & Pricing Scenarios</span>
+    </div>
+
+    <div style="margin-bottom: 1.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: var(--bg-light); border-radius: 8px; margin-bottom: 1rem;">
+        <div>
+          <div style="font-size: 0.85rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em;">Engineer's Estimate</div>
+          <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary); font-family: 'JetBrains Mono', monospace;">${formatCurrency(engineersEstimate)}</div>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-size: 0.85rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em;">Current Bid Value</div>
+          <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent); font-family: 'JetBrains Mono', monospace;">${formatCurrency(currentBidValue)}</div>
+        </div>
+      </div>
+
+      <!-- Recommended Strategy -->
+      <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 2px solid ${bidScenarios.balanced.color}; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div>
+            <div style="display: inline-block; padding: 0.25rem 0.75rem; background: ${bidScenarios.balanced.color}; color: white; font-size: 0.75rem; font-weight: 600; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">Recommended</div>
+            <h4 style="font-size: 1.25rem; color: var(--primary); margin-bottom: 0.5rem;">${bidScenarios.balanced.name} Strategy</h4>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">${bidScenarios.balanced.rationale}</p>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 2rem; font-weight: 700; color: ${bidScenarios.balanced.color}; font-family: 'JetBrains Mono', monospace;">${formatCurrency(bidScenarios.balanced.value)}</div>
+            <div style="font-size: 0.85rem; color: var(--text-tertiary);">${bidScenarios.balanced.variance}% vs estimate</div>
+            <div style="margin-top: 0.5rem; padding: 0.25rem 0.5rem; background: ${bidScenarios.balanced.color}20; border-radius: 4px; display: inline-block;">
+              <span style="font-weight: 600; color: ${bidScenarios.balanced.color};">~${bidScenarios.balanced.winProb}%</span>
+              <span style="font-size: 0.75rem; color: var(--text-secondary);"> win probability</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alternative Scenarios -->
+      <h4 style="color: var(--primary); margin-bottom: 1rem; font-size: 1rem;">Alternative Scenarios</h4>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div style="background: var(--bg-light); border: 1px solid var(--border); border-radius: 8px; padding: 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-weight: 600; color: ${bidScenarios.conservative.color};">${bidScenarios.conservative.name}</span>
+            <span style="font-size: 0.75rem; padding: 0.125rem 0.5rem; background: ${bidScenarios.conservative.color}20; color: ${bidScenarios.conservative.color}; border-radius: 4px;">~${bidScenarios.conservative.winProb}% win</span>
+          </div>
+          <div style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; margin-bottom: 0.25rem;">${formatCurrency(bidScenarios.conservative.value)}</div>
+          <div style="font-size: 0.8rem; color: var(--text-tertiary);">${bidScenarios.conservative.rationale}</div>
+        </div>
+        <div style="background: var(--bg-light); border: 1px solid var(--border); border-radius: 8px; padding: 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-weight: 600; color: ${bidScenarios.aggressive.color};">${bidScenarios.aggressive.name}</span>
+            <span style="font-size: 0.75rem; padding: 0.125rem 0.5rem; background: ${bidScenarios.aggressive.color}20; color: ${bidScenarios.aggressive.color}; border-radius: 4px;">~${bidScenarios.aggressive.winProb}% win</span>
+          </div>
+          <div style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; margin-bottom: 0.25rem;">${formatCurrency(bidScenarios.aggressive.value)}</div>
+          <div style="font-size: 0.8rem; color: var(--text-tertiary);">${bidScenarios.aggressive.rationale}</div>
+        </div>
+      </div>
     </div>
   </div>
   ` : ''}
@@ -1364,6 +1595,68 @@ export function ExecutiveHandoffModal({ projectId, projectName, onClose }: Execu
       </div>
       `).join('')}
     </div>
+
+    <!-- Self-Perform vs Subcontract Analysis -->
+    ${workPackages.length > 0 ? `
+    <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+      <h4 style="color: var(--primary); margin-bottom: 1rem;">Self-Perform vs Subcontract Recommendation</h4>
+
+      <!-- Summary Bar -->
+      <div style="display: flex; height: 32px; border-radius: 8px; overflow: hidden; margin-bottom: 1rem;">
+        ${selfPerformValue > 0 ? `<div style="width: ${(selfPerformValue / totalWorkPackageValue) * 100}%; background: #059669; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.75rem; font-weight: 600;">${Math.round((selfPerformValue / totalWorkPackageValue) * 100)}% Self</div>` : ''}
+        ${subcontractValue > 0 ? `<div style="width: ${(subcontractValue / totalWorkPackageValue) * 100}%; background: #3b82f6; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.75rem; font-weight: 600;">${Math.round((subcontractValue / totalWorkPackageValue) * 100)}% Sub</div>` : ''}
+        ${evaluateValue > 0 ? `<div style="width: ${(evaluateValue / totalWorkPackageValue) * 100}%; background: #9ca3af; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.75rem; font-weight: 600;">${Math.round((evaluateValue / totalWorkPackageValue) * 100)}% TBD</div>` : ''}
+      </div>
+
+      <!-- Summary Cards -->
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+        <div style="background: #ecfdf5; border: 1px solid #059669; border-radius: 8px; padding: 1rem; text-align: center;">
+          <div style="font-size: 1.25rem; font-weight: 700; color: #059669; font-family: 'JetBrains Mono', monospace;">${formatCurrency(selfPerformValue)}</div>
+          <div style="font-size: 0.75rem; color: #047857; text-transform: uppercase;">Self-Perform</div>
+        </div>
+        <div style="background: #eff6ff; border: 1px solid #3b82f6; border-radius: 8px; padding: 1rem; text-align: center;">
+          <div style="font-size: 1.25rem; font-weight: 700; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">${formatCurrency(subcontractValue)}</div>
+          <div style="font-size: 0.75rem; color: #2563eb; text-transform: uppercase;">Subcontract</div>
+        </div>
+        <div style="background: #f3f4f6; border: 1px solid #9ca3af; border-radius: 8px; padding: 1rem; text-align: center;">
+          <div style="font-size: 1.25rem; font-weight: 700; color: #6b7280; font-family: 'JetBrains Mono', monospace;">${formatCurrency(evaluateValue)}</div>
+          <div style="font-size: 0.75rem; color: #4b5563; text-transform: uppercase;">To Evaluate</div>
+        </div>
+      </div>
+
+      <!-- Work Package Strategy Table -->
+      <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+        <thead>
+          <tr style="background: var(--bg-light);">
+            <th style="padding: 0.75rem; text-align: left; border-bottom: 2px solid var(--border);">Work Package</th>
+            <th style="padding: 0.75rem; text-align: right; border-bottom: 2px solid var(--border);">Value</th>
+            <th style="padding: 0.75rem; text-align: center; border-bottom: 2px solid var(--border);">Strategy</th>
+            <th style="padding: 0.75rem; text-align: left; border-bottom: 2px solid var(--border);">Rationale</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${workPackageStrategies.slice(0, 10).map(wp => `
+          <tr>
+            <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border);">${wp.package_name}</td>
+            <td style="padding: 0.5rem 0.75rem; text-align: right; border-bottom: 1px solid var(--border); font-family: 'JetBrains Mono', monospace;">${formatCurrency(wp.estimated_value)}</td>
+            <td style="padding: 0.5rem 0.75rem; text-align: center; border-bottom: 1px solid var(--border);">
+              <span style="padding: 0.125rem 0.5rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600; ${
+                wp.executionStrategy.strategy === 'SELF_PERFORM'
+                  ? 'background: #dcfce7; color: #166534;'
+                  : wp.executionStrategy.strategy === 'SUBCONTRACT'
+                    ? 'background: #dbeafe; color: #1e40af;'
+                    : 'background: #f3f4f6; color: #4b5563;'
+              }">
+                ${wp.executionStrategy.strategy === 'SELF_PERFORM' ? 'SELF' : wp.executionStrategy.strategy === 'SUBCONTRACT' ? 'SUB' : 'TBD'}
+              </span>
+            </td>
+            <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); color: var(--text-secondary);">${wp.executionStrategy.reason}</td>
+          </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+    ` : ''}
   </div>
   ` : ''}
 
