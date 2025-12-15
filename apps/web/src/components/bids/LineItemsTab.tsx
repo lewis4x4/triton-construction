@@ -3,6 +3,7 @@ import { supabase } from '@triton/supabase-client';
 import { LineItemDetail } from './LineItemDetail';
 import { CostAdjustmentsPanel } from './CostAdjustmentsPanel';
 import { VarianceAlert, VarianceBadge } from './VarianceAlert';
+import * as XLSX from 'xlsx';
 import './LineItemsTab.css';
 
 // Helper for accessing tables not yet in TypeScript types
@@ -402,6 +403,77 @@ export function LineItemsTab({ projectId }: LineItemsTabProps) {
     }
   };
 
+  // Export selected line items to Excel
+  const handleExportToExcel = () => {
+    // Get the items to export (selected or all if none selected)
+    const itemsToExport = selectedItems.size > 0
+      ? lineItems.filter(item => selectedItems.has(item.id))
+      : lineItems;
+
+    if (itemsToExport.length === 0) {
+      alert('No items to export');
+      return;
+    }
+
+    // Prepare data for Excel export
+    const exportData = itemsToExport.map(item => {
+      const unitPrice = item.final_unit_price ?? item.ai_suggested_unit_price ?? 0;
+      const extendedPrice = item.final_extended_price ?? (unitPrice * item.quantity);
+
+      return {
+        'Line #': item.line_number,
+        'Item Number': item.item_number,
+        'Alt Item Number': item.alt_item_number || '',
+        'Description': item.description,
+        'Quantity': item.quantity,
+        'Unit': item.unit,
+        'Category': item.work_category || '',
+        'Plan Qty': item.plan_quantity ?? '',
+        'Takeoff Qty': item.takeoff_quantity ?? '',
+        'Variance %': item.quantity_variance_pct ? `${item.quantity_variance_pct.toFixed(1)}%` : '',
+        'Unit Price': unitPrice,
+        'Extended Price': extendedPrice,
+        'Pricing Status': computePricingStatus(item),
+        'Is Unbalanced': item.is_unbalanced ? 'Yes' : 'No',
+        'Notes': item.estimator_notes || '',
+      };
+    });
+
+    // Create workbook and worksheet
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(exportData);
+
+    // Set column widths for better readability
+    const colWidths = [
+      { wch: 8 },   // Line #
+      { wch: 15 },  // Item Number
+      { wch: 15 },  // Alt Item Number
+      { wch: 40 },  // Description
+      { wch: 12 },  // Quantity
+      { wch: 8 },   // Unit
+      { wch: 15 },  // Category
+      { wch: 12 },  // Plan Qty
+      { wch: 12 },  // Takeoff Qty
+      { wch: 10 },  // Variance %
+      { wch: 12 },  // Unit Price
+      { wch: 15 },  // Extended Price
+      { wch: 15 },  // Pricing Status
+      { wch: 12 },  // Is Unbalanced
+      { wch: 30 },  // Notes
+    ];
+    ws['!cols'] = colWidths;
+
+    // Add worksheet to workbook
+    XLSX.utils.book_append_sheet(wb, ws, 'Line Items');
+
+    // Generate filename with timestamp
+    const timestamp = new Date().toISOString().slice(0, 10);
+    const filename = `bid_line_items_${timestamp}.xlsx`;
+
+    // Download the file
+    XLSX.writeFile(wb, filename);
+  };
+
   const formatCurrency = (value: number | null) => {
     if (value == null) return '-';
     return new Intl.NumberFormat('en-US', {
@@ -608,9 +680,23 @@ export function LineItemsTab({ projectId }: LineItemsTabProps) {
                   </option>
                 ))}
               </select>
+              <button
+                onClick={handleExportToExcel}
+                className="btn btn-secondary"
+                title="Export selected items to Excel"
+              >
+                📥 Export
+              </button>
             </div>
           )}
 
+          <button
+            onClick={handleExportToExcel}
+            className="btn btn-icon"
+            title={selectedItems.size > 0 ? `Export ${selectedItems.size} selected items to Excel` : 'Export all items to Excel'}
+          >
+            📥
+          </button>
           <button onClick={fetchLineItems} className="btn btn-icon" title="Refresh">
             🔄
           </button>
