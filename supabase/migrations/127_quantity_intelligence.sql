@@ -10,47 +10,59 @@
 -- =============================================================================
 
 -- ============================================================================
--- PART 1: ENUMS
+-- PART 1: ENUMS (with IF NOT EXISTS logic)
 -- ============================================================================
 
 -- Quantity source tracking
-CREATE TYPE quantity_source_enum AS ENUM (
-    'EBSX_IMPORT',
-    'PLAN_SUMMARY',
-    'CONTRACTOR_TAKEOFF',
-    'SPECIAL_PROVISION',
-    'ADDENDUM'
-);
+DO $$ BEGIN
+    CREATE TYPE quantity_source_enum AS ENUM (
+        'EBSX_IMPORT',
+        'PLAN_SUMMARY',
+        'CONTRACTOR_TAKEOFF',
+        'SPECIAL_PROVISION',
+        'ADDENDUM'
+    );
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
 -- Variance significance levels
-CREATE TYPE variance_significance_enum AS ENUM (
-    'MATCH',      -- ±5%
-    'MINOR',      -- 5-15%
-    'MODERATE',   -- 15-30%
-    'MAJOR',      -- 30-50%
-    'CRITICAL'    -- >50%
-);
+DO $$ BEGIN
+    CREATE TYPE variance_significance_enum AS ENUM (
+        'MATCH',      -- ±5%
+        'MINOR',      -- 5-15%
+        'MODERATE',   -- 15-30%
+        'MAJOR',      -- 30-50%
+        'CRITICAL'    -- >50%
+    );
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
 -- Variance direction
-CREATE TYPE variance_direction_enum AS ENUM (
-    'OVER',       -- Actual > Plan (potential overrun)
-    'UNDER',      -- Actual < Plan (potential underrun)
-    'MATCH'       -- Within threshold
-);
+DO $$ BEGIN
+    CREATE TYPE variance_direction_enum AS ENUM (
+        'OVER',       -- Actual > Plan (potential overrun)
+        'UNDER',      -- Actual < Plan (potential underrun)
+        'MATCH'       -- Within threshold
+    );
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
 -- Unbalance strategy direction
-CREATE TYPE unbalance_direction_enum AS ENUM (
-    'SHORT',      -- Lower price (expect overrun, reduce exposure)
-    'LONG',       -- Raise price (expect underrun, maximize early payment)
-    'NEUTRAL'     -- No adjustment
-);
+DO $$ BEGIN
+    CREATE TYPE unbalance_direction_enum AS ENUM (
+        'SHORT',      -- Lower price (expect overrun, reduce exposure)
+        'LONG',       -- Raise price (expect underrun, maximize early payment)
+        'NEUTRAL'     -- No adjustment
+    );
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
 -- ============================================================================
 -- PART 2: LINE ITEM QUANTITIES TABLE
 -- ============================================================================
 -- Normalized storage for all quantity sources
 
-CREATE TABLE public.line_item_quantities (
+CREATE TABLE IF NOT EXISTS public.line_item_quantities (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
     -- Foreign key to bid_line_items
@@ -366,6 +378,7 @@ LEFT JOIN public.line_item_quantities takeoff
 ALTER TABLE public.line_item_quantities ENABLE ROW LEVEL SECURITY;
 
 -- Users can view quantities for projects they have access to
+DROP POLICY IF EXISTS "line_item_quantities_select" ON public.line_item_quantities;
 CREATE POLICY "line_item_quantities_select" ON public.line_item_quantities
     FOR SELECT TO authenticated
     USING (
@@ -378,6 +391,7 @@ CREATE POLICY "line_item_quantities_select" ON public.line_item_quantities
     );
 
 -- Users can insert quantities for projects in their org
+DROP POLICY IF EXISTS "line_item_quantities_insert" ON public.line_item_quantities;
 CREATE POLICY "line_item_quantities_insert" ON public.line_item_quantities
     FOR INSERT TO authenticated
     WITH CHECK (
@@ -390,6 +404,7 @@ CREATE POLICY "line_item_quantities_insert" ON public.line_item_quantities
     );
 
 -- Users can update quantities for projects in their org
+DROP POLICY IF EXISTS "line_item_quantities_update" ON public.line_item_quantities;
 CREATE POLICY "line_item_quantities_update" ON public.line_item_quantities
     FOR UPDATE TO authenticated
     USING (
@@ -402,6 +417,7 @@ CREATE POLICY "line_item_quantities_update" ON public.line_item_quantities
     );
 
 -- Users can delete quantities for projects in their org
+DROP POLICY IF EXISTS "line_item_quantities_delete" ON public.line_item_quantities;
 CREATE POLICY "line_item_quantities_delete" ON public.line_item_quantities
     FOR DELETE TO authenticated
     USING (
@@ -418,7 +434,7 @@ CREATE POLICY "line_item_quantities_delete" ON public.line_item_quantities
 -- ============================================================================
 -- Track all quantity changes over time for audit and analysis
 
-CREATE TABLE public.quantity_change_history (
+CREATE TABLE IF NOT EXISTS public.quantity_change_history (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
     -- Reference to the quantity record
@@ -444,6 +460,7 @@ CREATE TABLE public.quantity_change_history (
 -- RLS for quantity change history
 ALTER TABLE public.quantity_change_history ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "quantity_change_history_select" ON public.quantity_change_history;
 CREATE POLICY "quantity_change_history_select" ON public.quantity_change_history
     FOR SELECT TO authenticated
     USING (
@@ -534,21 +551,21 @@ CREATE TRIGGER trg_log_quantity_insert
     EXECUTE FUNCTION public.fn_log_quantity_insert();
 
 -- Index for efficient history lookups
-CREATE INDEX idx_quantity_change_history_line_item ON public.quantity_change_history(line_item_id);
-CREATE INDEX idx_quantity_change_history_quantity_id ON public.quantity_change_history(line_item_quantity_id);
-CREATE INDEX idx_quantity_change_history_changed_at ON public.quantity_change_history(changed_at DESC);
+CREATE INDEX IF NOT EXISTS idx_quantity_change_history_line_item ON public.quantity_change_history(line_item_id);
+CREATE INDEX IF NOT EXISTS idx_quantity_change_history_quantity_id ON public.quantity_change_history(line_item_quantity_id);
+CREATE INDEX IF NOT EXISTS idx_quantity_change_history_changed_at ON public.quantity_change_history(changed_at DESC);
 
 -- ============================================================================
 -- PART 7: INDEXES
 -- ============================================================================
 
-CREATE INDEX idx_line_item_quantities_line_item ON public.line_item_quantities(line_item_id);
-CREATE INDEX idx_line_item_quantities_source ON public.line_item_quantities(quantity_source);
-CREATE INDEX idx_line_item_quantities_governing ON public.line_item_quantities(line_item_id) WHERE is_governing = true;
+CREATE INDEX IF NOT EXISTS idx_line_item_quantities_line_item ON public.line_item_quantities(line_item_id);
+CREATE INDEX IF NOT EXISTS idx_line_item_quantities_source ON public.line_item_quantities(quantity_source);
+CREATE INDEX IF NOT EXISTS idx_line_item_quantities_governing ON public.line_item_quantities(line_item_id) WHERE is_governing = true;
 
-CREATE INDEX idx_bid_line_items_variance ON public.bid_line_items(variance_significance)
+CREATE INDEX IF NOT EXISTS idx_bid_line_items_variance ON public.bid_line_items(variance_significance)
     WHERE variance_significance IS NOT NULL;
-CREATE INDEX idx_bid_line_items_unbalanced ON public.bid_line_items(bid_project_id)
+CREATE INDEX IF NOT EXISTS idx_bid_line_items_unbalanced ON public.bid_line_items(bid_project_id)
     WHERE is_unbalanced = true;
 
 -- ============================================================================

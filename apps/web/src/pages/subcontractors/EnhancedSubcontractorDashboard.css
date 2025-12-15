@@ -331,28 +331,41 @@
   box-sizing: border-box;
 }
 
-/* Overview Grid */
+/* Overview Grid - Redesigned for full readability */
 .overview-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
   gap: 1.5rem;
   width: 100%;
 }
 
 .overview-grid > .card {
-  min-width: 0;
+  min-width: 380px;
   width: 100%;
+  overflow: visible;
 }
 
-@media (max-width: 1200px) {
+.overview-grid > .card .card-header {
+  overflow: visible;
+}
+
+@media (max-width: 1400px) {
   .overview-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  }
+
+  .overview-grid > .card {
+    min-width: 340px;
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 768px) {
   .overview-grid {
     grid-template-columns: 1fr;
+  }
+
+  .overview-grid > .card {
+    min-width: 100%;
   }
 }
 
@@ -362,42 +375,47 @@
   backdrop-filter: var(--glass-blur);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-xl);
-  overflow: hidden;
+  overflow: visible;
   box-shadow: var(--glass-shadow);
   min-height: 200px;
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   padding: 1rem 1.25rem;
   border-bottom: 1px solid var(--border-default);
   background: rgba(0, 0, 0, 0.2);
   gap: 0.75rem;
-  flex-wrap: wrap;
   flex-shrink: 0;
+  min-height: 56px;
 }
 
 .card-header h3 {
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 600;
   margin: 0;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   color: var(--text-primary);
-  white-space: normal;
-  word-wrap: break-word;
+  white-space: nowrap;
   line-height: 1.3;
+  overflow: visible;
+  text-overflow: clip;
 }
 
 .card-subtitle {
   font-size: 0.7rem;
   color: var(--text-tertiary);
-  white-space: normal;
+  white-space: nowrap;
+  margin-left: auto;
+  padding-left: 0.5rem;
+  flex-shrink: 0;
 }
 
 .header-icon-small {
@@ -431,7 +449,7 @@
   min-width: 0;
 }
 
-/* Card content areas */
+/* Card content areas - scrollable with proper clipping */
 .dbe-goals-list,
 .performers-list,
 .alerts-list,
@@ -439,6 +457,8 @@
 .contract-summary {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
 }
 
 .trade-donut-container {
