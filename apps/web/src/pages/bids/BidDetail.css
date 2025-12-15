@@ -1054,6 +1054,38 @@
   box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2);
 }
 
+/* Primary Outline Button */
+.btn-primary-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: transparent;
+  border: 2px solid var(--neon-cyan);
+  border-radius: var(--radius-md);
+  color: var(--neon-cyan);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary-outline:hover {
+  background: rgba(46, 196, 182, 0.1);
+  box-shadow: 0 0 12px rgba(46, 196, 182, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-primary-outline:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(46, 196, 182, 0.25);
+}
+
+.btn-primary-outline:active {
+  transform: translateY(0);
+}
+
 /* Modal Overlay */
 .modal-overlay {
   position: fixed;

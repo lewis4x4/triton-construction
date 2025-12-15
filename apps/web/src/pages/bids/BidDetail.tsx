@@ -13,6 +13,7 @@ import { DeadlineAlertBanner } from '../../components/bids/DeadlineAlertBanner';
 import { SubmissionChecklistModal } from '../../components/bids/SubmissionChecklistModal';
 import { DeleteProjectModal } from '../../components/bids/DeleteProjectModal';
 import { BidTrafficMap } from '../../components/bids/BidTrafficMap';
+import { ExecutiveHandoffModal } from '../../components/bids/ExecutiveHandoffModal';
 import './BidDetail.css';
 
 interface BidProject {
@@ -865,6 +866,7 @@ function ExecutiveSnapshotTab({
   const [error, setError] = useState<string | null>(null);
   const [generateError, setGenerateError] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState(false);
+  const [showHandoffModal, setShowHandoffModal] = useState(false);
 
   const fetchSnapshot = useCallback(async () => {
     setIsLoading(true);
@@ -1189,6 +1191,12 @@ function ExecutiveSnapshotTab({
           )}
         </div>
         <div className="snapshot-header-right">
+          <button
+            className="btn btn-primary-outline"
+            onClick={() => setShowHandoffModal(true)}
+          >
+            📋 Executive Handoff
+          </button>
           {snapshot && (
             <button
               className="btn btn-secondary"
@@ -1330,6 +1338,15 @@ function ExecutiveSnapshotTab({
             </div>
           )}
         </>
+      )}
+
+      {/* Executive Handoff Modal */}
+      {showHandoffModal && (
+        <ExecutiveHandoffModal
+          projectId={projectId}
+          projectName={projectName}
+          onClose={() => setShowHandoffModal(false)}
+        />
       )}
     </div>
   );
