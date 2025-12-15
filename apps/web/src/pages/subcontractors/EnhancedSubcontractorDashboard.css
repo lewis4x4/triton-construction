@@ -15,6 +15,8 @@
   padding: 0;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 /* Header */
@@ -325,6 +327,8 @@
   max-width: 1800px;
   margin: 0 auto;
   flex: 1;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Overview Grid */
@@ -332,9 +336,15 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
+  width: 100%;
 }
 
-@media (max-width: 1400px) {
+.overview-grid > .card {
+  min-width: 0;
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
   .overview-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -352,20 +362,23 @@
   backdrop-filter: var(--glass-blur);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-xl);
-  overflow: visible;
+  overflow: hidden;
   box-shadow: var(--glass-shadow);
   min-height: 200px;
+  display: flex;
+  flex-direction: column;
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   padding: 1rem 1.25rem;
   border-bottom: 1px solid var(--border-default);
   background: rgba(0, 0, 0, 0.2);
   gap: 0.75rem;
   flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
 .card-header h3 {
@@ -376,13 +389,15 @@
   align-items: center;
   gap: 0.5rem;
   color: var(--text-primary);
-  white-space: nowrap;
+  white-space: normal;
+  word-wrap: break-word;
+  line-height: 1.3;
 }
 
 .card-subtitle {
   font-size: 0.7rem;
   color: var(--text-tertiary);
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .header-icon-small {
@@ -413,20 +428,34 @@
 /* Trade Donut */
 .trade-card {
   /* Let it flow naturally in 2-column grid */
+  min-width: 0;
+}
+
+/* Card content areas */
+.dbe-goals-list,
+.performers-list,
+.alerts-list,
+.invoices-list,
+.contract-summary {
+  flex: 1;
+  overflow-y: auto;
 }
 
 .trade-donut-container {
-  padding: 2rem;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem;
+  flex: 1;
+  min-height: 0;
 }
 
 .trade-donut {
-  width: 200px;
-  height: 200px;
-  /* SVG styling usually handled inline or via JS, but ensures responsiveness */
+  width: 180px;
+  height: 180px;
+  max-width: 100%;
+  flex-shrink: 0;
 }
 
 .donut-segment {
@@ -456,17 +485,18 @@
 .trade-legend {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.5rem;
   justify-content: center;
+  width: 100%;
 }
 
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.8rem;
+  gap: 0.35rem;
+  font-size: 0.75rem;
   background: rgba(255, 255, 255, 0.03);
-  padding: 0.25rem 0.5rem;
+  padding: 0.2rem 0.4rem;
   border-radius: 4px;
 }
 
@@ -509,12 +539,16 @@
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 0.75rem;
+  gap: 0.75rem;
 }
 
 .goal-project {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
 }
 
 .project-number {
@@ -528,6 +562,9 @@
   font-size: 0.9rem;
   color: var(--text-primary);
   font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .goal-progress {
@@ -604,12 +641,13 @@
 .performer-item {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
   padding: 0.75rem;
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: all 0.2s;
   border: 1px solid transparent;
+  min-width: 0;
 }
 
 .performer-item:hover {
@@ -633,6 +671,8 @@
 
 .performer-info {
   flex: 1;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .performer-info .company-name {
@@ -641,6 +681,10 @@
   color: var(--text-primary);
   display: block;
   margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 180px;
 }
 
 .performer-info .trade {
@@ -650,7 +694,8 @@
 
 .performer-metrics {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
+  flex-shrink: 0;
 }
 
 .performer-metrics .metric {
@@ -732,6 +777,8 @@
 
 .alert-content {
   flex: 1;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .alert-title {
@@ -739,6 +786,9 @@
   font-weight: 500;
   color: var(--text-primary);
   display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .alert-subtitle {
@@ -807,6 +857,8 @@
 
 .invoice-main {
   flex: 1;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .invoice-number {
@@ -816,11 +868,17 @@
   display: block;
   font-family: var(--font-mono);
   margin-bottom: 0.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .invoice-sub {
   font-size: 0.8rem;
   color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .invoice-amount {
@@ -1003,6 +1061,7 @@
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 1rem;
+  gap: 0.75rem;
 }
 
 .sub-info h3 {
@@ -1010,6 +1069,9 @@
   font-weight: 600;
   color: var(--text-primary);
   margin: 0 0 0.25rem 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .sub-trade {

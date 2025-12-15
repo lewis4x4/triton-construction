@@ -1,0 +1,372 @@
+.variance-alert-panel {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 1px solid #f59e0b;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.1);
+}
+
+.variance-alert-panel.collapsed {
+  background: #fffbeb;
+}
+
+.variance-alert-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.variance-alert-header:hover {
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.variance-alert-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.variance-alert-icon {
+  font-size: 1.25rem;
+}
+
+.variance-alert-text {
+  font-weight: 600;
+  color: #92400e;
+  font-size: 0.95rem;
+}
+
+.variance-counts {
+  display: flex;
+  gap: 8px;
+}
+
+.count-badge {
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.count-badge.critical {
+  background: #fecaca;
+  color: #7c2d12;
+}
+
+.count-badge.major {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.collapse-btn {
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  color: #92400e;
+  font-size: 0.875rem;
+}
+
+.variance-alert-content {
+  padding: 0 16px 16px;
+}
+
+.variance-alert-description {
+  color: #78350f;
+  font-size: 0.875rem;
+  margin: 0 0 12px 0;
+  line-height: 1.5;
+}
+
+.variance-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.variance-item {
+  background: white;
+  border-radius: 6px;
+  border-left: 4px solid #f59e0b;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.variance-item.expanded {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.variance-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  cursor: pointer;
+  gap: 12px;
+}
+
+.variance-item-header:hover {
+  background: #f9fafb;
+}
+
+.variance-item-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.variance-item-info .item-number {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.variance-item-info .item-description {
+  color: #6b7280;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.variance-item-metrics {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.variance-badge {
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid;
+}
+
+.strategy-badge {
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.strategy-badge.short {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.strategy-badge.long {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.strategy-badge.neutral {
+  background: #e5e7eb;
+  color: #6b7280;
+}
+
+.expand-icon {
+  color: #9ca3af;
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+.variance-item-details {
+  padding: 12px 16px 16px;
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.quantity-comparison {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.qty-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px;
+  background: white;
+  border-radius: 4px;
+  border: 1px solid #e5e7eb;
+}
+
+.qty-row.total {
+  background: #1f2937;
+  color: white;
+  border: none;
+}
+
+.qty-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.qty-row.total .qty-label {
+  color: #d1d5db;
+}
+
+.qty-value {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.qty-value.highlight {
+  color: #2563eb;
+}
+
+.strategy-recommendation {
+  background: white;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 12px;
+}
+
+.strategy-recommendation h4 {
+  margin: 0 0 6px 0;
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.strategy-recommendation h4 span.short {
+  color: #dc2626;
+}
+
+.strategy-recommendation h4 span.long {
+  color: #059669;
+}
+
+.strategy-recommendation h4 span.neutral {
+  color: #6b7280;
+}
+
+.strategy-recommendation p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.variance-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mark-unbalanced-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mark-unbalanced-form textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  resize: vertical;
+  min-height: 60px;
+}
+
+.mark-unbalanced-form textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: none;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+.btn-warning {
+  background: #f59e0b;
+  color: white;
+}
+
+.btn-warning:hover:not(:disabled) {
+  background: #d97706;
+}
+
+.btn-success {
+  background: #10b981;
+  color: white;
+}
+
+.btn-success:hover:not(:disabled) {
+  background: #059669;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: #6b7280;
+}
+
+.btn-ghost:hover {
+  background: #f3f4f6;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Inline variance badge for tables */
+.variance-badge-inline {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+.variance-badge-inline.compact {
+  padding: 1px 4px;
+  font-size: 0.65rem;
+}

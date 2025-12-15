@@ -65,11 +65,11 @@ export function ExecutiveDashboard() {
         .select('id, current_contract_value')
         .in('status', ['ACTIVE', 'MOBILIZATION']);
 
-      // Fetch workforce count
+      // Fetch workforce count - use crew_members table
       const { count: workforceCount } = await supabase
-        .from('employees')
+        .from('crew_members')
         .select('*', { count: 'exact', head: true })
-        .eq('status', 'ACTIVE');
+        .eq('is_active', true);
 
       // Fetch equipment
       const { data: equipment } = await supabase
@@ -80,9 +80,10 @@ export function ExecutiveDashboard() {
       // Calculate KPIs
       const activeProjects = projects?.length || 0;
       const totalContractValue = projects?.reduce((sum, p) => sum + (p.current_contract_value || 0), 0) || 0;
-      const equipmentActive = equipment?.filter(e => e.status === 'OPERATING').length || 0;
+      // Equipment status values are: IN_USE, AVAILABLE, MAINTENANCE, etc.
+      const equipmentInUse = equipment?.filter(e => e.status === 'IN_USE').length || 0;
       const equipmentTotal = equipment?.length || 1;
-      const equipmentUtilization = (equipmentActive / equipmentTotal) * 100;
+      const equipmentUtilization = (equipmentInUse / equipmentTotal) * 100;
 
       setKpis({
         activeProjects,

@@ -1040,6 +1040,51 @@ serve(async (req) => {
     console.log(`Successfully inserted ${insertedItems?.length || 0} line items for project ${bidProjectId}`);
 
     // =========================================================================
+    // QUANTITY INTELLIGENCE: Track EBSX quantities in line_item_quantities table
+    // =========================================================================
+    console.log('Recording EBSX quantity sources...');
+    let quantitySourcesInserted = 0;
+
+    try {
+      // Get the inserted line items with their IDs and item_numbers
+      const { data: insertedLineItems, error: fetchError } = await supabaseAdmin
+        .from('bid_line_items')
+        .select('id, item_number, quantity, unit')
+        .eq('bid_project_id', bidProjectId);
+
+      if (fetchError) {
+        console.error('Error fetching inserted line items:', fetchError.message);
+      } else if (insertedLineItems && insertedLineItems.length > 0) {
+        // Prepare quantity source records
+        const quantityRecords = insertedLineItems.map(item => ({
+          line_item_id: item.id,
+          quantity_source: 'EBSX_IMPORT' as const,
+          source_reference: `BIDX Document: ${documentId}`,
+          quantity: item.quantity,
+          unit: item.unit,
+          is_governing: true, // EBSX is the default governing source
+          confidence: 95.00,  // High confidence since it's from official source
+        }));
+
+        // Insert all quantity source records
+        const { error: quantityInsertError } = await supabaseAdmin
+          .from('line_item_quantities')
+          .insert(quantityRecords);
+
+        if (quantityInsertError) {
+          // Non-critical error - log but don't fail
+          console.error('Error inserting quantity sources:', quantityInsertError.message);
+        } else {
+          quantitySourcesInserted = quantityRecords.length;
+          console.log(`Recorded ${quantitySourcesInserted} EBSX quantity sources`);
+        }
+      }
+    } catch (quantityError) {
+      // Non-critical: log but don't fail the whole operation
+      console.error('Quantity source tracking error:', quantityError);
+    }
+
+    // =========================================================================
     // PRICING ENGINE: Match items to master and apply assembly-based costing
     // =========================================================================
     console.log('Starting assembly-based pricing calculation...');
@@ -1133,6 +1178,10 @@ serve(async (req) => {
             itemsMatchedToMaster: matchedCount,
             assembliesApplied: assemblyAppliedCount,
           },
+          quantityIntelligence: {
+            ebsxQuantitiesRecorded: quantitySourcesInserted,
+            source: 'EBSX_IMPORT',
+          },
         },
       })
       .eq('id', documentId);
@@ -1187,6 +1236,13 @@ serve(async (req) => {
             message: assemblyAppliedCount > 0
               ? `Base costs calculated for ${assemblyAppliedCount} items using assembly templates`
               : 'No assembly templates available for matched items',
+          },
+          quantityIntelligence: {
+            ebsxQuantitiesRecorded: quantitySourcesInserted,
+            source: 'EBSX_IMPORT',
+            message: quantitySourcesInserted > 0
+              ? `Recorded ${quantitySourcesInserted} EBSX quantities for variance tracking`
+              : 'Quantity source tracking not available',
           },
         },
       }),

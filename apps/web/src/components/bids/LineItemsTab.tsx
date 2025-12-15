@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@triton/supabase-client';
 import { LineItemDetail } from './LineItemDetail';
 import { CostAdjustmentsPanel } from './CostAdjustmentsPanel';
+import { VarianceAlert, VarianceBadge } from './VarianceAlert';
 import './LineItemsTab.css';
 
 // Helper for accessing tables not yet in TypeScript types
@@ -14,6 +15,11 @@ interface LineItemsTabProps {
 
 // Pricing status types for validation framework
 type PricingStatus = 'COMPLETE' | 'AI_SUGGESTED' | 'MANUAL_REQUIRED' | 'INCOMPLETE' | 'NEEDS_PRICING';
+
+// Variance types matching database enums
+type VarianceSignificance = 'MATCH' | 'MINOR' | 'MODERATE' | 'MAJOR' | 'CRITICAL';
+type VarianceDirection = 'OVER' | 'UNDER' | 'MATCH';
+type UnbalanceDirection = 'SHORT' | 'LONG' | 'NEUTRAL';
 
 // Use a simplified type that matches what we select from the database
 interface LineItem {
@@ -44,6 +50,17 @@ interface LineItem {
     historical_count?: number;
     base_price_year?: number;
   } | null;
+  // Quantity Intelligence fields (from migration 127)
+  ebsx_quantity?: number | null;
+  plan_quantity?: number | null;
+  takeoff_quantity?: number | null;
+  governing_source?: string | null;
+  quantity_variance_pct?: number | null;
+  variance_direction?: VarianceDirection | null;
+  variance_significance?: VarianceSignificance | null;
+  is_unbalanced?: boolean;
+  unbalance_direction?: UnbalanceDirection | null;
+  unbalance_justification?: string | null;
 }
 
 // Cost adjustment factor from AI document analysis
@@ -147,6 +164,9 @@ export function LineItemsTab({ projectId }: LineItemsTabProps) {
   const [lineItemAdjustments, setLineItemAdjustments] = useState<Map<string, LineItemAdjustments>>(new Map());
   const [showAdjustmentsPanel, setShowAdjustmentsPanel] = useState(false);
 
+  // Quantity intelligence state
+  const [varianceAlertCollapsed, setVarianceAlertCollapsed] = useState(false);
+
   // Fetch cost adjustments for this project
   const fetchCostAdjustments = useCallback(async () => {
     try {
@@ -215,10 +235,11 @@ export function LineItemsTab({ projectId }: LineItemsTabProps) {
 
     try {
       // Note: wvdoh_item_code column was added in migration 107 - types may not include it yet
+      // Quantity intelligence fields added in migration 127
       // Using supabaseAny to handle columns not yet in TypeScript types
       let query = supabaseAny
         .from('bid_line_items')
-        .select('id, line_number, item_number, alt_item_number, description, short_description, quantity, unit, work_category, risk_level, estimation_method, base_unit_cost, ai_suggested_unit_price, final_unit_price, final_extended_price, pricing_reviewed, estimator_notes, created_at, wvdoh_item_code')
+        .select('id, line_number, item_number, alt_item_number, description, short_description, quantity, unit, work_category, risk_level, estimation_method, base_unit_cost, ai_suggested_unit_price, final_unit_price, final_extended_price, pricing_reviewed, estimator_notes, created_at, wvdoh_item_code, ebsx_quantity, plan_quantity, takeoff_quantity, governing_source, quantity_variance_pct, variance_direction, variance_significance, is_unbalanced, unbalance_direction, unbalance_justification')
         .eq('bid_project_id', projectId);
 
       // Apply filters
@@ -356,6 +377,31 @@ export function LineItemsTab({ projectId }: LineItemsTabProps) {
     }
   };
 
+  // Handler for marking items as unbalanced (Quantity Intelligence)
+  const handleMarkUnbalanced = async (itemId: string, direction: 'SHORT' | 'LONG', justification: string) => {
+    try {
+      // Call the set_item_unbalanced RPC function from migration 127
+      const { error } = await supabaseAny.rpc('set_item_unbalanced', {
+        p_line_item_id: itemId,
+        p_direction: direction,
+        p_justification: justification,
+        p_confidence: 80.00,
+      });
+
+      if (error) {
+        console.error('Error marking item as unbalanced:', error);
+        alert(`Failed to mark item as unbalanced: ${error.message}`);
+        return;
+      }
+
+      // Refresh the line items to show updated status
+      fetchLineItems();
+    } catch (err) {
+      console.error('Error in handleMarkUnbalanced:', err);
+      alert('Failed to mark item as unbalanced');
+    }
+  };
+
   const formatCurrency = (value: number | null) => {
     if (value == null) return '-';
     return new Intl.NumberFormat('en-US', {
@@ -419,8 +465,45 @@ export function LineItemsTab({ projectId }: LineItemsTabProps) {
     );
   }
 
+  // Prepare variance items for the alert panel
+  const varianceItems = lineItems
+    .filter((item) => item.variance_significance && ['MODERATE', 'MAJOR', 'CRITICAL'].includes(item.variance_significance))
+    .map((item) => ({
+      id: item.id,
+      line_number: item.line_number,
+      item_number: item.item_number,
+      description: item.description,
+      unit: item.unit,
+      ebsx_quantity: item.ebsx_quantity ?? null,
+      plan_quantity: item.plan_quantity ?? null,
+      takeoff_quantity: item.takeoff_quantity ?? null,
+      quantity_variance_pct: item.quantity_variance_pct ?? null,
+      variance_direction: item.variance_direction ?? null,
+      variance_significance: item.variance_significance ?? null,
+      unit_price: item.final_unit_price ?? item.ai_suggested_unit_price ?? null,
+      bid_amount: item.final_extended_price ?? null,
+      is_unbalanced: item.is_unbalanced ?? false,
+      unbalance_direction: item.unbalance_direction ?? null,
+      unbalance_justification: item.unbalance_justification ?? null,
+      priority_score: 0, // Will be calculated in the component
+    }));
+
   return (
     <div className="line-items-tab">
+      {/* Variance Alert Panel */}
+      {varianceItems.length > 0 && (
+        <VarianceAlert
+          items={varianceItems}
+          onItemSelect={(item) => {
+            const lineItem = lineItems.find((li) => li.id === item.id);
+            if (lineItem) setSelectedItem(lineItem);
+          }}
+          onMarkUnbalanced={handleMarkUnbalanced}
+          isCollapsed={varianceAlertCollapsed}
+          onToggleCollapse={() => setVarianceAlertCollapsed(!varianceAlertCollapsed)}
+        />
+      )}
+
       {/* Summary Bar */}
       <div className="line-items-summary">
         <div className="summary-stat">
@@ -576,6 +659,9 @@ export function LineItemsTab({ projectId }: LineItemsTabProps) {
                 </th>
                 <th>Unit</th>
                 <th>Category</th>
+                <th className="numeric" title="Plan Quantity">Plan Qty</th>
+                <th className="numeric" title="Contractor Takeoff Quantity">Takeoff</th>
+                <th className="center" title="Quantity Variance (Takeoff vs Plan)">Var%</th>
                 <th className="numeric">Unit Price</th>
                 <th className="center" title="Cost Adjustments from AI document analysis">
                   Adj
@@ -630,6 +716,50 @@ export function LineItemsTab({ projectId }: LineItemsTabProps) {
                         </span>
                       ) : (
                         <span className="no-category">-</span>
+                      )}
+                    </td>
+                    {/* Plan Quantity */}
+                    <td className="numeric">
+                      {item.plan_quantity != null ? (
+                        <span style={{ color: '#374151' }}>{formatNumber(item.plan_quantity)}</span>
+                      ) : (
+                        <span style={{ color: '#9ca3af' }}>-</span>
+                      )}
+                    </td>
+                    {/* Takeoff Quantity */}
+                    <td className="numeric">
+                      {item.takeoff_quantity != null ? (
+                        <span style={{ color: '#2563eb', fontWeight: 500 }}>{formatNumber(item.takeoff_quantity)}</span>
+                      ) : (
+                        <span style={{ color: '#9ca3af' }}>-</span>
+                      )}
+                    </td>
+                    {/* Variance Badge */}
+                    <td className="center">
+                      {item.is_unbalanced ? (
+                        <span
+                          className="unbalanced-badge"
+                          style={{
+                            display: 'inline-block',
+                            padding: '2px 6px',
+                            borderRadius: '4px',
+                            fontSize: '0.7rem',
+                            fontWeight: 600,
+                            backgroundColor: item.unbalance_direction === 'SHORT' ? '#fee2e2' : '#d1fae5',
+                            color: item.unbalance_direction === 'SHORT' ? '#dc2626' : '#059669',
+                            border: `1px solid ${item.unbalance_direction === 'SHORT' ? '#ef4444' : '#10b981'}`,
+                          }}
+                          title={item.unbalance_justification || 'Marked as unbalanced'}
+                        >
+                          {item.unbalance_direction}
+                        </span>
+                      ) : (
+                        <VarianceBadge
+                          variancePct={item.quantity_variance_pct ?? null}
+                          significance={item.variance_significance ?? null}
+                          direction={item.variance_direction ?? null}
+                          compact
+                        />
                       )}
                     </td>
                     <td className="numeric">
@@ -702,7 +832,7 @@ export function LineItemsTab({ projectId }: LineItemsTabProps) {
             </tbody>
             <tfoot>
               <tr className="totals-row">
-                <td colSpan={9} className="totals-label">
+                <td colSpan={12} className="totals-label">
                   Total ({lineItems.length} items)
                 </td>
                 <td className="numeric totals-value">
