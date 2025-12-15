@@ -1,9 +1,14 @@
-import { createContext, useEffect, useState, useCallback, type ReactNode } from 'react';
+import { createContext, useEffect, useState, useCallback, useRef, type ReactNode } from 'react';
 import { supabase } from '@triton/supabase-client';
 import type { User, Session, AuthError } from '@supabase/supabase-js';
 import type { Tables } from '@triton/shared';
 
 type UserProfile = Tables<'user_profiles'>;
+
+// Session refresh interval (5 minutes)
+const SESSION_REFRESH_INTERVAL = 5 * 60 * 1000;
+// Session warning threshold (10 minutes before expiry)
+const SESSION_WARNING_THRESHOLD = 10 * 60 * 1000;
 
 interface AuthState {
   user: User | null;
@@ -18,6 +23,7 @@ interface AuthContextType extends AuthState {
   signUp: (email: string, password: string, metadata?: SignUpMetadata) => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
+  refreshSession: () => Promise<boolean>;
 }
 
 interface SignUpMetadata {
@@ -67,6 +73,110 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const profile = await fetchProfile(state.user.id);
     setState(prev => ({ ...prev, profile }));
   }, [state.user, fetchProfile]);
+
+  // Ref to track refresh interval
+  const refreshIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Manual session refresh function
+  const refreshSession = useCallback(async (): Promise<boolean> => {
+    try {
+      const { data, error } = await supabase.auth.refreshSession();
+
+      if (error) {
+        console.error('Error refreshing session:', error);
+        // If refresh fails, the session is likely expired - sign out
+        if (error.message?.includes('refresh_token') || error.message?.includes('expired')) {
+          console.log('Session expired, signing out...');
+          setState({
+            user: null,
+            session: null,
+            profile: null,
+            isLoading: false,
+            isAuthenticated: false,
+          });
+          return false;
+        }
+        return false;
+      }
+
+      if (data.session) {
+        const profile = await fetchProfile(data.session.user.id);
+        setState({
+          user: data.session.user,
+          session: data.session,
+          profile,
+          isLoading: false,
+          isAuthenticated: true,
+        });
+        return true;
+      }
+      return false;
+    } catch (err) {
+      console.error('Exception refreshing session:', err);
+      return false;
+    }
+  }, [fetchProfile]);
+
+  // Check if session needs refresh based on expiry time
+  const checkAndRefreshSession = useCallback(async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+
+    if (!session) return;
+
+    const expiresAt = session.expires_at;
+    if (!expiresAt) return;
+
+    const expiryTime = expiresAt * 1000; // Convert to milliseconds
+    const now = Date.now();
+    const timeUntilExpiry = expiryTime - now;
+
+    // If less than 10 minutes until expiry, refresh now
+    if (timeUntilExpiry < SESSION_WARNING_THRESHOLD) {
+      console.log('Session expiring soon, refreshing...');
+      await refreshSession();
+    }
+  }, [refreshSession]);
+
+  // Handle visibility change - refresh session when tab becomes visible
+  useEffect(() => {
+    const handleVisibilityChange = async () => {
+      if (document.visibilityState === 'visible' && state.isAuthenticated) {
+        console.log('Tab became visible, checking session...');
+        await checkAndRefreshSession();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [state.isAuthenticated, checkAndRefreshSession]);
+
+  // Set up periodic session refresh
+  useEffect(() => {
+    if (state.isAuthenticated) {
+      // Clear any existing interval
+      if (refreshIntervalRef.current) {
+        clearInterval(refreshIntervalRef.current);
+      }
+
+      // Set up new refresh interval
+      refreshIntervalRef.current = setInterval(() => {
+        checkAndRefreshSession();
+      }, SESSION_REFRESH_INTERVAL);
+
+      // Initial check
+      checkAndRefreshSession();
+    }
+
+    return () => {
+      if (refreshIntervalRef.current) {
+        clearInterval(refreshIntervalRef.current);
+        refreshIntervalRef.current = null;
+      }
+    };
+  }, [state.isAuthenticated, checkAndRefreshSession]);
 
   useEffect(() => {
     // Get initial session with error handling
@@ -183,6 +293,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     signUp,
     signOut,
     refreshProfile,
+    refreshSession,
   };
 
   return (
