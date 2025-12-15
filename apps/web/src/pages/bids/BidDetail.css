@@ -250,6 +250,16 @@
   animation: fadeIn 0.3s ease;
 }
 
+.pipeline-completed {
+  margin-top: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  background: rgba(100, 116, 139, 0.15);
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-4px); }
   to { opacity: 1; transform: translateY(0); }

@@ -71,11 +71,11 @@ interface WorkflowStage {
 const TABS: { id: TabId; label: string; icon: string }[] = [
   { id: 'documents', label: 'Documents', icon: '📄' },
   { id: 'line-items', label: 'Line Items', icon: '📋' },
-  { id: 'executive-snapshot', label: 'Executive Summary', icon: '📝' },
   { id: 'ai-analysis', label: 'AI Analysis', icon: '📊' },
   { id: 'risks', label: 'Risks', icon: '⚠️' },
   { id: 'questions', label: 'Questions', icon: '❓' },
   { id: 'work-packages', label: 'Work Packages', icon: '📦' },
+  { id: 'executive-snapshot', label: 'Executive Summary', icon: '📝' },
   { id: 'team', label: 'Team', icon: '👥' },
 ];
 
@@ -474,6 +474,7 @@ function OverviewTab({
   const [aiOperations, setAiOperations] = useState<Record<string, boolean>>({});
   const [aiErrors, setAiErrors] = useState<Record<string, string>>({});
   const [aiSuccess, setAiSuccess] = useState<Record<string, string>>({});
+  const [aiCompleted, setAiCompleted] = useState<Record<string, boolean>>({});
 
   const formatCurrency = (value: number | null | undefined) => {
     if (value == null) return '-';
@@ -533,13 +534,14 @@ function OverviewTab({
       }
 
       setAiSuccess((prev) => ({ ...prev, [operation]: successMsg }));
+      setAiCompleted((prev) => ({ ...prev, [operation]: true }));
 
       // Refresh data after successful AI operation
       if (onDataRefresh) {
         await onDataRefresh();
       }
 
-      // Clear success message after 5 seconds
+      // Clear success message after 5 seconds (but keep completed status)
       setTimeout(() => {
         setAiSuccess((prev) => {
           const newSuccess = { ...prev };
@@ -582,9 +584,12 @@ function OverviewTab({
   const handleRunAllAi = async () => {
     setAiOperations((prev) => ({ ...prev, all: true }));
     try {
-      await handleExtractRisks();
-      await handleGenerateQuestions();
-      await handleCategorizeItems();
+      // Run all operations in parallel, continue even if one fails
+      await Promise.allSettled([
+        handleExtractRisks(),
+        handleGenerateQuestions(),
+        handleCategorizeItems(),
+      ]);
     } finally {
       setAiOperations((prev) => ({ ...prev, all: false }));
     }
@@ -624,15 +629,16 @@ function OverviewTab({
             <div className="pipeline-card-footer">
               <span className="pipeline-count">{metrics?.total_risks || 0} risks found</span>
               <button
-                className="btn btn-secondary btn-sm"
+                className={`btn btn-sm ${aiCompleted.risks ? 'btn-success' : 'btn-secondary'}`}
                 onClick={handleExtractRisks}
                 disabled={isAnyRunning}
               >
-                {aiOperations.risks ? 'Running...' : 'Run'}
+                {aiOperations.risks ? 'Running...' : aiCompleted.risks ? '✓ Run Again' : 'Run'}
               </button>
             </div>
             {aiErrors.risks && <div className="pipeline-error">{aiErrors.risks}</div>}
             {aiSuccess.risks && <div className="pipeline-success">✓ {aiSuccess.risks}</div>}
+            {!aiSuccess.risks && aiCompleted.risks && <div className="pipeline-completed">Completed</div>}
           </div>
 
           <div className="ai-pipeline-card">
@@ -644,15 +650,16 @@ function OverviewTab({
             <div className="pipeline-card-footer">
               <span className="pipeline-count">{metrics?.total_questions || 0} questions</span>
               <button
-                className="btn btn-secondary btn-sm"
+                className={`btn btn-sm ${aiCompleted.questions ? 'btn-success' : 'btn-secondary'}`}
                 onClick={handleGenerateQuestions}
                 disabled={isAnyRunning}
               >
-                {aiOperations.questions ? 'Running...' : 'Run'}
+                {aiOperations.questions ? 'Running...' : aiCompleted.questions ? '✓ Run Again' : 'Run'}
               </button>
             </div>
             {aiErrors.questions && <div className="pipeline-error">{aiErrors.questions}</div>}
             {aiSuccess.questions && <div className="pipeline-success">✓ {aiSuccess.questions}</div>}
+            {!aiSuccess.questions && aiCompleted.questions && <div className="pipeline-completed">Completed</div>}
           </div>
 
           <div className="ai-pipeline-card">
@@ -664,15 +671,16 @@ function OverviewTab({
             <div className="pipeline-card-footer">
               <span className="pipeline-count">{metrics?.total_line_items || 0} line items</span>
               <button
-                className="btn btn-secondary btn-sm"
+                className={`btn btn-sm ${aiCompleted.categorize ? 'btn-success' : 'btn-secondary'}`}
                 onClick={handleCategorizeItems}
                 disabled={isAnyRunning}
               >
-                {aiOperations.categorize ? 'Running...' : 'Run'}
+                {aiOperations.categorize ? 'Running...' : aiCompleted.categorize ? '✓ Run Again' : 'Run'}
               </button>
             </div>
             {aiErrors.categorize && <div className="pipeline-error">{aiErrors.categorize}</div>}
             {aiSuccess.categorize && <div className="pipeline-success">✓ {aiSuccess.categorize}</div>}
+            {!aiSuccess.categorize && aiCompleted.categorize && <div className="pipeline-completed">Completed</div>}
           </div>
         </div>
       </div>
