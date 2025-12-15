@@ -119,23 +119,55 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // Check if session needs refresh based on expiry time
   const checkAndRefreshSession = useCallback(async () => {
-    const { data: { session } } = await supabase.auth.getSession();
+    try {
+      const { data: { session }, error } = await supabase.auth.getSession();
 
-    if (!session) return;
+      if (error) {
+        console.error('Error getting session:', error);
+        return;
+      }
 
-    const expiresAt = session.expires_at;
-    if (!expiresAt) return;
+      if (!session) {
+        // No session - user needs to log in
+        if (state.isAuthenticated) {
+          console.log('Session lost, clearing auth state...');
+          setState({
+            user: null,
+            session: null,
+            profile: null,
+            isLoading: false,
+            isAuthenticated: false,
+          });
+        }
+        return;
+      }
 
-    const expiryTime = expiresAt * 1000; // Convert to milliseconds
-    const now = Date.now();
-    const timeUntilExpiry = expiryTime - now;
+      const expiresAt = session.expires_at;
+      if (!expiresAt) return;
 
-    // If less than 10 minutes until expiry, refresh now
-    if (timeUntilExpiry < SESSION_WARNING_THRESHOLD) {
-      console.log('Session expiring soon, refreshing...');
-      await refreshSession();
+      const expiryTime = expiresAt * 1000; // Convert to milliseconds
+      const now = Date.now();
+      const timeUntilExpiry = expiryTime - now;
+
+      // If session is already expired, try to refresh
+      if (timeUntilExpiry <= 0) {
+        console.log('Session expired, attempting refresh...');
+        const success = await refreshSession();
+        if (!success) {
+          console.log('Refresh failed, session expired');
+        }
+        return;
+      }
+
+      // If less than 10 minutes until expiry, refresh now
+      if (timeUntilExpiry < SESSION_WARNING_THRESHOLD) {
+        console.log('Session expiring soon, refreshing...');
+        await refreshSession();
+      }
+    } catch (err) {
+      console.error('Exception checking session:', err);
     }
-  }, [refreshSession]);
+  }, [refreshSession, state.isAuthenticated]);
 
   // Handle visibility change - refresh session when tab becomes visible
   useEffect(() => {
@@ -265,8 +297,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   const signOut = useCallback(async () => {
+    // Clear refresh interval first to prevent any race conditions
+    if (refreshIntervalRef.current) {
+      clearInterval(refreshIntervalRef.current);
+      refreshIntervalRef.current = null;
+    }
+
     try {
-      const { error } = await supabase.auth.signOut();
+      // Use scope: 'local' to force clear local session even if server call fails
+      // This handles cases where session is already expired
+      const { error } = await supabase.auth.signOut({ scope: 'local' });
       if (error) {
         console.error('Error signing out:', error);
       }
@@ -281,9 +321,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
         isLoading: false,
         isAuthenticated: false,
       });
-      // Clear any persisted data if needed (optional)
+      // Clear Supabase's persisted auth data (correct key format for this project)
+      localStorage.removeItem('sb-gablgsruyuhvjurhtcxx-auth-token');
+      // Also try generic keys in case they exist
       localStorage.removeItem('sb-access-token');
       localStorage.removeItem('sb-refresh-token');
+      // Redirect to login page
+      window.location.href = '/login';
     }
   }, []);
 
