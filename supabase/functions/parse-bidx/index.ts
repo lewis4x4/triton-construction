@@ -954,6 +954,10 @@ serve(async (req) => {
         ai_suggested_unit_price: aiSuggestedPrice,
         // Calculate suggested extended price if we have a suggestion
         ai_suggested_extended_price: aiSuggestedPrice ? aiSuggestedPrice * item.quantity : null,
+        // CRITICAL: Also set final_unit_price to prevent trigger from overwriting with wvdoh_item_master base price
+        // The suggested price becomes the starting point; users can modify during review
+        final_unit_price: aiSuggestedPrice,
+        final_extended_price: aiSuggestedPrice ? aiSuggestedPrice * item.quantity : null,
         // Store metadata about pricing source with enhanced details
         ai_pricing_metadata: aiSuggestedPrice ? {
           source: pricingSource,
