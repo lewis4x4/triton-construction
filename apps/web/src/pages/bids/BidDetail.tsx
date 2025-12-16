@@ -218,28 +218,31 @@ export function BidDetail() {
   const [showSubmissionModal, setShowSubmissionModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const fetchProject = useCallback(async () => {
+  const fetchProject = useCallback(async (skipSessionCheck = false) => {
     if (!id) return;
 
     setIsLoading(true);
     setError(null);
 
     try {
-      // First check if session is still valid with timeout
-      const sessionResult = await withTimeout(
-        supabase.auth.getSession(),
-        5000,
-        'Session check timed out'
-      );
+      // Only check session on initial load, not on manual refreshes (to avoid loops)
+      if (!skipSessionCheck) {
+        // First check if session is still valid with timeout
+        const sessionResult = await withTimeout(
+          supabase.auth.getSession(),
+          5000,
+          'Session check timed out'
+        );
 
-      if (sessionResult.error || !sessionResult.data.session) {
-        // Try to refresh the session
-        console.log('Session invalid, attempting refresh...');
-        const refreshed = await refreshSession();
-        if (!refreshed) {
-          console.log('Session expired, redirecting to login...');
-          navigate('/login');
-          return;
+        if (sessionResult.error || !sessionResult.data.session) {
+          // Try to refresh the session
+          console.log('Session invalid, attempting refresh...');
+          const refreshed = await refreshSession();
+          if (!refreshed) {
+            console.log('Session expired, redirecting to login...');
+            navigate('/login');
+            return;
+          }
         }
       }
 
@@ -265,9 +268,9 @@ export function BidDetail() {
             navigate('/login');
             return;
           }
-          // Retry once after refresh
+          // Retry once after refresh (skip session check since we just refreshed)
           if (isMountedRef.current) {
-            fetchProject();
+            fetchProject(true);
           }
           return;
         }
@@ -387,7 +390,7 @@ export function BidDetail() {
     // Refresh metrics when switching to line-items tab to ensure count is up-to-date
     // This handles cases where real-time subscription missed the processing completion
     if (tabId === 'line-items') {
-      fetchProject();
+      fetchProject(true); // Skip session check to avoid refresh loops
     }
   };
 
@@ -534,13 +537,13 @@ export function BidDetail() {
         {/* Tab Content */}
         <div className="tab-content">
           {activeTab === 'ai-analysis' && (
-            <OverviewTab project={project} metrics={metrics} onDataRefresh={fetchProject} />
+            <OverviewTab project={project} metrics={metrics} onDataRefresh={() => fetchProject(true)} />
           )}
           {activeTab === 'executive-snapshot' && (
             <ExecutiveSnapshotTab projectId={project.id} projectName={project.project_name} />
           )}
           {activeTab === 'documents' && (
-            <DocumentsTab projectId={project.id} onDocumentsChange={fetchProject} />
+            <DocumentsTab projectId={project.id} onDocumentsChange={() => fetchProject(true)} />
           )}
           {activeTab === 'line-items' && <LineItemsTab projectId={project.id} />}
           {activeTab === 'risks' && <RisksTab projectId={project.id} />}
@@ -558,9 +561,8 @@ export function BidDetail() {
           onClose={() => setShowSubmissionModal(false)}
           onSubmissionComplete={() => {
             setShowSubmissionModal(false);
-            // Refresh data after submission
-            fetchProject();
-            // Could also update project status here
+            // Refresh data after submission (skip session check to avoid loop)
+            fetchProject(true);
           }}
         />
       )}
