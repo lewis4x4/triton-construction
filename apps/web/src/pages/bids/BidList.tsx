@@ -4,8 +4,8 @@ import { supabase } from '@triton/supabase-client';
 import { useAuth } from '../../hooks/useAuth';
 import './BidList.css';
 
-// Timeout for API calls (15 seconds)
-const API_TIMEOUT = 15000;
+// Timeout for API calls (10 seconds)
+const API_TIMEOUT = 10000;
 
 interface BidProject {
   id: string;
@@ -32,39 +32,41 @@ interface BidProject {
 // Status values matching database enum (bid_status_enum)
 type StatusFilter = 'all' | 'IDENTIFIED' | 'REVIEWING' | 'ANALYZING' | 'READY_FOR_REVIEW' | 'IN_REVIEW' | 'APPROVED' | 'ESTIMATING' | 'SUBMITTED' | 'WON' | 'LOST' | 'NO_BID' | 'CANCELLED';
 
+// Helper to wrap a promise with a timeout
+function withTimeout<T>(promise: Promise<T>, ms: number, errorMessage: string): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error(errorMessage)), ms)
+    )
+  ]);
+}
+
 export function BidList() {
   const navigate = useNavigate();
-  const { isAuthenticated, refreshSession } = useAuth();
+  const { refreshSession } = useAuth();
   const [projects, setProjects] = useState<BidProject[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const abortControllerRef = useRef<AbortController | null>(null);
+  const isMountedRef = useRef(true);
 
   const fetchProjects = useCallback(async () => {
-    // Cancel any pending request
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-    abortControllerRef.current = new AbortController();
-
     setIsLoading(true);
     setError(null);
 
-    // Set up timeout
-    const timeoutId = setTimeout(() => {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
-    }, API_TIMEOUT);
-
     try {
-      // First check if session is still valid
-      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      // First check if session is still valid with timeout
+      const sessionResult = await withTimeout(
+        supabase.auth.getSession(),
+        5000,
+        'Session check timed out'
+      );
 
-      if (sessionError || !session) {
+      if (sessionResult.error || !sessionResult.data.session) {
         // Try to refresh the session
+        console.log('Session invalid, attempting refresh...');
         const refreshed = await refreshSession();
         if (!refreshed) {
           console.log('Session expired, redirecting to login...');
@@ -73,7 +75,7 @@ export function BidList() {
         }
       }
 
-      // First get basic project info - select specific fields matching the database schema
+      // Build query
       let query = supabase
         .from('bid_projects')
         .select('id, project_name, owner, state_project_number, county, route, letting_date, bid_due_date, status, created_at')
@@ -88,7 +90,12 @@ export function BidList() {
         query = query.or(`project_name.ilike.%${searchQuery}%,state_project_number.ilike.%${searchQuery}%`);
       }
 
-      const { data: basicProjects, error: projectsError } = await query;
+      // Execute query with timeout
+      const { data: basicProjects, error: projectsError } = await withTimeout(
+        query,
+        API_TIMEOUT,
+        'Request timed out. Please try again.'
+      );
 
       if (projectsError) {
         // Check for auth-related errors
@@ -101,21 +108,31 @@ export function BidList() {
             navigate('/login');
             return;
           }
-          // Retry the fetch after refresh
-          fetchProjects();
+          // Retry once after refresh
+          if (isMountedRef.current) {
+            fetchProjects();
+          }
           return;
         }
         throw projectsError;
       }
 
-      // Then fetch dashboard metrics
-      const { data: dashboardData } = await supabase
-        .from('v_bid_project_dashboard')
-        .select('*');
+      // Then fetch dashboard metrics (with timeout, but don't fail if this times out)
+      let dashboardData = null;
+      try {
+        const dashboardResult = await withTimeout(
+          supabase.from('v_bid_project_dashboard').select('*'),
+          API_TIMEOUT,
+          'Dashboard metrics timed out'
+        );
+        dashboardData = dashboardResult.data;
+      } catch (dashboardErr) {
+        console.warn('Dashboard metrics failed, continuing without them:', dashboardErr);
+      }
 
       // Merge dashboard data with projects
       const dashboardMap = new Map(
-        (dashboardData || []).map(d => [d.bid_project_id, d])
+        (dashboardData || []).map((d: { bid_project_id: string }) => [d.bid_project_id, d])
       );
 
       const enrichedProjects = (basicProjects || []).map(project => ({
@@ -123,19 +140,23 @@ export function BidList() {
         ...(dashboardMap.get(project.id) || {}),
       })) as BidProject[];
 
-      setProjects(enrichedProjects);
+      if (isMountedRef.current) {
+        setProjects(enrichedProjects);
+      }
     } catch (err: unknown) {
-      // Check if it was aborted (timeout or navigation)
-      if (err instanceof Error && err.name === 'AbortError') {
-        console.log('Request timed out or was cancelled');
-        setError('Request timed out. Please check your connection and try again.');
+      console.error('Error fetching projects:', err);
+
+      if (!isMountedRef.current) return;
+
+      const errorMessage = err instanceof Error ? err.message : String(err);
+
+      // Check for timeout errors
+      if (errorMessage.includes('timed out')) {
+        setError(errorMessage);
         return;
       }
 
-      console.error('Error fetching projects:', err);
-
-      // Check for auth errors in the catch block too
-      const errorMessage = err instanceof Error ? err.message : String(err);
+      // Check for auth errors
       if (errorMessage.includes('JWT') || errorMessage.includes('token') || errorMessage.includes('expired')) {
         setError('Session expired. Redirecting to login...');
         setTimeout(() => navigate('/login'), 1500);
@@ -144,17 +165,17 @@ export function BidList() {
 
       setError('Failed to load bid projects. Please try again.');
     } finally {
-      clearTimeout(timeoutId);
-      setIsLoading(false);
+      if (isMountedRef.current) {
+        setIsLoading(false);
+      }
     }
   }, [statusFilter, searchQuery, refreshSession, navigate]);
 
-  // Cleanup on unmount
+  // Track mounted state
   useEffect(() => {
+    isMountedRef.current = true;
     return () => {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
+      isMountedRef.current = false;
     };
   }, []);
 
