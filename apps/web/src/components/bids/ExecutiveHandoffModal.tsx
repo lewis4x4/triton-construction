@@ -94,9 +94,9 @@ interface Risk {
 interface Question {
   id: string;
   question_text: string;
-  rationale: string | null;
+  justification: string | null;
+  category: string | null;
   status: string;
-  priority: string | null;
   answer_text: string | null;
   submitted_at: string | null;
   ai_confidence: number | null;
@@ -223,7 +223,7 @@ export function ExecutiveHandoffModal({ projectId, projectName, onClose }: Execu
         supabase.from('v_bid_project_dashboard').select('*').eq('bid_project_id', projectId).single(),
         supabase.from('bid_executive_snapshots').select('*').eq('bid_project_id', projectId).eq('is_current', true).single(),
         supabase.from('bid_project_risks').select('*').eq('bid_project_id', projectId).order('overall_severity'),
-        supabase.from('bid_prebid_questions').select('*').eq('bid_project_id', projectId).order('priority'),
+        supabase.from('bid_prebid_questions').select('*').eq('bid_project_id', projectId).order('created_at', { ascending: false }),
         supabase.from('bid_work_packages').select('*').eq('bid_project_id', projectId),
         supabase.from('bid_line_items').select('*').eq('bid_project_id', projectId).order('line_number').limit(100),
         supabase.from('bid_documents').select('*').eq('bid_project_id', projectId),
@@ -351,21 +351,27 @@ export function ExecutiveHandoffModal({ projectId, projectName, onClose }: Execu
       if (base === 0) return null;
 
       // Calculate risk-adjusted factors
+      // riskFactor: more risk = need higher margin (less discount)
+      // opportunityFactor: more opportunities = can be more aggressive (more discount)
       const riskFactor = (criticalRisks.length * 0.03) + (highRisks.length * 0.015) + (mediumRisks.length * 0.005);
       const opportunityFactor = opportunities.length * 0.01;
+
+      // Conservative: At or above estimate, highest margin, lowest win probability
+      // Balanced: ~5-8% below estimate, adjusted for risk profile
+      // Aggressive: ~10-15% below estimate, thin margins for competitive positioning
 
       return {
         conservative: {
           name: 'Conservative',
-          value: base * 1.0,  // At estimate
-          variance: 0,
+          value: base * (1.0 + riskFactor),  // At or above estimate based on risk
+          variance: Math.round(riskFactor * 100),
           winProb: 15,
           rationale: 'Full risk coverage, minimal competition pressure',
           color: '#6b7280'
         },
         balanced: {
           name: 'Balanced',
-          value: base * (0.93 - riskFactor + opportunityFactor),  // ~7% below, adjusted for risk
+          value: base * (0.93 + riskFactor - opportunityFactor),  // ~7% below, risk adds margin, opportunities allow more discount
           variance: -7 + Math.round((riskFactor - opportunityFactor) * 100),
           winProb: 45,
           rationale: `${allRisks.length > 5 ? 'Higher risk profile requires margin' : 'Standard scope with acceptable risk'}`,
@@ -373,7 +379,7 @@ export function ExecutiveHandoffModal({ projectId, projectName, onClose }: Execu
         },
         aggressive: {
           name: 'Aggressive',
-          value: base * (0.88 - opportunityFactor),  // ~12% below
+          value: base * (0.88 - opportunityFactor),  // ~12% below, opportunities allow even more discount
           variance: -12 - Math.round(opportunityFactor * 100),
           winProb: 75,
           rationale: 'Thin margins, relies on efficiency and favorable conditions',
