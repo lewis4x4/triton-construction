@@ -1,0 +1,304 @@
+/* Employment Entry Form */
+
+.employment-entry-form {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+/* Header */
+.employment-entry-form .form-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.employment-entry-form .form-header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: rgba(59, 130, 246, 0.15);
+  border-radius: var(--radius-md);
+  color: var(--neon-blue);
+}
+
+.employment-entry-form .form-header h4 {
+  flex: 1;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.employment-entry-form .btn-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.employment-entry-form .btn-close:hover {
+  background: var(--bg-quaternary);
+  color: var(--text-primary);
+}
+
+/* Body */
+.employment-entry-form .form-body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.employment-entry-form .form-section-title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--neon-cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-default);
+}
+
+.employment-entry-form .form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.employment-entry-form .form-row.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.employment-entry-form .form-row.three-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+
+.employment-entry-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.employment-entry-form .form-group label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.employment-entry-form .form-group label .required {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+.employment-entry-form .form-group input,
+.employment-entry-form .form-group textarea,
+.employment-entry-form .form-group select {
+  padding: 0.625rem 0.875rem;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+}
+
+.employment-entry-form .form-group input:focus,
+.employment-entry-form .form-group textarea:focus,
+.employment-entry-form .form-group select:focus {
+  outline: none;
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+}
+
+.employment-entry-form .form-group input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.employment-entry-form .form-group input.error,
+.employment-entry-form .form-group textarea.error,
+.employment-entry-form .form-group select.error {
+  border-color: #ef4444;
+}
+
+.employment-entry-form .form-group input::placeholder,
+.employment-entry-form .form-group textarea::placeholder {
+  color: var(--text-tertiary);
+}
+
+.employment-entry-form .error-message {
+  font-size: 0.75rem;
+  color: #ef4444;
+  margin-top: 0.125rem;
+}
+
+/* Checkbox Group */
+.employment-entry-form .checkbox-group {
+  justify-content: flex-end;
+}
+
+.employment-entry-form .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+}
+
+.employment-entry-form .checkbox-label input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.employment-entry-form .checkbox-custom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background: var(--bg-quaternary);
+  border: 2px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.employment-entry-form .checkbox-label:hover .checkbox-custom {
+  border-color: var(--neon-cyan);
+}
+
+.employment-entry-form .checkbox-label input[type="checkbox"]:checked + .checkbox-custom {
+  background: var(--neon-cyan);
+  border-color: var(--neon-cyan);
+}
+
+.employment-entry-form .checkbox-label input[type="checkbox"]:checked + .checkbox-custom::after {
+  content: '✓';
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* DOT Questions */
+.employment-entry-form .dot-questions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: rgba(59, 130, 246, 0.05);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: var(--radius-md);
+}
+
+.employment-entry-form .dot-questions .checkbox-label {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+/* Form Note */
+.employment-entry-form .form-note {
+  padding: 0.875rem 1rem;
+  background: rgba(251, 191, 36, 0.08);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  border-radius: var(--radius-md);
+}
+
+.employment-entry-form .form-note p {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.employment-entry-form .form-note strong {
+  color: var(--neon-amber);
+}
+
+/* Actions */
+.employment-entry-form .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: var(--bg-tertiary);
+  border-top: 1px solid var(--border-default);
+}
+
+.employment-entry-form .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.employment-entry-form .btn-secondary {
+  background: var(--bg-quaternary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+}
+
+.employment-entry-form .btn-secondary:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--border-hover);
+}
+
+.employment-entry-form .btn-primary {
+  background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-blue) 100%);
+  color: #fff;
+}
+
+.employment-entry-form .btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .employment-entry-form .form-row.two-col,
+  .employment-entry-form .form-row.three-col {
+    grid-template-columns: 1fr;
+  }
+
+  .employment-entry-form .checkbox-group {
+    justify-content: flex-start;
+  }
+
+  .employment-entry-form .form-actions {
+    flex-direction: column;
+  }
+
+  .employment-entry-form .form-actions .btn {
+    width: 100%;
+  }
+}

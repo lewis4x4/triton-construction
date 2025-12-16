@@ -1,0 +1,417 @@
+/* Address History Form */
+
+.address-history-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Section Header */
+.address-history-form .form-section-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+}
+
+.address-history-form .header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(16, 185, 129, 0.15);
+  border-radius: var(--radius-md);
+  color: #10b981;
+  flex-shrink: 0;
+}
+
+.address-history-form .header-content {
+  flex: 1;
+}
+
+.address-history-form .header-content h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.address-history-form .header-content p {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+.address-history-form .btn-sm {
+  padding: 0.5rem 0.875rem;
+  font-size: 0.8125rem;
+}
+
+/* Progress Bar */
+.address-history-form .progress-bar-container {
+  padding: 0.875rem 1rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+}
+
+.address-history-form .progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 0.8125rem;
+}
+
+.address-history-form .progress-info span:first-child {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.address-history-form .status-complete {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: #10b981;
+  font-weight: 500;
+}
+
+.address-history-form .status-incomplete {
+  color: var(--neon-amber);
+  font-weight: 500;
+}
+
+.address-history-form .progress-bar {
+  height: 8px;
+  background: var(--bg-quaternary);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.address-history-form .progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--neon-cyan) 0%, var(--neon-blue) 100%);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.address-history-form .progress-fill.complete {
+  background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+}
+
+/* Empty State */
+.address-history-form .empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem 2rem;
+  background: var(--bg-secondary);
+  border: 2px dashed var(--border-default);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+.address-history-form .empty-state svg {
+  color: var(--text-tertiary);
+  opacity: 0.5;
+}
+
+.address-history-form .empty-state p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+/* Address List */
+.address-history-form .address-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Address Card */
+.address-history-form .address-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.address-history-form .address-card.expanded {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+}
+
+.address-history-form .address-card.has-errors {
+  border-color: #ef4444;
+}
+
+.address-history-form .address-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.address-history-form .address-header:hover {
+  background: var(--bg-tertiary);
+}
+
+.address-history-form .address-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.address-history-form .address-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.address-history-form .current-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 9999px;
+}
+
+.address-history-form .address-title {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.address-history-form .address-dates {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+.address-history-form .address-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.address-history-form .btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.address-history-form .btn-icon:hover {
+  background: var(--bg-quaternary);
+  color: var(--text-primary);
+}
+
+.address-history-form .btn-delete:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+/* Address Body */
+.address-history-form .address-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-top: 1px solid var(--border-default);
+  background: var(--bg-tertiary);
+}
+
+.address-history-form .form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.address-history-form .form-row.three-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+
+.address-history-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.address-history-form .form-group label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.address-history-form .form-group label .required {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+.address-history-form .form-group input,
+.address-history-form .form-group select {
+  padding: 0.625rem 0.875rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+}
+
+.address-history-form .form-group input:focus,
+.address-history-form .form-group select:focus {
+  outline: none;
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+}
+
+.address-history-form .form-group input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.address-history-form .form-group input.error,
+.address-history-form .form-group select.error {
+  border-color: #ef4444;
+}
+
+.address-history-form .form-group input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.address-history-form .error-message {
+  font-size: 0.75rem;
+  color: #ef4444;
+  margin-top: 0.125rem;
+}
+
+/* Checkbox */
+.address-history-form .checkbox-group {
+  justify-content: flex-end;
+}
+
+.address-history-form .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+}
+
+.address-history-form .checkbox-label input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.address-history-form .checkbox-custom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background: var(--bg-quaternary);
+  border: 2px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.address-history-form .checkbox-label:hover .checkbox-custom {
+  border-color: var(--neon-cyan);
+}
+
+.address-history-form .checkbox-label input[type="checkbox"]:checked + .checkbox-custom {
+  background: var(--neon-cyan);
+  border-color: var(--neon-cyan);
+}
+
+.address-history-form .checkbox-label input[type="checkbox"]:checked + .checkbox-custom::after {
+  content: '✓';
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* Button Styles */
+.address-history-form .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.address-history-form .btn-secondary {
+  background: var(--bg-quaternary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+}
+
+.address-history-form .btn-secondary:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--border-hover);
+}
+
+.address-history-form .btn-primary {
+  background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-blue) 100%);
+  color: #fff;
+}
+
+.address-history-form .btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .address-history-form .form-section-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .address-history-form .form-section-header .btn {
+    width: 100%;
+  }
+
+  .address-history-form .form-row.three-col {
+    grid-template-columns: 1fr;
+  }
+
+  .address-history-form .checkbox-group {
+    justify-content: flex-start;
+  }
+}

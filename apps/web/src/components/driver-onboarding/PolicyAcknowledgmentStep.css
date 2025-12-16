@@ -1,0 +1,385 @@
+/* Policy Acknowledgment Step */
+
+.policy-step {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Header */
+.step-header {
+  display: flex;
+  gap: 1rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-default);
+}
+
+.step-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(0, 163, 255, 0.15) 100%);
+  border-radius: var(--radius-lg);
+  color: var(--neon-cyan);
+  flex-shrink: 0;
+}
+
+.step-title-content h2 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.step-title-content p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Validation Errors */
+.validation-errors {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: var(--radius-md);
+  color: #ef4444;
+}
+
+.validation-errors svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.error-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+}
+
+/* Progress Summary */
+.acknowledgment-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.25rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+}
+
+.progress-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.progress-item.complete {
+  color: #10b981;
+}
+
+.progress-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-default);
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+}
+
+.progress-item.complete .progress-icon {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #10b981;
+}
+
+.progress-connector {
+  flex: 1;
+  height: 2px;
+  background: var(--border-default);
+  min-width: 40px;
+}
+
+/* Policy Sections */
+.policy-section {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.policy-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  background: var(--bg-tertiary);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.policy-section-header:hover {
+  background: var(--bg-quaternary);
+}
+
+.policy-section-header.expanded {
+  border-bottom: 1px solid var(--border-default);
+}
+
+.policy-section-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.policy-section-info h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: var(--radius-full);
+}
+
+.status-badge.pending {
+  background: rgba(251, 191, 36, 0.15);
+  color: var(--neon-amber);
+}
+
+.status-badge.complete {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.btn-expand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-expand:hover {
+  background: var(--bg-quaternary);
+  color: var(--text-primary);
+}
+
+/* Policy Content */
+.policy-section-content {
+  padding: 1.25rem;
+}
+
+/* CMV Policy Viewer */
+.cmv-policy-viewer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.cmv-instructions {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: rgba(0, 212, 255, 0.08);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: var(--radius-md);
+  color: var(--neon-cyan);
+}
+
+.cmv-instructions svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.cmv-instructions p {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* CMV Sections */
+.cmv-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cmv-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+}
+
+.cmv-section-content {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.cmv-section-content h4 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.cmv-section-content p {
+  margin: 0 0 0.75rem 0;
+}
+
+.cmv-section-content p:last-child {
+  margin-bottom: 0;
+}
+
+.cmv-section-content ul,
+.cmv-section-content ol {
+  margin: 0 0 0.75rem 0;
+  padding-left: 1.5rem;
+}
+
+.cmv-section-content li {
+  margin-bottom: 0.375rem;
+}
+
+.cmv-section-content li:last-child {
+  margin-bottom: 0;
+}
+
+.cmv-section-content strong {
+  color: var(--text-primary);
+}
+
+.cmv-section-initial {
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-default);
+}
+
+/* Navigation */
+.step-navigation {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-default);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--bg-quaternary);
+  border-color: var(--border-hover);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-blue) 100%);
+  color: #fff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .acknowledgment-progress {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .progress-connector {
+    display: none;
+  }
+
+  .progress-item {
+    padding: 0.5rem;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+  }
+
+  .policy-section-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .cmv-section {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .step-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .step-icon {
+    margin: 0 auto;
+  }
+
+  .step-navigation {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .step-navigation .btn {
+    width: 100%;
+  }
+}

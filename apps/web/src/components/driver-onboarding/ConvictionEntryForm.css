@@ -1,0 +1,219 @@
+/* Conviction Entry Form */
+
+.conviction-entry-form {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+/* Header */
+.conviction-entry-form .form-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.conviction-entry-form .form-header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: rgba(168, 85, 247, 0.15);
+  border-radius: var(--radius-md);
+  color: var(--neon-purple);
+}
+
+.conviction-entry-form .form-header h4 {
+  flex: 1;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.conviction-entry-form .btn-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.conviction-entry-form .btn-close:hover {
+  background: var(--bg-quaternary);
+  color: var(--text-primary);
+}
+
+/* Body */
+.conviction-entry-form .form-body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.conviction-entry-form .form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.conviction-entry-form .form-row.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.conviction-entry-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.conviction-entry-form .form-group label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.conviction-entry-form .form-group label .required {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+.conviction-entry-form .form-group input,
+.conviction-entry-form .form-group textarea,
+.conviction-entry-form .form-group select {
+  padding: 0.625rem 0.875rem;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+}
+
+.conviction-entry-form .form-group input:focus,
+.conviction-entry-form .form-group textarea:focus,
+.conviction-entry-form .form-group select:focus {
+  outline: none;
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+}
+
+.conviction-entry-form .form-group input.error,
+.conviction-entry-form .form-group textarea.error,
+.conviction-entry-form .form-group select.error {
+  border-color: #ef4444;
+}
+
+.conviction-entry-form .form-group input.error:focus,
+.conviction-entry-form .form-group textarea.error:focus,
+.conviction-entry-form .form-group select.error:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.conviction-entry-form .form-group input::placeholder,
+.conviction-entry-form .form-group textarea::placeholder {
+  color: var(--text-tertiary);
+}
+
+.conviction-entry-form .form-group textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.conviction-entry-form .error-message {
+  font-size: 0.75rem;
+  color: #ef4444;
+  margin-top: 0.125rem;
+}
+
+/* Form Note */
+.conviction-entry-form .form-note {
+  padding: 0.875rem 1rem;
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: var(--radius-md);
+}
+
+.conviction-entry-form .form-note p {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.conviction-entry-form .form-note strong {
+  color: var(--neon-blue);
+}
+
+/* Actions */
+.conviction-entry-form .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: var(--bg-tertiary);
+  border-top: 1px solid var(--border-default);
+}
+
+.conviction-entry-form .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.conviction-entry-form .btn-secondary {
+  background: var(--bg-quaternary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+}
+
+.conviction-entry-form .btn-secondary:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--border-hover);
+}
+
+.conviction-entry-form .btn-primary {
+  background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-blue) 100%);
+  color: #fff;
+}
+
+.conviction-entry-form .btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .conviction-entry-form .form-row.two-col {
+    grid-template-columns: 1fr;
+  }
+
+  .conviction-entry-form .form-actions {
+    flex-direction: column;
+  }
+
+  .conviction-entry-form .form-actions .btn {
+    width: 100%;
+  }
+}
