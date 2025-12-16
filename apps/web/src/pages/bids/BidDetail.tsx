@@ -198,7 +198,7 @@ function WorkflowProgress({
 export function BidDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { refreshSession } = useAuth();
+  const { refreshSession, isAuthenticated } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = (searchParams.get('tab') as TabId) || 'documents';
   const isMountedRef = useRef(true);
@@ -225,9 +225,9 @@ export function BidDetail() {
     setError(null);
 
     try {
-      // Only check session on initial load, not on manual refreshes (to avoid loops)
-      if (!skipSessionCheck) {
-        // First check if session is still valid with timeout
+      // Only validate session if not already authenticated and not a manual refresh
+      // This speeds up page load after fresh login
+      if (!skipSessionCheck && !isAuthenticated) {
         const sessionResult = await withTimeout(
           supabase.auth.getSession(),
           5000,
@@ -235,7 +235,6 @@ export function BidDetail() {
         );
 
         if (sessionResult.error || !sessionResult.data.session) {
-          // Try to refresh the session
           console.log('Session invalid, attempting refresh...');
           const refreshed = await refreshSession();
           if (!refreshed) {
@@ -371,7 +370,7 @@ export function BidDetail() {
         setIsLoading(false);
       }
     }
-  }, [id, refreshSession, navigate]);
+  }, [id, refreshSession, navigate, isAuthenticated]);
 
   // Track mounted state
   useEffect(() => {

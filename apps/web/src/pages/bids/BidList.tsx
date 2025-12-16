@@ -44,7 +44,7 @@ function withTimeout<T>(promise: Promise<T>, ms: number, errorMessage: string): 
 
 export function BidList() {
   const navigate = useNavigate();
-  const { refreshSession } = useAuth();
+  const { refreshSession, isAuthenticated } = useAuth();
   const [projects, setProjects] = useState<BidProject[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -57,21 +57,22 @@ export function BidList() {
     setError(null);
 
     try {
-      // First check if session is still valid with timeout
-      const sessionResult = await withTimeout(
-        supabase.auth.getSession(),
-        5000,
-        'Session check timed out'
-      );
+      // Only validate session if we're not already authenticated (faster startup after login)
+      if (!isAuthenticated) {
+        const sessionResult = await withTimeout(
+          supabase.auth.getSession(),
+          5000,
+          'Session check timed out'
+        );
 
-      if (sessionResult.error || !sessionResult.data.session) {
-        // Try to refresh the session
-        console.log('Session invalid, attempting refresh...');
-        const refreshed = await refreshSession();
-        if (!refreshed) {
-          console.log('Session expired, redirecting to login...');
-          navigate('/login');
-          return;
+        if (sessionResult.error || !sessionResult.data.session) {
+          console.log('Session invalid, attempting refresh...');
+          const refreshed = await refreshSession();
+          if (!refreshed) {
+            console.log('Session expired, redirecting to login...');
+            navigate('/login');
+            return;
+          }
         }
       }
 
@@ -169,7 +170,7 @@ export function BidList() {
         setIsLoading(false);
       }
     }
-  }, [statusFilter, searchQuery, refreshSession, navigate]);
+  }, [statusFilter, searchQuery, refreshSession, navigate, isAuthenticated]);
 
   // Track mounted state
   useEffect(() => {
