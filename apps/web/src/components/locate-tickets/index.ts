@@ -69,3 +69,13 @@ export { PhotoCaptureModal } from './PhotoCaptureModal';
 
 // Photo Categories - Category definitions and utilities
 export * from './photoCategories';
+
+// ============================================
+// Dig Readiness Check Components
+// ============================================
+
+// Personnel Selector - Multi-select crew/sub workers with cert status
+export { PersonnelSelector } from './PersonnelSelector';
+
+// Dig Readiness Results - Comprehensive check results display
+export { DigReadinessResults, type DigReadinessResult } from './DigReadinessResults';

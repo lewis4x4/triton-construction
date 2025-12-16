@@ -5,12 +5,12 @@ interface Inspection {
   id: string;
   inspection_number: string | null;
   inspection_type: string | null;
-  title: string | null;
+  work_description: string | null;
   status: string | null;
   scheduled_date: string | null;
-  location: string | null;
+  location_description: string | null;
   inspector_name: string | null;
-  score: number | null;
+  pass_percentage: number | null;
 }
 
 interface Props {
@@ -102,7 +102,7 @@ export function InspectionList({ projectId, onUpdate }: Props) {
                 Type
               </th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Title
+                Description
               </th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                 Date
@@ -136,13 +136,13 @@ export function InspectionList({ projectId, onUpdate }: Props) {
                     {inspection.inspection_type?.replace(/_/g, ' ')}
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-900">
-                    {inspection.title}
+                    {inspection.work_description}
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-600">
                     {inspection.scheduled_date}
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-600">
-                    {inspection.location || '-'}
+                    {inspection.location_description || '-'}
                   </td>
                   <td className="px-4 py-3">
                     <span
@@ -154,17 +154,17 @@ export function InspectionList({ projectId, onUpdate }: Props) {
                     </span>
                   </td>
                   <td className="px-4 py-3 text-sm">
-                    {inspection.score !== null ? (
+                    {inspection.pass_percentage !== null ? (
                       <span
                         className={`font-medium ${
-                          inspection.score >= 80
+                          inspection.pass_percentage >= 80
                             ? 'text-green-600'
-                            : inspection.score >= 60
+                            : inspection.pass_percentage >= 60
                             ? 'text-yellow-600'
                             : 'text-red-600'
                         }`}
                       >
-                        {inspection.score}%
+                        {inspection.pass_percentage}%
                       </span>
                     ) : (
                       '-'
