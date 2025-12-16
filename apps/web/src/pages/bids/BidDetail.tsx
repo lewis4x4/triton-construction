@@ -1,6 +1,20 @@
-import { useEffect, useState, useCallback } from 'react';
-import { useParams, Link, useSearchParams } from 'react-router-dom';
+import { useEffect, useState, useCallback, useRef } from 'react';
+import { useParams, Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { supabase } from '@triton/supabase-client';
+import { useAuth } from '../../hooks/useAuth';
+
+// Timeout for API calls (10 seconds)
+const API_TIMEOUT = 10000;
+
+// Helper to wrap a promise with a timeout
+function withTimeout<T>(promise: Promise<T>, ms: number, errorMessage: string): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error(errorMessage)), ms)
+    )
+  ]);
+}
 
 import { DocumentUpload } from '../../components/DocumentUpload';
 import { DocumentList } from '../../components/DocumentList';
@@ -183,8 +197,11 @@ function WorkflowProgress({
 
 export function BidDetail() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { refreshSession } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = (searchParams.get('tab') as TabId) || 'documents';
+  const isMountedRef = useRef(true);
 
   const [project, setProject] = useState<BidProject | null>(null);
   const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
@@ -208,58 +225,158 @@ export function BidDetail() {
     setError(null);
 
     try {
-      // Fetch project details - select columns matching database schema
-      const { data: projectData, error: projectError } = await supabase
-        .from('bid_projects')
-        .select('id, project_name, owner, state_project_number, county, route, letting_date, bid_due_date, location_description, latitude, longitude, status, engineers_estimate, created_at')
-        .eq('id', id)
-        .single();
+      // First check if session is still valid with timeout
+      const sessionResult = await withTimeout(
+        supabase.auth.getSession(),
+        5000,
+        'Session check timed out'
+      );
 
-      if (projectError) throw projectError;
-      setProject(projectData as unknown as BidProject);
-
-      // Fetch dashboard metrics
-      const { data: metricsData } = await supabase
-        .from('v_bid_project_dashboard')
-        .select('*')
-        .eq('bid_project_id', id)
-        .single();
-
-      setMetrics(metricsData as DashboardMetrics | null);
-
-      // Check if executive snapshot exists
-      const { count: snapshotCount } = await supabase
-        .from('bid_executive_snapshots')
-        .select('*', { count: 'exact', head: true })
-        .eq('bid_project_id', id)
-        .eq('is_current', true);
-
-      setHasSnapshot((snapshotCount ?? 0) > 0);
-
-      // Fetch pricing completeness metrics
-      const { data: lineItemsData } = await supabase
-        .from('bid_line_items')
-        .select('final_unit_price, pricing_reviewed')
-        .eq('bid_project_id', id);
-
-      if (lineItemsData) {
-        const totalItems = lineItemsData.length;
-        const completeItems = lineItemsData.filter(
-          (item) => item.final_unit_price != null && item.pricing_reviewed === true
-        ).length;
-        setPricingMetrics({
-          totalItems,
-          completeItems,
-          incompleteItems: totalItems - completeItems,
-        });
+      if (sessionResult.error || !sessionResult.data.session) {
+        // Try to refresh the session
+        console.log('Session invalid, attempting refresh...');
+        const refreshed = await refreshSession();
+        if (!refreshed) {
+          console.log('Session expired, redirecting to login...');
+          navigate('/login');
+          return;
+        }
       }
-    } catch (err) {
+
+      // Fetch project details - select columns matching database schema
+      const { data: projectData, error: projectError } = await withTimeout(
+        supabase
+          .from('bid_projects')
+          .select('id, project_name, owner, state_project_number, county, route, letting_date, bid_due_date, location_description, latitude, longitude, status, engineers_estimate, created_at')
+          .eq('id', id)
+          .single(),
+        API_TIMEOUT,
+        'Request timed out loading project. Please try again.'
+      );
+
+      if (projectError) {
+        // Check for auth-related errors
+        if (projectError.message?.includes('JWT') ||
+            projectError.message?.includes('token') ||
+            projectError.code === 'PGRST301') {
+          console.log('Auth error, attempting session refresh...');
+          const refreshed = await refreshSession();
+          if (!refreshed) {
+            navigate('/login');
+            return;
+          }
+          // Retry once after refresh
+          if (isMountedRef.current) {
+            fetchProject();
+          }
+          return;
+        }
+        throw projectError;
+      }
+
+      if (isMountedRef.current) {
+        setProject(projectData as unknown as BidProject);
+      }
+
+      // Fetch dashboard metrics (with timeout, but don't fail if this times out)
+      let metricsData = null;
+      try {
+        const metricsResult = await withTimeout(
+          supabase
+            .from('v_bid_project_dashboard')
+            .select('*')
+            .eq('bid_project_id', id)
+            .single(),
+          API_TIMEOUT,
+          'Dashboard metrics timed out'
+        );
+        metricsData = metricsResult.data;
+      } catch (metricsErr) {
+        console.warn('Dashboard metrics failed, continuing without them:', metricsErr);
+      }
+
+      if (isMountedRef.current) {
+        setMetrics(metricsData as DashboardMetrics | null);
+      }
+
+      // Check if executive snapshot exists (with timeout, non-blocking)
+      try {
+        const snapshotResult = await withTimeout(
+          supabase
+            .from('bid_executive_snapshots')
+            .select('*', { count: 'exact', head: true })
+            .eq('bid_project_id', id)
+            .eq('is_current', true),
+          API_TIMEOUT,
+          'Snapshot check timed out'
+        );
+        if (isMountedRef.current) {
+          setHasSnapshot((snapshotResult.count ?? 0) > 0);
+        }
+      } catch (snapshotErr) {
+        console.warn('Snapshot check failed, continuing:', snapshotErr);
+      }
+
+      // Fetch pricing completeness metrics (with timeout, non-blocking)
+      try {
+        const lineItemsResult = await withTimeout(
+          supabase
+            .from('bid_line_items')
+            .select('final_unit_price, pricing_reviewed')
+            .eq('bid_project_id', id),
+          API_TIMEOUT,
+          'Line items check timed out'
+        );
+
+        if (lineItemsResult.data && isMountedRef.current) {
+          const totalItems = lineItemsResult.data.length;
+          const completeItems = lineItemsResult.data.filter(
+            (item) => item.final_unit_price != null && item.pricing_reviewed === true
+          ).length;
+          setPricingMetrics({
+            totalItems,
+            completeItems,
+            incompleteItems: totalItems - completeItems,
+          });
+        }
+      } catch (lineItemsErr) {
+        console.warn('Line items check failed, continuing:', lineItemsErr);
+      }
+    } catch (err: unknown) {
       console.error('Error fetching project:', err);
-      setError('Failed to load bid project');
+
+      if (!isMountedRef.current) return;
+
+      const errorMessage = err instanceof Error ? err.message : String(err);
+
+      // Check for timeout errors
+      if (errorMessage.includes('timed out')) {
+        setError(errorMessage);
+        return;
+      }
+
+      // Check for auth errors
+      if (errorMessage.includes('JWT') || errorMessage.includes('token') || errorMessage.includes('expired')) {
+        setError('Session expired. Redirecting to login...');
+        setTimeout(() => navigate('/login'), 1500);
+        return;
+      }
+
+      setError('Failed to load bid project. Please try again.');
     } finally {
-      setIsLoading(false);
+      if (isMountedRef.current) {
+        setIsLoading(false);
+      }
     }
-  }, [id]);
+  }, [id, refreshSession, navigate]);
+
+  // Track mounted state
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
   useEffect(() => {
     fetchProject();
