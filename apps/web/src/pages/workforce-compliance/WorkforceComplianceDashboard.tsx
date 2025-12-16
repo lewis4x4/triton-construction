@@ -14,6 +14,8 @@ import {
   TrendingUp,
   AlertOctagon,
   Upload,
+  ChevronRight,
+  ExternalLink,
 } from 'lucide-react';
 import { supabase } from '@triton/supabase-client';
 import './WorkforceComplianceDashboard.css';
@@ -58,12 +60,15 @@ interface ActiveOverride {
   projectName: string;
 }
 
+type TabType = 'overview' | 'expiring' | 'incidents' | 'overrides';
+
 export function WorkforceComplianceDashboard() {
   const [stats, setStats] = useState<ComplianceStats | null>(null);
   const [expiringItems, setExpiringItems] = useState<ExpiringItem[]>([]);
   const [recentIncidents, setRecentIncidents] = useState<RecentIncident[]>([]);
   const [activeOverrides, setActiveOverrides] = useState<ActiveOverride[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<TabType>('overview');
 
 
   useEffect(() => {
@@ -109,7 +114,7 @@ export function WorkforceComplianceDashboard() {
           .from('incidents')
           .select('id, incident_number, classification, description, incident_date, status')
           .order('incident_date', { ascending: false })
-          .limit(5),
+          .limit(10),
 
         // Active overrides
         supabase
@@ -122,7 +127,7 @@ export function WorkforceComplianceDashboard() {
           .eq('status', 'active')
           .gt('override_expires', new Date().toISOString())
           .order('override_expires', { ascending: true })
-          .limit(5),
+          .limit(10),
       ]);
 
       // Calculate stats
@@ -281,29 +286,53 @@ export function WorkforceComplianceDashboard() {
     return `${minutes}m`;
   };
 
+  const getClassificationBadge = (classification: string) => {
+    const normalized = classification.toLowerCase().replace(/_/g, ' ');
+    if (normalized.includes('recordable') || normalized.includes('lost time') || normalized.includes('fatality')) {
+      return { bg: 'bg-red-500/20', text: 'text-red-400', border: 'border-red-500/30' };
+    }
+    if (normalized.includes('first aid')) {
+      return { bg: 'bg-orange-500/20', text: 'text-orange-400', border: 'border-orange-500/30' };
+    }
+    if (normalized.includes('near miss')) {
+      return { bg: 'bg-blue-500/20', text: 'text-blue-400', border: 'border-blue-500/30' };
+    }
+    return { bg: 'bg-gray-500/20', text: 'text-gray-400', border: 'border-gray-500/30' };
+  };
+
+  const getTypeIcon = (type: ExpiringItem['type']) => {
+    switch (type) {
+      case 'certification': return <ClipboardCheck size={16} />;
+      case 'insurance': return <Shield size={16} />;
+      case 'license': return <FileText size={16} />;
+      case 'medical_card': return <FileText size={16} />;
+    }
+  };
+
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px] text-cyan-400">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-current" />
-        <p className="mt-4 font-mono text-sm tracking-widest uppercase">Loading compliance data...</p>
+      <div className="wc-loading">
+        <div className="wc-loading-spinner" />
+        <p>Loading compliance data...</p>
       </div>
     );
   }
 
   return (
-    <div className="workforce-dashboard">
-      <header className="dashboard-header">
-        <div className="header-content">
-          <div className="header-left">
+    <div className="wc-dashboard">
+      {/* Header */}
+      <header className="wc-header">
+        <div className="wc-header-content">
+          <div className="wc-header-left">
             <h1>Workforce Compliance</h1>
-            <p className="header-subtitle">Monitor and manage workforce certifications, training, and documentation</p>
+            <p>Monitor certifications, training, and documentation status</p>
           </div>
-          <div className="header-actions">
-            <button className="btn-secondary">
+          <div className="wc-header-actions">
+            <button className="wc-btn wc-btn-secondary">
               <FileText size={18} />
               Reports
             </button>
-            <button className="new-project-btn">
+            <button className="wc-btn wc-btn-primary">
               <Upload size={18} />
               Upload Documents
             </button>
@@ -311,235 +340,408 @@ export function WorkforceComplianceDashboard() {
         </div>
       </header>
 
-      <div className="max-w-[1600px] mx-auto">
-        {/* Active Overrides Alert */}
-        {activeOverrides.length > 0 && (
-          <div className="flex items-center gap-4 p-4 mx-6 mb-6 bg-red-500/10 border border-red-500/30 rounded-xl shadow-[0_0_15px_rgba(239,68,68,0.1)]">
-            <AlertOctagon className="w-6 h-6 text-red-400 flex-shrink-0" />
-            <div className="flex-1">
-              <strong className="block text-red-400 font-bold uppercase tracking-wider text-sm">
-                {activeOverrides.length} Active Override{activeOverrides.length > 1 ? 's' : ''}
-              </strong>
-              <span className="text-red-400/80 text-xs font-mono">Emergency overrides are in effect and require review</span>
-            </div>
-            <button className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 text-sm font-bold shadow-lg">
-              Review Overrides
-            </button>
+      {/* Active Overrides Alert Banner */}
+      {activeOverrides.length > 0 && (
+        <div className="wc-alert-banner wc-alert-danger">
+          <AlertOctagon size={20} />
+          <div className="wc-alert-content">
+            <strong>{activeOverrides.length} Active Override{activeOverrides.length > 1 ? 's' : ''}</strong>
+            <span>Emergency overrides are in effect and require review</span>
           </div>
-        )}
+          <button className="wc-btn wc-btn-danger" onClick={() => setActiveTab('overrides')}>
+            Review Now
+          </button>
+        </div>
+      )}
 
-        {/* Stats Cards */}
-        <div className="stats-grid">
-          <div className="stat-card">
-            <div className="stat-icon">
-              <Users className="w-6 h-6 text-cyan-400" />
-            </div>
-            <div className="stat-content">
-              <span className="stat-label">Active Employees</span>
-              <span className="stat-value">{stats?.totalEmployees || 0}</span>
-              <span className={`stat-target ${getCompliancePercentage() >= 90 ? 'text-green-400' : 'text-yellow-400'}`}>
+      {/* Stats Grid */}
+      <div className="wc-stats-grid">
+        <div className="wc-stat-card">
+          <div className="wc-stat-icon wc-icon-cyan">
+            <Users size={24} />
+          </div>
+          <div className="wc-stat-info">
+            <span className="wc-stat-label">Active Employees</span>
+            <span className="wc-stat-value">{stats?.totalEmployees || 0}</span>
+            <div className="wc-stat-meta">
+              <span className={getCompliancePercentage() >= 90 ? 'wc-text-success' : 'wc-text-warning'}>
                 {getCompliancePercentage()}% Compliant
               </span>
             </div>
           </div>
+        </div>
 
-          <div className="stat-card">
-            <div className="stat-icon">
-              <Building2 className="w-6 h-6 text-purple-400" />
-            </div>
-            <div className="stat-content">
-              <span className="stat-label">Subcontractors</span>
-              <span className="stat-value">{stats?.totalSubcontractors || 0}</span>
-              <span className={`stat-target ${getSubCompliancePercentage() >= 90 ? 'text-green-400' : 'text-yellow-400'}`}>
+        <div className="wc-stat-card">
+          <div className="wc-stat-icon wc-icon-purple">
+            <Building2 size={24} />
+          </div>
+          <div className="wc-stat-info">
+            <span className="wc-stat-label">Subcontractors</span>
+            <span className="wc-stat-value">{stats?.totalSubcontractors || 0}</span>
+            <div className="wc-stat-meta">
+              <span className={getSubCompliancePercentage() >= 90 ? 'wc-text-success' : 'wc-text-warning'}>
                 {getSubCompliancePercentage()}% Valid COI
               </span>
             </div>
           </div>
+        </div>
 
-          <div className="stat-card">
-            <div className="stat-icon">
-              <Clock className="w-6 h-6 text-orange-400" />
-            </div>
-            <div className="stat-content">
-              <span className="stat-label">Expiring Soon</span>
-              <span className="stat-value">{stats?.expiringSoon || 0}</span>
-              <span className="stat-target">Next 30 Days</span>
-            </div>
+        <div className="wc-stat-card">
+          <div className="wc-stat-icon wc-icon-orange">
+            <Clock size={24} />
           </div>
-
-          <div className="stat-card">
-            <div className="stat-icon">
-              <TrendingUp className="w-6 h-6 text-green-400" />
-            </div>
-            <div className="stat-content">
-              <span className="stat-label">Safety Incidents</span>
-              <span className="stat-value">{stats?.incidentsYTD || 0}</span>
-              <span className="stat-target">Year to Date</span>
+          <div className="wc-stat-info">
+            <span className="wc-stat-label">Expiring Soon</span>
+            <span className="wc-stat-value">{stats?.expiringSoon || 0}</span>
+            <div className="wc-stat-meta">
+              <span className="wc-text-muted">Next 30 Days</span>
             </div>
           </div>
         </div>
 
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Expiring Items */}
-          <div className="gravity-card flex flex-col h-[500px]">
-            <div className="p-5 border-b border-white/10 bg-white/5 flex justify-between items-center">
-              <h3 className="flex items-center gap-2 text-sm font-bold text-white uppercase tracking-widest">
-                <AlertTriangle className="w-5 h-5 text-orange-400" />
-                Expiring Credentials
-              </h3>
-              <span className="px-2 py-1 bg-blue-500 text-white text-xs font-bold rounded-full shadow-lg">
-                {expiringItems.length}
-              </span>
-            </div>
-            <div className="p-4 overflow-y-auto custom-scrollbar flex-1">
-              {expiringItems.length === 0 ? (
-                <div className="flex flex-col items-center justify-center h-full text-gray-500 gap-3">
-                  <CheckCircle size={32} className="text-green-500/50" />
-                  <p className="font-mono text-sm">No items expiring in the next 30 days</p>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {expiringItems.slice(0, 10).map(item => (
-                    <div key={item.id} className={`flex items-center gap-4 p-3 rounded-lg border bg-void-deep transition-all hover:bg-white/5 ${item.urgency === 'critical' ? 'border-red-500/40 shadow-[0_0_10px_rgba(239,68,68,0.1)]' :
-                      item.urgency === 'high' ? 'border-orange-500/40 shadow-[0_0_10px_rgba(249,115,22,0.1)]' :
-                        'border-white/10'
-                      }`}>
-                      <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0 text-gray-400">
-                        {item.type === 'certification' && <ClipboardCheck size={20} />}
-                        {item.type === 'insurance' && <Shield size={20} />}
-                        {item.type === 'license' && <FileText size={20} />}
-                        {item.type === 'medical_card' && <FileText size={20} />}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="text-sm font-bold text-white truncate">{item.entityName}</div>
-                        <div className="text-xs text-gray-400 truncate mt-0.5">{item.itemName}</div>
-                      </div>
-                      <div className="flex flex-col items-end gap-1">
-                        {item.daysUntilExpiry <= 0 ? (
-                          <span className="px-1.5 py-0.5 bg-red-500 text-white text-[10px] font-bold rounded uppercase tracking-wider">Expired</span>
-                        ) : (
-                          <span className={`px-1.5 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider border ${item.urgency === 'critical' ? 'bg-red-500/20 text-red-400 border-red-500/30' :
-                            item.urgency === 'high' ? 'bg-orange-500/20 text-orange-400 border-orange-500/30' :
-                              'bg-blue-500/20 text-blue-400 border-blue-500/30'
-                            }`}>
-                            {item.daysUntilExpiry}d
-                          </span>
-                        )}
-                        <span className="text-[10px] text-gray-500 font-mono">{formatDate(item.expirationDate)}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+        <div className="wc-stat-card">
+          <div className="wc-stat-icon wc-icon-green">
+            <TrendingUp size={24} />
+          </div>
+          <div className="wc-stat-info">
+            <span className="wc-stat-label">Safety Incidents</span>
+            <span className="wc-stat-value">{stats?.incidentsYTD || 0}</span>
+            <div className="wc-stat-meta">
+              <span className="wc-text-muted">Year to Date</span>
             </div>
           </div>
+        </div>
+      </div>
 
-          {/* Recent Incidents */}
-          <div className="gravity-card flex flex-col h-[500px]">
-            <div className="p-5 border-b border-white/10 bg-white/5 flex justify-between items-center">
-              <h3 className="flex items-center gap-2 text-sm font-bold text-white uppercase tracking-widest">
-                <AlertOctagon className="w-5 h-5 text-red-400" />
-                Recent Incidents
-              </h3>
-              <button className="text-cyan-400 text-xs hover:text-white transition-colors uppercase tracking-wider font-bold">View All</button>
-            </div>
-            <div className="p-4 overflow-y-auto custom-scrollbar flex-1">
-              {recentIncidents.length === 0 ? (
-                <div className="flex flex-col items-center justify-center h-full text-gray-500 gap-3">
-                  <CheckCircle size={32} className="text-green-500/50" />
-                  <p className="font-mono text-sm">No recent incidents</p>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {recentIncidents.map(incident => (
-                    <div key={incident.id} className="flex gap-4 p-3 rounded-lg border border-white/5 bg-white/5 hover:border-white/20 transition-all">
-                      <div className={`writing-mode-vertical rotate-180 text-[10px] font-bold uppercase tracking-wider px-1 py-2 rounded flex items-center justify-center whitespace-nowrap min-h-[80px] ${incident.classification.includes('recordable') ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
-                        incident.classification.includes('first_aid') ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30' :
-                          incident.classification.includes('near_miss') ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' :
-                            'bg-gray-500/20 text-gray-400 border border-gray-500/30'
-                        }`}>
-                        {incident.classification.replace(/_/g, ' ')}
-                      </div>
-                      <div className="flex-1 py-1">
-                        <div className="flex justify-between items-start mb-2">
-                          <span className="text-xs font-mono text-cyan-400">{incident.incidentNumber ?? 'N/A'}</span>
-                          <span className={`text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${incident.status === 'closed' ? 'bg-green-500/10 text-green-400 border-green-500/20' : 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'
-                            }`}>
-                            {incident.status ?? 'unknown'}
-                          </span>
-                        </div>
-                        <div className="text-sm text-gray-300 line-clamp-2 leading-relaxed mb-3">{incident.description}</div>
-                        <div className="flex items-center gap-2 text-xs text-gray-500">
-                          <Calendar size={12} />
-                          <span className="font-mono">{formatDate(incident.incidentDate)}</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Active Overrides */}
-          {activeOverrides.length > 0 && (
-            <div className="gravity-card flex flex-col">
-              <div className="p-5 border-b border-white/10 bg-white/5 flex justify-between items-center">
-                <h3 className="flex items-center gap-2 text-sm font-bold text-white uppercase tracking-widest">
-                  <AlertOctagon className="w-5 h-5 text-yellow-400" />
-                  Active Overrides
-                </h3>
-                <span className="px-2 py-1 bg-yellow-500 text-black text-xs font-bold rounded-full">
-                  {activeOverrides.length}
-                </span>
-              </div>
-              <div className="p-4 space-y-3">
-                {activeOverrides.map(override => (
-                  <div key={override.id} className="flex items-center gap-4 p-3 rounded-lg bg-yellow-500/5 border border-yellow-500/20 hover:bg-yellow-500/10 transition-colors">
-                    <div className="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded bg-yellow-500 text-black whitespace-nowrap">
-                      {override.overrideType.replace(/_/g, ' ')}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-sm font-medium text-yellow-100 truncate">{override.blockedAction ?? 'N/A'}</div>
-                      <div className="flex gap-3 mt-1 text-xs text-yellow-500/70 font-mono">
-                        <span>{override.projectName}</span>
-                        <span className="text-yellow-500">Expires in {override.expiresAt ? formatTimeRemaining(override.expiresAt) : 'N/A'}</span>
-                      </div>
-                    </div>
-                    <button className="px-3 py-1.5 bg-yellow-500/20 hover:bg-yellow-500/40 text-yellow-400 text-xs font-bold uppercase rounded transition-colors border border-yellow-500/30">
-                      Review
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
+      {/* Tab Navigation */}
+      <div className="wc-tabs">
+        <button
+          className={`wc-tab ${activeTab === 'overview' ? 'wc-tab-active' : ''}`}
+          onClick={() => setActiveTab('overview')}
+        >
+          Overview
+        </button>
+        <button
+          className={`wc-tab ${activeTab === 'expiring' ? 'wc-tab-active' : ''}`}
+          onClick={() => setActiveTab('expiring')}
+        >
+          Expiring Credentials
+          {expiringItems.length > 0 && (
+            <span className="wc-tab-badge">{expiringItems.length}</span>
           )}
+        </button>
+        <button
+          className={`wc-tab ${activeTab === 'incidents' ? 'wc-tab-active' : ''}`}
+          onClick={() => setActiveTab('incidents')}
+        >
+          Recent Incidents
+          {recentIncidents.length > 0 && (
+            <span className="wc-tab-badge wc-badge-neutral">{recentIncidents.length}</span>
+          )}
+        </button>
+        {activeOverrides.length > 0 && (
+          <button
+            className={`wc-tab ${activeTab === 'overrides' ? 'wc-tab-active' : ''}`}
+            onClick={() => setActiveTab('overrides')}
+          >
+            Active Overrides
+            <span className="wc-tab-badge wc-badge-danger">{activeOverrides.length}</span>
+          </button>
+        )}
+      </div>
 
-          {/* Quick Actions */}
-          <div className="gravity-card flex flex-col">
-            <div className="p-5 border-b border-white/10 bg-white/5">
-              <h3 className="text-sm font-bold text-white uppercase tracking-widest">Quick Actions</h3>
+      {/* Tab Content */}
+      <div className="wc-content">
+        {/* Overview Tab */}
+        {activeTab === 'overview' && (
+          <div className="wc-overview-grid">
+            {/* Quick Actions */}
+            <div className="wc-card">
+              <div className="wc-card-header">
+                <h3>Quick Actions</h3>
+              </div>
+              <div className="wc-card-body">
+                <div className="wc-quick-actions">
+                  {[
+                    { icon: Users, label: 'Add Employee', color: 'cyan' },
+                    { icon: Building2, label: 'Add Subcontractor', color: 'purple' },
+                    { icon: ClipboardCheck, label: 'Record Training', color: 'green' },
+                    { icon: AlertOctagon, label: 'Report Incident', color: 'red' },
+                    { icon: Truck, label: 'Fleet Status', color: 'orange' },
+                    { icon: HardHat, label: 'Safety Meeting', color: 'blue' }
+                  ].map((action, i) => (
+                    <button key={i} className={`wc-quick-action wc-action-${action.color}`}>
+                      <action.icon size={20} />
+                      <span>{action.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
-            <div className="p-4">
-              <div className="quick-actions-grid">
-                {[
-                  { icon: Users, label: 'Add Employee' },
-                  { icon: Building2, label: 'Add Subcontractor' },
-                  { icon: ClipboardCheck, label: 'Record Training' },
-                  { icon: AlertOctagon, label: 'Report Incident' },
-                  { icon: Truck, label: 'Fleet Status' },
-                  { icon: HardHat, label: 'Safety Meeting' }
-                ].map((action, i) => (
-                  <button key={i} className="quick-action-btn">
-                    <action.icon size={24} className="quick-action-icon" />
-                    <span className="quick-action-label">{action.label}</span>
-                  </button>
-                ))}
+
+            {/* Expiring Preview */}
+            <div className="wc-card">
+              <div className="wc-card-header">
+                <h3>
+                  <AlertTriangle size={18} className="wc-icon-warning" />
+                  Expiring Credentials
+                </h3>
+                <button className="wc-link" onClick={() => setActiveTab('expiring')}>
+                  View All <ChevronRight size={16} />
+                </button>
+              </div>
+              <div className="wc-card-body wc-card-body-scroll">
+                {expiringItems.length === 0 ? (
+                  <div className="wc-empty-state">
+                    <CheckCircle size={32} className="wc-icon-success" />
+                    <p>No items expiring in the next 30 days</p>
+                  </div>
+                ) : (
+                  <div className="wc-expiring-list">
+                    {expiringItems.slice(0, 5).map(item => (
+                      <div key={item.id} className={`wc-expiring-item wc-urgency-${item.urgency}`}>
+                        <div className="wc-expiring-icon">{getTypeIcon(item.type)}</div>
+                        <div className="wc-expiring-info">
+                          <span className="wc-expiring-name">{item.entityName}</span>
+                          <span className="wc-expiring-detail">{item.itemName}</span>
+                        </div>
+                        <div className="wc-expiring-status">
+                          {item.daysUntilExpiry <= 0 ? (
+                            <span className="wc-badge wc-badge-danger">Expired</span>
+                          ) : (
+                            <span className={`wc-badge wc-badge-${item.urgency}`}>
+                              {item.daysUntilExpiry}d
+                            </span>
+                          )}
+                          <span className="wc-expiring-date">{formatDate(item.expirationDate)}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Incidents Preview */}
+            <div className="wc-card">
+              <div className="wc-card-header">
+                <h3>
+                  <AlertOctagon size={18} className="wc-icon-danger" />
+                  Recent Incidents
+                </h3>
+                <button className="wc-link" onClick={() => setActiveTab('incidents')}>
+                  View All <ChevronRight size={16} />
+                </button>
+              </div>
+              <div className="wc-card-body wc-card-body-scroll">
+                {recentIncidents.length === 0 ? (
+                  <div className="wc-empty-state">
+                    <CheckCircle size={32} className="wc-icon-success" />
+                    <p>No recent incidents</p>
+                  </div>
+                ) : (
+                  <div className="wc-incident-list">
+                    {recentIncidents.slice(0, 5).map(incident => {
+                      const badge = getClassificationBadge(incident.classification);
+                      return (
+                        <div key={incident.id} className="wc-incident-item">
+                          <div className="wc-incident-header">
+                            <span className={`wc-classification-badge ${badge.bg} ${badge.text} ${badge.border}`}>
+                              {incident.classification.replace(/_/g, ' ')}
+                            </span>
+                            <span className="wc-incident-date">
+                              <Calendar size={12} />
+                              {formatDate(incident.incidentDate)}
+                            </span>
+                          </div>
+                          <p className="wc-incident-desc">{incident.description}</p>
+                          <div className="wc-incident-footer">
+                            <span className="wc-incident-number">{incident.incidentNumber ?? 'N/A'}</span>
+                            <span className={`wc-status-badge ${incident.status === 'closed' ? 'wc-status-closed' : 'wc-status-open'}`}>
+                              {incident.status ?? 'unknown'}
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </div>
           </div>
-        </div>
+        )}
+
+        {/* Expiring Credentials Tab */}
+        {activeTab === 'expiring' && (
+          <div className="wc-card">
+            <div className="wc-card-header">
+              <h3>
+                <AlertTriangle size={18} className="wc-icon-warning" />
+                Expiring Credentials ({expiringItems.length})
+              </h3>
+            </div>
+            <div className="wc-card-body">
+              {expiringItems.length === 0 ? (
+                <div className="wc-empty-state wc-empty-large">
+                  <CheckCircle size={48} className="wc-icon-success" />
+                  <h4>All Clear</h4>
+                  <p>No certifications, licenses, or insurance expiring in the next 30 days</p>
+                </div>
+              ) : (
+                <table className="wc-table">
+                  <thead>
+                    <tr>
+                      <th>Type</th>
+                      <th>Name</th>
+                      <th>Credential</th>
+                      <th>Expiration</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {expiringItems.map(item => (
+                      <tr key={item.id} className={`wc-row-${item.urgency}`}>
+                        <td>
+                          <span className="wc-type-badge">
+                            {getTypeIcon(item.type)}
+                            {item.type.replace(/_/g, ' ')}
+                          </span>
+                        </td>
+                        <td className="wc-cell-name">{item.entityName}</td>
+                        <td>{item.itemName}</td>
+                        <td className="wc-cell-date">{formatDate(item.expirationDate)}</td>
+                        <td>
+                          {item.daysUntilExpiry <= 0 ? (
+                            <span className="wc-badge wc-badge-danger">Expired</span>
+                          ) : (
+                            <span className={`wc-badge wc-badge-${item.urgency}`}>
+                              {item.daysUntilExpiry} days
+                            </span>
+                          )}
+                        </td>
+                        <td>
+                          <button className="wc-btn-icon">
+                            <ExternalLink size={16} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Incidents Tab */}
+        {activeTab === 'incidents' && (
+          <div className="wc-card">
+            <div className="wc-card-header">
+              <h3>
+                <AlertOctagon size={18} className="wc-icon-danger" />
+                Recent Incidents ({recentIncidents.length})
+              </h3>
+            </div>
+            <div className="wc-card-body">
+              {recentIncidents.length === 0 ? (
+                <div className="wc-empty-state wc-empty-large">
+                  <CheckCircle size={48} className="wc-icon-success" />
+                  <h4>No Incidents</h4>
+                  <p>No safety incidents have been reported</p>
+                </div>
+              ) : (
+                <table className="wc-table">
+                  <thead>
+                    <tr>
+                      <th>Incident #</th>
+                      <th>Classification</th>
+                      <th>Description</th>
+                      <th>Date</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {recentIncidents.map(incident => {
+                      const badge = getClassificationBadge(incident.classification);
+                      return (
+                        <tr key={incident.id}>
+                          <td className="wc-cell-mono">{incident.incidentNumber ?? 'N/A'}</td>
+                          <td>
+                            <span className={`wc-classification-badge ${badge.bg} ${badge.text} ${badge.border}`}>
+                              {incident.classification.replace(/_/g, ' ')}
+                            </span>
+                          </td>
+                          <td className="wc-cell-desc">{incident.description}</td>
+                          <td className="wc-cell-date">{formatDate(incident.incidentDate)}</td>
+                          <td>
+                            <span className={`wc-status-badge ${incident.status === 'closed' ? 'wc-status-closed' : 'wc-status-open'}`}>
+                              {incident.status ?? 'unknown'}
+                            </span>
+                          </td>
+                          <td>
+                            <button className="wc-btn-icon">
+                              <ExternalLink size={16} />
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Overrides Tab */}
+        {activeTab === 'overrides' && (
+          <div className="wc-card">
+            <div className="wc-card-header">
+              <h3>
+                <AlertOctagon size={18} className="wc-icon-warning" />
+                Active Overrides ({activeOverrides.length})
+              </h3>
+            </div>
+            <div className="wc-card-body">
+              {activeOverrides.length === 0 ? (
+                <div className="wc-empty-state wc-empty-large">
+                  <CheckCircle size={48} className="wc-icon-success" />
+                  <h4>No Active Overrides</h4>
+                  <p>There are no emergency overrides currently in effect</p>
+                </div>
+              ) : (
+                <div className="wc-override-list">
+                  {activeOverrides.map(override => (
+                    <div key={override.id} className="wc-override-card">
+                      <div className="wc-override-header">
+                        <span className="wc-override-type">{override.overrideType.replace(/_/g, ' ')}</span>
+                        <span className="wc-override-expires">
+                          Expires in {override.expiresAt ? formatTimeRemaining(override.expiresAt) : 'N/A'}
+                        </span>
+                      </div>
+                      <div className="wc-override-body">
+                        <div className="wc-override-detail">
+                          <span className="wc-override-label">Blocked Action</span>
+                          <span className="wc-override-value">{override.blockedAction ?? 'N/A'}</span>
+                        </div>
+                        <div className="wc-override-detail">
+                          <span className="wc-override-label">Project</span>
+                          <span className="wc-override-value">{override.projectName}</span>
+                        </div>
+                      </div>
+                      <div className="wc-override-actions">
+                        <button className="wc-btn wc-btn-secondary">View Details</button>
+                        <button className="wc-btn wc-btn-danger">Revoke Override</button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
