@@ -1,7 +1,11 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@triton/supabase-client';
+import { useAuth } from '../../hooks/useAuth';
 import './BidList.css';
+
+// Timeout for API calls (15 seconds)
+const API_TIMEOUT = 15000;
 
 interface BidProject {
   id: string;
@@ -30,17 +34,45 @@ type StatusFilter = 'all' | 'IDENTIFIED' | 'REVIEWING' | 'ANALYZING' | 'READY_FO
 
 export function BidList() {
   const navigate = useNavigate();
+  const { isAuthenticated, refreshSession } = useAuth();
   const [projects, setProjects] = useState<BidProject[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const fetchProjects = useCallback(async () => {
+    // Cancel any pending request
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    abortControllerRef.current = new AbortController();
+
     setIsLoading(true);
     setError(null);
 
+    // Set up timeout
+    const timeoutId = setTimeout(() => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    }, API_TIMEOUT);
+
     try {
+      // First check if session is still valid
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+      if (sessionError || !session) {
+        // Try to refresh the session
+        const refreshed = await refreshSession();
+        if (!refreshed) {
+          console.log('Session expired, redirecting to login...');
+          navigate('/login');
+          return;
+        }
+      }
+
       // First get basic project info - select specific fields matching the database schema
       let query = supabase
         .from('bid_projects')
@@ -58,7 +90,23 @@ export function BidList() {
 
       const { data: basicProjects, error: projectsError } = await query;
 
-      if (projectsError) throw projectsError;
+      if (projectsError) {
+        // Check for auth-related errors
+        if (projectsError.message?.includes('JWT') ||
+            projectsError.message?.includes('token') ||
+            projectsError.code === 'PGRST301') {
+          console.log('Auth error, attempting session refresh...');
+          const refreshed = await refreshSession();
+          if (!refreshed) {
+            navigate('/login');
+            return;
+          }
+          // Retry the fetch after refresh
+          fetchProjects();
+          return;
+        }
+        throw projectsError;
+      }
 
       // Then fetch dashboard metrics
       const { data: dashboardData } = await supabase
@@ -76,13 +124,39 @@ export function BidList() {
       })) as BidProject[];
 
       setProjects(enrichedProjects);
-    } catch (err) {
+    } catch (err: unknown) {
+      // Check if it was aborted (timeout or navigation)
+      if (err instanceof Error && err.name === 'AbortError') {
+        console.log('Request timed out or was cancelled');
+        setError('Request timed out. Please check your connection and try again.');
+        return;
+      }
+
       console.error('Error fetching projects:', err);
-      setError('Failed to load bid projects');
+
+      // Check for auth errors in the catch block too
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      if (errorMessage.includes('JWT') || errorMessage.includes('token') || errorMessage.includes('expired')) {
+        setError('Session expired. Redirecting to login...');
+        setTimeout(() => navigate('/login'), 1500);
+        return;
+      }
+
+      setError('Failed to load bid projects. Please try again.');
     } finally {
+      clearTimeout(timeoutId);
       setIsLoading(false);
     }
-  }, [statusFilter, searchQuery]);
+  }, [statusFilter, searchQuery, refreshSession, navigate]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
+  }, []);
 
   useEffect(() => {
     fetchProjects();

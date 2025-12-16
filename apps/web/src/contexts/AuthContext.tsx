@@ -21,6 +21,7 @@ interface AuthState {
 }
 
 interface AuthContextType extends AuthState {
+  organizationId: string | null;
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signUp: (email: string, password: string, metadata?: SignUpMetadata) => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
@@ -363,6 +364,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const value: AuthContextType = {
     ...state,
+    organizationId: state.profile?.organization_id ?? null,
     signIn,
     signUp,
     signOut,
@@ -376,3 +378,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     </AuthContext.Provider>
   );
 }
+
+// Re-export useAuth hook for convenience
+export { useAuth } from '../hooks/useAuth';
